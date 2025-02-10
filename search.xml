@@ -1,6 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>最优传输（二）</title>
+    <url>/2025/02/10/OT2/</url>
+    <content><![CDATA[<h1 id="kantorovich问题的对偶问题">Kantorovich问题的对偶问题</h1>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>最优化</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Lagrange对偶（Lagrange duality）</title>
+    <url>/2025/02/10/Lagrange%E5%AF%B9%E5%81%B6/</url>
+    <content><![CDATA[<h2 id="问题背景">问题背景</h2>
+<p>在一个优化问题中，原始问题通常会带有很多约束条件，这样直接求解原始问题往往是很困难的，于是考虑将原始问题转化为它的对偶问题，通过求解它的对偶问题来得到原始问题的解。<strong>对偶性</strong>（Duality）是凸优化问题的核心内容。
+<span id="more"></span></p>
+<h2 id="原始问题及其转化">原始问题及其转化</h2>
+<p><strong>原始问题</strong></p>
+<p>将一个原始最优化问题写成如下形式 <span class="math display">\[
+\underset{x}{min} \quad f_0(x) \\ s.t. \quad f_i(x) \le 0,i=1,2,...,m \\
+\qquad h_j(x)=0,j=1,2,...,p
+\]</span> 在求解原问题的对偶问题时，并不要求原始问题一定是凸问题，<span class="math inline">\(f\)</span>和<span class="math inline">\(g\)</span>可以是一般函数而不一定非得是凸函数。</p>
+<p><strong>拉格朗日函数</strong></p>
+<p>将原始问题的拉格朗日函数定义为 <span class="math display">\[
+L(x,\lambda,\nu)=f_0(x)+\sum^m_{i=1}\lambda_i f_i(x)+\sum^p_{j=1}\nu_j
+h_j(x)
+\]</span> 其中，<span class="math inline">\(x\in \mathbb
+R^n,\lambda\in\mathbb R^m,\nu\in\mathbb R^p\)</span>
+可以看到，拉格朗日函数<span class="math inline">\(L\)</span>相当于原始问题引入了两个新变量<span class="math inline">\(\lambda,\nu\)</span>，称为拉格朗日乘子</p>
+<p><strong>拉格朗日对偶函数</strong></p>
+<p>拉格朗日对偶函数通过对拉格朗日函数<span class="math inline">\(x\)</span>取下确界得到，即 <span class="math display">\[
+g(\lambda,\nu)=\underset{x}{inf}L(x,\lambda,\nu)
+\]</span> 对偶函数有如下两条重要性质
+1.对偶函数一定是凹函数，其凹性与原目标函数和约束函数凹凸与否无关
+2.对<span class="math inline">\(\forall\lambda\ge0,\forall\nu\)</span>，如果原问题最优解对应的目标函数值为<span class="math inline">\(P^*\)</span>，则<span class="math inline">\(g(\lambda,\nu)\le p^*\)</span></p>
+<h2 id="拉格朗日对偶问题">拉格朗日对偶问题</h2>
+<p>根据对偶函数的重要性质2，对<span class="math inline">\(\forall\lambda\ge0,\forall\nu\)</span>，对偶函数<span class="math inline">\(g(\lambda,\nu)\)</span>是原问题最优值<span class="math inline">\(P^*\)</span>的一个下界，最好的下界就是最大化对偶函数，因此构造原问题的对偶问题：
+<span class="math display">\[
+\underset{\lambda,\nu}{max}\quad g(\lambda,\nu) \\ s.t.\quad \lambda \ge
+0
+\]</span>
+由于对偶函数是凹函数，故拉格朗日对偶问题一定是凸优化问题，其对应的最优解为<span class="math inline">\(\lambda^*,\nu^*\)</span>，若对应的最优值为<span class="math inline">\(d^*\)</span>，则总有<span class="math inline">\(d^* \le p^*\)</span></p>
+<p>当<span class="math inline">\(d^* \le p^*\)</span>时，称为弱对偶
+当<span class="math inline">\(d^* = p^*\)</span>时，称为强对偶 将<span class="math inline">\(p^*-d^*\)</span>称为对偶间隙</p>
+<blockquote>
+<p>在解存在的情况下，弱对偶总是成立的。
+满足强对偶时，可以通过求解对偶问题来得到原始问题的解</p>
+</blockquote>
+<h2 id="slater条件">Slater条件</h2>
+<p>Slater条件用于判断什么情况下强对偶是成立的。
+在<strong>原问题是凸问题</strong>的情况下，若<span class="math inline">\(\exists x \in
+relint(D)\)</span>，使得约束条件满足： <span class="math display">\[
+f_i(x)&lt;0,h_j(x)=0\quad i=1,2,...,p
+\]</span> 则强对偶成立 &gt;<span class="math inline">\(relint(D)表示原始凸问题定义域的相对内部，即在定义域上除了边界点以外的所有点\)</span></p>
+<h2 id="kkt条件">KKT条件</h2>
+<p>在强对偶且<span class="math inline">\(L\)</span>对<span class="math inline">\(x\)</span>可微的前提下，设<span class="math inline">\(x^*,\lambda^*,\nu^*\)</span>分别是原问题和对偶问题的最优解，则以下四组条件称为KKT条件
+<span class="math display">\[
+\begin{cases}
+   \frac{\partial L(x^*,\lambda^*,\nu^*)}{\partial x^*} |_{x=x^*}=0
+&amp;\text{(稳定性条件)} \\ \lambda^*_i f_i(x^*)=0
+&amp;\text{(互松弛条件)}\\ f_i(x^*)\le 0,h_j(x^*)=0
+&amp;\text{(原问题可行性)} \\ \lambda_i^* \ge 0
+&amp;\text{(对偶问题可行性)}
+    &amp;\text{if } d
+\end{cases}
+\]</span></p>
+<p>对<strong>一般的原问题</strong>，KKT
+条件是$x<sup><em>,<sup><em>,<sup>* <span class="math inline">\(为最优解的必要条件，即只要\)</span>x</sup></em>,</sup></em>,</sup>*$为最优解，则一定满足
+KKT 条件。</p>
+<p>对<strong>原问题为凸问题</strong>，KKT条件是<span class="math inline">\(x^*,\lambda^*,\nu^*\)</span>
+为最优解的充要条件</p>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>最优化</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>最优传输(Optimal Transportation)</title>
     <url>/2025/02/09/OT1/</url>
     <content><![CDATA[<p><strong>什么是最优传输？</strong></p>

@@ -20,24 +20,20 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="什么是最优传输？ 最优传输最开始由Monge于1781年提出。一个典型的Monge问题是考虑将一堆具有一定形状的沙子搬运到指定的另外一个形状所需要的具有最小代价的搬运方法。 如下图所示，我们想将左边红色区域的沙堆搬运到右边，形成右边绿色的沙堆的形状。我们想要找到消耗最少的搬运方式。  一句话来概括，就是如何用最少的代价将一个质量分布转为另一个质量分布。">
+  <meta name="description" content="问题背景 在一个优化问题中，原始问题通常会带有很多约束条件，这样直接求解原始问题往往是很困难的，于是考虑将原始问题转化为它的对偶问题，通过求解它的对偶问题来得到原始问题的解。对偶性（Duality）是凸优化问题的核心内容。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="最优传输(Optimal Transportation)">
-<meta property="og:url" content="http://example.com/2025/02/09/OT1/index.html">
+<meta property="og:title" content="Lagrange对偶（Lagrange duality）">
+<meta property="og:url" content="http://example.com/2025/02/10/Lagrange%E5%AF%B9%E5%81%B6/index.html">
 <meta property="og:site_name" content="我的博客">
-<meta property="og:description" content="什么是最优传输？ 最优传输最开始由Monge于1781年提出。一个典型的Monge问题是考虑将一堆具有一定形状的沙子搬运到指定的另外一个形状所需要的具有最小代价的搬运方法。 如下图所示，我们想将左边红色区域的沙堆搬运到右边，形成右边绿色的沙堆的形状。我们想要找到消耗最少的搬运方式。  一句话来概括，就是如何用最少的代价将一个质量分布转为另一个质量分布。">
+<meta property="og:description" content="问题背景 在一个优化问题中，原始问题通常会带有很多约束条件，这样直接求解原始问题往往是很困难的，于是考虑将原始问题转化为它的对偶问题，通过求解它的对偶问题来得到原始问题的解。对偶性（Duality）是凸优化问题的核心内容。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2025/02/09/OT1/1.jpg">
-<meta property="og:image" content="http://example.com/2025/02/09/OT1/2.jpg">
-<meta property="og:image" content="http://example.com/2025/02/09/OT1/3.jpg">
-<meta property="article:published_time" content="2025-02-09T09:57:49.000Z">
-<meta property="article:modified_time" content="2025-02-10T11:20:22.580Z">
+<meta property="article:published_time" content="2025-02-10T11:16:52.000Z">
+<meta property="article:modified_time" content="2025-02-10T12:20:14.960Z">
 <meta property="article:author" content="宋嘉晨">
 <meta property="article:tag" content="最优化">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/2025/02/09/OT1/1.jpg">
 
-<link rel="canonical" href="http://example.com/2025/02/09/OT1/">
+<link rel="canonical" href="http://example.com/2025/02/10/Lagrange%E5%AF%B9%E5%81%B6/">
 
 
 <script id="page-configurations">
@@ -50,7 +46,7 @@
   };
 </script>
 
-  <title>最优传输(Optimal Transportation) | 我的博客</title>
+  <title>Lagrange对偶（Lagrange duality） | 我的博客</title>
   
 
 
@@ -198,7 +194,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/02/09/OT1/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/02/10/Lagrange%E5%AF%B9%E5%81%B6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -211,7 +207,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          最优传输(Optimal Transportation)
+          Lagrange对偶（Lagrange duality）
         </h1>
 
         <div class="post-meta">
@@ -220,16 +216,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2025-02-09 17:57:49" itemprop="dateCreated datePublished" datetime="2025-02-09T17:57:49+08:00">2025-02-09</time>
+              <time title="创建时间：2025-02-10 19:16:52 / 修改时间：20:20:14" itemprop="dateCreated datePublished" datetime="2025-02-10T19:16:52+08:00">2025-02-10</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-02-10 19:20:22" itemprop="dateModified" datetime="2025-02-10T19:20:22+08:00">2025-02-10</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -241,7 +231,7 @@
             </span>
 
           
-            <span id="/2025/02/09/OT1/" class="post-meta-item leancloud_visitors" data-flag-title="最优传输(Optimal Transportation)" title="阅读次数">
+            <span id="/2025/02/10/Lagrange%E5%AF%B9%E5%81%B6/" class="post-meta-item leancloud_visitors" data-flag-title="Lagrange对偶（Lagrange duality）" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -256,8 +246,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2025/02/09/OT1/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2025/02/09/OT1/" itemprop="commentCount"></span>
+    <a title="valine" href="/2025/02/10/Lagrange%E5%AF%B9%E5%81%B6/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2025/02/10/Lagrange%E5%AF%B9%E5%81%B6/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -267,7 +257,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.6k</span>
+              <span>1.7k</span>
             </span>
 
         </div>
@@ -279,58 +269,64 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p><strong>什么是最优传输？</strong></p>
-<p>最优传输最开始由Monge于1781年提出。一个典型的Monge问题是考虑将一堆具有一定形状的沙子搬运到指定的另外一个形状所需要的具有最小代价的搬运方法。
-如下图所示，我们想将左边红色区域的沙堆搬运到右边，形成右边绿色的沙堆的形状。我们想要找到消耗最少的搬运方式。
-<img src="/2025/02/09/OT1/1.jpg" alt="image">
-一句话来概括，就是<strong>如何用最少的代价将一个质量分布转为另一个质量分布。</strong>
-<span id="more"></span> <strong>质量分布</strong> 质量分布其实就是两个测度空间<span class="math inline">\((X,\mu),(Y,\nu)\)</span>。一般情况下，质量不会凭空产生，所以我们会要求这两个分布的“总质量”是一样的，即<span class="math inline">\(\int_x d\mu=\int_Yd\nu\)</span>。
-问题有了考虑的对象，我们还可以定义成本函数<span class="math inline">\(c(x,y):X \times Y \to \mathbb
-R^+\)</span>，一般是有界的，来衡量将质量从点<span class="math inline">\(x\)</span>运到点<span class="math inline">\(y\)</span>的成本。那么如何去进行移动？主要有两个角度去考虑，分别是Monge问题和Kantorovich问题。</p>
-<p><strong>Monge问题</strong> Monge问题就是寻找一个保测度的映射<span class="math inline">\(T:X \to Y\)</span> <span class="math display">\[
-\underset{T} {min} \int_X c(x,T(x))d \mu(x),T_{ \# } \mu= \nu
-\]</span> <span class="math inline">\(T_{
-\#  }\)</span>是前推算子（<span class="math inline">\(T_{ \#
-}\)</span>的作用对象是<span class="math inline">\(\mu\)</span>，表示把测度<span class="math inline">\(\mu\)</span>推到<span class="math inline">\(\nu\)</span>），这个“推”的过程就是一个保测度的过程，即
+        <h2 id="问题背景">问题背景</h2>
+<p>在一个优化问题中，原始问题通常会带有很多约束条件，这样直接求解原始问题往往是很困难的，于是考虑将原始问题转化为它的对偶问题，通过求解它的对偶问题来得到原始问题的解。<strong>对偶性</strong>（Duality）是凸优化问题的核心内容。
+<span id="more"></span></p>
+<h2 id="原始问题及其转化">原始问题及其转化</h2>
+<p><strong>原始问题</strong></p>
+<p>将一个原始最优化问题写成如下形式 <span class="math display">\[
+\underset{x}{min} \quad f_0(x) \\ s.t. \quad f_i(x) \le 0,i=1,2,...,m \\
+\qquad h_j(x)=0,j=1,2,...,p
+\]</span> 在求解原问题的对偶问题时，并不要求原始问题一定是凸问题，<span class="math inline">\(f\)</span>和<span class="math inline">\(g\)</span>可以是一般函数而不一定非得是凸函数。</p>
+<p><strong>拉格朗日函数</strong></p>
+<p>将原始问题的拉格朗日函数定义为 <span class="math display">\[
+L(x,\lambda,\nu)=f_0(x)+\sum^m_{i=1}\lambda_i f_i(x)+\sum^p_{j=1}\nu_j
+h_j(x)
+\]</span> 其中，<span class="math inline">\(x\in \mathbb
+R^n,\lambda\in\mathbb R^m,\nu\in\mathbb R^p\)</span>
+可以看到，拉格朗日函数<span class="math inline">\(L\)</span>相当于原始问题引入了两个新变量<span class="math inline">\(\lambda,\nu\)</span>，称为拉格朗日乘子</p>
+<p><strong>拉格朗日对偶函数</strong></p>
+<p>拉格朗日对偶函数通过对拉格朗日函数<span class="math inline">\(x\)</span>取下确界得到，即 <span class="math display">\[
+g(\lambda,\nu)=\underset{x}{inf}L(x,\lambda,\nu)
+\]</span> 对偶函数有如下两条重要性质
+1.对偶函数一定是凹函数，其凹性与原目标函数和约束函数凹凸与否无关
+2.对<span class="math inline">\(\forall\lambda\ge0,\forall\nu\)</span>，如果原问题最优解对应的目标函数值为<span class="math inline">\(P^*\)</span>，则<span class="math inline">\(g(\lambda,\nu)\le p^*\)</span></p>
+<h2 id="拉格朗日对偶问题">拉格朗日对偶问题</h2>
+<p>根据对偶函数的重要性质2，对<span class="math inline">\(\forall\lambda\ge0,\forall\nu\)</span>，对偶函数<span class="math inline">\(g(\lambda,\nu)\)</span>是原问题最优值<span class="math inline">\(P^*\)</span>的一个下界，最好的下界就是最大化对偶函数，因此构造原问题的对偶问题：
 <span class="math display">\[
-T_{ \#  }\mu = \nu \iff \forall B \subset Y,\nu (B)=\mu (T^{-1}(B))
-\]</span> <img src="/2025/02/09/OT1/2.jpg" alt="Monge Map">
-但是映射的定义就限制了我们不能实现“一对多”的操作，这就导致了一个很严重的问题，Monge问题不一定有解。比如一个狄拉克分布（在包含某个点的集合测度是1，其余是0）就不可能保测度地映射到高斯分布。
-我们可以让质量“可分”，即以概率的形式去进行“移动”。这就是Kantorovich问题。</p>
-<p><strong>Kantorovich问题</strong></p>
-<p>在Kantorovich问题中，Kantorovich问题中，我们对Monge问题进行松弛，不再寻找一个映射，而是寻找一个联合分布（耦合coupling），其中它的边界分布分别是<span class="math inline">\(\mu,\nu\)</span>。从而最小化总成本 <span class="math display">\[
-\underset{\pi}{min}\int_{X \times Y}c(x,y)d\pi(x,y),P_{x
-\#  }\pi=\mu,P_{y \# }\pi=\nu
-\]</span> <img src="/2025/02/09/OT1/3.jpg" alt="Kantorovich Relaxation"> <span class="math inline">\(\pi(x,y)\)</span>就是从<span class="math inline">\(x\)</span>移动到<span class="math inline">\(y\)</span>的概率，上式是总成本的期望。
-这样的松弛之后，Kantorovich本质上变成了一个无限维的线性规划问题（如果分布是离散的，比如一堆点，我们要做的就是在两个点云之间做matching，那么<span class="math inline">\(\pi\)</span>就变成了一个矩阵，就变成了有限维的线性规划问题）
-线性规划理论告诉我们，如果耦合集合非空且紧，目标函数是下半连续的，那么线性规划一定可以取到最小值。也就保证了Kantorovich一定有解。</p>
-<p><strong>分布之间的度量-Wasserstein距离</strong>
-比较两种分布的一些方法：</p>
-<p><strong>交叉熵</strong>：对应分布为<span class="math inline">\(p(x)\)</span>的随机变量，熵<span class="math inline">\(H(p)\)</span>表示其最优编码长度。交叉熵是按照概率分布<span class="math inline">\(q\)</span>的最优编码对真实分布为<span class="math inline">\(p\)</span>的信息进行编码的长度 交叉熵定义为 <span class="math display">\[
-H(p,q)=E_q[-logq(x)]=-\displaystyle\sum_{x}p(x)logq(x)
-\]</span> 在给定<span class="math inline">\(p\)</span>的情况下，如果<span class="math inline">\(q\)</span>和<span class="math inline">\(p\)</span>越接近，交叉熵越小；如果<span class="math inline">\(q\)</span>和<span class="math inline">\(p\)</span>越远，交叉熵越大</p>
-<p><strong>KL散度</strong>:是用概率分布<span class="math inline">\(q\)</span>来近似<span class="math inline">\(p\)</span>时所造成的信息损失量。KL散度是按照概率分布<span class="math inline">\(q\)</span>的最优编码对真实分布为<span class="math inline">\(p\)</span>的信息进行编码，其平均编码长度<span class="math inline">\(H(p,q)\)</span>和<span class="math inline">\(p\)</span>的最优平均编码长度<span class="math inline">\(H(p)\)</span>之间的差异。对于离散概率分布<span class="math inline">\(p\)</span>和<span class="math inline">\(q\)</span>，从<span class="math inline">\(q\)</span>到<span class="math inline">\(p\)</span>的KL散度定义为: <span class="math display">\[
-D_{KL}(p\parallel q)=H(p,q)-H(p)=\sum_x p(x)log{\frac {p(x)} {q(x)} }
+\underset{\lambda,\nu}{max}\quad g(\lambda,\nu) \\ s.t.\quad \lambda \ge
+0
 \]</span>
-KL散度可以是衡量两个概率分布之间的距离。KL散度总是非负的，只有当<span class="math inline">\(p=q\)</span>时，<span class="math inline">\(D_{KL}(p\parallel
-q)=0\)</span>。两个分布越接近，KL散度越小；两个分布越远，KL散度越大。但KL散度并不是一个真正的度量或距离，一是KL散度不满足距离的对称性，二是KL散度不满足距离的三角不等式性质。</p>
-<p><strong>JS散度</strong>：
-JS散度是一种对称的衡量两个分布相似度的度量方式，定义为 <span class="math display">\[
-D_{JS}(p\parallel q)={\frac 1 2}D_{KL}(p \parallel m)+{\frac 1
-2}D_{KL}(q \parallel m)
-\]</span> 其中，<span class="math inline">\(m={\frac 1 2}(p+q)\)</span>
-JS 散度是KL散度一种改进。但两种散度都存在一个问题，即如果两个分布p, q
-没有重叠或者重叠非常少时，KL散度和JS 散度都很难衡量两个分布的距离</p>
-<p><strong>Wasserstein距离</strong>： Wasserstein 距离（Wasserstein
-Distance）也用于衡量两个分布之间的距离。对于两个分布<span class="math inline">\(q_1,q_2,p-Wasserstein\)</span>距离定义为 <span class="math display">\[
-W_p(q_1,q_2)=(\underset{\pi(x,y) \in U(x,y)} {inf}E_{(x,y)\sim \pi
-(x,y)}[d(x,y)^p]) ^{1/p}
-\]</span> 其中，<span class="math inline">\(U(x,y)\)</span>是边际分布为<span class="math inline">\(q_1\)</span>和<span class="math inline">\(q_2\)</span>的所有可能的联合分布集合，<span class="math inline">\(d(x,y)\)</span>为<span class="math inline">\(x\)</span>和<span class="math inline">\(y\)</span>的距离 Wasserstein距离相比KL散度和JS
-散度的优势在于：即使两个分布没有重叠或者重叠非常少，Wasserstein
-距离仍然能反映两个分布的远近。</p>
-<p>我们可以发现，如果令<span class="math inline">\(d(x,y)^p=c(x,y)\)</span>，Wasserstein距离实际上就是从一个分布转换为另一个分布所要付出的代价。</p>
-<p>Wasserstein
-GAN就是将W-1距离作为损失函数，解决了GAN的许多问题，比如训练不稳定，判别器不能训练的“太好”等。究其原因主要是因为W-1度量比KL度量更“弱”：也就是说在K-L散度下收敛的序列在W-1距离下也一定收敛。这样的性质就保证了W-1可以捕捉到序列更多的几何信息（比如不重叠的分布的KL散度永远是0，但W-1距离不然。），训练会更鲁棒。</p>
+由于对偶函数是凹函数，故拉格朗日对偶问题一定是凸优化问题，其对应的最优解为<span class="math inline">\(\lambda^*,\nu^*\)</span>，若对应的最优值为<span class="math inline">\(d^*\)</span>，则总有<span class="math inline">\(d^* \le p^*\)</span></p>
+<p>当<span class="math inline">\(d^* \le p^*\)</span>时，称为弱对偶
+当<span class="math inline">\(d^* = p^*\)</span>时，称为强对偶 将<span class="math inline">\(p^*-d^*\)</span>称为对偶间隙</p>
+<blockquote>
+<p>在解存在的情况下，弱对偶总是成立的。
+满足强对偶时，可以通过求解对偶问题来得到原始问题的解</p>
+</blockquote>
+<h2 id="slater条件">Slater条件</h2>
+<p>Slater条件用于判断什么情况下强对偶是成立的。
+在<strong>原问题是凸问题</strong>的情况下，若<span class="math inline">\(\exists x \in
+relint(D)\)</span>，使得约束条件满足： <span class="math display">\[
+f_i(x)&lt;0,h_j(x)=0\quad i=1,2,...,p
+\]</span> 则强对偶成立 &gt;<span class="math inline">\(relint(D)表示原始凸问题定义域的相对内部，即在定义域上除了边界点以外的所有点\)</span></p>
+<h2 id="kkt条件">KKT条件</h2>
+<p>在强对偶且<span class="math inline">\(L\)</span>对<span class="math inline">\(x\)</span>可微的前提下，设<span class="math inline">\(x^*,\lambda^*,\nu^*\)</span>分别是原问题和对偶问题的最优解，则以下四组条件称为KKT条件
+<span class="math display">\[
+\begin{cases}
+   \frac{\partial L(x^*,\lambda^*,\nu^*)}{\partial x^*} |_{x=x^*}=0
+&amp;\text{(稳定性条件)} \\ \lambda^*_i f_i(x^*)=0
+&amp;\text{(互松弛条件)}\\ f_i(x^*)\le 0,h_j(x^*)=0
+&amp;\text{(原问题可行性)} \\ \lambda_i^* \ge 0
+&amp;\text{(对偶问题可行性)}
+    &amp;\text{if } d
+\end{cases}
+\]</span></p>
+<p>对<strong>一般的原问题</strong>，KKT
+条件是$x<sup><em>,<sup><em>,<sup>* <span class="math inline">\(为最优解的必要条件，即只要\)</span>x</sup></em>,</sup></em>,</sup>*$为最优解，则一定满足
+KKT 条件。</p>
+<p>对<strong>原问题为凸问题</strong>，KKT条件是<span class="math inline">\(x^*,\lambda^*,\nu^*\)</span>
+为最优解的充要条件</p>
 
     </div>
 
@@ -348,11 +344,11 @@ GAN就是将W-1距离作为损失函数，解决了GAN的许多问题，比如�
 
         
     <div class="post-nav">
-      <div class="post-nav-item"></div>
       <div class="post-nav-item">
-    <a href="/2025/02/10/OT2/" rel="next" title="最优传输（二）">
-      最优传输（二） <i class="fa fa-chevron-right"></i>
+    <a href="/2025/02/10/OT2/" rel="prev" title="最优传输（二）">
+      <i class="fa fa-chevron-left"></i> 最优传输（二）
     </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -411,6 +407,7 @@ GAN就是将W-1距离作为损失函数，解决了GAN的许多问题，比如�
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E8%83%8C%E6%99%AF"><span class="nav-text">问题背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E5%A7%8B%E9%97%AE%E9%A2%98%E5%8F%8A%E5%85%B6%E8%BD%AC%E5%8C%96"><span class="nav-text">原始问题及其转化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5%E5%AF%B9%E5%81%B6%E9%97%AE%E9%A2%98"><span class="nav-text">拉格朗日对偶问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#slater%E6%9D%A1%E4%BB%B6"><span class="nav-text">Slater条件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kkt%E6%9D%A1%E4%BB%B6"><span class="nav-text">KKT条件</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
