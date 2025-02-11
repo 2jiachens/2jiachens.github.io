@@ -1,138 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Lagrange对偶（Lagrange duality）</title>
-    <url>/2025/02/10/Lagrange%E5%AF%B9%E5%81%B6/</url>
-    <content><![CDATA[<h2 id="问题背景">问题背景</h2>
-<p>在一个优化问题中，原始问题通常会带有很多约束条件，这样直接求解原始问题往往是很困难的，于是考虑将原始问题转化为它的对偶问题，通过求解它的对偶问题来得到原始问题的解。<strong>对偶性</strong>（Duality）是凸优化问题的核心内容。
-<span id="more"></span></p>
-<h2 id="原始问题及其转化">原始问题及其转化</h2>
-<p><strong>原始问题</strong></p>
-<p>将一个原始最优化问题写成如下形式 <span class="math display">\[
-\underset{x}{min} \quad f_0(x) \\ s.t. \quad f_i(x) \le 0,i=1,2,...,m \\
-\qquad h_j(x)=0,j=1,2,...,p
-\]</span> 在求解原问题的对偶问题时，并不要求原始问题一定是凸问题，<span class="math inline">\(f\)</span>和<span class="math inline">\(g\)</span>可以是一般函数而不一定非得是凸函数。</p>
-<p><strong>拉格朗日函数</strong></p>
-<p>将原始问题的拉格朗日函数定义为 <span class="math display">\[
-L(x,\lambda,\nu)=f_0(x)+\sum^m_{i=1}\lambda_i f_i(x)+\sum^p_{j=1}\nu_j
-h_j(x)
-\]</span> 其中，<span class="math inline">\(x\in \mathbb
-R^n,\lambda\in\mathbb R^m,\nu\in\mathbb R^p\)</span>
-可以看到，拉格朗日函数<span class="math inline">\(L\)</span>相当于原始问题引入了两个新变量<span class="math inline">\(\lambda,\nu\)</span>，称为拉格朗日乘子</p>
-<p><strong>拉格朗日对偶函数</strong></p>
-<p>拉格朗日对偶函数通过对拉格朗日函数<span class="math inline">\(x\)</span>取下确界得到，即 <span class="math display">\[
-g(\lambda,\nu)=\underset{x}{inf}L(x,\lambda,\nu)
-\]</span> 对偶函数有如下两条重要性质
-1.对偶函数一定是凹函数，其凹性与原目标函数和约束函数凹凸与否无关
-2.对<span class="math inline">\(\forall\lambda\ge0,\forall\nu\)</span>，如果原问题最优解对应的目标函数值为<span class="math inline">\(P^*\)</span>，则<span class="math inline">\(g(\lambda,\nu)\le p^*\)</span></p>
-<h2 id="拉格朗日对偶问题">拉格朗日对偶问题</h2>
-<p>根据对偶函数的重要性质2，对<span class="math inline">\(\forall\lambda\ge0,\forall\nu\)</span>，对偶函数<span class="math inline">\(g(\lambda,\nu)\)</span>是原问题最优值<span class="math inline">\(P^*\)</span>的一个下界，最好的下界就是最大化对偶函数，因此构造原问题的对偶问题：
-<span class="math display">\[
-\underset{\lambda,\nu}{max}\quad g(\lambda,\nu) \\ s.t.\quad \lambda \ge
-0
-\]</span>
-由于对偶函数是凹函数，故拉格朗日对偶问题一定是凸优化问题，其对应的最优解为<span class="math inline">\(\lambda^*,\nu^*\)</span>，若对应的最优值为<span class="math inline">\(d^*\)</span>，则总有<span class="math inline">\(d^* \le p^*\)</span></p>
-<p>当<span class="math inline">\(d^* \le p^*\)</span>时，称为弱对偶
-当<span class="math inline">\(d^* = p^*\)</span>时，称为强对偶 将<span class="math inline">\(p^*-d^*\)</span>称为对偶间隙</p>
-<blockquote>
-<p>在解存在的情况下，弱对偶总是成立的。
-满足强对偶时，可以通过求解对偶问题来得到原始问题的解</p>
-</blockquote>
-<h2 id="slater条件">Slater条件</h2>
-<p>Slater条件用于判断什么情况下强对偶是成立的。
-在<strong>原问题是凸问题</strong>的情况下，若<span class="math inline">\(\exists x \in
-relint(D)\)</span>，使得约束条件满足： <span class="math display">\[
-f_i(x)&lt;0,h_j(x)=0\quad i=1,2,...,p
-\]</span> 则强对偶成立 &gt;<span class="math inline">\(relint(D)表示原始凸问题定义域的相对内部，即在定义域上除了边界点以外的所有点\)</span></p>
-<h2 id="kkt条件">KKT条件</h2>
-<p>在强对偶且<span class="math inline">\(L\)</span>对<span class="math inline">\(x\)</span>可微的前提下，设<span class="math inline">\(x^*,\lambda^*,\nu^*\)</span>分别是原问题和对偶问题的最优解，则以下四组条件称为KKT条件
-<span class="math display">\[
-\begin{cases}
-   \frac{\partial L(x^*,\lambda^*,\nu^*)}{\partial x^*} |_{x=x^*}=0
-&amp;\text{(稳定性条件)} \\ \lambda^*_i f_i(x^*)=0
-&amp;\text{(互松弛条件)}\\ f_i(x^*)\le 0,h_j(x^*)=0
-&amp;\text{(原问题可行性)} \\ \lambda_i^* \ge 0
-&amp;\text{(对偶问题可行性)}
-    &amp;\text{if } d
-\end{cases}
-\]</span></p>
-<p>对<strong>一般的原问题</strong>，KKT
-条件是$x<sup><em>,<sup><em>,<sup>* <span class="math inline">\(为最优解的必要条件，即只要\)</span>x</sup></em>,</sup></em>,</sup>*$为最优解，则一定满足
-KKT 条件。</p>
-<p>对<strong>原问题为凸问题</strong>，KKT条件是<span class="math inline">\(x^*,\lambda^*,\nu^*\)</span>
-为最优解的充要条件</p>
-]]></content>
-      <categories>
-        <category>学习笔记</category>
-      </categories>
-      <tags>
-        <tag>最优化</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>最优传输(Optimal Transportation)</title>
-    <url>/2025/02/09/OT1/</url>
-    <content><![CDATA[<p><strong>什么是最优传输？</strong></p>
-<p>最优传输最开始由Monge于1781年提出。一个典型的Monge问题是考虑将一堆具有一定形状的沙子搬运到指定的另外一个形状所需要的具有最小代价的搬运方法。
-如下图所示，我们想将左边红色区域的沙堆搬运到右边，形成右边绿色的沙堆的形状。我们想要找到消耗最少的搬运方式。
-<img src="/2025/02/09/OT1/1.jpg" alt="image">
-一句话来概括，就是<strong>如何用最少的代价将一个质量分布转为另一个质量分布。</strong>
-<span id="more"></span> <strong>质量分布</strong> 质量分布其实就是两个测度空间<span class="math inline">\((X,\mu),(Y,\nu)\)</span>。一般情况下，质量不会凭空产生，所以我们会要求这两个分布的“总质量”是一样的，即<span class="math inline">\(\int_x d\mu=\int_Yd\nu\)</span>。
-问题有了考虑的对象，我们还可以定义成本函数<span class="math inline">\(c(x,y):X \times Y \to \mathbb
-R^+\)</span>，一般是有界的，来衡量将质量从点<span class="math inline">\(x\)</span>运到点<span class="math inline">\(y\)</span>的成本。那么如何去进行移动？主要有两个角度去考虑，分别是Monge问题和Kantorovich问题。</p>
-<p><strong>Monge问题</strong> Monge问题就是寻找一个保测度的映射<span class="math inline">\(T:X \to Y\)</span> <span class="math display">\[
-\underset{T} {min} \int_X c(x,T(x))d \mu(x),T_{ \# } \mu= \nu
-\]</span> <span class="math inline">\(T_{
-\#  }\)</span>是前推算子（<span class="math inline">\(T_{ \#
-}\)</span>的作用对象是<span class="math inline">\(\mu\)</span>，表示把测度<span class="math inline">\(\mu\)</span>推到<span class="math inline">\(\nu\)</span>），这个“推”的过程就是一个保测度的过程，即
-<span class="math display">\[
-T_{ \#  }\mu = \nu \iff \forall B \subset Y,\nu (B)=\mu (T^{-1}(B))
-\]</span> <img src="/2025/02/09/OT1/2.jpg" alt="Monge Map">
-但是映射的定义就限制了我们不能实现“一对多”的操作，这就导致了一个很严重的问题，Monge问题不一定有解。比如一个狄拉克分布（在包含某个点的集合测度是1，其余是0）就不可能保测度地映射到高斯分布。
-我们可以让质量“可分”，即以概率的形式去进行“移动”。这就是Kantorovich问题。</p>
-<p><strong>Kantorovich问题</strong></p>
-<p>在Kantorovich问题中，Kantorovich问题中，我们对Monge问题进行松弛，不再寻找一个映射，而是寻找一个联合分布（耦合coupling），其中它的边界分布分别是<span class="math inline">\(\mu,\nu\)</span>。从而最小化总成本 <span class="math display">\[
-\underset{\pi}{min}\int_{X \times Y}c(x,y)d\pi(x,y),P_{x
-\#  }\pi=\mu,P_{y \# }\pi=\nu
-\]</span> <img src="/2025/02/09/OT1/3.jpg" alt="Kantorovich Relaxation"> <span class="math inline">\(\pi(x,y)\)</span>就是从<span class="math inline">\(x\)</span>移动到<span class="math inline">\(y\)</span>的概率，上式是总成本的期望。
-这样的松弛之后，Kantorovich本质上变成了一个无限维的线性规划问题（如果分布是离散的，比如一堆点，我们要做的就是在两个点云之间做matching，那么<span class="math inline">\(\pi\)</span>就变成了一个矩阵，就变成了有限维的线性规划问题）
-线性规划理论告诉我们，如果耦合集合非空且紧，目标函数是下半连续的，那么线性规划一定可以取到最小值。也就保证了Kantorovich一定有解。</p>
-<p><strong>分布之间的度量-Wasserstein距离</strong>
-比较两种分布的一些方法：</p>
-<p><strong>交叉熵</strong>：对应分布为<span class="math inline">\(p(x)\)</span>的随机变量，熵<span class="math inline">\(H(p)\)</span>表示其最优编码长度。交叉熵是按照概率分布<span class="math inline">\(q\)</span>的最优编码对真实分布为<span class="math inline">\(p\)</span>的信息进行编码的长度 交叉熵定义为 <span class="math display">\[
-H(p,q)=E_q[-logq(x)]=-\displaystyle\sum_{x}p(x)logq(x)
-\]</span> 在给定<span class="math inline">\(p\)</span>的情况下，如果<span class="math inline">\(q\)</span>和<span class="math inline">\(p\)</span>越接近，交叉熵越小；如果<span class="math inline">\(q\)</span>和<span class="math inline">\(p\)</span>越远，交叉熵越大</p>
-<p><strong>KL散度</strong>:是用概率分布<span class="math inline">\(q\)</span>来近似<span class="math inline">\(p\)</span>时所造成的信息损失量。KL散度是按照概率分布<span class="math inline">\(q\)</span>的最优编码对真实分布为<span class="math inline">\(p\)</span>的信息进行编码，其平均编码长度<span class="math inline">\(H(p,q)\)</span>和<span class="math inline">\(p\)</span>的最优平均编码长度<span class="math inline">\(H(p)\)</span>之间的差异。对于离散概率分布<span class="math inline">\(p\)</span>和<span class="math inline">\(q\)</span>，从<span class="math inline">\(q\)</span>到<span class="math inline">\(p\)</span>的KL散度定义为: <span class="math display">\[
-D_{KL}(p\parallel q)=H(p,q)-H(p)=\sum_x p(x)log{\frac {p(x)} {q(x)} }
-\]</span>
-KL散度可以是衡量两个概率分布之间的距离。KL散度总是非负的，只有当<span class="math inline">\(p=q\)</span>时，<span class="math inline">\(D_{KL}(p\parallel
-q)=0\)</span>。两个分布越接近，KL散度越小；两个分布越远，KL散度越大。但KL散度并不是一个真正的度量或距离，一是KL散度不满足距离的对称性，二是KL散度不满足距离的三角不等式性质。</p>
-<p><strong>JS散度</strong>：
-JS散度是一种对称的衡量两个分布相似度的度量方式，定义为 <span class="math display">\[
-D_{JS}(p\parallel q)={\frac 1 2}D_{KL}(p \parallel m)+{\frac 1
-2}D_{KL}(q \parallel m)
-\]</span> 其中，<span class="math inline">\(m={\frac 1 2}(p+q)\)</span>
-JS 散度是KL散度一种改进。但两种散度都存在一个问题，即如果两个分布p, q
-没有重叠或者重叠非常少时，KL散度和JS 散度都很难衡量两个分布的距离</p>
-<p><strong>Wasserstein距离</strong>： Wasserstein 距离（Wasserstein
-Distance）也用于衡量两个分布之间的距离。对于两个分布<span class="math inline">\(q_1,q_2,p-Wasserstein\)</span>距离定义为 <span class="math display">\[
-W_p(q_1,q_2)=(\underset{\pi(x,y) \in U(x,y)} {inf}E_{(x,y)\sim \pi
-(x,y)}[d(x,y)^p]) ^{1/p}
-\]</span> 其中，<span class="math inline">\(U(x,y)\)</span>是边际分布为<span class="math inline">\(q_1\)</span>和<span class="math inline">\(q_2\)</span>的所有可能的联合分布集合，<span class="math inline">\(d(x,y)\)</span>为<span class="math inline">\(x\)</span>和<span class="math inline">\(y\)</span>的距离 Wasserstein距离相比KL散度和JS
-散度的优势在于：即使两个分布没有重叠或者重叠非常少，Wasserstein
-距离仍然能反映两个分布的远近。</p>
-<p>我们可以发现，如果令<span class="math inline">\(d(x,y)^p=c(x,y)\)</span>，Wasserstein距离实际上就是从一个分布转换为另一个分布所要付出的代价。</p>
-<p>Wasserstein
-GAN就是将W-1距离作为损失函数，解决了GAN的许多问题，比如训练不稳定，判别器不能训练的“太好”等。究其原因主要是因为W-1度量比KL度量更“弱”：也就是说在K-L散度下收敛的序列在W-1距离下也一定收敛。这样的性质就保证了W-1可以捕捉到序列更多的几何信息（比如不重叠的分布的KL散度永远是0，但W-1距离不然。），训练会更鲁棒。</p>
-]]></content>
-      <categories>
-        <category>学习笔记</category>
-      </categories>
-      <tags>
-        <tag>最优化</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>NAS-PINN</title>
     <url>/2025/02/11/NAS-PINN/</url>
     <content><![CDATA[<h1 id="nas-pinn-neural-architecture-search-guided-physics-informed-neural-network-for-solving-pdesnas-pinn神经网络结构搜索引导的物理信息神经网络用于求解偏微分方程">NAS-PINN:
@@ -245,9 +113,278 @@ i9-9900 K @ 3.60 Ghz /NVIDIA GeForce Rtx 3090 上进行 <img src="/2025/02/11/NA
       </tags>
   </entry>
   <entry>
+    <title>最优传输(Optimal Transportation)</title>
+    <url>/2025/02/09/OT1/</url>
+    <content><![CDATA[<h2 id="什么是最优传输">什么是最优传输？</h2>
+<p>最优传输最开始由Monge于1781年提出。一个典型的Monge问题是考虑将一堆具有一定形状的沙子搬运到指定的另外一个形状所需要的具有最小代价的搬运方法。
+如下图所示，我们想将左边红色区域的沙堆搬运到右边，形成右边绿色的沙堆的形状。我们想要找到消耗最少的搬运方式。
+<img src="/2025/02/09/OT1/1.jpg" alt="image">
+一句话来概括，就是<strong>如何用最少的代价将一个质量分布转为另一个质量分布。</strong>
+<span id="more"></span> ## 质量分布 质量分布其实就是两个测度空间<span class="math inline">\((X,\mu),(Y,\nu)\)</span>。一般情况下，质量不会凭空产生，所以我们会要求这两个分布的“总质量”是一样的，即<span class="math inline">\(\int_x d\mu=\int_Yd\nu\)</span>。
+问题有了考虑的对象，我们还可以定义成本函数<span class="math inline">\(c(x,y):X \times Y \to \mathbb
+R^+\)</span>，一般是有界的，来衡量将质量从点<span class="math inline">\(x\)</span>运到点<span class="math inline">\(y\)</span>的成本。那么如何去进行移动？主要有两个角度去考虑，分别是Monge问题和Kantorovich问题。</p>
+<h2 id="monge问题">Monge问题</h2>
+<p>Monge问题就是寻找一个保测度的映射<span class="math inline">\(T:X \to
+Y\)</span> <span class="math display">\[
+\underset{T} {\min} \int_X c(x,T(x))d \mu(x),T_{ \# } \mu= \nu
+\]</span> <span class="math inline">\(T_{
+\#  }\)</span>是前推算子（<span class="math inline">\(T_{ \#
+}\)</span>的作用对象是<span class="math inline">\(\mu\)</span>，表示把测度<span class="math inline">\(\mu\)</span>推到<span class="math inline">\(\nu\)</span>），这个“推”的过程就是一个保测度的过程，即
+<span class="math display">\[
+T_{ \#  }\mu = \nu \iff \forall B \subset Y,\nu (B)=\mu (T^{-1}(B))
+\]</span> <img src="/2025/02/09/OT1/2.jpg" alt="Monge Map">
+但是映射的定义就限制了我们不能实现“一对多”的操作，这就导致了一个很严重的问题，Monge问题不一定有解。比如一个狄拉克分布（在包含某个点的集合测度是1，其余是0）就不可能保测度地映射到高斯分布。
+我们可以让质量“可分”，即以概率的形式去进行“移动”。这就是Kantorovich问题。</p>
+<h2 id="kantorovich问题">Kantorovich问题</h2>
+<p>在Kantorovich问题中，Kantorovich问题中，我们对Monge问题进行松弛，不再寻找一个映射，而是寻找一个联合分布（耦合coupling），其中它的边界分布分别是<span class="math inline">\(\mu,\nu\)</span>。从而最小化总成本 <span class="math display">\[
+\underset{\pi}{\min}\int_{X \times Y}c(x,y)d\pi(x,y),P_{x
+\#  }\pi=\mu,P_{y \# }\pi=\nu
+\]</span> <img src="/2025/02/09/OT1/3.jpg" alt="Kantorovich Relaxation"> <span class="math inline">\(\pi(x,y)\)</span>就是从<span class="math inline">\(x\)</span>移动到<span class="math inline">\(y\)</span>的概率，上式是总成本的期望。
+这样的松弛之后，Kantorovich本质上变成了一个无限维的线性规划问题（如果分布是离散的，比如一堆点，我们要做的就是在两个点云之间做matching，那么<span class="math inline">\(\pi\)</span>就变成了一个矩阵，就变成了有限维的线性规划问题）
+线性规划理论告诉我们，如果耦合集合非空且紧，目标函数是下半连续的，那么线性规划一定可以取到最小值。也就保证了Kantorovich一定有解。</p>
+<h2 id="分布之间的度量-wasserstein距离">分布之间的度量-Wasserstein距离</h2>
+<p>比较两种分布的一些方法：</p>
+<p><strong>交叉熵</strong>：对应分布为<span class="math inline">\(p(x)\)</span>的随机变量，熵<span class="math inline">\(H(p)\)</span>表示其最优编码长度。交叉熵是按照概率分布<span class="math inline">\(q\)</span>的最优编码对真实分布为<span class="math inline">\(p\)</span>的信息进行编码的长度 交叉熵定义为 <span class="math display">\[
+H(p,q)=E_q[-logq(x)]=-\displaystyle\sum_{x}p(x)logq(x)
+\]</span> 在给定<span class="math inline">\(p\)</span>的情况下，如果<span class="math inline">\(q\)</span>和<span class="math inline">\(p\)</span>越接近，交叉熵越小；如果<span class="math inline">\(q\)</span>和<span class="math inline">\(p\)</span>越远，交叉熵越大</p>
+<p><strong>KL散度</strong>:是用概率分布<span class="math inline">\(q\)</span>来近似<span class="math inline">\(p\)</span>时所造成的信息损失量。KL散度是按照概率分布<span class="math inline">\(q\)</span>的最优编码对真实分布为<span class="math inline">\(p\)</span>的信息进行编码，其平均编码长度<span class="math inline">\(H(p,q)\)</span>和<span class="math inline">\(p\)</span>的最优平均编码长度<span class="math inline">\(H(p)\)</span>之间的差异。对于离散概率分布<span class="math inline">\(p\)</span>和<span class="math inline">\(q\)</span>，从<span class="math inline">\(q\)</span>到<span class="math inline">\(p\)</span>的KL散度定义为: <span class="math display">\[
+D_{KL}(p\parallel q)=H(p,q)-H(p)=\sum_x p(x)log{\frac {p(x)} {q(x)} }
+\]</span>
+KL散度可以是衡量两个概率分布之间的距离。KL散度总是非负的，只有当<span class="math inline">\(p=q\)</span>时，<span class="math inline">\(D_{KL}(p\parallel
+q)=0\)</span>。两个分布越接近，KL散度越小；两个分布越远，KL散度越大。但KL散度并不是一个真正的度量或距离，一是KL散度不满足距离的对称性，二是KL散度不满足距离的三角不等式性质。</p>
+<p><strong>JS散度</strong>：
+JS散度是一种对称的衡量两个分布相似度的度量方式，定义为 <span class="math display">\[
+D_{JS}(p\parallel q)={\frac 1 2}D_{KL}(p \parallel m)+{\frac 1
+2}D_{KL}(q \parallel m)
+\]</span> 其中，<span class="math inline">\(m={\frac 1 2}(p+q)\)</span>
+JS 散度是KL散度一种改进。但两种散度都存在一个问题，即如果两个分布p, q
+没有重叠或者重叠非常少时，KL散度和JS 散度都很难衡量两个分布的距离</p>
+<p><strong>Wasserstein距离</strong>： Wasserstein 距离（Wasserstein
+Distance）也用于衡量两个分布之间的距离。对于两个分布<span class="math inline">\(q_1,q_2,p-Wasserstein\)</span>距离定义为 <span class="math display">\[
+W_p(q_1,q_2)=(\underset{\pi(x,y) \in U(x,y)} {\inf}E_{(x,y)\sim \pi
+(x,y)}[d(x,y)^p]) ^{1/p}
+\]</span> 其中，<span class="math inline">\(U(x,y)\)</span>是边际分布为<span class="math inline">\(q_1\)</span>和<span class="math inline">\(q_2\)</span>的所有可能的联合分布集合，<span class="math inline">\(d(x,y)\)</span>为<span class="math inline">\(x\)</span>和<span class="math inline">\(y\)</span>的距离 Wasserstein距离相比KL散度和JS
+散度的优势在于：即使两个分布没有重叠或者重叠非常少，Wasserstein
+距离仍然能反映两个分布的远近。</p>
+<p>我们可以发现，如果令<span class="math inline">\(d(x,y)^p=c(x,y)\)</span>，Wasserstein距离实际上就是从一个分布转换为另一个分布所要付出的代价。</p>
+<p>Wasserstein
+GAN就是将W-1距离作为损失函数，解决了GAN的许多问题，比如训练不稳定，判别器不能训练的“太好”等。究其原因主要是因为W-1度量比KL度量更“弱”：也就是说在K-L散度下收敛的序列在W-1距离下也一定收敛。这样的性质就保证了W-1可以捕捉到序列更多的几何信息（比如不重叠的分布的KL散度永远是0，但W-1距离不然。），训练会更鲁棒。</p>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>最优化</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>最优传输（二）</title>
     <url>/2025/02/10/OT2/</url>
     <content><![CDATA[<h1 id="kantorovich问题的对偶问题">Kantorovich问题的对偶问题</h1>
+<p>这篇文章我们讲讲对偶理论，并且探究对偶问题和Kantorovich问题之间的关系
+<span id="more"></span></p>
+<h2 id="离散版本的kantorovich问题对偶">离散版本的Kantorovich问题对偶</h2>
+<p>有两个离散分布<span class="math inline">\(a=\sum_i
+a_i\delta_{x_i},b=\sum_j b_i\delta_{y_i}\)</span>，分别包含离散点$
+<em>{i=1}^n, </em>{j=1}^m $</p>
+<p>有一个成本矩阵<span class="math inline">\(C \in \mathbb R^{n\times
+m}\)</span>,<span class="math inline">\(C_{ij}\)</span>就是从<span class="math inline">\(x_i\)</span>运到<span class="math inline">\(y_j\)</span>的成本</p>
+<p>我们寻找一个联合分布的矩阵<span class="math inline">\(P\in \mathbb
+R^{n \times m}\)</span>使得总成本最小化 <span class="math display">\[
+\underset{p\in U(a,b)}{\min}\langle C,P \rangle = \underset{p\in
+U(a,b)}{\min} \sum_{i,j}C_{ij}P_{ij}
+\]</span> 其中，<span class="math inline">\(U(a,b)=\{\pi \in \mathbb
+R^{n\times m}_+|\pi1_m=a\in\mathbb R^n,\pi^T1_m=b\in\mathbb
+R^m\}\)</span></p>
+<p>拉格朗日对偶形式： <span class="math display">\[
+\underset{P\ge 0}{\min}\underset{(f,g)\in \mathbb R^n \times \mathbb
+R^m}{\max}\langle C,P \rangle + \langle a-P1_m,f \rangle + \langle
+b-P^T1_n,g \rangle
+\]</span></p>
+<p>交换min，max，有</p>
+<p><span class="math display">\[
+\underset{(f,g)\in \mathbb R^n\times \mathbb R^m}{\max}\langle a,f
+\rangle + \langle b,g \rangle + \underset{P\ge 0}{\min}\langle
+C-f1^T_m-1_ng^T,P \rangle
+\]</span></p>
+<p>可以将后面min的变为约束</p>
+<p><span class="math display">\[
+C-f1^T_m-1_ng^T=C-f \oplus g \ge 0
+\]</span></p>
+<p>综上，我们得到了对偶问题：</p>
+<p><span class="math display">\[
+\underset{(f,g)\in R(a,b)}{max}\langle f,a \rangle + \langle g,b \rangle
+\]</span></p>
+<p>其中，<span class="math inline">\(R(a,b)=\{(f,g)\in \mathbb R^n\times
+R^m:f_i+g_i \le C_{ij}\}\)</span></p>
+<h2 id="连续版本的kantorovich问题对偶">连续版本的Kantorovich问题对偶</h2>
+<p>现在两个分布变为连续的<span class="math inline">\(\alpha(x),x\in
+X,\beta(y),y\in Y\)</span>，成本函数连续化<span class="math inline">\(c(x_i,y_j)=C_{ij}\)</span>，我们将上面的乘子向量<span class="math inline">\(f,g\)</span>推广成<span class="math inline">\(f(x_i)=f_i,g(y_j)=g_j\)</span>。得到对偶形式为
+<span class="math display">\[
+\underset{(f,g)\in R(c)}{\sup}\int_X f(x) \, d\alpha(x)+\int_Y g(y) \,
+d\beta(y)
+\]</span> 其中<span class="math inline">\(R(c)=\{(f,g):\forall
+(x,y),f(x_i)+g(y_j) \le c(x_i,y_j)\}\)</span></p>
+<h3 id="通俗理解原问题和对偶问题">通俗理解原问题和对偶问题</h3>
+<p>假设有一个运营商运营着<span class="math inline">\(n\)</span>个仓库和<span class="math inline">\(m\)</span>个工厂，每个仓库有<span class="math inline">\(a_i\)</span>质量的商品，每个工厂需要<span class="math inline">\(b_j\)</span>质量的商品，从<span class="math inline">\(i\)</span>仓库到<span class="math inline">\(j\)</span>工厂运输单位质量的商品需要成本<span class="math inline">\(C_{ij}\)</span>。</p>
+<p><strong>原问题就是站在运营商的角度考虑</strong>：找出最优的传输方案<span class="math inline">\(P^*\)</span>使得传输总成本<span class="math inline">\(\sum_{i,j}C_{ij}P_{ij}\)</span>最小。</p>
+<p>假设这个运营商外包给了一个供应商，供应商只需要给每个仓库和工厂定价：单位质量的商品第<span class="math inline">\(i\)</span>个仓库收取<span class="math inline">\(f_i\)</span>的费用，第<span class="math inline">\(j\)</span>个工厂收取<span class="math inline">\(g_j\)</span>的费用。</p>
+<p>供应商不能随便定价，供应商在定价过程中需要保证所有<span class="math inline">\(f_i+g_j \le
+C_{ij}\)</span>，一旦超过这个价格，那在某些路径上运营商就要付出额外的价格，还不如自己运呢。</p>
+<p>所以对偶问题就是站在供应商的角度来考虑：在<span class="math inline">\(f_i+g_j \le C_{ij}\)</span>的情况下希望收费<span class="math inline">\(\langle f,a \rangle + \langle g,b
+\rangle\)</span>最大。</p>
+<h2 id="互补松弛条件">互补松弛条件</h2>
+<p>考虑原问题的最优解<span class="math inline">\(P^*\)</span>和对偶问题最优对<span class="math inline">\((f^*,g^*)\)</span>的关系，并且证明他们满足互补松弛条件</p>
+<p>设<span class="math inline">\(\bar z\)</span>为原问题的最优解，<span class="math inline">\(\underline
+z\)</span>为对偶问题的最优解，先证明<strong>弱对偶性</strong>满足，即<span class="math inline">\(\bar z \ge \underline z\)</span></p>
+<p>首先对原始问题进行一下改写，把决策变量<span class="math inline">\(P\)</span>“拉直”为<span class="math inline">\(p\)</span>： <span class="math display">\[
+P\in \mathbb R^{n \times m}\in U(a,b) \iff p \in \mathbb R^{nm}_+,Ap=
+\begin{bmatrix}
+   a  \\
+   b
+\end{bmatrix}
+\]</span> 其中 <span class="math display">\[
+A=
+\begin{bmatrix}
+   1^T_n \otimes I_m  \\
+   I_n \otimes1^T_m
+\end{bmatrix},A \in \mathbb R^{(n+m)\times nm}
+\]</span> 定义<span class="math inline">\(c\)</span>也为成本矩阵对应的展平形式，则原始问题的拉格朗日函数：
+<span class="math display">\[
+H(h)=\underset{p\in \mathbb R^{nm}_+}{\min}(c^Tp-h^T(Ap-q))
+\]</span> 其中<span class="math inline">\(q=\begin{bmatrix}
+   a  \\
+   b
+\end{bmatrix}\)</span>。这是一个松弛问题，因为约束<span class="math inline">\(Ap=q\)</span>被软化为罚函数形式。对于原问题的最优解<span class="math inline">\(p^*\)</span>，对于任何<span class="math inline">\(h\)</span>，有： <span class="math display">\[
+H(h)\le c^T p^*-h^T(Ap^*-q)=c^T p^*=\bar z
+\]</span> 当<span class="math inline">\(h\)</span>满足对偶可行性(<span class="math inline">\(A^Th\le c\)</span>)时，对偶问题的目标值<span class="math inline">\(h^Tq\)</span>是拉格朗日函数的下界。</p>
+<p>因此结合上式： <span class="math display">\[
+\underline z=\underset{h,A^Th \le c}{\max}h^Tq\le
+\underset{h}{\max}h^Tq+\underset{p\in \mathbb
+R^{mn}_+}{\min}(c^T-h^TA)p=\underset{h\in \mathbb R^{n+m}}{\max}H(h)\le
+c^T p^*=\bar z
+\]</span>
+这表明对偶问题的最优值不超过原始问题的最优值，从而证明了弱对偶性。</p>
+<p>可以证明强对偶性也是满足的，证明过程需要slater条件。</p>
+<p>对于连续型，也是有如下定理保证了强对偶性： &gt;设<span class="math inline">\(\mu\)</span>和<span class="math inline">\(\nu\)</span>是定义在完备可分度量空间<span class="math inline">\(X\)</span>和<span class="math inline">\(Y\)</span>上的概率测度，<span class="math inline">\(c:X\times Y \to \mathbb
+R_+\)</span>是一个可测函数，那么： <span class="math display">\[
+\underset{\pi\in\Pi(\mu,\nu)}{\inf}\int_{X\times Y}c \, d\pi =
+\underset{(\varphi,\psi)}{\sup}\lbrack \int_X \varphi \, d\mu + \int_Y
+\psi \, d\nu \rbrack
+\]</span></p>
+<p>最优化理论告诉我们，如果强对偶性满足，那么我们可以使用KKT中的经典的互补松弛条件得到：
+<span class="math display">\[
+P^*(x,y)(f^*(x)+g^*(y)-c(x,y))=0
+\]</span></p>
+<p>这就是原问题的最优解<span class="math inline">\(P^*\)</span>和对偶问题最优对<span class="math inline">\((f^*,g^*)\)</span>的关系。即在支撑集上<span class="math inline">\(P^*&gt;0\)</span>，对偶问题的最优函数永远满足<span class="math inline">\(f^*(x)+g^*(y)=c(x,y)\)</span></p>
+<h2 id="c-变换">c-变换</h2>
+<p>现在我们知道对偶问题两个函数的一个很重要的性质，就是在<span class="math inline">\(P^*\)</span>支撑集上有<span class="math inline">\(f^*(x)+g^*(y)=c(x,y)\)</span></p>
+<p>下面假设这个函数对不是最优的，如果我们固定了<span class="math inline">\(f(x)\)</span>，能否得到一个“最好”的<span class="math inline">\(g(y)\)</span>使得对偶问题的目标函数尽可能大？c-变换就回答了这个问题</p>
+<p>因为 <span class="math display">\[
+f(x)+g(y)\le c(x,y)\\
+\iff g(y)\le c(x,y)-f(x)\\
+\iff g(y)\le \underset{x}{\inf} \{c(x,y)-f(x)\}
+\]</span> 而<span class="math inline">\(f(x)\)</span>已经固定，我们希望<span class="math inline">\(\int g(y) \, d\beta(y)\)</span>越大越好，所以<span class="math inline">\(g(y)\)</span>越大越好，自然就得到了一个“最好的”函数：
+<span class="math display">\[
+\bar f(y)=\underset{x}{\inf}\{c(x,y)-f(x)\}
+\]</span> 这个<span class="math inline">\(\bar f(y)\)</span>就叫做<span class="math inline">\(f\)</span>的c-变换</p>
+<p>如果一个函数<span class="math inline">\(f\)</span>可以写成某个<span class="math inline">\(g\)</span>的c-变换，那么就称<span class="math inline">\(f\)</span>是c-凹的</p>
+<p><strong>注</strong>：对偶问题的最优解<span class="math inline">\((f^*,g^*)\)</span>一定是c-凹的。否则令另一个是其c-变换，目标函数变大，矛盾。</p>
+<p>下面定理还保证了最优对的存在性： &gt;设<span class="math inline">\(\mu\)</span>和<span class="math inline">\(\nu\)</span>是<span class="math inline">\(X\)</span>和<span class="math inline">\(Y\)</span>上的概率测度使得 <span class="math display">\[
+\int_{X\times Y}c(x,y) \, d\mu(x) \, d\nu(y)&lt;\infty
+\]</span> 则对偶 Kantorovich 问题存在一个最优对<span class="math inline">\((\varphi,\psi)\)</span>且<span class="math inline">\(\bar \varphi = \psi\)</span>，<span class="math inline">\(\bar \psi=\varphi\)</span>几乎处处成立。</p>
+<h2 id="kantorovichrubinstein定理">Kantorovich–Rubinstein定理</h2>
+<p>虽然对偶问题要求两个函数<span class="math inline">\(f,g\)</span>
+，但通过c-transform可以将这两个函数“联系”起来，对偶问题从 <span class="math display">\[
+\underset{(f,g)\in R(c)}{\sup}\int_X f \, d\mu + \int_Y g \, d\nu
+\]</span> 变为 <span class="math display">\[
+\underset{f}{\sup}\int_X f \, d\mu + \int_Y \bar f \, d\nu
+\]</span> 我们可以证明，如果在度量空间<span class="math inline">\(X=Y\)</span>上，<span class="math inline">\(d(x,y)\)</span>是度量，且<span class="math inline">\(c(x,y)=d(x,y)\)</span>。如果<span class="math inline">\(f=\bar g\)</span>是一组c-变换，那么<span class="math inline">\(f\)</span>是1-Lipschitz的。</p>
+<p>证明如下： <span class="math display">\[
+f(z)=\underset{y}{\inf}d(z,y)-g(y)\le \underset{y}{\inf}
+d(z,x)+d(x,y)-g(y)=f(x)-d(z,x)
+\]</span> 互换<span class="math inline">\(z,x\)</span>即得到<span class="math inline">\(|f(x)-g(z)|\le d(x,z)\)</span></p>
+<p>然后我们可以继续证明，如果<span class="math inline">\(f\)</span>是1-Lipschitz的，那么其c-变换<span class="math inline">\(\bar f = -f\)</span>： &gt;令<span class="math inline">\(x=y\)</span>，有<span class="math inline">\(\bar
+f(x)=\underset{x}{\inf}\{d(x,x)-f(x)\}\le -f(x)\)</span>，又因为<span class="math inline">\(f\)</span>是1-Lipschitz的。所以<span class="math inline">\(\bar f(y)=\underset{x}{\inf}\{d(x,y)-f(x)\}\ge
+-f(y)\)</span>。所以<span class="math inline">\(\bar f=-f\)</span></p>
+<p>综上，结合强对偶性，我们有 <span class="math display">\[
+\underset{\pi\in U(a,b)}{\inf}\int_{X^2}d(x,y)\,
+d\pi=\underset{f}{\sup}\int_X f \, d\mu + \int_X \bar f \, d\nu =
+\underset{\lVert f \rVert_{\text{Lip}}\le 1}{\sup}\int_X f \, d\mu -
+\int_X  f \, d\nu
+\]</span> 其中，<span class="math inline">\(\lVert f
+\rVert_{\text{Lip}}=\underset{x \not = y}{\sup}\frac {\lVert
+f(x)-f(y)\rVert}{d(x,y)}\)</span></p>
+<p>我们现在得到了一个非常好非常好的结论：当成本函数是一个度量的时候，对偶问题可以变成上面的形式，我们只需要求解一个1-Lipschitz函数就可以了。</p>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>最优化</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Lagrange对偶（Lagrange duality）</title>
+    <url>/2025/02/10/Lagrange%E5%AF%B9%E5%81%B6/</url>
+    <content><![CDATA[<h2 id="问题背景">问题背景</h2>
+<p>在一个优化问题中，原始问题通常会带有很多约束条件，这样直接求解原始问题往往是很困难的，于是考虑将原始问题转化为它的对偶问题，通过求解它的对偶问题来得到原始问题的解。<strong>对偶性</strong>（Duality）是凸优化问题的核心内容。
+<span id="more"></span></p>
+<h2 id="原始问题及其转化">原始问题及其转化</h2>
+<p><strong>原始问题</strong></p>
+<p>将一个原始最优化问题写成如下形式 <span class="math display">\[
+\underset{x}{\min} \quad f_0(x) \\ s.t. \quad f_i(x) \le 0,i=1,2,...,m
+\\ \qquad h_j(x)=0,j=1,2,...,p
+\]</span> 在求解原问题的对偶问题时，并不要求原始问题一定是凸问题，<span class="math inline">\(f\)</span>和<span class="math inline">\(g\)</span>可以是一般函数而不一定非得是凸函数。</p>
+<p><strong>拉格朗日函数</strong></p>
+<p>将原始问题的拉格朗日函数定义为 <span class="math display">\[
+L(x,\lambda,\nu)=f_0(x)+\sum^m_{i=1}\lambda_i f_i(x)+\sum^p_{j=1}\nu_j
+h_j(x)
+\]</span> 其中，<span class="math inline">\(x\in \mathbb
+R^n,\lambda\in\mathbb R^m,\nu\in\mathbb R^p\)</span>
+可以看到，拉格朗日函数<span class="math inline">\(L\)</span>相当于原始问题引入了两个新变量<span class="math inline">\(\lambda,\nu\)</span>，称为拉格朗日乘子</p>
+<p><strong>拉格朗日对偶函数</strong></p>
+<p>拉格朗日对偶函数通过对拉格朗日函数<span class="math inline">\(x\)</span>取下确界得到，即 <span class="math display">\[
+g(\lambda,\nu)=\underset{x}{\inf}L(x,\lambda,\nu)
+\]</span> 对偶函数有如下两条重要性质
+1.对偶函数一定是凹函数，其凹性与原目标函数和约束函数凹凸与否无关
+2.对<span class="math inline">\(\forall\lambda\ge0,\forall\nu\)</span>，如果原问题最优解对应的目标函数值为<span class="math inline">\(P^*\)</span>，则<span class="math inline">\(g(\lambda,\nu)\le p^*\)</span></p>
+<h2 id="拉格朗日对偶问题">拉格朗日对偶问题</h2>
+<p>根据对偶函数的重要性质2，对<span class="math inline">\(\forall\lambda\ge0,\forall\nu\)</span>，对偶函数<span class="math inline">\(g(\lambda,\nu)\)</span>是原问题最优值<span class="math inline">\(P^*\)</span>的一个下界，最好的下界就是最大化对偶函数，因此构造原问题的对偶问题：
+<span class="math display">\[
+\underset{\lambda,\nu}{\max}\quad g(\lambda,\nu) \\ s.t.\quad \lambda
+\ge 0
+\]</span>
+由于对偶函数是凹函数，故拉格朗日对偶问题一定是凸优化问题，其对应的最优解为<span class="math inline">\(\lambda^*,\nu^*\)</span>，若对应的最优值为<span class="math inline">\(d^*\)</span>，则总有<span class="math inline">\(d^* \le p^*\)</span></p>
+<p>当<span class="math inline">\(d^* \le p^*\)</span>时，称为弱对偶
+当<span class="math inline">\(d^* = p^*\)</span>时，称为强对偶 将<span class="math inline">\(p^*-d^*\)</span>称为对偶间隙</p>
+<blockquote>
+<p>在解存在的情况下，弱对偶总是成立的。
+满足强对偶时，可以通过求解对偶问题来得到原始问题的解</p>
+</blockquote>
+<h2 id="slater条件">Slater条件</h2>
+<p>Slater条件用于判断什么情况下强对偶是成立的。
+在<strong>原问题是凸问题</strong>的情况下，若<span class="math inline">\(\exists x \in
+relint(D)\)</span>，使得约束条件满足： <span class="math display">\[
+f_i(x)&lt;0,h_j(x)=0\quad i=1,2,...,p
+\]</span> 则强对偶成立 &gt;<span class="math inline">\(relint(D)表示原始凸问题定义域的相对内部，即在定义域上除了边界点以外的所有点\)</span></p>
+<h2 id="kkt条件">KKT条件</h2>
+<p>在强对偶且<span class="math inline">\(L\)</span>对<span class="math inline">\(x\)</span>可微的前提下，设<span class="math inline">\(x^*,\lambda^*,\nu^*\)</span>分别是原问题和对偶问题的最优解，则以下四组条件称为KKT条件
+<span class="math display">\[
+\begin{cases}
+   \frac{\partial L(x^*,\lambda^*,\nu^*)}{\partial x^*} |_{x=x^*}=0
+&amp;\text{(稳定性条件)} \\ \lambda^*_i f_i(x^*)=0
+&amp;\text{(互松弛条件)}\\ f_i(x^*)\le 0,h_j(x^*)=0
+&amp;\text{(原问题可行性)} \\ \lambda_i^* \ge 0
+&amp;\text{(对偶问题可行性)}
+    &amp;\text{if } d
+\end{cases}
+\]</span></p>
+<p>对<strong>一般的原问题</strong>，KKT
+条件是$x<sup><em>,<sup><em>,<sup>* <span class="math inline">\(为最优解的必要条件，即只要\)</span>x</sup></em>,</sup></em>,</sup>*$为最优解，则一定满足
+KKT 条件。</p>
+<p>对<strong>原问题为凸问题</strong>，KKT条件是<span class="math inline">\(x^*,\lambda^*,\nu^*\)</span>
+为最优解的充要条件</p>
 ]]></content>
       <categories>
         <category>学习笔记</category>

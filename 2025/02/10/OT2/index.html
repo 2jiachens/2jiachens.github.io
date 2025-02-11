@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Kantorovich问题的对偶问题">
+  <meta name="description" content="Kantorovich问题的对偶问题 这篇文章我们讲讲对偶理论，并且探究对偶问题和Kantorovich问题之间的关系">
 <meta property="og:type" content="article">
 <meta property="og:title" content="最优传输（二）">
 <meta property="og:url" content="http://example.com/2025/02/10/OT2/index.html">
 <meta property="og:site_name" content="我的博客">
-<meta property="og:description" content="Kantorovich问题的对偶问题">
+<meta property="og:description" content="Kantorovich问题的对偶问题 这篇文章我们讲讲对偶理论，并且探究对偶问题和Kantorovich问题之间的关系">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-02-10T10:51:38.000Z">
-<meta property="article:modified_time" content="2025-02-10T11:17:11.978Z">
+<meta property="article:modified_time" content="2025-02-11T12:47:42.904Z">
 <meta property="article:author" content="宋嘉晨">
 <meta property="article:tag" content="最优化">
 <meta name="twitter:card" content="summary">
@@ -216,10 +216,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2025-02-10 18:51:38 / 修改时间：19:17:11" itemprop="dateCreated datePublished" datetime="2025-02-10T18:51:38+08:00">2025-02-10</time>
+              <time title="创建时间：2025-02-10 18:51:38" itemprop="dateCreated datePublished" datetime="2025-02-10T18:51:38+08:00">2025-02-10</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-02-11 20:47:42" itemprop="dateModified" datetime="2025-02-11T20:47:42+08:00">2025-02-11</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -257,7 +263,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>18</span>
+              <span>4.7k</span>
             </span>
 
         </div>
@@ -270,6 +276,141 @@
 
       
         <h1 id="kantorovich问题的对偶问题">Kantorovich问题的对偶问题</h1>
+<p>这篇文章我们讲讲对偶理论，并且探究对偶问题和Kantorovich问题之间的关系
+<span id="more"></span></p>
+<h2 id="离散版本的kantorovich问题对偶">离散版本的Kantorovich问题对偶</h2>
+<p>有两个离散分布<span class="math inline">\(a=\sum_i
+a_i\delta_{x_i},b=\sum_j b_i\delta_{y_i}\)</span>，分别包含离散点$
+<em>{i=1}^n, </em>{j=1}^m $</p>
+<p>有一个成本矩阵<span class="math inline">\(C \in \mathbb R^{n\times
+m}\)</span>,<span class="math inline">\(C_{ij}\)</span>就是从<span class="math inline">\(x_i\)</span>运到<span class="math inline">\(y_j\)</span>的成本</p>
+<p>我们寻找一个联合分布的矩阵<span class="math inline">\(P\in \mathbb
+R^{n \times m}\)</span>使得总成本最小化 <span class="math display">\[
+\underset{p\in U(a,b)}{\min}\langle C,P \rangle = \underset{p\in
+U(a,b)}{\min} \sum_{i,j}C_{ij}P_{ij}
+\]</span> 其中，<span class="math inline">\(U(a,b)=\{\pi \in \mathbb
+R^{n\times m}_+|\pi1_m=a\in\mathbb R^n,\pi^T1_m=b\in\mathbb
+R^m\}\)</span></p>
+<p>拉格朗日对偶形式： <span class="math display">\[
+\underset{P\ge 0}{\min}\underset{(f,g)\in \mathbb R^n \times \mathbb
+R^m}{\max}\langle C,P \rangle + \langle a-P1_m,f \rangle + \langle
+b-P^T1_n,g \rangle
+\]</span></p>
+<p>交换min，max，有</p>
+<p><span class="math display">\[
+\underset{(f,g)\in \mathbb R^n\times \mathbb R^m}{\max}\langle a,f
+\rangle + \langle b,g \rangle + \underset{P\ge 0}{\min}\langle
+C-f1^T_m-1_ng^T,P \rangle
+\]</span></p>
+<p>可以将后面min的变为约束</p>
+<p><span class="math display">\[
+C-f1^T_m-1_ng^T=C-f \oplus g \ge 0
+\]</span></p>
+<p>综上，我们得到了对偶问题：</p>
+<p><span class="math display">\[
+\underset{(f,g)\in R(a,b)}{max}\langle f,a \rangle + \langle g,b \rangle
+\]</span></p>
+<p>其中，<span class="math inline">\(R(a,b)=\{(f,g)\in \mathbb R^n\times
+R^m:f_i+g_i \le C_{ij}\}\)</span></p>
+<h2 id="连续版本的kantorovich问题对偶">连续版本的Kantorovich问题对偶</h2>
+<p>现在两个分布变为连续的<span class="math inline">\(\alpha(x),x\in
+X,\beta(y),y\in Y\)</span>，成本函数连续化<span class="math inline">\(c(x_i,y_j)=C_{ij}\)</span>，我们将上面的乘子向量<span class="math inline">\(f,g\)</span>推广成<span class="math inline">\(f(x_i)=f_i,g(y_j)=g_j\)</span>。得到对偶形式为
+<span class="math display">\[
+\underset{(f,g)\in R(c)}{\sup}\int_X f(x) \, d\alpha(x)+\int_Y g(y) \,
+d\beta(y)
+\]</span> 其中<span class="math inline">\(R(c)=\{(f,g):\forall
+(x,y),f(x_i)+g(y_j) \le c(x_i,y_j)\}\)</span></p>
+<h3 id="通俗理解原问题和对偶问题">通俗理解原问题和对偶问题</h3>
+<p>假设有一个运营商运营着<span class="math inline">\(n\)</span>个仓库和<span class="math inline">\(m\)</span>个工厂，每个仓库有<span class="math inline">\(a_i\)</span>质量的商品，每个工厂需要<span class="math inline">\(b_j\)</span>质量的商品，从<span class="math inline">\(i\)</span>仓库到<span class="math inline">\(j\)</span>工厂运输单位质量的商品需要成本<span class="math inline">\(C_{ij}\)</span>。</p>
+<p><strong>原问题就是站在运营商的角度考虑</strong>：找出最优的传输方案<span class="math inline">\(P^*\)</span>使得传输总成本<span class="math inline">\(\sum_{i,j}C_{ij}P_{ij}\)</span>最小。</p>
+<p>假设这个运营商外包给了一个供应商，供应商只需要给每个仓库和工厂定价：单位质量的商品第<span class="math inline">\(i\)</span>个仓库收取<span class="math inline">\(f_i\)</span>的费用，第<span class="math inline">\(j\)</span>个工厂收取<span class="math inline">\(g_j\)</span>的费用。</p>
+<p>供应商不能随便定价，供应商在定价过程中需要保证所有<span class="math inline">\(f_i+g_j \le
+C_{ij}\)</span>，一旦超过这个价格，那在某些路径上运营商就要付出额外的价格，还不如自己运呢。</p>
+<p>所以对偶问题就是站在供应商的角度来考虑：在<span class="math inline">\(f_i+g_j \le C_{ij}\)</span>的情况下希望收费<span class="math inline">\(\langle f,a \rangle + \langle g,b
+\rangle\)</span>最大。</p>
+<h2 id="互补松弛条件">互补松弛条件</h2>
+<p>考虑原问题的最优解<span class="math inline">\(P^*\)</span>和对偶问题最优对<span class="math inline">\((f^*,g^*)\)</span>的关系，并且证明他们满足互补松弛条件</p>
+<p>设<span class="math inline">\(\bar z\)</span>为原问题的最优解，<span class="math inline">\(\underline
+z\)</span>为对偶问题的最优解，先证明<strong>弱对偶性</strong>满足，即<span class="math inline">\(\bar z \ge \underline z\)</span></p>
+<p>首先对原始问题进行一下改写，把决策变量<span class="math inline">\(P\)</span>“拉直”为<span class="math inline">\(p\)</span>： <span class="math display">\[
+P\in \mathbb R^{n \times m}\in U(a,b) \iff p \in \mathbb R^{nm}_+,Ap=
+\begin{bmatrix}
+   a  \\
+   b
+\end{bmatrix}
+\]</span> 其中 <span class="math display">\[
+A=
+\begin{bmatrix}
+   1^T_n \otimes I_m  \\
+   I_n \otimes1^T_m
+\end{bmatrix},A \in \mathbb R^{(n+m)\times nm}
+\]</span> 定义<span class="math inline">\(c\)</span>也为成本矩阵对应的展平形式，则原始问题的拉格朗日函数：
+<span class="math display">\[
+H(h)=\underset{p\in \mathbb R^{nm}_+}{\min}(c^Tp-h^T(Ap-q))
+\]</span> 其中<span class="math inline">\(q=\begin{bmatrix}
+   a  \\
+   b
+\end{bmatrix}\)</span>。这是一个松弛问题，因为约束<span class="math inline">\(Ap=q\)</span>被软化为罚函数形式。对于原问题的最优解<span class="math inline">\(p^*\)</span>，对于任何<span class="math inline">\(h\)</span>，有： <span class="math display">\[
+H(h)\le c^T p^*-h^T(Ap^*-q)=c^T p^*=\bar z
+\]</span> 当<span class="math inline">\(h\)</span>满足对偶可行性(<span class="math inline">\(A^Th\le c\)</span>)时，对偶问题的目标值<span class="math inline">\(h^Tq\)</span>是拉格朗日函数的下界。</p>
+<p>因此结合上式： <span class="math display">\[
+\underline z=\underset{h,A^Th \le c}{\max}h^Tq\le
+\underset{h}{\max}h^Tq+\underset{p\in \mathbb
+R^{mn}_+}{\min}(c^T-h^TA)p=\underset{h\in \mathbb R^{n+m}}{\max}H(h)\le
+c^T p^*=\bar z
+\]</span>
+这表明对偶问题的最优值不超过原始问题的最优值，从而证明了弱对偶性。</p>
+<p>可以证明强对偶性也是满足的，证明过程需要slater条件。</p>
+<p>对于连续型，也是有如下定理保证了强对偶性： &gt;设<span class="math inline">\(\mu\)</span>和<span class="math inline">\(\nu\)</span>是定义在完备可分度量空间<span class="math inline">\(X\)</span>和<span class="math inline">\(Y\)</span>上的概率测度，<span class="math inline">\(c:X\times Y \to \mathbb
+R_+\)</span>是一个可测函数，那么： <span class="math display">\[
+\underset{\pi\in\Pi(\mu,\nu)}{\inf}\int_{X\times Y}c \, d\pi =
+\underset{(\varphi,\psi)}{\sup}\lbrack \int_X \varphi \, d\mu + \int_Y
+\psi \, d\nu \rbrack
+\]</span></p>
+<p>最优化理论告诉我们，如果强对偶性满足，那么我们可以使用KKT中的经典的互补松弛条件得到：
+<span class="math display">\[
+P^*(x,y)(f^*(x)+g^*(y)-c(x,y))=0
+\]</span></p>
+<p>这就是原问题的最优解<span class="math inline">\(P^*\)</span>和对偶问题最优对<span class="math inline">\((f^*,g^*)\)</span>的关系。即在支撑集上<span class="math inline">\(P^*&gt;0\)</span>，对偶问题的最优函数永远满足<span class="math inline">\(f^*(x)+g^*(y)=c(x,y)\)</span></p>
+<h2 id="c-变换">c-变换</h2>
+<p>现在我们知道对偶问题两个函数的一个很重要的性质，就是在<span class="math inline">\(P^*\)</span>支撑集上有<span class="math inline">\(f^*(x)+g^*(y)=c(x,y)\)</span></p>
+<p>下面假设这个函数对不是最优的，如果我们固定了<span class="math inline">\(f(x)\)</span>，能否得到一个“最好”的<span class="math inline">\(g(y)\)</span>使得对偶问题的目标函数尽可能大？c-变换就回答了这个问题</p>
+<p>因为 <span class="math display">\[
+f(x)+g(y)\le c(x,y)\\
+\iff g(y)\le c(x,y)-f(x)\\
+\iff g(y)\le \underset{x}{\inf} \{c(x,y)-f(x)\}
+\]</span> 而<span class="math inline">\(f(x)\)</span>已经固定，我们希望<span class="math inline">\(\int g(y) \, d\beta(y)\)</span>越大越好，所以<span class="math inline">\(g(y)\)</span>越大越好，自然就得到了一个“最好的”函数：
+<span class="math display">\[
+\bar f(y)=\underset{x}{\inf}\{c(x,y)-f(x)\}
+\]</span> 这个<span class="math inline">\(\bar f(y)\)</span>就叫做<span class="math inline">\(f\)</span>的c-变换</p>
+<p>如果一个函数<span class="math inline">\(f\)</span>可以写成某个<span class="math inline">\(g\)</span>的c-变换，那么就称<span class="math inline">\(f\)</span>是c-凹的</p>
+<p><strong>注</strong>：对偶问题的最优解<span class="math inline">\((f^*,g^*)\)</span>一定是c-凹的。否则令另一个是其c-变换，目标函数变大，矛盾。</p>
+<p>下面定理还保证了最优对的存在性： &gt;设<span class="math inline">\(\mu\)</span>和<span class="math inline">\(\nu\)</span>是<span class="math inline">\(X\)</span>和<span class="math inline">\(Y\)</span>上的概率测度使得 <span class="math display">\[
+\int_{X\times Y}c(x,y) \, d\mu(x) \, d\nu(y)&lt;\infty
+\]</span> 则对偶 Kantorovich 问题存在一个最优对<span class="math inline">\((\varphi,\psi)\)</span>且<span class="math inline">\(\bar \varphi = \psi\)</span>，<span class="math inline">\(\bar \psi=\varphi\)</span>几乎处处成立。</p>
+<h2 id="kantorovichrubinstein定理">Kantorovich–Rubinstein定理</h2>
+<p>虽然对偶问题要求两个函数<span class="math inline">\(f,g\)</span>
+，但通过c-transform可以将这两个函数“联系”起来，对偶问题从 <span class="math display">\[
+\underset{(f,g)\in R(c)}{\sup}\int_X f \, d\mu + \int_Y g \, d\nu
+\]</span> 变为 <span class="math display">\[
+\underset{f}{\sup}\int_X f \, d\mu + \int_Y \bar f \, d\nu
+\]</span> 我们可以证明，如果在度量空间<span class="math inline">\(X=Y\)</span>上，<span class="math inline">\(d(x,y)\)</span>是度量，且<span class="math inline">\(c(x,y)=d(x,y)\)</span>。如果<span class="math inline">\(f=\bar g\)</span>是一组c-变换，那么<span class="math inline">\(f\)</span>是1-Lipschitz的。</p>
+<p>证明如下： <span class="math display">\[
+f(z)=\underset{y}{\inf}d(z,y)-g(y)\le \underset{y}{\inf}
+d(z,x)+d(x,y)-g(y)=f(x)-d(z,x)
+\]</span> 互换<span class="math inline">\(z,x\)</span>即得到<span class="math inline">\(|f(x)-g(z)|\le d(x,z)\)</span></p>
+<p>然后我们可以继续证明，如果<span class="math inline">\(f\)</span>是1-Lipschitz的，那么其c-变换<span class="math inline">\(\bar f = -f\)</span>： &gt;令<span class="math inline">\(x=y\)</span>，有<span class="math inline">\(\bar
+f(x)=\underset{x}{\inf}\{d(x,x)-f(x)\}\le -f(x)\)</span>，又因为<span class="math inline">\(f\)</span>是1-Lipschitz的。所以<span class="math inline">\(\bar f(y)=\underset{x}{\inf}\{d(x,y)-f(x)\}\ge
+-f(y)\)</span>。所以<span class="math inline">\(\bar f=-f\)</span></p>
+<p>综上，结合强对偶性，我们有 <span class="math display">\[
+\underset{\pi\in U(a,b)}{\inf}\int_{X^2}d(x,y)\,
+d\pi=\underset{f}{\sup}\int_X f \, d\mu + \int_X \bar f \, d\nu =
+\underset{\lVert f \rVert_{\text{Lip}}\le 1}{\sup}\int_X f \, d\mu -
+\int_X  f \, d\nu
+\]</span> 其中，<span class="math inline">\(\lVert f
+\rVert_{\text{Lip}}=\underset{x \not = y}{\sup}\frac {\lVert
+f(x)-f(y)\rVert}{d(x,y)}\)</span></p>
+<p>我们现在得到了一个非常好非常好的结论：当成本函数是一个度量的时候，对偶问题可以变成上面的形式，我们只需要求解一个1-Lipschitz函数就可以了。</p>
 
     </div>
 
@@ -353,7 +494,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#kantorovich%E9%97%AE%E9%A2%98%E7%9A%84%E5%AF%B9%E5%81%B6%E9%97%AE%E9%A2%98"><span class="nav-text">Kantorovich问题的对偶问题</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#kantorovich%E9%97%AE%E9%A2%98%E7%9A%84%E5%AF%B9%E5%81%B6%E9%97%AE%E9%A2%98"><span class="nav-text">Kantorovich问题的对偶问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A6%BB%E6%95%A3%E7%89%88%E6%9C%AC%E7%9A%84kantorovich%E9%97%AE%E9%A2%98%E5%AF%B9%E5%81%B6"><span class="nav-text">离散版本的Kantorovich问题对偶</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9E%E7%BB%AD%E7%89%88%E6%9C%AC%E7%9A%84kantorovich%E9%97%AE%E9%A2%98%E5%AF%B9%E5%81%B6"><span class="nav-text">连续版本的Kantorovich问题对偶</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%9A%E4%BF%97%E7%90%86%E8%A7%A3%E5%8E%9F%E9%97%AE%E9%A2%98%E5%92%8C%E5%AF%B9%E5%81%B6%E9%97%AE%E9%A2%98"><span class="nav-text">通俗理解原问题和对偶问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%92%E8%A1%A5%E6%9D%BE%E5%BC%9B%E6%9D%A1%E4%BB%B6"><span class="nav-text">互补松弛条件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#c-%E5%8F%98%E6%8D%A2"><span class="nav-text">c-变换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kantorovichrubinstein%E5%AE%9A%E7%90%86"><span class="nav-text">Kantorovich–Rubinstein定理</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -419,13 +560,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">9k</span>
+    <span title="站点总字数">14k</span>
 </div>
 
 <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共9k字</span>
+  <span class="post-count">博客全站共14k字</span>
   <span class="post-meta-divider">|</span>
   本站总访问量<span id="busuanzi_value_site_pv"></span>次
   <span class="post-meta-divider">|</span>
@@ -436,7 +577,7 @@
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共9k字</span>
+  <span class="post-count">博客全站共14k字</span>
 </div>
 
 
