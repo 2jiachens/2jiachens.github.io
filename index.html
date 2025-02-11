@@ -188,6 +188,120 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/02/11/NAS-PINN/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="宋嘉晨">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我的博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/02/11/NAS-PINN/" class="post-title-link" itemprop="url">NAS-PINN</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-02-11 09:43:32 / 修改时间：11:45:56" itemprop="dateCreated datePublished" datetime="2025-02-11T09:43:32+08:00">2025-02-11</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%BA%E6%96%87%E6%B3%9B%E8%AF%BB/" itemprop="url" rel="index"><span itemprop="name">论文泛读</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2025/02/11/NAS-PINN/" class="post-meta-item leancloud_visitors" data-flag-title="NAS-PINN" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2025/02/11/NAS-PINN/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2025/02/11/NAS-PINN/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4.9k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="nas-pinn-neural-architecture-search-guided-physics-informed-neural-network-for-solving-pdesnas-pinn神经网络结构搜索引导的物理信息神经网络用于求解偏微分方程">NAS-PINN:
+Neural architecture search-guided physics-informed neural network for
+solving
+PDEs(NAS-PINN：神经网络结构搜索引导的物理信息神经网络，用于求解偏微分方程)</h1>
+<h2 id="摘要">摘要</h2>
+<p>物理信息神经网络( PINN
+)自提出以来一直是求解偏微分方程的主流框架。通过损失函数将物理信息融入到神经网络中，它可以以无监督的方式预测PDEs的解。然而，神经网络结构的设计基本依赖于先验知识和经验，这造成了很大的麻烦和较高的计算开销。因此，<strong>我们提出了一种神经结构搜索引导的方法，即NAS
+- PINN，用于自动搜索求解某些PDEs的最佳神经结构</strong>。
+通过将搜索空间松弛为连续空间，并利用掩码实现不同形状张量的添加，NAS -
+PINN可以通过双层优化进行训练，其中内层循环优化神经网络的权重和偏置，外层循环优化网络结构参数。我们通过包括Poisson，Burgers和Advection方程在内的几个数值实验来验证NAS
+-
+PINN的能力。总结了求解不同PDE的有效神经网络结构的特点，可用于指导PINN中神经网络的设计。研究发现，更多的隐藏层并不一定意味着更好的性能，有时可能是有害的。
+特别是对于Poisson和Advection，在PINNs中更适合采用神经元数目较多的浅层神经网络。研究还表明，对于复杂问题，具有残差连接的神经网络可以提高PINNs的性能。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2025/02/11/NAS-PINN/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2025/02/10/Lagrange%E5%AF%B9%E5%81%B6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -562,20 +676,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">4</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -612,13 +726,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">4k</span>
+    <span title="站点总字数">9k</span>
 </div>
 
 <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共4k字</span>
+  <span class="post-count">博客全站共9k字</span>
   <span class="post-meta-divider">|</span>
   本站总访问量<span id="busuanzi_value_site_pv"></span>次
   <span class="post-meta-divider">|</span>
@@ -629,7 +743,7 @@
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共4k字</span>
+  <span class="post-count">博客全站共9k字</span>
 </div>
 
 
