@@ -266,12 +266,15 @@ c^T p^*=\bar z
 \]</span>
 这表明对偶问题的最优值不超过原始问题的最优值，从而证明了弱对偶性。</p>
 <p>可以证明强对偶性也是满足的，证明过程需要slater条件。</p>
-<p>对于连续型，也是有如下定理保证了强对偶性： &gt;设<span class="math inline">\(\mu\)</span>和<span class="math inline">\(\nu\)</span>是定义在完备可分度量空间<span class="math inline">\(X\)</span>和<span class="math inline">\(Y\)</span>上的概率测度，<span class="math inline">\(c:X\times Y \to \mathbb
+<p>对于连续型，也是有如下定理保证了强对偶性：</p>
+<blockquote>
+<p>设<span class="math inline">\(\mu\)</span>和<span class="math inline">\(\nu\)</span>是定义在完备可分度量空间<span class="math inline">\(X\)</span>和<span class="math inline">\(Y\)</span>上的概率测度，<span class="math inline">\(c:X\times Y \to \mathbb
 R_+\)</span>是一个可测函数，那么： <span class="math display">\[
 \underset{\pi\in\Pi(\mu,\nu)}{\inf}\int_{X\times Y}c \, d\pi =
 \underset{(\varphi,\psi)}{\sup}\lbrack \int_X \varphi \, d\mu + \int_Y
 \psi \, d\nu \rbrack
 \]</span></p>
+</blockquote>
 <p>最优化理论告诉我们，如果强对偶性满足，那么我们可以使用KKT中的经典的互补松弛条件得到：
 <span class="math display">\[
 P^*(x,y)(f^*(x)+g^*(y)-c(x,y))=0
@@ -299,13 +302,13 @@ f(x)+g(y)\le c(x,y)\\
 \underset{(f,g)\in R(c)}{\sup}\int_X f \, d\mu + \int_Y g \, d\nu
 \]</span> 变为 <span class="math display">\[
 \underset{f}{\sup}\int_X f \, d\mu + \int_Y \bar f \, d\nu
-\]</span> 我们可以证明，如果在度量空间<span class="math inline">\(X=Y\)</span>上，<span class="math inline">\(d(x,y)\)</span>是度量，且<span class="math inline">\(c(x,y)=d(x,y)\)</span>。如果<span class="math inline">\(f=\bar g\)</span>是一组c-变换，那么<span class="math inline">\(f\)</span>是1-Lipschitz的。</p>
+\]</span> 我们可以证明，如果在度量空间<span class="math inline">\(X=Y\)</span>上，<span class="math inline">\(d(x,y)\)</span>是度量，且<span class="math inline">\(c(x,y)=d(x,y)\)</span>。如果<span class="math inline">\(f=\bar g\)</span>是一组c-变换，那么<span class="math inline">\(f\)</span>是d-Lipschitz的。</p>
 <p>证明如下： <span class="math display">\[
-f(z)=\underset{y}{\inf}d(z,y)-g(y)\le \underset{y}{\inf}
-d(z,x)+d(x,y)-g(y)=f(x)-d(z,x)
+f(z)=\underset{y}{\inf} \lbrace d(z,y)-g(y) \rbrace \le
+\underset{y}{\inf} \lbrace d(z,x)+d(x,y)-g(y) \rbrace=f(x)+d(z,x)
 \]</span> 互换<span class="math inline">\(z,x\)</span>即得到<span class="math inline">\(|f(x)-g(z)|\le d(x,z)\)</span></p>
-<p>然后我们可以继续证明，如果<span class="math inline">\(f\)</span>是1-Lipschitz的，那么其c-变换<span class="math inline">\(\bar f = -f\)</span>： &gt;令<span class="math inline">\(x=y\)</span>，有<span class="math inline">\(\bar
-f(x)=\underset{x}{\inf}\{d(x,x)-f(x)\}\le -f(x)\)</span>，又因为<span class="math inline">\(f\)</span>是1-Lipschitz的。所以<span class="math inline">\(\bar f(y)=\underset{x}{\inf}\{d(x,y)-f(x)\}\ge
+<p>然后我们可以继续证明，如果<span class="math inline">\(f\)</span>是d-Lipschitz的，那么其c-变换<span class="math inline">\(\bar f = -f\)</span>： &gt;令<span class="math inline">\(x=y\)</span>，有<span class="math inline">\(\bar
+f(x)=\underset{x}{\inf}\{d(x,x)-f(x)\}\le -f(x)\)</span>，又因为<span class="math inline">\(f\)</span>是d-Lipschitz的。所以<span class="math inline">\(\bar f(y)=\underset{x}{\inf}\{d(x,y)-f(x)\}\ge
 -f(y)\)</span>。所以<span class="math inline">\(\bar f=-f\)</span></p>
 <p>综上，结合强对偶性，我们有 <span class="math display">\[
 \underset{\pi\in U(a,b)}{\inf}\int_{X^2}d(x,y)\,
@@ -315,7 +318,7 @@ d\pi=\underset{f}{\sup}\int_X f \, d\mu + \int_X \bar f \, d\nu =
 \]</span> 其中，<span class="math inline">\(\lVert f
 \rVert_{\text{Lip}}=\underset{x \not = y}{\sup}\frac {\lVert
 f(x)-f(y)\rVert}{d(x,y)}\)</span></p>
-<p>我们现在得到了一个非常好非常好的结论：当成本函数是一个度量的时候，对偶问题可以变成上面的形式，我们只需要求解一个1-Lipschitz函数就可以了。</p>
+<p>我们现在得到了一个非常好非常好的结论：当成本函数是一个度量的时候，对偶问题可以变成上面的形式，我们只需要求解一个d-Lipschitz函数就可以了。</p>
 ]]></content>
       <categories>
         <category>学习笔记</category>
