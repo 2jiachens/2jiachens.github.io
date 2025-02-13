@@ -20,24 +20,21 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="什么是最优传输？ 最优传输最开始由Monge于1781年提出。一个典型的Monge问题是考虑将一堆具有一定形状的沙子搬运到指定的另外一个形状所需要的具有最小代价的搬运方法。 如下图所示，我们想将左边红色区域的沙堆搬运到右边，形成右边绿色的沙堆的形状。我们想要找到消耗最少的搬运方式。  一句话来概括，就是如何用最少的代价将一个质量分布转为另一个质量分布。">
+  <meta name="description" content="OPTIMAL TRANSPORTATION FOR ELECTRICAL IMPEDANCE TOMOGRAPHY（电阻抗断层成像的最优传输） 期刊：MATHEMATICS OF COMPUTATION 时间：September 2024 摘要 这项工作建立了一个用基于测地线的二次Wasserstein距离(\(W_2\))求解逆边界问题的框架。Fréchet梯度的一般形式由最优运输">
 <meta property="og:type" content="article">
-<meta property="og:title" content="最优传输(Optimal Transportation)">
-<meta property="og:url" content="http://example.com/2025/02/09/OT1/index.html">
+<meta property="og:title" content="OPTIMAL TRANSPORTATION FOR ELECTRICAL IMPEDANCE  TOMOGRAPHY">
+<meta property="og:url" content="http://example.com/2025/02/13/OPTIMAL-TRANSPORTATION-FOR-ELECTRICAL-IMPEDANCE-TOMOGRAPHY/index.html">
 <meta property="og:site_name" content="我的博客">
-<meta property="og:description" content="什么是最优传输？ 最优传输最开始由Monge于1781年提出。一个典型的Monge问题是考虑将一堆具有一定形状的沙子搬运到指定的另外一个形状所需要的具有最小代价的搬运方法。 如下图所示，我们想将左边红色区域的沙堆搬运到右边，形成右边绿色的沙堆的形状。我们想要找到消耗最少的搬运方式。  一句话来概括，就是如何用最少的代价将一个质量分布转为另一个质量分布。">
+<meta property="og:description" content="OPTIMAL TRANSPORTATION FOR ELECTRICAL IMPEDANCE TOMOGRAPHY（电阻抗断层成像的最优传输） 期刊：MATHEMATICS OF COMPUTATION 时间：September 2024 摘要 这项工作建立了一个用基于测地线的二次Wasserstein距离(\(W_2\))求解逆边界问题的框架。Fréchet梯度的一般形式由最优运输">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2025/02/09/OT1/1.jpg">
-<meta property="og:image" content="http://example.com/2025/02/09/OT1/2.jpg">
-<meta property="og:image" content="http://example.com/2025/02/09/OT1/3.jpg">
-<meta property="article:published_time" content="2025-02-09T09:57:49.000Z">
-<meta property="article:modified_time" content="2025-02-11T11:00:04.141Z">
+<meta property="article:published_time" content="2025-02-13T11:26:47.000Z">
+<meta property="article:modified_time" content="2025-02-13T13:51:20.678Z">
 <meta property="article:author" content="宋嘉晨">
 <meta property="article:tag" content="最优化">
+<meta property="article:tag" content="EIT">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/2025/02/09/OT1/1.jpg">
 
-<link rel="canonical" href="http://example.com/2025/02/09/OT1/">
+<link rel="canonical" href="http://example.com/2025/02/13/OPTIMAL-TRANSPORTATION-FOR-ELECTRICAL-IMPEDANCE-TOMOGRAPHY/">
 
 
 <script id="page-configurations">
@@ -50,7 +47,7 @@
   };
 </script>
 
-  <title>最优传输(Optimal Transportation) | 我的博客</title>
+  <title>OPTIMAL TRANSPORTATION FOR ELECTRICAL IMPEDANCE  TOMOGRAPHY | 我的博客</title>
   
 
 
@@ -198,7 +195,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/02/09/OT1/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/02/13/OPTIMAL-TRANSPORTATION-FOR-ELECTRICAL-IMPEDANCE-TOMOGRAPHY/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -211,7 +208,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          最优传输(Optimal Transportation)
+          OPTIMAL TRANSPORTATION FOR ELECTRICAL IMPEDANCE  TOMOGRAPHY
         </h1>
 
         <div class="post-meta">
@@ -220,28 +217,22 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2025-02-09 17:57:49" itemprop="dateCreated datePublished" datetime="2025-02-09T17:57:49+08:00">2025-02-09</time>
+              <time title="创建时间：2025-02-13 19:26:47 / 修改时间：21:51:20" itemprop="dateCreated datePublished" datetime="2025-02-13T19:26:47+08:00">2025-02-13</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-02-11 19:00:04" itemprop="dateModified" datetime="2025-02-11T19:00:04+08:00">2025-02-11</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+                  <a href="/categories/%E8%AE%BA%E6%96%87%E7%B2%BE%E8%AF%BB/" itemprop="url" rel="index"><span itemprop="name">论文精读</span></a>
                 </span>
             </span>
 
           
-            <span id="/2025/02/09/OT1/" class="post-meta-item leancloud_visitors" data-flag-title="最优传输(Optimal Transportation)" title="阅读次数">
+            <span id="/2025/02/13/OPTIMAL-TRANSPORTATION-FOR-ELECTRICAL-IMPEDANCE-TOMOGRAPHY/" class="post-meta-item leancloud_visitors" data-flag-title="OPTIMAL TRANSPORTATION FOR ELECTRICAL IMPEDANCE  TOMOGRAPHY" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -256,8 +247,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2025/02/09/OT1/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2025/02/09/OT1/" itemprop="commentCount"></span>
+    <a title="valine" href="/2025/02/13/OPTIMAL-TRANSPORTATION-FOR-ELECTRICAL-IMPEDANCE-TOMOGRAPHY/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2025/02/13/OPTIMAL-TRANSPORTATION-FOR-ELECTRICAL-IMPEDANCE-TOMOGRAPHY/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -267,7 +258,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.6k</span>
+              <span>668</span>
             </span>
 
         </div>
@@ -279,60 +270,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="什么是最优传输">什么是最优传输？</h2>
-<p>最优传输最开始由Monge于1781年提出。一个典型的Monge问题是考虑将一堆具有一定形状的沙子搬运到指定的另外一个形状所需要的具有最小代价的搬运方法。
-如下图所示，我们想将左边红色区域的沙堆搬运到右边，形成右边绿色的沙堆的形状。我们想要找到消耗最少的搬运方式。
-<img src="/2025/02/09/OT1/1.jpg" alt="image">
-一句话来概括，就是<strong>如何用最少的代价将一个质量分布转为另一个质量分布。</strong>
-<span id="more"></span> ## 质量分布 质量分布其实就是两个测度空间<span class="math inline">\((X,\mu),(Y,\nu)\)</span>。一般情况下，质量不会凭空产生，所以我们会要求这两个分布的“总质量”是一样的，即<span class="math inline">\(\int_x d\mu=\int_Yd\nu\)</span>。
-问题有了考虑的对象，我们还可以定义成本函数<span class="math inline">\(c(x,y):X \times Y \to \mathbb
-R^+\)</span>，一般是有界的，来衡量将质量从点<span class="math inline">\(x\)</span>运到点<span class="math inline">\(y\)</span>的成本。那么如何去进行移动？主要有两个角度去考虑，分别是Monge问题和Kantorovich问题。</p>
-<h2 id="monge问题">Monge问题</h2>
-<p>Monge问题就是寻找一个保测度的映射<span class="math inline">\(T:X \to
-Y\)</span> <span class="math display">\[
-\underset{T} {\min} \int_X c(x,T(x))d \mu(x),T_{ \# } \mu= \nu
-\]</span> <span class="math inline">\(T_{
-\#  }\)</span>是前推算子（<span class="math inline">\(T_{ \#
-}\)</span>的作用对象是<span class="math inline">\(\mu\)</span>，表示把测度<span class="math inline">\(\mu\)</span>推到<span class="math inline">\(\nu\)</span>），这个“推”的过程就是一个保测度的过程，即
-<span class="math display">\[
-T_{ \#  }\mu = \nu \iff \forall B \subset Y,\nu (B)=\mu (T^{-1}(B))
-\]</span> <img src="/2025/02/09/OT1/2.jpg" alt="Monge Map">
-但是映射的定义就限制了我们不能实现“一对多”的操作，这就导致了一个很严重的问题，Monge问题不一定有解。比如一个狄拉克分布（在包含某个点的集合测度是1，其余是0）就不可能保测度地映射到高斯分布。
-我们可以让质量“可分”，即以概率的形式去进行“移动”。这就是Kantorovich问题。</p>
-<h2 id="kantorovich问题">Kantorovich问题</h2>
-<p>在Kantorovich问题中，Kantorovich问题中，我们对Monge问题进行松弛，不再寻找一个映射，而是寻找一个联合分布（耦合coupling），其中它的边界分布分别是<span class="math inline">\(\mu,\nu\)</span>。从而最小化总成本 <span class="math display">\[
-\underset{\pi}{\min}\int_{X \times Y}c(x,y)d\pi(x,y),P_{x
-\#  }\pi=\mu,P_{y \# }\pi=\nu
-\]</span> <img src="/2025/02/09/OT1/3.jpg" alt="Kantorovich Relaxation"> <span class="math inline">\(\pi(x,y)\)</span>就是从<span class="math inline">\(x\)</span>移动到<span class="math inline">\(y\)</span>的概率，上式是总成本的期望。
-这样的松弛之后，Kantorovich本质上变成了一个无限维的线性规划问题（如果分布是离散的，比如一堆点，我们要做的就是在两个点云之间做matching，那么<span class="math inline">\(\pi\)</span>就变成了一个矩阵，就变成了有限维的线性规划问题）
-线性规划理论告诉我们，如果耦合集合非空且紧，目标函数是下半连续的，那么线性规划一定可以取到最小值。也就保证了Kantorovich一定有解。</p>
-<h2 id="分布之间的度量-wasserstein距离">分布之间的度量-Wasserstein距离</h2>
-<p>比较两种分布的一些方法：</p>
-<p><strong>交叉熵</strong>：对应分布为<span class="math inline">\(p(x)\)</span>的随机变量，熵<span class="math inline">\(H(p)\)</span>表示其最优编码长度。交叉熵是按照概率分布<span class="math inline">\(q\)</span>的最优编码对真实分布为<span class="math inline">\(p\)</span>的信息进行编码的长度 交叉熵定义为 <span class="math display">\[
-H(p,q)=E_q[-logq(x)]=-\displaystyle\sum_{x}p(x)logq(x)
-\]</span> 在给定<span class="math inline">\(p\)</span>的情况下，如果<span class="math inline">\(q\)</span>和<span class="math inline">\(p\)</span>越接近，交叉熵越小；如果<span class="math inline">\(q\)</span>和<span class="math inline">\(p\)</span>越远，交叉熵越大</p>
-<p><strong>KL散度</strong>:是用概率分布<span class="math inline">\(q\)</span>来近似<span class="math inline">\(p\)</span>时所造成的信息损失量。KL散度是按照概率分布<span class="math inline">\(q\)</span>的最优编码对真实分布为<span class="math inline">\(p\)</span>的信息进行编码，其平均编码长度<span class="math inline">\(H(p,q)\)</span>和<span class="math inline">\(p\)</span>的最优平均编码长度<span class="math inline">\(H(p)\)</span>之间的差异。对于离散概率分布<span class="math inline">\(p\)</span>和<span class="math inline">\(q\)</span>，从<span class="math inline">\(q\)</span>到<span class="math inline">\(p\)</span>的KL散度定义为: <span class="math display">\[
-D_{KL}(p\parallel q)=H(p,q)-H(p)=\sum_x p(x)log{\frac {p(x)} {q(x)} }
-\]</span>
-KL散度可以是衡量两个概率分布之间的距离。KL散度总是非负的，只有当<span class="math inline">\(p=q\)</span>时，<span class="math inline">\(D_{KL}(p\parallel
-q)=0\)</span>。两个分布越接近，KL散度越小；两个分布越远，KL散度越大。但KL散度并不是一个真正的度量或距离，一是KL散度不满足距离的对称性，二是KL散度不满足距离的三角不等式性质。</p>
-<p><strong>JS散度</strong>：
-JS散度是一种对称的衡量两个分布相似度的度量方式，定义为 <span class="math display">\[
-D_{JS}(p\parallel q)={\frac 1 2}D_{KL}(p \parallel m)+{\frac 1
-2}D_{KL}(q \parallel m)
-\]</span> 其中，<span class="math inline">\(m={\frac 1 2}(p+q)\)</span>
-JS 散度是KL散度一种改进。但两种散度都存在一个问题，即如果两个分布p, q
-没有重叠或者重叠非常少时，KL散度和JS 散度都很难衡量两个分布的距离</p>
-<p><strong>Wasserstein距离</strong>： Wasserstein 距离（Wasserstein
-Distance）也用于衡量两个分布之间的距离。对于两个分布<span class="math inline">\(q_1,q_2,p-Wasserstein\)</span>距离定义为 <span class="math display">\[
-W_p(q_1,q_2)=(\underset{\pi(x,y) \in U(x,y)} {\inf}E_{(x,y)\sim \pi
-(x,y)}[d(x,y)^p]) ^{1/p}
-\]</span> 其中，<span class="math inline">\(U(x,y)\)</span>是边际分布为<span class="math inline">\(q_1\)</span>和<span class="math inline">\(q_2\)</span>的所有可能的联合分布集合，<span class="math inline">\(d(x,y)\)</span>为<span class="math inline">\(x\)</span>和<span class="math inline">\(y\)</span>的距离 Wasserstein距离相比KL散度和JS
-散度的优势在于：即使两个分布没有重叠或者重叠非常少，Wasserstein
-距离仍然能反映两个分布的远近。</p>
-<p>我们可以发现，如果令<span class="math inline">\(d(x,y)^p=c(x,y)\)</span>，Wasserstein距离实际上就是从一个分布转换为另一个分布所要付出的代价。</p>
-<p>Wasserstein
-GAN就是将W-1距离作为损失函数，解决了GAN的许多问题，比如训练不稳定，判别器不能训练的“太好”等。究其原因主要是因为W-1度量比KL度量更“弱”：也就是说在K-L散度下收敛的序列在W-1距离下也一定收敛。这样的性质就保证了W-1可以捕捉到序列更多的几何信息（比如不重叠的分布的KL散度永远是0，但W-1距离不然。），训练会更鲁棒。</p>
+        <h1 id="optimal-transportation-for-electrical-impedance-tomography电阻抗断层成像的最优传输">OPTIMAL
+TRANSPORTATION FOR ELECTRICAL IMPEDANCE
+TOMOGRAPHY（电阻抗断层成像的最优传输）</h1>
+<p>期刊：MATHEMATICS OF COMPUTATION</p>
+<p>时间：September 2024</p>
+<h2 id="摘要">摘要</h2>
+<p>这项工作建立了一个用基于测地线的二次Wasserstein距离(<span class="math inline">\(W_2\)</span>)求解逆边界问题的框架。Fréchet梯度的一般形式由最优运输(
+OT )理论系统推导得到。此外，基于OT在<span class="math inline">\(\mathbb{S}^1\)</span>上的新公式开发了一种快速算法来求解相应的最优运输问题。该算法的计算复杂度由传统方法的<span class="math inline">\(O(N^3)\)</span>降低到<span class="math inline">\(O(N)\)</span>。结合伴随状态方法，该框架为解决具有挑战性的电阻抗层析成像问题提供了一种新的计算方法。数值例子说明了我们方法的有效性。</p>
+<h2 id="介绍">介绍</h2>
+<p>OT给出了一个比较两个概率测度的框架，通过寻求将一个测度重新排列到另一个测度的最小成本。它在机器学习、经济学、光学设计、成像科学、图形学[
+25、27、50 ]等不同领域都有广泛的应用。</p>
+<p>在过去的几年中，最优传输已经被应用于求解反问题[1、14、26、36、53]。基于OT的一个通用框架是使用Wasserstein距离来衡量数据匹配问题中数据集的差异性。这是一种有吸引力的方法，因为Wasserstein距离，特别是二次Wasserstein距离<span class="math inline">\((W^2)\)</span>，具有捕获幅度和空间信息的能力。与传统的<span class="math inline">\(L^2\)</span>度量相比，W2具有更好的凸性，对噪声更加鲁棒[21]。</p>
+<p>本文旨在发展一种基于二次Wasserstein距离的方法来求解严重不适定的反问题。</p>
 
     </div>
 
@@ -343,6 +293,7 @@ GAN就是将W-1距离作为损失函数，解决了GAN的许多问题，比如�
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/%E6%9C%80%E4%BC%98%E5%8C%96/" rel="tag"># 最优化</a>
+              <a href="/tags/EIT/" rel="tag"># EIT</a>
           </div>
 
         
@@ -350,10 +301,13 @@ GAN就是将W-1距离作为损失函数，解决了GAN的许多问题，比如�
 
         
     <div class="post-nav">
-      <div class="post-nav-item"></div>
       <div class="post-nav-item">
-    <a href="/2025/02/10/OT2/" rel="next" title="最优传输（二）">
-      最优传输（二） <i class="fa fa-chevron-right"></i>
+    <a href="/2025/02/11/NAS-PINN/" rel="prev" title="NAS-PINN">
+      <i class="fa fa-chevron-left"></i> NAS-PINN
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/" rel="next" title="两个曲线之间的距离">
+      两个曲线之间的距离 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -413,7 +367,9 @@ GAN就是将W-1距离作为损失函数，解决了GAN的许多问题，比如�
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E6%9C%80%E4%BC%98%E4%BC%A0%E8%BE%93"><span class="nav-text">什么是最优传输？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#monge%E9%97%AE%E9%A2%98"><span class="nav-text">Monge问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kantorovich%E9%97%AE%E9%A2%98"><span class="nav-text">Kantorovich问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E5%B8%83%E4%B9%8B%E9%97%B4%E7%9A%84%E5%BA%A6%E9%87%8F-wasserstein%E8%B7%9D%E7%A6%BB"><span class="nav-text">分布之间的度量-Wasserstein距离</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#optimal-transportation-for-electrical-impedance-tomography%E7%94%B5%E9%98%BB%E6%8A%97%E6%96%AD%E5%B1%82%E6%88%90%E5%83%8F%E7%9A%84%E6%9C%80%E4%BC%98%E4%BC%A0%E8%BE%93"><span class="nav-text">OPTIMAL
+TRANSPORTATION FOR ELECTRICAL IMPEDANCE
+TOMOGRAPHY（电阻抗断层成像的最优传输）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%91%98%E8%A6%81"><span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="nav-text">介绍</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
