@@ -185,8 +185,8 @@ GAN就是将W-1距离作为损失函数，解决了GAN的许多问题，比如�
 <span id="more"></span></p>
 <h2 id="离散版本的kantorovich问题对偶">离散版本的Kantorovich问题对偶</h2>
 <p>有两个离散分布<span class="math inline">\(a=\sum_i
-a_i\delta_{x_i},b=\sum_j b_i\delta_{y_i}\)</span>，分别包含离散点$
-<em>{i=1}^n, </em>{j=1}^m $</p>
+a_i\delta_{x_i},b=\sum_j b_i\delta_{y_i}\)</span>，分别包含离散点<span class="math inline">\(\lbrace {x_i} \rbrace_{i=1}^n, \lbrace {y_j}
+\rbrace_{j=1}^m\)</span></p>
 <p>有一个成本矩阵<span class="math inline">\(C \in \mathbb R^{n\times
 m}\)</span>,<span class="math inline">\(C_{ij}\)</span>就是从<span class="math inline">\(x_i\)</span>运到<span class="math inline">\(y_j\)</span>的成本</p>
 <p>我们寻找一个联合分布的矩阵<span class="math inline">\(P\in \mathbb
