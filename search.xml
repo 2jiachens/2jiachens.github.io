@@ -487,8 +487,8 @@ TOMOGRAPHY（电阻抗断层成像的最优传输）</h1>
 <p>时间：September 2024</p>
 <h2 id="摘要">摘要</h2>
 <p>这项工作建立了一个用基于测地线的二次Wasserstein距离(<span class="math inline">\(W_2\)</span>)求解逆边界问题的框架。Fréchet梯度的一般形式由最优运输(
-OT )理论系统推导得到。此外，基于OT在<span class="math inline">\(\mathbb{S}^1\)</span>上的新公式开发了一种快速算法来求解相应的最优运输问题。该算法的计算复杂度由传统方法的<span class="math inline">\(O(N^3)\)</span>降低到<span class="math inline">\(O(N)\)</span>。结合伴随状态方法，该框架为解决具有挑战性的电阻抗层析成像问题提供了一种新的计算方法。数值例子说明了我们方法的有效性。</p>
-<h2 id="介绍">介绍</h2>
+OT )理论系统推导得到。此外，基于OT在<span class="math inline">\(\mathbb{S}^1\)</span>上的新公式开发了一种快速算法来求解相应的最优运输问题。该算法的计算复杂度由传统方法的<span class="math inline">\(O(N^3)\)</span>降低到<span class="math inline">\(O(N)\)</span>。结合伴随状态方法，该框架为解决具有挑战性的电阻抗层析成像问题提供了一种新的计算方法。数值例子说明了我们方法的有效性。
+<span id="more"></span> ## 介绍</p>
 <p>OT给出了一个比较两个概率测度的框架，通过寻求将一个测度重新排列到另一个测度的最小成本。它在机器学习、经济学、光学设计、成像科学、图形学[
 25、27、50 ]等不同领域都有广泛的应用。</p>
 <p>在过去的几年中，最优传输已经被应用于求解反问题[1、14、26、36、53]。基于OT的一个通用框架是使用Wasserstein距离来衡量数据匹配问题中数据集的差异性。这是一种有吸引力的方法，因为Wasserstein距离，特别是二次Wasserstein距离<span class="math inline">\((W_2)\)</span>，具有捕获幅度和空间信息的能力。与传统的<span class="math inline">\(L^2\)</span>度量相比，<span class="math inline">\(W_2\)</span>具有更好的凸性，对噪声更加鲁棒[21]。</p>
