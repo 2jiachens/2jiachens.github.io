@@ -329,7 +329,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-02-14 22:08:27" itemprop="dateModified" datetime="2025-02-14T22:08:27+08:00">2025-02-14</time>
+                <time title="修改时间：2025-02-15 19:59:54" itemprop="dateModified" datetime="2025-02-15T19:59:54+08:00">2025-02-15</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -368,7 +368,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.7k</span>
+              <span>7.3k</span>
             </span>
 
         </div>
@@ -436,9 +436,113 @@ d(x,T(x))^p\,d\mu(x))^\frac{1}{p}
 \Pi(\mu,\nu)\)</span>和最大化式(2.3)的最优对偶对<span class="math inline">\((\varphi,\psi)\in
 \Phi_c\)</span>之间的关系，我们考虑特殊情况<span class="math inline">\(M
 =\mathbb R^d\)</span>和<span class="math inline">\(c(x,y) = \frac{1}{2}|
-x-y |^2\)</span>,得到 <span class="math display">\[
+x-y |^2\)</span>。通过(2.2), <span class="math display">\[
+\int_{\mathbb{R}^d} c(x,T(x))\, d\mu(x)=\int_{\mathbb{R}^d} \varphi(x)\,
+d\mu(x) + \int_{\mathbb{R}^d} \psi(y)\, d\nu(y) \\ = \int_{\mathbb{R}^d}
+(\varphi(x)+\psi(T(x)))\, d\mu(x)
+\]</span></p>
+<p>结合不等式(2.4),得到</p>
+<p><span class="math display">\[
 \varphi (x) + \psi (T(x)) = c(x,T(x)),\quad d\mu \, \text{almost
 everywhere} \qquad (2.9)
+\]</span> (这里是x和T(x)的关系，不等式（2.4）是任意x,y)</p>
+<p>另一方面，在重新排列项后，我们从(2.4)中得到</p>
+<p><span class="math display">\[
+x \cdot y \le (\frac{1}{2}|x|^2-\varphi (x))+(\frac{1}{2}|y|^2-\psi
+(y)), \qquad \forall x,y\in \mathbb{R}^d
+\]</span></p>
+因此，注2.1中的C-变换.通过引入<span class="math inline">\(\varphi^*(x):=\frac{1}{2}|x|^2-\varphi(x)\)</span>
+和 <span class="math inline">\(\psi^*(x):=\frac{1}{2}|y|^2-\psi(x)\)</span>可以转化为Legendre变换
+<strong>(?)</strong>。由于$ (,) _c<span class="math inline">\(，\)</span>^<em><span class="math inline">\(与\)</span>^</em><span class="math inline">\(之间的关系由下面的Legendre变换刻画\)</span>$
+<span class="math display">\[\begin{cases}
+   \psi^*(y):=\underset{x \in \mathbb {R}^d}{\sup} \lbrace x \cdot y -
+\varphi^*(x) \rbrace \\
+   \varphi^*(x):=\underset{y \in \mathbb {R}^d}{\sup} \lbrace x \cdot y
+- \psi^*(y) \rbrace
+\end{cases}\]</span>
+(2.10) <span class="math display">\[
+&gt;证明：
+\]</span>
+<span class="math display">\[\begin{split}   
+    \psi^*(y) &amp;=\frac{1}{2}|y|^2-\psi(y)\\
+      &amp;=\frac{1}{2}|y|^2-\varphi^c(y) \\
+      &amp;= \frac{1}{2}|y|^2-\underset{x\in X}{\inf} \lbrace c(x,y) -
+\varphi(x) \rbrace\\
+      &amp;= \underset{x\in X}{\sup}\lbrace
+\frac{1}{2}|y|^2-\frac{1}{2}|x-y|^2+\varphi(x) \rbrace \\
+      &amp;=\underset{x\in X}{\sup}\lbrace x \cdot
+y-\frac{1}{2}|x|^2+\varphi(x) \rbrace \\
+      &amp;=\underset{x\in X}{\sup}\lbrace x \cdot y-\varphi^*(x)
+\rbrace
+\end{split}\]</span>
+<p>$$</p>
+<p><span class="math inline">\(\varphi^*\)</span>和<span class="math inline">\(\psi^*\)</span>都是凸函数，因为它们是一族线性函数的上确界。因此
+<span class="math inline">\(\varphi^*\)</span>几乎处处可微。对于使<span class="math inline">\(\varphi^*\)</span>可微的<span class="math inline">\(x\in \mathbb{R}^d\)</span>，我们寻求<span class="math inline">\(y\in \mathbb{R}^d\)</span>，使得<span class="math inline">\(\varphi^* ( x ) + \psi^ * ( y ) = x \cdot
+y\)</span>。由(2.10)，该式成立当且仅当: <span class="math display">\[
+\underset{z \in \mathbb{R}^d}{\sup} \lbrace \varphi^*(x)-\varphi^*(z)-y
+\cdot (x-z) \rbrace = 0
+\]</span></p>
+<blockquote>
+<p>证明： <span class="math display">\[
+\varphi^*(x)+\psi^*(y)=x \cdot y \iff \varphi^*(x)+\psi^*(y)-x \cdot y
+=0 \\
+\iff \varphi^*(x) + \underset{z \in \mathbb {R}^d}{\sup} \lbrace z \cdot
+y - \varphi^*(z) \rbrace - x \cdot y=0\\ \iff \underset{z \in
+\mathbb{R}^d}{\sup} \lbrace \varphi^*(x)-\varphi^*(z)-y \cdot (x-z)
+\rbrace = 0
+\]</span></p>
+</blockquote>
+<p>那就是说，<span class="math inline">\(\varphi^*(z)\ge \varphi^*(x)+y
+\cdot(z-x)\)</span>，<span class="math inline">\(\forall z \in
+\mathbb{R}^d\)</span>。<span class="math inline">\(y\)</span>的这一特征与<span class="math inline">\(\varphi^*(x)\)</span>的次梯度的定义是一致的。由于<span class="math inline">\(\varphi^*(x)\)</span>在<span class="math inline">\(x\)</span>处可微，所以<span class="math inline">\(y
+=\nabla\varphi^*(x)\)</span>成立[43]。这里我们用原始的<span class="math inline">\((\varphi,\psi)\in
+\Phi_c\)</span>来表示这种等价关系： <span class="math display">\[
+\varphi(x)+\psi(y)=c(x,y) \quad \text{iff} \quad y=x-\nabla \varphi(x)
+\quad \text{dx almost everywhere} \quad (2.11)
+\]</span> 式中<span class="math inline">\(dx\)</span>为<span class="math inline">\(\mathbb{R}^d\)</span>的Lebesgue测度元素。结合(2.9)和(2.11)，如果<span class="math inline">\(\mu\)</span>关于Lebesgue测度绝对连续，则方程<span class="math inline">\(T(x) = x-\nabla \varphi ( x
+)\)</span>几乎处处成立。因此，<strong>最优映射<span class="math inline">\(T\)</span>在二次成本函数下具有关于Kantorovich势<span class="math inline">\(\varphi\)</span>的显式表达式</strong>。
+&gt;这里的意思是如果(x,y)满足<span class="math inline">\(\varphi(x)+\psi(y)=c(x,y)\)</span>，那么(x,y)应该满足<span class="math inline">\(y=T(x)(式2.9)\)</span>。上边的推导又说<span class="math inline">\(y=x-\nabla \varphi(x)\)</span>，那么<span class="math inline">\(T(x)=x-\nabla \varphi\)</span></p>
+<p>上述推导提供了最优映射与Kantorovich势之间的重要联系。更一般地，定理2.1总结了最优运输映射的存在性和特征：</p>
+<p><strong>定理2.1</strong>:令<span class="math inline">\(( M ,
+d)\)</span>为式( 2.8 )定义的度量空间，<span class="math inline">\(c( x ,
+y) = \frac{1}{2} d^2( x , y)\)</span>为二次成本。假设概率测度<span class="math inline">\(\mu\)</span>关于<span class="math inline">\(M\)</span>的体积测度绝对连续，则Monge问题( 2.1
+)存在唯一解<span class="math inline">\(T\)</span>，其特征为<span class="math inline">\(T ( x ) = \exp_x ( -\nabla \varphi( x )
+)\)</span>，其中<span class="math inline">\(\varphi：M→\mathbb{R}\)</span>为对偶问题(2.3)的Kantorovich势。此外，如果<span class="math inline">\(\text{supp}(\mu)\)</span>是某个连通开集的闭包，则<span class="math inline">\(\varphi\)</span>在可加常数下是唯一的。 这里<span class="math inline">\(\exp\)</span>表示切丛TM上的指数映射
+<strong>(?)</strong>。记号<span class="math inline">\(\exp_p
+X_p\)</span>是以<span class="math inline">\(p\in
+M\)</span>为起点，沿<span class="math inline">\(X_p∈TM\)</span>的方向，长度为<span class="math inline">\(| X_p
+|\)</span>的测地线段的端点。特别地，在欧氏空<span class="math inline">\(\exp_p X_p = x + X_p\)</span>中，等价于结果<span class="math inline">\(T ( x ) = x-\nabla \varphi ( x
+)\)</span>。<strong>定理2.1假设<span class="math inline">\(\mu\)</span>不给<span class="math inline">\(M\)</span>的体积测度的可忽略集赋予质量，从而保证了二次代价下最优映射的存在性和唯一性。</strong>。事实上，Monge的最优运输<span class="math inline">\(T\)</span>可能并不总是存在的。我们的工作主要集中在Monge问题上，因为我们感兴趣的是具有适当密度函数的测度。这里我们假设测度<span class="math inline">\(\mu\)</span>和<span class="math inline">\(\nu\)</span>具有密度函数<span class="math inline">\(f\)</span>和<span class="math inline">\(g\)</span>：<span class="math inline">\(d\mu = f (
+x ) dx，d\nu = g ( y ) dy\)</span>，其中<span class="math inline">\(dx\)</span>和<span class="math inline">\(dy\)</span>是<span class="math inline">\(M\)</span>的体积元.在整个过程中，用<span class="math inline">\(W_p( f , g)\)</span>代替<span class="math inline">\(W_p( \mu , \nu)\)</span>来表示<span class="math inline">\(\mu\)</span>和<span class="math inline">\(\nu\)</span>之间的Wasserstein距离。</p>
+<p>注2.2 ( C -周期单调性)。在<span class="math inline">\(\mathbb{R}^d\)</span>中，<span class="math inline">\(T ( x ) = x-\nabla \varphi =\nabla
+\varphi^*\)</span>，其中<span class="math inline">\(\varphi\)</span>是我们前面讨论过的凸函数。这个结果常被称为Brenier定理[11]
+。此外，由于<span class="math inline">\(T\)</span>是某个凸函数的梯度，所以<span class="math inline">\(T\)</span>是循环单调的[43]。即对集合<span class="math inline">\(\lbrace 1，· · ·，N
+\rbrace\)</span>上的任意置换<span class="math inline">\(\sigma\)</span>，对任意的<span class="math inline">\(\lbrace x_i \rbrace ^N_i = \subset \text{supp}
+(\mu)\)</span>，有<span class="math inline">\(\sum^N_{i=1}x_i \cdot
+T(x_i) \ge \sum^N_{i=1}x_i \cdot T(x_{\sigma(i)})\)</span>。不等式推出
+<span class="math display">\[
+\sum^N_{i=1}c(x_i,T(x_i)) \le \sum_{i=1}^N c(x_i,T(x_{\sigma(i)}))
+\]</span> 式中<span class="math inline">\(c\)</span>为二次成本。事实上，式(2.12)可以推广到任意连续成本函数<span class="math inline">\(c\)</span>的Polish空间上的最优运输问题。OT的这一性质被称为"
+c
+-周期单调性"，为刻画最优运输方案提供了可供选择的论据。具体参见[3、24、48]。</p>
+<p>注2.3(Monge–Ampèere方程)。 如注释2所述最优运输映射<span class="math inline">\(T ( x ) =\nabla \varphi^*\)</span>。考虑到( 2.2
+)的保测性质，我们利用变量替换技巧得到如下Monge - Ampère方程. <span class="math display">\[
+\det(D^2\varphi^*(x))=\frac{f(x)}{g(\nabla \varphi^*(x))}
+\]</span> 此外，由Caffarelli正则性定理[12、49]可知，若<span class="math inline">\(f，g\in
+C^{0,\alpha}\)</span>在它们的支撑上，上下界被正常数所约束，且<span class="math inline">\(\text{supp} \, g\)</span>是凸的，则<span class="math inline">\(\varphi^ *\in C^{2,α}\)</span>，即<span class="math inline">\(\varphi \in C^{2,\alpha}\)</span>和<span class="math inline">\(T \in C^{1,\alpha}\)</span>。</p>
+<p>使用<span class="math inline">\(W_2\)</span>作为失配函数也需要我们获取其梯度信息。由定理2.2可知，Wasserstein距离的Fréchet梯度与对应的Kantorovich势有关</p>
+<p><strong>定理2.2</strong> ( Wasserstein距离的Fréchet梯度)。 泛函<span class="math inline">\(f\to W_p^p( f , g)\)</span>是凸函数，其在<span class="math inline">\(f\)</span>处的次微分与式( 2.3
+)的Kantorovich势集合重合。如果存在唯一的Kantorovich势<span class="math inline">\(\varphi\)</span>直到加性常数(additive
+constants)<strong>(?)</strong>，则Fréchet导数<span class="math inline">\(\frac{\delta W^p_p(f,g)}{\delta
+f}=\varphi\)</span>
+事实上，定理2.2对于具有一般连续消耗函数的最小运输成本是有效的，除了<span class="math inline">\(c( x , y) = d^p( x , y)\)</span>。<strong>当<span class="math inline">\(p = 2\)</span>时，由定理2. 1和定理2.2可得，若<span class="math inline">\(\text{supp}\,
+f\)</span>是某个连通开集的闭包，则<span class="math inline">\(\frac{\delta W^2_2(f,g)}{\delta
+f}=\varphi\)</span></strong></p>
+<h2 id="mathbbs1上的最优运输"><span class="math inline">\(\mathbb{S}^1\)</span>(?)上的最优运输</h2>
+<p>令<span class="math inline">\(M =
+\mathbb{R}\)</span>，假设概率测度支撑在区间[0,1]。众所周知[48]，对于<span class="math inline">\(f，g \in L^1，W_2\)</span>及其最优运输映射为 <span class="math display">\[
+W^2_2(f,g)=\int^1_0|F^{-1}(t)-G^{-1}(t)|^2 \, dt,\quad T(t)=G^{-1}(F(t))
+\quad (3.1)
 \]</span></p>
 
       
@@ -1016,13 +1120,13 @@ PINN的能力。总结了求解不同PDE的有效神经网络结构的特点，�
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">19k</span>
+    <span title="站点总字数">24k</span>
 </div>
 
 <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共19k字</span>
+  <span class="post-count">博客全站共24k字</span>
   <span class="post-meta-divider">|</span>
   本站总访问量<span id="busuanzi_value_site_pv"></span>次
   <span class="post-meta-divider">|</span>
@@ -1033,7 +1137,7 @@ PINN的能力。总结了求解不同PDE的有效神经网络结构的特点，�
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共19k字</span>
+  <span class="post-count">博客全站共24k字</span>
 </div>
 
 
