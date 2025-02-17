@@ -28,7 +28,7 @@
 <meta property="og:description" content="OPTIMAL TRANSPORTATION FOR ELECTRICAL IMPEDANCE TOMOGRAPHY（电阻抗断层成像的最优传输） 期刊：MATHEMATICS OF COMPUTATION 时间：September 2024 摘要 这项工作建立了一个用基于测地线的二次Wasserstein距离(\(W_2\))求解逆边界问题的框架。Fréchet梯度的一般形式由最优运输">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-02-13T11:26:47.000Z">
-<meta property="article:modified_time" content="2025-02-15T12:09:19.443Z">
+<meta property="article:modified_time" content="2025-02-17T10:31:29.691Z">
 <meta property="article:author" content="宋嘉晨">
 <meta property="article:tag" content="最优化">
 <meta property="article:tag" content="EIT">
@@ -225,7 +225,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-02-15 20:09:19" itemprop="dateModified" datetime="2025-02-15T20:09:19+08:00">2025-02-15</time>
+                <time title="修改时间：2025-02-17 18:31:29" itemprop="dateModified" datetime="2025-02-17T18:31:29+08:00">2025-02-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -264,7 +264,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>7.2k</span>
+              <span>12k</span>
             </span>
 
         </div>
@@ -444,7 +444,125 @@ f}=\varphi\)</span></strong></p>
 \mathbb{R}\)</span>，假设概率测度支撑在区间[0,1]。众所周知[48]，对于<span class="math inline">\(f，g \in L^1，W_2\)</span>及其最优运输映射为 <span class="math display">\[
 W^2_2(f,g)=\int^1_0|F^{-1}(t)-G^{-1}(t)|^2 \, dt,\quad T(t)=G^{-1}(F(t))
 \quad (3.1)
+\]</span> 其中，<span class="math inline">\(F\)</span>和<span class="math inline">\(G\)</span>分别为<span class="math inline">\(f\)</span>和<span class="math inline">\(g\)</span>的累积分布函数： <span class="math display">\[
+F(t)=\int ^t_0 f(\tau) \, d\tau, \qquad G(t)=\int ^t_0 g(\tau)\, d\tau
+\]</span> 式(3.1)中分布函数的伪逆定义为 <span class="math display">\[
+F^{-1}(y)=\inf \lbrace t:y&lt;F(t) \rbrace, \quad G^{-1}(y)= \inf
+\lbrace t:y&lt;G(t) \rbrace \qquad (3.3)
+\]</span> 特别地，如果<span class="math inline">\(f,g\)</span>有正的下界，即<span class="math inline">\(f,g \in D\)</span>，其中 <span class="math display">\[
+D:= \lbrace f \in L^1[0,1]: \int^1_0 f(\tau) \, d\tau=1,f \ge \eta \quad
+\text{on}\, \mathbb{S}^1 \text{for some} \, \eta&gt;0 \rbrace
+\]</span> 那么分布函数<span class="math inline">\(F\)</span>和<span class="math inline">\(G\)</span>是严格递增的，因此它们的伪逆(3.3)成为经典的逆函数.由注2.3中提到的Caffarelli定理，严格正性是建立OT正则性的重要条件。</p>
+<p>式(3.1)可能导致算法复杂度为<span class="math inline">\(O ( N
+)\)</span>。需要指出的是，该结果仅对实际线路情况成立。在一般情况下，<span class="math inline">\(W_2\)</span>没有明确的表达式。由于直接基于优化问题(2.1)和(2.3)的现有方法涉及到高达<span class="math inline">\(O ( N^ 3
+)\)</span>的计算复杂度，因此需要有效的新方法来计算运输成本。然而，作为例外，我们在下文中表明，对于<span class="math inline">\(\mathbb{S}^1 \subset
+\mathbb{R}^2\)</span>，最优运输问题可以归结为实线上的问题。</p>
+<p>考虑<span class="math inline">\(M=\mathbb{S}^1 \cong
+\mathbb{T}=\mathbb{R}/ \mathbb{Z}\)</span>，对于<span class="math inline">\(\mathbb{S}^1\)</span>上的密度函数<span class="math inline">\(f\)</span>，将其定义域从区间<span class="math inline">\([0,1)\)</span>扩展到<span class="math inline">\(\mathbb{R}\)</span>，通过使<span class="math inline">\(f ( t )\)</span>周期化：<span class="math inline">\(f(t+1)=f(t)\)</span>。由于密度函数<span class="math inline">\(f\)</span>在每个单位区间上具有单位质量，因此分布函数和逆分布函数可以通过推广得到:</p>
+<p><span class="math display">\[
+F(t+1)=F(t)+1, \qquad F^{-1}(t+1)=F^{-1}(t)+1
 \]</span></p>
+<p>相应地，我们将测地距离<span class="math inline">\(d\)</span>从<span class="math inline">\(\mathbb{S}^1\)</span>投影到<span class="math inline">\(\mathbb{R}\)</span>：</p>
+<p><span class="math display">\[
+d(x,y):=\underset{k \in \mathbb{Z}}{\min}|x-y+k|, \quad x,y \in
+\mathbb{R}
+\]</span></p>
+<p>定理3.1将<span class="math inline">\(\mathbb{S}^1\)</span>上的OT问题转化为一维优化问题：</p>
+<p><strong>定理3.1</strong> 设<span class="math inline">\(f\)</span>和<span class="math inline">\(g\)</span>是<span class="math inline">\(\mathbb{S}^1\)</span>上的两个概率密度函数，其累积分布函数<span class="math inline">\(F\)</span>，<span class="math inline">\(G\)</span>和逆分布函数<span class="math inline">\(F^{ - 1}，G ^{-
+1}\)</span>分别由(3.2)，(3.3)和(3.5)定义。令<span class="math inline">\(G^\alpha\)</span>表示函数<span class="math inline">\(G + \alpha\)</span>。则<span class="math inline">\(\mathbb{S}_1\)</span>上的二次Wasserstein距离为:</p>
+<p><span class="math display">\[
+W^2_2(f,g)=\underset{\alpha \in \mathbb{R}}{\inf}
+\int^1_0|F^{-1}-(G^{\alpha})^{-1}|^2 \, dt \qquad (3.7)
+\]</span></p>
+<p>此外，最优映射由<span class="math inline">\(T(t)=( ( G^{\alpha^* })
+^{-1} \circ F ) ( t )\)</span>给出，其中<span class="math inline">\(α^*\)</span>为(3.7)式中的下确界点。</p>
+<p>我们注意到，在更一般的设定下，(3.7)式也是通过一种不同的方法得到的[19]，即Aubry
+- Mather定理。受文献[42]的启发，我们在这里的思路是基于c
+-周期单调性，证明在<span class="math inline">\(\mathbb{S}^1\)</span>上的OT可以通过在某一点处切割圆来化简为(3.1)，这样更简单、更直接。</p>
+<p>引理3.1涉及公式(3.7)的有用性质，特别是提供了一种直观的方法来寻找(3.7)中的下确界点<span class="math inline">\(\alpha^*\)</span></p>
+<p><strong>引理3.1</strong> 设<span class="math inline">\(f，g \in L^1 (
+\mathbb{S}^1 )\)</span>为<span class="math inline">\(\mathbb{S}^1\)</span>上的概率密度函数，定义 <span class="math display">\[
+I(\alpha,f,g):=\int^1_0|F^{-1}(t)-(G^{\alpha})^{-1}(t)|^2 \, dt
+\]</span> 则<span class="math inline">\(I(\alpha,f,g)\)</span>满足以下性质：</p>
+<p>  (i) 对于固定的<span class="math inline">\(f，g\)</span>，令<span class="math inline">\(I ( \alpha ):= I( \alpha; f , g)\)</span>     (a)
+<span class="math inline">\(I (\alpha)\)</span>关于<span class="math inline">\(\alpha\)</span>是凸的。若<span class="math inline">\(f，g\in D\)</span>，则<span class="math inline">\(I (\alpha)\)</span>是严格凸的     (b) <span class="math inline">\(I(\alpha)\)</span>在区间<span class="math inline">\([ - 1,1]\)</span>上取得全局最小值，当<span class="math inline">\(f，g \in D\)</span>时，<span class="math inline">\(I (\alpha)\)</span>是唯一的。     (c) 若<span class="math inline">\(f，g\in D\)</span>，则<span class="math inline">\(I (\alpha)\)</span>关于<span class="math inline">\(\alpha\)</span>在<span class="math inline">\(\mathbb{R}\)</span>上二次可微且 <span class="math display">\[
+I&#39;(\alpha)=2\int^1_0 F^{-1}(G(t)+\alpha) \, dt-1 \qquad (3.9)\\
+I&#39;&#39;(\alpha)=\int^1_0 \frac{2}{f(F^{-1}(G(t)+\alpha))} \, dt =
+\int^1_0 \frac{2}{g(G^{-1}(F(t)-\alpha))} \, dt \qquad (3.10)
+\]</span>   (ii) 对于固定的<span class="math inline">\(\alpha \in
+\mathbb{R}，I( \alpha, f , g)\)</span>关于<span class="math inline">\(f,g \in
+L^1(\mathbb{S}^1)\)</span>是Lipschitz连续的，Lipschitz常数<span class="math inline">\(C_{\alpha}：= 4 + 2 \lceil | α |
+\rceil\)</span>，其中<span class="math inline">\(\lceil \cdot
+\rceil\)</span>表示取整函数。</p>
+<p><strong>引理3.1表示关于<span class="math inline">\(\alpha\)</span>的优化问题是凸的，等价于求解非线性方程<span class="math inline">\(I&#39;(\alpha) = 0\)</span></strong>
+。利用已知的最优映射，我们可以推导出梯度公式<span class="math inline">\(\frac{\delta W^2_2(f,g)}{\delta
+f}\)</span>如下：</p>
+<p><strong>注3.1</strong> (<span class="math inline">\(W_2\)</span>在<span class="math inline">\(\mathbb{S}^1\)</span>上的Fréchet梯度) 对于<span class="math inline">\(f，g \in D\)</span>，根据定理2.2，梯度<span class="math inline">\(\frac{\delta W^2_2(f,g)}{\delta
+f}\)</span>恰好为Kantorovich势。基于定理2.1中最优映射与Kantorovich势之间的联系，<span class="math inline">\(W^2_2\)</span>在<span class="math inline">\(\mathbb{S}^1\)</span>上的Fréchet梯度由下面沿圆周的积分给出：
+<span class="math display">\[
+\frac{\delta W^2_2(f,g)}{\delta f}=2 \int^t_0(\tau-T(\tau)) \, d\tau + c
+\qquad (3.11)
+\]</span> 其中<span class="math inline">\(T(\tau)=G^{-1}(F(\tau)-\alpha^*)\)</span>是<span class="math inline">\(f\)</span>和<span class="math inline">\(g\)</span>之间的最优输运映射，且<span class="math inline">\(c\)</span>是任意常数.</p>
+<h2 id="数值方法">数值方法</h2>
+<p>为了计算的目的，定义在<span class="math inline">\([0,1)\)</span>上的密度函数f<span class="math inline">\(，g \in D\)</span>在节点<span class="math inline">\(\tau_i=i*h, \,
+i=0,1,2,...,N-1\)</span>上离散，其中<span class="math inline">\(h =
+\frac{1}{N}\)</span>。为方便起见，我们将区间$[0,1) <span class="math inline">\(扩展到\)</span>[-1 ,2]<span class="math inline">\(，将其离散化：\)</span>-1 = t_{-N} &lt; t_{- ( N-1
+)} &lt; · · · t_0 &lt; · · · &lt; t_{2N} &lt; t_{2N + 1} = 2，t_i = (
+2i-1 ) * ，i = -N &lt; i &lt; 2N + 1$。</p>
+<p>在区间<span class="math inline">\([-1，2)\)</span>上定义： <span class="math display">\[
+f_h(t)=f_t:=\frac{1}{m}f(\tau_{j(i)}) \, \text{for} \, t\in I_i , \quad
+j(i)=i \, \text{mod} \, N , \quad i=-N,...,2N
+\]</span></p>
+<p>其中<span class="math inline">\(I_i：= [ t_i，t_{i + 1}
+)\)</span>，重标度参数<span class="math inline">\(m =\sum ^{N - 1}_{i =
+0}f ( \tau_i ) h\)</span>为周期上的质量。显然，<span class="math inline">\(f_h ( t
+)\)</span>是一个周期的分片常数函数，且在每个周期内具有单位质量。根据(3.2)，分别给出了累积分布函数和逆累积分布函数
+<span class="math display">\[
+F_h(t)=f_i(t-t_i)+F_i, \, t\in I_i, \quad
+F^{-1}_h(y)=\frac{y-F_i}{f_i}+t_i, \, y \in [F_i,F_{i+1}) \quad (4.1)
+\]</span> 式中，<span class="math inline">\(F_{-N} = -1，F_{- ( N-1 )} =
+-1 + \frac{h}{2}f_{-N}\)</span>，且对于<span class="math inline">\(- (
+N-1 ) &lt; i\le 2N\)</span>，<span class="math inline">\(F_i = F_{i-1} +
+h * f_{i - 1}\)</span>。密度函数<span class="math inline">\(g\)</span>可以按照同样的方式进行离散化，得到<span class="math inline">\(g_h\)</span>和<span class="math inline">\(G_h\)</span>。</p>
+<p>我们现在准备计算( 3.9 )的离散版本，以解决最优运输问题。难点在于( 3.9
+)涉及到<span class="math inline">\(F\)</span>与<span class="math inline">\(G\)</span>的复合形式的逆，这就需要对<span class="math inline">\(F^{ - 1}\)</span>和<span class="math inline">\(G\)</span>的节点进行集体排序。为了完整起见，我们提供下面的细节。</p>
+<p>给定<span class="math inline">\(α \in [ -
+1,1]\)</span>，存在整数<span class="math inline">\(i_\alpha\)</span>使得<span class="math inline">\(α∈[ F_{i_\alpha}，F_{i_\alpha + 1}
+)\)</span>，因此<span class="math inline">\(α + 1 \in [ F_{i_\alpha +
+N}，F_{i_\alpha + N + 1} )\)</span>。对于两个递增序列<span class="math inline">\(\lbrace H^0_i:= G_i \rbrace ^N_{i =
+1}\)</span>和<span class="math inline">\(\lbrace H^1_i:= F_{i_\alpha +
+i}-\alpha \rbrace^N_{i =
+1}\)</span>，我们将它们的值排序为一个递增序列，记为<span class="math inline">\(\lbrace H_n \rbrace
+^{2N}_{n=1}\)</span>。排序过程自动定义一个双射<span class="math inline">\(\sigma：( i , j)\to n\)</span>，使得<span class="math inline">\(H_i^j\)</span>在新的序列中被重新排序为<span class="math inline">\(H_n\)</span> 。现在定义索引序列<span class="math inline">\(\lbrace l^0_n \rbrace ^{2N}_{n=1}\)</span>和<span class="math inline">\(\lbrace l^1_n \rbrace^{2N}_{n=1}\)</span>为：
+<span class="math display">\[
+\begin{cases}
+   l^j_n=i \quad \text{where}(i,j)=\sigma^{-1}(n) \\
+   l^{1-j}_n=n-l^j_n
+\end{cases}
+\]</span></p>
+<p>因此，节点序列<span class="math inline">\(\lbrace T_n:= G^{-1}_h (
+H_n ) \rbrace ^{2N}_{n=1}\)</span>容易计算： <span class="math display">\[
+T_n=\begin{cases}
+   \frac{H_n-G_{l^0_n}}{g_{l^0_n}}+t_{l^0_n}  \, &amp;,\text{if} \, j=1
+\\
+   t_i \, &amp;, \text{if} \, j=0
+\end{cases}
+\text{where}(i,j)=\sigma^{-1}(n)
+\]</span></p>
+<p>在序列中加入<span class="math inline">\(T_0 = 0\)</span>和<span class="math inline">\(T_{2N + 1} = 1\)</span>，我们得到<span class="math inline">\(\lbrace T_n \rbrace ^{2N + 1}_{n =
+0}\)</span>。重置<span class="math inline">\(\lbrace l^1_n :=l^1_n +
+i_\alpha \rbrace^{2N}_{n=1}\)</span>。则对于<span class="math inline">\(t \in [ T_n,T_n + 1 )\)</span>， <span class="math display">\[
+F^{-1}_h(G_h(t)+\alpha)=K_nt + B_n
+\]</span></p>
+<p>它是<span class="math inline">\([0,1)\)</span>上的分段线性函数。参数<span class="math inline">\(K_n\)</span>和<span class="math inline">\(B_n\)</span>的计算公式为 <span class="math display">\[
+K_n=\frac{g_{l^0_n}}{f_{l^1_n}}, \quad
+B_n=\frac{\alpha+G_{l^0_n-g_{l^0_n}
+t_{l^0_n}}-F_{l^1_n}}{f_{l^1_n}}+t_{l^1_n}
+\]</span> 最后，将积分式( 3.9 )离散为 <span class="math display">\[
+I&#39;_h:=2\int^1_0
+F^{-1}_h(G_h(t)+\alpha)\,dt-1=2\sum^{2N}_{n=0}(\frac{1}{2}K_n(T^2_{n+1}-T^2_n)+B_n(T_{n+1}-T_n))-1
+\quad (4.2)
+\]</span> 二阶导数<span class="math inline">\(I&#39;&#39;_h\)</span>可以按照同样的方式计算。</p>
 
     </div>
 
@@ -531,7 +649,7 @@ W^2_2(f,g)=\int^1_0|F^{-1}(t)-G^{-1}(t)|^2 \, dt,\quad T(t)=G^{-1}(F(t))
       <div class="post-toc-wrap sidebar-panel">
           <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#optimal-transportation-for-electrical-impedance-tomography%E7%94%B5%E9%98%BB%E6%8A%97%E6%96%AD%E5%B1%82%E6%88%90%E5%83%8F%E7%9A%84%E6%9C%80%E4%BC%98%E4%BC%A0%E8%BE%93"><span class="nav-text">OPTIMAL
 TRANSPORTATION FOR ELECTRICAL IMPEDANCE
-TOMOGRAPHY（电阻抗断层成像的最优传输）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%91%98%E8%A6%81"><span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E4%BC%98%E4%BC%A0%E8%BE%93%E7%90%86%E8%AE%BA"><span class="nav-text">最优传输理论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E9%97%AE%E9%A2%98%E5%92%8C%E5%AF%B9%E5%81%B6%E9%97%AE%E9%A2%98"><span class="nav-text">原问题和对偶问题:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#wasserstein%E8%B7%9D%E7%A6%BB"><span class="nav-text">Wasserstein距离</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mathbbs1%E4%B8%8A%E7%9A%84%E6%9C%80%E4%BC%98%E8%BF%90%E8%BE%93"><span class="nav-text">\(\mathbb{S}^1\)(?)上的最优运输</span></a></li></ol></li></ol></div>
+TOMOGRAPHY（电阻抗断层成像的最优传输）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%91%98%E8%A6%81"><span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E4%BC%98%E4%BC%A0%E8%BE%93%E7%90%86%E8%AE%BA"><span class="nav-text">最优传输理论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E9%97%AE%E9%A2%98%E5%92%8C%E5%AF%B9%E5%81%B6%E9%97%AE%E9%A2%98"><span class="nav-text">原问题和对偶问题:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#wasserstein%E8%B7%9D%E7%A6%BB"><span class="nav-text">Wasserstein距离</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mathbbs1%E4%B8%8A%E7%9A%84%E6%9C%80%E4%BC%98%E8%BF%90%E8%BE%93"><span class="nav-text">\(\mathbb{S}^1\)(?)上的最优运输</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E5%80%BC%E6%96%B9%E6%B3%95"><span class="nav-text">数值方法</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -597,13 +715,13 @@ TOMOGRAPHY（电阻抗断层成像的最优传输）</span></a><ol class="nav-ch
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">24k</span>
+    <span title="站点总字数">29k</span>
 </div>
 
 <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共24k字</span>
+  <span class="post-count">博客全站共29k字</span>
   <span class="post-meta-divider">|</span>
   本站总访问量<span id="busuanzi_value_site_pv"></span>次
   <span class="post-meta-divider">|</span>
@@ -614,7 +732,7 @@ TOMOGRAPHY（电阻抗断层成像的最优传输）</span></a><ol class="nav-ch
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共24k字</span>
+  <span class="post-count">博客全站共29k字</span>
 </div>
 
 
