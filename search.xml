@@ -541,6 +541,7 @@ f_i , g_i)\)</span>，下面的估计成立： <span class="math display">\[
       <tags>
         <tag>最优化</tag>
         <tag>EIT</tag>
+        <tag>最优运输</tag>
       </tags>
   </entry>
   <entry>
@@ -691,6 +692,7 @@ f(x)-f(y)\rVert}{d(x,y)}\)</span></p>
       </categories>
       <tags>
         <tag>最优化</tag>
+        <tag>最优运输</tag>
       </tags>
   </entry>
   <entry>
@@ -756,6 +758,7 @@ GAN就是将W-1距离作为损失函数，解决了GAN的许多问题，比如�
       </categories>
       <tags>
         <tag>最优化</tag>
+        <tag>最优运输</tag>
       </tags>
   </entry>
   <entry>
