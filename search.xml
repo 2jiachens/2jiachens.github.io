@@ -406,6 +406,65 @@ I&#39;_h:=2\int^1_0
 F^{-1}_h(G_h(t)+\alpha)\,dt-1=2\sum^{2N}_{n=0}(\frac{1}{2}K_n(T^2_{n+1}-T^2_n)+B_n(T_{n+1}-T_n))-1
 \quad (4.2)
 \]</span> 二阶导数<span class="math inline">\(I&#39;&#39;_h\)</span>可以按照同样的方式计算。</p>
+<p><span class="math display">\[
+    \begin{array}{l}
+   \hline \
+   \textbf{算法1} \quad 牛顿法 \\
+   \hline \
+   \qquad \textbf{给定}f_h，g_h和精度\epsilon \\
+   \qquad \textbf{设定}初始值k = 0，\alpha_0 = 1。通过( 4.1
+)计算F_h，G_h及其逆。\\
+   \\
+   \qquad \textbf{while}|\alpha_k-\alpha_{k-1}| \ge \epsilon
+\,\text{or}\,  k=0 \,\textbf{do} \\
+   \qquad \qquad  如式(4.2)计算I&#39;_h ( \alpha_k )和I&#39;&#39;_h(
+\alpha_k ) \\
+   \qquad \qquad \text{更新}\alpha_{k+1}:=\alpha_k-\frac{I&#39;_h (
+\alpha_k )}{I&#39;&#39;_h( \alpha_k )}\\
+   \qquad \qquad \qquad k:=k+1 \\
+   \qquad \textbf{end while} \\
+   \qquad 利用输出值\alpha_k，那么距离W^2_2( f_h ,
+g_h)及其\text{Fréchet}梯度可以用(4.2)中的方法计算 \\
+   \hline
+\end{array}
+\]</span></p>
+<p><strong>注4.1</strong>  处理曲线或曲面上的OT问题最直接的方法是将对偶问题(2.3)离散化，并求解由此产生的线性规划问题。假设计算区域被<span class="math inline">\(N\)</span>个点离散：<span class="math inline">\(x_1，· · ·，x_N\)</span>。距离矩阵<span class="math inline">\(\mathbf{C} = ( c ( x_i , x_j) ) _{ij} \in
+\mathbb{R}^{N × N}\)</span>，分布离散化<span class="math inline">\(\mathbf{f} = ( f_1 , · · · , f_N)，\mathbf{g} = (
+g_1 , · · · , g_N) \in \mathbb{R}^N，\text{有} \,
+\mathbf{f}^T\mathbf{1}_N = \mathbf{g}^T\mathbf{1}_N =
+1\)</span>，其中<span class="math inline">\(\mathbf{1}_N = ( 1 , 1 , · ·
+· , 1) \in \mathbf{R}^N\)</span>，<span class="math inline">\(\mathbf{I}_N \in \mathbf{R}^{N ×
+N}\)</span>为单位矩阵。那么线性规划问题可以写成：</p>
+<p><span class="math display">\[
+\max _{\mathbf{h} \in \mathbb{R}^{2 N}, \mathbf{A}^{\mathrm{T}}
+\mathbf{h} \leq \mathbf{C}}\left[\begin{array}{l}
+\mathbf{f} \\
+\mathbf{g}
+\end{array}\right]^{\mathrm{T}} \mathbf{h}, \quad
+\mathbf{A}=\left[\begin{array}{c}
+\mathbf{1}_N^{\mathrm{T}} \otimes \mathbf{I}_N \\
+\mathbf{I}_N \otimes \mathbf{1}_N^{\mathrm{T}}
+\end{array}\right] \in \mathbb{R}^{(2 N) \times N^2} \qquad (4.3)
+\]</span></p>
+<p>式中<span class="math inline">\(\otimes\)</span>为Kronecker积。我们可以利用线性规划的流行算法[8]，如单纯形法，内点法，匈牙利法和拍卖算法来求解(4.3)
+.然而，其中任何一种算法的计算复杂度至少为<span class="math inline">\(O(N^3)\)</span>。</p>
+<p><strong>注4.2</strong>   采用算法1中的牛顿法求解非线性方程<span class="math inline">\(I&#39;_h = 0\)</span>。<span class="math inline">\(I ( \alpha
+)\)</span>的严格凸性保证了算法收敛到全局极小值点，在精度<span class="math inline">\(\epsilon\)</span>范围内最多需要<span class="math inline">\(O( \log_2\log_2 ( \frac{1}{\epsilon} )
+)\)</span>步[10]得到<span class="math inline">\(\alpha\)</span>。由于对两个递增的序列进行排序需要<span class="math inline">\(2N\)</span>次比较，因此计算<span class="math inline">\(I&#39;_h\)</span>和<span class="math inline">\(I&#39;&#39;_h\)</span>的每一步最多需要<span class="math inline">\(O ( N
+)\)</span>次运算。因此，该算法的计算复杂度为<span class="math inline">\(O( N \, \log_2 \log_2 (\frac{1}{\epsilon})
+)\)</span>。</p>
+<p>由引理3.1，对每一对<span class="math inline">\(( f , g) \in
+D\)</span>，存在唯一的<span class="math inline">\(\alpha \in [-
+1,1]\)</span>，使得<span class="math inline">\(I&#39;( \alpha , f , g) =
+0\)</span>。因此，<span class="math inline">\(\alpha\)</span>可以看成是一个函数<span class="math inline">\(\alpha(f,g)\)</span>。密度函数的离散化会导致<span class="math inline">\(\alpha\)</span>的误差，从而导致相关的<span class="math inline">\(W_2\)</span>距离。接下来，我们给出<span class="math inline">\(\alpha ( f , g)\)</span>的稳定性估计</p>
+<p><strong>引理4.1</strong> (稳定性估计)  假设<span class="math inline">\(\alpha( f , g)\)</span>是由<span class="math inline">\(I&#39;( \alpha ; f , g) =
+0\)</span>定义的隐函数，且<span class="math inline">\(f_i，g_i \in
+D\)</span>连续可微，<span class="math inline">\(i =
+1，2\)</span>。那么对于<span class="math inline">\(\alpha_i:= \alpha (
+f_i , g_i)\)</span>，下面的估计成立： <span class="math display">\[
+\left|\alpha_1-\alpha_2\right| \leq
+\frac{1}{2}\left(\left\|f_1-f_2\right\|_{L^1[0,1]}+\left\|g_1-g_2\right\|_{L^1[0,1]}\right)
+\]</span></p>
 ]]></content>
       <categories>
         <category>论文精读</category>
@@ -547,87 +606,6 @@ GAN就是将W-1距离作为损失函数，解决了GAN的许多问题，比如�
       </categories>
       <tags>
         <tag>最优化</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>两个曲线之间的距离</title>
-    <url>/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/</url>
-    <content><![CDATA[<h2 id="两个曲线之间的距离">两个曲线之间的距离</h2>
-<p>搜Fréchet怎么打的时候看到了Fréchet距离，感觉这两天接触的距离比较多，做下整理（说不定以后换个距离就是个创新点）</p>
-<p>本篇主要介绍两个距离：<strong>Fréchet距离</strong>和<strong>Hausdorff距离</strong>。以后看到了比较两个曲线的方法再做补充（之前介绍过的两个分布之间的距离也会写篇博客整理出来）
-<span id="more"></span></p>
-<h2 id="fréchet距离">Fréchet距离</h2>
-<p>Fréchet distance(弗雷歇距离)是法国数学家Maurice René
-Fréchet在1906年提出的一种路径空间相似形描述，这种描述同时还考虑进路径空间距离的因素，对于空间路径的相似性比较适用。</p>
-<p><strong>直观的理解，Fréchet distance就是最短的狗绳长度</strong>： ·
-主人走路径A，狗走路径B，他们有不同的配速方案。 ·
-主人和狗各自走完这两条路径过程中所需要的最短狗绳长度。（在某一种配速下需要的狗绳长度，但其他配速下需要的狗绳长度更长）
-<img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/1.jpg" alt="image"></p>
-<p><strong>严格的数学定义：</strong> 设<span class="math inline">\((\mathbb S ,d)\)</span>是一个度量空间，<span class="math inline">\(d\)</span>是<span class="math inline">\(\mathbb{S}\)</span>上的度量。 1. <span class="math inline">\(A\)</span>是<span class="math inline">\(\mathbb{S}\)</span>上的一个将单位区间映射到<span class="math inline">\(\mathbb{S}\)</span>的连续映射，例如：<span class="math inline">\(A:[0,1] \to \mathbb S\)</span>. 2.
-从单位区间到其自身的重参数化映射<span class="math inline">\(\alpha
-:[0,1]\to [0,1]\)</span>满足如下三个条件：1）<span class="math inline">\(\alpha\)</span>是连续的。 2）<span class="math inline">\(\alpha\)</span>是非降的，即对于任意的<span class="math inline">\(x,y \in [0,1],x\le y\)</span>，都有<span class="math inline">\(\alpha(x) \le \alpha(y)\)</span>。 3）<span class="math inline">\(\alpha\)</span>是满射。此时有<span class="math inline">\(\alpha(0)=0,\alpha(1)=1\)</span> 3. 设<span class="math inline">\(A\)</span>和<span class="math inline">\(B\)</span>是<span class="math inline">\(\mathbb{S}\)</span>上的两条曲线，即<span class="math inline">\(A:[0,1]\to \mathbb{S},B:[0,1]\to
-\mathbb{S}\)</span>。又<span class="math inline">\(\alpha\)</span>和<span class="math inline">\(\beta\)</span>是单位区间的两个重参数化映射，则曲线<span class="math inline">\(A\)</span>和<span class="math inline">\(B\)</span>之间的Fréchet距离定义为： <span class="math display">\[
-F(A,B)=\underset{\alpha ,\beta}{\inf}\underset{t \in [0,1]}{\max}\lbrace
-d(A(\alpha(t)),B(\beta(t)))
-\]</span></p>
-<p>解释：</p>
-<ul>
-<li>两条曲线<span class="math inline">\(A(\alpha(t))\)</span>和<span class="math inline">\(B(\beta(t))\)</span>之间距离最大值的下确界
-<ul>
-<li>t理解为时间</li>
-<li><span class="math inline">\(\alpha(t)\)</span>和<span class="math inline">\(\beta(t)\)</span>理解为人和狗随时间变化的速度</li>
-<li><span class="math inline">\(A(\alpha(t))\)</span>和<span class="math inline">\(B(\beta(t))\)</span>代表t时刻人和狗的位置</li>
-<li>最大值的下确界意思为,每一种人狗速度方案下，都有对应的距离最大值；那么对于所有的速度方案，这些距离最大值中最小的是哪个？</li>
-</ul></li>
-</ul>
-<p><strong>离散化</strong></p>
-<p>设定<span class="math inline">\(t\)</span>是时间点，该时刻，曲线<span class="math inline">\(A\)</span> 上的采样点为<span class="math inline">\(A(\alpha(t))\)</span>, 曲线<span class="math inline">\(B\)</span>上采样点为<span class="math inline">\(B(\alpha(t))\)</span>.
-如果使用欧氏距离，则容易定义<span class="math inline">\(d(A(\alpha(t)),B(\beta(t)))\)</span>.
-在每次采样中<span class="math inline">\(t\)</span>离散的遍历区间<span class="math inline">\([0,1]\)</span>, 得到该种采样下的最大距离<span class="math inline">\(\underset{t\in [0,1]}{\max} \lbrace
-d(A(\alpha(t)),B(\beta(t))) \rbrace\)</span>.
-Fréchet距离就是使该最大距离最小化的采样方式下的值。
-易于理解的，在离散方式下，我们不可能得到真实的Fréchet距离，而可以无限的趋近。但是越精确的值需要越大的计算量。</p>
-<p><img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/2.jpg"></p>
-<h2 id="hausdorff距离">Hausdorff距离</h2>
-<p>衡量两个集合之间的距离</p>
-<p><strong>定义</strong>: 给定欧氏空间中的两点集<span class="math inline">\(A=\lbrace a_1,a_2,... \rbrace , B=\lbrace
-b_1,b_2,...
-\rbrace\)</span>，豪斯多夫（Hausdorff）距离就是用来衡量这两个点集间的距离。定义公式如下:
-<span class="math display">\[
-H(A,B)=\max[h(A,B),h(B,A)]
-\]</span> 其中， <span class="math display">\[
-h(A,B)=\underset{a \in A}{\max}\underset{b\in B}{\min} \lVert a-b \rVert
-\\
-h(B,A)=\underset{b \in B}{\max}\underset{a\in A}{\min} \lVert b-a \rVert
-\]</span> <span class="math inline">\(H(A,B)\)</span>称为双向Hausdorff
-距离，<span class="math inline">\(h(A,B)\)</span>称为从点集A到点集B的单向 Hausdorff
-距离。相应地<span class="math inline">\(h(B,A)\)</span>称为从点集B到点集A的单向Hausdorff距离</p>
-<p><strong>一些图例</strong></p>
-<p><img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/3.jpg"> <img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/4.jpg"></p>
-<p><strong>性质</strong></p>
-<ul>
-<li><p>双向Hausdorff距离 <span class="math inline">\(H(A,B)\)</span>是单向 Hausdorff 距离<span class="math inline">\(h(A,B)\)</span>和<span class="math inline">\(h(B,A)\)</span>两者中较大者，显然它度量了两个点集间的最大不匹配程度。</p></li>
-<li><p>当<span class="math inline">\(A\)</span>和<span class="math inline">\(B\)</span>都是闭集的时候,Hausdorff距离满足度量的三个定理：</p></li>
-</ul>
-<ol type="1">
-<li><span class="math inline">\(H(A,B)\ge 0\)</span>，当且仅当<span class="math inline">\(A=B\)</span>时，<span class="math inline">\(H(A,B)= 0\)</span></li>
-<li><span class="math inline">\(H(A,B)=H(B,A)\)</span></li>
-<li><span class="math inline">\(H(A,B)+H(B,C)\ge H(A,C)\)</span></li>
-</ol>
-<ul>
-<li><p>若凸集<span class="math inline">\(A,B\)</span>满足<span class="math inline">\(A \nsubseteq B,B \nsubseteq A\)</span>并记<span class="math inline">\(\partial A,\partial B\)</span>分别为<span class="math inline">\(A,B\)</span>边界的集合，则<span class="math inline">\(A,B\)</span>的Hausdorff距离等于<span class="math inline">\(\partial A,\partial
-B\)</span>的Hausdorff距离</p></li>
-<li><p>Hausdorff距离易受到突发噪声的影响。</p></li>
-</ul>
-<p><img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/5.jpg"></p>
-<p>当图像受到噪声污染或存在遮挡等情况时，原始的Haudorff距离容易造成误匹配。所以，在1933年，Huttenlocher提出了部分
-Hausdorff距离的概念。</p>
-]]></content>
-      <categories>
-        <category>学习笔记</category>
-      </categories>
-      <tags>
-        <tag>各种距离</tag>
       </tags>
   </entry>
   <entry>
@@ -778,6 +756,87 @@ f(x)-f(y)\rVert}{d(x,y)}\)</span></p>
       </categories>
       <tags>
         <tag>最优化</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>两个曲线之间的距离</title>
+    <url>/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/</url>
+    <content><![CDATA[<h2 id="两个曲线之间的距离">两个曲线之间的距离</h2>
+<p>搜Fréchet怎么打的时候看到了Fréchet距离，感觉这两天接触的距离比较多，做下整理（说不定以后换个距离就是个创新点）</p>
+<p>本篇主要介绍两个距离：<strong>Fréchet距离</strong>和<strong>Hausdorff距离</strong>。以后看到了比较两个曲线的方法再做补充（之前介绍过的两个分布之间的距离也会写篇博客整理出来）
+<span id="more"></span></p>
+<h2 id="fréchet距离">Fréchet距离</h2>
+<p>Fréchet distance(弗雷歇距离)是法国数学家Maurice René
+Fréchet在1906年提出的一种路径空间相似形描述，这种描述同时还考虑进路径空间距离的因素，对于空间路径的相似性比较适用。</p>
+<p><strong>直观的理解，Fréchet distance就是最短的狗绳长度</strong>： ·
+主人走路径A，狗走路径B，他们有不同的配速方案。 ·
+主人和狗各自走完这两条路径过程中所需要的最短狗绳长度。（在某一种配速下需要的狗绳长度，但其他配速下需要的狗绳长度更长）
+<img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/1.jpg" alt="image"></p>
+<p><strong>严格的数学定义：</strong> 设<span class="math inline">\((\mathbb S ,d)\)</span>是一个度量空间，<span class="math inline">\(d\)</span>是<span class="math inline">\(\mathbb{S}\)</span>上的度量。 1. <span class="math inline">\(A\)</span>是<span class="math inline">\(\mathbb{S}\)</span>上的一个将单位区间映射到<span class="math inline">\(\mathbb{S}\)</span>的连续映射，例如：<span class="math inline">\(A:[0,1] \to \mathbb S\)</span>. 2.
+从单位区间到其自身的重参数化映射<span class="math inline">\(\alpha
+:[0,1]\to [0,1]\)</span>满足如下三个条件：1）<span class="math inline">\(\alpha\)</span>是连续的。 2）<span class="math inline">\(\alpha\)</span>是非降的，即对于任意的<span class="math inline">\(x,y \in [0,1],x\le y\)</span>，都有<span class="math inline">\(\alpha(x) \le \alpha(y)\)</span>。 3）<span class="math inline">\(\alpha\)</span>是满射。此时有<span class="math inline">\(\alpha(0)=0,\alpha(1)=1\)</span> 3. 设<span class="math inline">\(A\)</span>和<span class="math inline">\(B\)</span>是<span class="math inline">\(\mathbb{S}\)</span>上的两条曲线，即<span class="math inline">\(A:[0,1]\to \mathbb{S},B:[0,1]\to
+\mathbb{S}\)</span>。又<span class="math inline">\(\alpha\)</span>和<span class="math inline">\(\beta\)</span>是单位区间的两个重参数化映射，则曲线<span class="math inline">\(A\)</span>和<span class="math inline">\(B\)</span>之间的Fréchet距离定义为： <span class="math display">\[
+F(A,B)=\underset{\alpha ,\beta}{\inf}\underset{t \in [0,1]}{\max}\lbrace
+d(A(\alpha(t)),B(\beta(t)))
+\]</span></p>
+<p>解释：</p>
+<ul>
+<li>两条曲线<span class="math inline">\(A(\alpha(t))\)</span>和<span class="math inline">\(B(\beta(t))\)</span>之间距离最大值的下确界
+<ul>
+<li>t理解为时间</li>
+<li><span class="math inline">\(\alpha(t)\)</span>和<span class="math inline">\(\beta(t)\)</span>理解为人和狗随时间变化的速度</li>
+<li><span class="math inline">\(A(\alpha(t))\)</span>和<span class="math inline">\(B(\beta(t))\)</span>代表t时刻人和狗的位置</li>
+<li>最大值的下确界意思为,每一种人狗速度方案下，都有对应的距离最大值；那么对于所有的速度方案，这些距离最大值中最小的是哪个？</li>
+</ul></li>
+</ul>
+<p><strong>离散化</strong></p>
+<p>设定<span class="math inline">\(t\)</span>是时间点，该时刻，曲线<span class="math inline">\(A\)</span> 上的采样点为<span class="math inline">\(A(\alpha(t))\)</span>, 曲线<span class="math inline">\(B\)</span>上采样点为<span class="math inline">\(B(\alpha(t))\)</span>.
+如果使用欧氏距离，则容易定义<span class="math inline">\(d(A(\alpha(t)),B(\beta(t)))\)</span>.
+在每次采样中<span class="math inline">\(t\)</span>离散的遍历区间<span class="math inline">\([0,1]\)</span>, 得到该种采样下的最大距离<span class="math inline">\(\underset{t\in [0,1]}{\max} \lbrace
+d(A(\alpha(t)),B(\beta(t))) \rbrace\)</span>.
+Fréchet距离就是使该最大距离最小化的采样方式下的值。
+易于理解的，在离散方式下，我们不可能得到真实的Fréchet距离，而可以无限的趋近。但是越精确的值需要越大的计算量。</p>
+<p><img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/2.jpg"></p>
+<h2 id="hausdorff距离">Hausdorff距离</h2>
+<p>衡量两个集合之间的距离</p>
+<p><strong>定义</strong>: 给定欧氏空间中的两点集<span class="math inline">\(A=\lbrace a_1,a_2,... \rbrace , B=\lbrace
+b_1,b_2,...
+\rbrace\)</span>，豪斯多夫（Hausdorff）距离就是用来衡量这两个点集间的距离。定义公式如下:
+<span class="math display">\[
+H(A,B)=\max[h(A,B),h(B,A)]
+\]</span> 其中， <span class="math display">\[
+h(A,B)=\underset{a \in A}{\max}\underset{b\in B}{\min} \lVert a-b \rVert
+\\
+h(B,A)=\underset{b \in B}{\max}\underset{a\in A}{\min} \lVert b-a \rVert
+\]</span> <span class="math inline">\(H(A,B)\)</span>称为双向Hausdorff
+距离，<span class="math inline">\(h(A,B)\)</span>称为从点集A到点集B的单向 Hausdorff
+距离。相应地<span class="math inline">\(h(B,A)\)</span>称为从点集B到点集A的单向Hausdorff距离</p>
+<p><strong>一些图例</strong></p>
+<p><img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/3.jpg"> <img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/4.jpg"></p>
+<p><strong>性质</strong></p>
+<ul>
+<li><p>双向Hausdorff距离 <span class="math inline">\(H(A,B)\)</span>是单向 Hausdorff 距离<span class="math inline">\(h(A,B)\)</span>和<span class="math inline">\(h(B,A)\)</span>两者中较大者，显然它度量了两个点集间的最大不匹配程度。</p></li>
+<li><p>当<span class="math inline">\(A\)</span>和<span class="math inline">\(B\)</span>都是闭集的时候,Hausdorff距离满足度量的三个定理：</p></li>
+</ul>
+<ol type="1">
+<li><span class="math inline">\(H(A,B)\ge 0\)</span>，当且仅当<span class="math inline">\(A=B\)</span>时，<span class="math inline">\(H(A,B)= 0\)</span></li>
+<li><span class="math inline">\(H(A,B)=H(B,A)\)</span></li>
+<li><span class="math inline">\(H(A,B)+H(B,C)\ge H(A,C)\)</span></li>
+</ol>
+<ul>
+<li><p>若凸集<span class="math inline">\(A,B\)</span>满足<span class="math inline">\(A \nsubseteq B,B \nsubseteq A\)</span>并记<span class="math inline">\(\partial A,\partial B\)</span>分别为<span class="math inline">\(A,B\)</span>边界的集合，则<span class="math inline">\(A,B\)</span>的Hausdorff距离等于<span class="math inline">\(\partial A,\partial
+B\)</span>的Hausdorff距离</p></li>
+<li><p>Hausdorff距离易受到突发噪声的影响。</p></li>
+</ul>
+<p><img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/5.jpg"></p>
+<p>当图像受到噪声污染或存在遮挡等情况时，原始的Haudorff距离容易造成误匹配。所以，在1933年，Huttenlocher提出了部分
+Hausdorff距离的概念。</p>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>各种距离</tag>
       </tags>
   </entry>
 </search>

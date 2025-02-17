@@ -28,7 +28,7 @@
 <meta property="og:description" content="OPTIMAL TRANSPORTATION FOR ELECTRICAL IMPEDANCE TOMOGRAPHY（电阻抗断层成像的最优传输） 期刊：MATHEMATICS OF COMPUTATION 时间：September 2024 摘要 这项工作建立了一个用基于测地线的二次Wasserstein距离(\(W_2\))求解逆边界问题的框架。Fréchet梯度的一般形式由最优运输">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-02-13T11:26:47.000Z">
-<meta property="article:modified_time" content="2025-02-17T10:43:48.940Z">
+<meta property="article:modified_time" content="2025-02-17T14:34:44.363Z">
 <meta property="article:author" content="宋嘉晨">
 <meta property="article:tag" content="最优化">
 <meta property="article:tag" content="EIT">
@@ -225,7 +225,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-02-17 18:43:48" itemprop="dateModified" datetime="2025-02-17T18:43:48+08:00">2025-02-17</time>
+                <time title="修改时间：2025-02-17 22:34:44" itemprop="dateModified" datetime="2025-02-17T22:34:44+08:00">2025-02-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -264,7 +264,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>12k</span>
+              <span>14k</span>
             </span>
 
         </div>
@@ -567,6 +567,65 @@ I&#39;_h:=2\int^1_0
 F^{-1}_h(G_h(t)+\alpha)\,dt-1=2\sum^{2N}_{n=0}(\frac{1}{2}K_n(T^2_{n+1}-T^2_n)+B_n(T_{n+1}-T_n))-1
 \quad (4.2)
 \]</span> 二阶导数<span class="math inline">\(I&#39;&#39;_h\)</span>可以按照同样的方式计算。</p>
+<p><span class="math display">\[
+    \begin{array}{l}
+   \hline \
+   \textbf{算法1} \quad 牛顿法 \\
+   \hline \
+   \qquad \textbf{给定}f_h，g_h和精度\epsilon \\
+   \qquad \textbf{设定}初始值k = 0，\alpha_0 = 1。通过( 4.1
+)计算F_h，G_h及其逆。\\
+   \\
+   \qquad \textbf{while}|\alpha_k-\alpha_{k-1}| \ge \epsilon
+\,\text{or}\,  k=0 \,\textbf{do} \\
+   \qquad \qquad  如式(4.2)计算I&#39;_h ( \alpha_k )和I&#39;&#39;_h(
+\alpha_k ) \\
+   \qquad \qquad \text{更新}\alpha_{k+1}:=\alpha_k-\frac{I&#39;_h (
+\alpha_k )}{I&#39;&#39;_h( \alpha_k )}\\
+   \qquad \qquad \qquad k:=k+1 \\
+   \qquad \textbf{end while} \\
+   \qquad 利用输出值\alpha_k，那么距离W^2_2( f_h ,
+g_h)及其\text{Fréchet}梯度可以用(4.2)中的方法计算 \\
+   \hline
+\end{array}
+\]</span></p>
+<p><strong>注4.1</strong>  处理曲线或曲面上的OT问题最直接的方法是将对偶问题(2.3)离散化，并求解由此产生的线性规划问题。假设计算区域被<span class="math inline">\(N\)</span>个点离散：<span class="math inline">\(x_1，· · ·，x_N\)</span>。距离矩阵<span class="math inline">\(\mathbf{C} = ( c ( x_i , x_j) ) _{ij} \in
+\mathbb{R}^{N × N}\)</span>，分布离散化<span class="math inline">\(\mathbf{f} = ( f_1 , · · · , f_N)，\mathbf{g} = (
+g_1 , · · · , g_N) \in \mathbb{R}^N，\text{有} \,
+\mathbf{f}^T\mathbf{1}_N = \mathbf{g}^T\mathbf{1}_N =
+1\)</span>，其中<span class="math inline">\(\mathbf{1}_N = ( 1 , 1 , · ·
+· , 1) \in \mathbf{R}^N\)</span>，<span class="math inline">\(\mathbf{I}_N \in \mathbf{R}^{N ×
+N}\)</span>为单位矩阵。那么线性规划问题可以写成：</p>
+<p><span class="math display">\[
+\max _{\mathbf{h} \in \mathbb{R}^{2 N}, \mathbf{A}^{\mathrm{T}}
+\mathbf{h} \leq \mathbf{C}}\left[\begin{array}{l}
+\mathbf{f} \\
+\mathbf{g}
+\end{array}\right]^{\mathrm{T}} \mathbf{h}, \quad
+\mathbf{A}=\left[\begin{array}{c}
+\mathbf{1}_N^{\mathrm{T}} \otimes \mathbf{I}_N \\
+\mathbf{I}_N \otimes \mathbf{1}_N^{\mathrm{T}}
+\end{array}\right] \in \mathbb{R}^{(2 N) \times N^2} \qquad (4.3)
+\]</span></p>
+<p>式中<span class="math inline">\(\otimes\)</span>为Kronecker积。我们可以利用线性规划的流行算法[8]，如单纯形法，内点法，匈牙利法和拍卖算法来求解(4.3)
+.然而，其中任何一种算法的计算复杂度至少为<span class="math inline">\(O(N^3)\)</span>。</p>
+<p><strong>注4.2</strong>   采用算法1中的牛顿法求解非线性方程<span class="math inline">\(I&#39;_h = 0\)</span>。<span class="math inline">\(I ( \alpha
+)\)</span>的严格凸性保证了算法收敛到全局极小值点，在精度<span class="math inline">\(\epsilon\)</span>范围内最多需要<span class="math inline">\(O( \log_2\log_2 ( \frac{1}{\epsilon} )
+)\)</span>步[10]得到<span class="math inline">\(\alpha\)</span>。由于对两个递增的序列进行排序需要<span class="math inline">\(2N\)</span>次比较，因此计算<span class="math inline">\(I&#39;_h\)</span>和<span class="math inline">\(I&#39;&#39;_h\)</span>的每一步最多需要<span class="math inline">\(O ( N
+)\)</span>次运算。因此，该算法的计算复杂度为<span class="math inline">\(O( N \, \log_2 \log_2 (\frac{1}{\epsilon})
+)\)</span>。</p>
+<p>由引理3.1，对每一对<span class="math inline">\(( f , g) \in
+D\)</span>，存在唯一的<span class="math inline">\(\alpha \in [-
+1,1]\)</span>，使得<span class="math inline">\(I&#39;( \alpha , f , g) =
+0\)</span>。因此，<span class="math inline">\(\alpha\)</span>可以看成是一个函数<span class="math inline">\(\alpha(f,g)\)</span>。密度函数的离散化会导致<span class="math inline">\(\alpha\)</span>的误差，从而导致相关的<span class="math inline">\(W_2\)</span>距离。接下来，我们给出<span class="math inline">\(\alpha ( f , g)\)</span>的稳定性估计</p>
+<p><strong>引理4.1</strong> (稳定性估计)  假设<span class="math inline">\(\alpha( f , g)\)</span>是由<span class="math inline">\(I&#39;( \alpha ; f , g) =
+0\)</span>定义的隐函数，且<span class="math inline">\(f_i，g_i \in
+D\)</span>连续可微，<span class="math inline">\(i =
+1，2\)</span>。那么对于<span class="math inline">\(\alpha_i:= \alpha (
+f_i , g_i)\)</span>，下面的估计成立： <span class="math display">\[
+\left|\alpha_1-\alpha_2\right| \leq
+\frac{1}{2}\left(\left\|f_1-f_2\right\|_{L^1[0,1]}+\left\|g_1-g_2\right\|_{L^1[0,1]}\right)
+\]</span></p>
 
     </div>
 
@@ -719,13 +778,13 @@ TOMOGRAPHY（电阻抗断层成像的最优传输）</span></a><ol class="nav-ch
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">29k</span>
+    <span title="站点总字数">31k</span>
 </div>
 
 <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共29k字</span>
+  <span class="post-count">博客全站共31k字</span>
   <span class="post-meta-divider">|</span>
   本站总访问量<span id="busuanzi_value_site_pv"></span>次
   <span class="post-meta-divider">|</span>
@@ -736,7 +795,7 @@ TOMOGRAPHY（电阻抗断层成像的最优传输）</span></a><ol class="nav-ch
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共29k字</span>
+  <span class="post-count">博客全站共31k字</span>
 </div>
 
 
