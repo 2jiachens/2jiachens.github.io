@@ -28,7 +28,7 @@
 <meta property="og:description" content="OPTIMAL TRANSPORTATION FOR ELECTRICAL IMPEDANCE TOMOGRAPHY（电阻抗断层成像的最优传输） 期刊：MATHEMATICS OF COMPUTATION 时间：September 2024 摘要 这项工作建立了一个用基于测地线的二次Wasserstein距离(\(W_2\))求解逆边界问题的框架。Fréchet梯度的一般形式由最优运输">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-02-13T11:26:47.000Z">
-<meta property="article:modified_time" content="2025-02-17T10:35:49.456Z">
+<meta property="article:modified_time" content="2025-02-17T10:43:48.940Z">
 <meta property="article:author" content="宋嘉晨">
 <meta property="article:tag" content="最优化">
 <meta property="article:tag" content="EIT">
@@ -225,7 +225,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-02-17 18:35:49" itemprop="dateModified" datetime="2025-02-17T18:35:49+08:00">2025-02-17</time>
+                <time title="修改时间：2025-02-17 18:43:48" itemprop="dateModified" datetime="2025-02-17T18:43:48+08:00">2025-02-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -305,7 +305,7 @@ d\nu(y) \qquad (2.3)
 (2.4)
 \]</span>
 标准对偶结果[48]表明(2.1)式的下确界等于(2.3)式的上确界。对偶形式是凸约束下的线性优化问题，这对于设计数值算法是可取的。</p>
-<p><strong>注2.1</strong>：事实上，<strong>对偶问题(2.3)只依赖于单一变量<span class="math inline">\(\varphi\)</span></strong>。对于<span class="math inline">\(\varphi \in C(X)\)</span>，其c-变换<span class="math inline">\(\varphi^c\)</span>定义为. <span class="math display">\[
+<p><strong>注2.1</strong>：  事实上，<strong>对偶问题(2.3)只依赖于单一变量<span class="math inline">\(\varphi\)</span></strong>。对于<span class="math inline">\(\varphi \in C(X)\)</span>，其c-变换<span class="math inline">\(\varphi^c\)</span>定义为. <span class="math display">\[
 \varphi^c(y):= \underset{x \in X}{\inf}\lbrace c(x,y)-\varphi(x) \rbrace
 , \forall y \in Y \qquad (2.5)
 \]</span> 对任意<span class="math inline">\((\varphi,\psi) \in
@@ -406,18 +406,20 @@ y - \varphi^*(z) \rbrace - x \cdot y=0\\ \iff \underset{z \in
 <p>这里的意思是如果(x,y)满足<span class="math inline">\(\varphi(x)+\psi(y)=c(x,y)\)</span>，那么(x,y)应该满足<span class="math inline">\(y=T(x)(式2.9)\)</span>。上边的推导又说<span class="math inline">\(y=x-\nabla \varphi(x)\)</span>，那么<span class="math inline">\(T(x)=x-\nabla \varphi\)</span></p>
 </blockquote>
 <p>上述推导提供了最优映射与Kantorovich势之间的重要联系。更一般地，定理2.1总结了最优运输映射的存在性和特征：</p>
-<p><strong>定理2.1</strong>:令<span class="math inline">\(( M ,
+<p><strong>定理2.1</strong>:  令<span class="math inline">\(( M ,
 d)\)</span>为式( 2.8 )定义的度量空间，<span class="math inline">\(c( x ,
 y) = \frac{1}{2} d^2( x , y)\)</span>为二次成本。假设概率测度<span class="math inline">\(\mu\)</span>关于<span class="math inline">\(M\)</span>的体积测度绝对连续，则Monge问题( 2.1
 )存在唯一解<span class="math inline">\(T\)</span>，其特征为<span class="math inline">\(T ( x ) = \exp_x ( -\nabla \varphi( x )
-)\)</span>，其中<span class="math inline">\(\varphi：M→\mathbb{R}\)</span>为对偶问题(2.3)的Kantorovich势。此外，如果<span class="math inline">\(\text{supp}(\mu)\)</span>是某个连通开集的闭包，则<span class="math inline">\(\varphi\)</span>在可加常数下是唯一的。 这里<span class="math inline">\(\exp\)</span>表示切丛TM上的指数映射
+)\)</span>，其中<span class="math inline">\(\varphi：M→\mathbb{R}\)</span>为对偶问题(2.3)的Kantorovich势。此外，如果<span class="math inline">\(\text{supp}(\mu)\)</span>是某个连通开集的闭包，则<span class="math inline">\(\varphi\)</span>在可加常数下是唯一的。</p>
+<p>这里<span class="math inline">\(\exp\)</span>表示切丛TM上的指数映射
 <strong>(?)</strong>。记号<span class="math inline">\(\exp_p
 X_p\)</span>是以<span class="math inline">\(p\in
 M\)</span>为起点，沿<span class="math inline">\(X_p∈TM\)</span>的方向，长度为<span class="math inline">\(| X_p
 |\)</span>的测地线段的端点。特别地，在欧氏空<span class="math inline">\(\exp_p X_p = x + X_p\)</span>中，等价于结果<span class="math inline">\(T ( x ) = x-\nabla \varphi ( x
-)\)</span>。<strong>定理2.1假设<span class="math inline">\(\mu\)</span>不给<span class="math inline">\(M\)</span>的体积测度的可忽略集赋予质量，从而保证了二次代价下最优映射的存在性和唯一性。</strong>。事实上，Monge的最优运输<span class="math inline">\(T\)</span>可能并不总是存在的。我们的工作主要集中在Monge问题上，因为我们感兴趣的是具有适当密度函数的测度。这里我们假设测度<span class="math inline">\(\mu\)</span>和<span class="math inline">\(\nu\)</span>具有密度函数<span class="math inline">\(f\)</span>和<span class="math inline">\(g\)</span>：<span class="math inline">\(d\mu = f (
+)\)</span>。<strong>定理2.1假设<span class="math inline">\(\mu\)</span>不给<span class="math inline">\(M\)</span>的体积测度的可忽略集赋予质量，从而保证了二次代价下最优映射的存在性和唯一性。</strong></p>
+<p>事实上，Monge的最优运输<span class="math inline">\(T\)</span>可能并不总是存在的。我们的工作主要集中在Monge问题上，因为我们感兴趣的是具有适当密度函数的测度。这里我们假设测度<span class="math inline">\(\mu\)</span>和<span class="math inline">\(\nu\)</span>具有密度函数<span class="math inline">\(f\)</span>和<span class="math inline">\(g\)</span>：<span class="math inline">\(d\mu = f (
 x ) dx，d\nu = g ( y ) dy\)</span>，其中<span class="math inline">\(dx\)</span>和<span class="math inline">\(dy\)</span>是<span class="math inline">\(M\)</span>的体积元.在整个过程中，用<span class="math inline">\(W_p( f , g)\)</span>代替<span class="math inline">\(W_p( \mu , \nu)\)</span>来表示<span class="math inline">\(\mu\)</span>和<span class="math inline">\(\nu\)</span>之间的Wasserstein距离。</p>
-<p>注2.2 ( C -周期单调性)。在<span class="math inline">\(\mathbb{R}^d\)</span>中，<span class="math inline">\(T ( x ) = x-\nabla \varphi =\nabla
+<p>注2.2 ( C -周期单调性)  在<span class="math inline">\(\mathbb{R}^d\)</span>中，<span class="math inline">\(T ( x ) = x-\nabla \varphi =\nabla
 \varphi^*\)</span>，其中<span class="math inline">\(\varphi\)</span>是我们前面讨论过的凸函数。这个结果常被称为Brenier定理[11]
 。此外，由于<span class="math inline">\(T\)</span>是某个凸函数的梯度，所以<span class="math inline">\(T\)</span>是循环单调的[43]。即对集合<span class="math inline">\(\lbrace 1，· · ·，N
 \rbrace\)</span>上的任意置换<span class="math inline">\(\sigma\)</span>，对任意的<span class="math inline">\(\lbrace x_i \rbrace ^N_i = \subset \text{supp}
@@ -428,13 +430,13 @@ T(x_i) \ge \sum^N_{i=1}x_i \cdot T(x_{\sigma(i)})\)</span>。不等式推出
 \]</span> 式中<span class="math inline">\(c\)</span>为二次成本。事实上，式(2.12)可以推广到任意连续成本函数<span class="math inline">\(c\)</span>的Polish空间上的最优运输问题。OT的这一性质被称为"
 c
 -周期单调性"，为刻画最优运输方案提供了可供选择的论据。具体参见[3、24、48]。</p>
-<p>注2.3(Monge–Ampèere方程)。 如注释2所述最优运输映射<span class="math inline">\(T ( x ) =\nabla \varphi^*\)</span>。考虑到( 2.2
+<p>注2.3(Monge–Ampèere方程)   如注释2.2所述最优运输映射<span class="math inline">\(T ( x ) =\nabla \varphi^*\)</span>。考虑到( 2.2
 )的保测性质，我们利用变量替换技巧得到如下Monge - Ampère方程. <span class="math display">\[
 \det(D^2\varphi^*(x))=\frac{f(x)}{g(\nabla \varphi^*(x))}
 \]</span> 此外，由Caffarelli正则性定理[12、49]可知，若<span class="math inline">\(f，g\in
 C^{0,\alpha}\)</span>在它们的支撑上，上下界被正常数所约束，且<span class="math inline">\(\text{supp} \, g\)</span>是凸的，则<span class="math inline">\(\varphi^ *\in C^{2,α}\)</span>，即<span class="math inline">\(\varphi \in C^{2,\alpha}\)</span>和<span class="math inline">\(T \in C^{1,\alpha}\)</span>。</p>
 <p>使用<span class="math inline">\(W_2\)</span>作为失配函数也需要我们获取其梯度信息。由定理2.2可知，Wasserstein距离的Fréchet梯度与对应的Kantorovich势有关</p>
-<p><strong>定理2.2</strong> ( Wasserstein距离的Fréchet梯度)。 泛函<span class="math inline">\(f\to W_p^p( f , g)\)</span>是凸函数，其在<span class="math inline">\(f\)</span>处的次微分与式( 2.3
+<p><strong>定理2.2</strong> ( Wasserstein距离的Fréchet梯度)   泛函<span class="math inline">\(f\to W_p^p( f , g)\)</span>是凸函数，其在<span class="math inline">\(f\)</span>处的次微分与式( 2.3
 )的Kantorovich势集合重合。如果存在唯一的Kantorovich势<span class="math inline">\(\varphi\)</span>直到加性常数(additive
 constants)<strong>(?)</strong>，则Fréchet导数<span class="math inline">\(\frac{\delta W^p_p(f,g)}{\delta
 f}=\varphi\)</span>
@@ -470,7 +472,7 @@ d(x,y):=\underset{k \in \mathbb{Z}}{\min}|x-y+k|, \quad x,y \in
 \mathbb{R}
 \]</span></p>
 <p>定理3.1将<span class="math inline">\(\mathbb{S}^1\)</span>上的OT问题转化为一维优化问题：</p>
-<p><strong>定理3.1</strong> 设<span class="math inline">\(f\)</span>和<span class="math inline">\(g\)</span>是<span class="math inline">\(\mathbb{S}^1\)</span>上的两个概率密度函数，其累积分布函数<span class="math inline">\(F\)</span>，<span class="math inline">\(G\)</span>和逆分布函数<span class="math inline">\(F^{ - 1}，G ^{-
+<p><strong>定理3.1</strong>   设<span class="math inline">\(f\)</span>和<span class="math inline">\(g\)</span>是<span class="math inline">\(\mathbb{S}^1\)</span>上的两个概率密度函数，其累积分布函数<span class="math inline">\(F\)</span>，<span class="math inline">\(G\)</span>和逆分布函数<span class="math inline">\(F^{ - 1}，G ^{-
 1}\)</span>分别由(3.2)，(3.3)和(3.5)定义。令<span class="math inline">\(G^\alpha\)</span>表示函数<span class="math inline">\(G + \alpha\)</span>。则<span class="math inline">\(\mathbb{S}_1\)</span>上的二次Wasserstein距离为:</p>
 <p><span class="math display">\[
 W^2_2(f,g)=\underset{\alpha \in \mathbb{R}}{\inf}
@@ -482,8 +484,8 @@ W^2_2(f,g)=\underset{\alpha \in \mathbb{R}}{\inf}
 - Mather定理。受文献[42]的启发，我们在这里的思路是基于c
 -周期单调性，证明在<span class="math inline">\(\mathbb{S}^1\)</span>上的OT可以通过在某一点处切割圆来化简为(3.1)，这样更简单、更直接。</p>
 <p>引理3.1涉及公式(3.7)的有用性质，特别是提供了一种直观的方法来寻找(3.7)中的下确界点<span class="math inline">\(\alpha^*\)</span></p>
-<p><strong>引理3.1</strong> 设<span class="math inline">\(f，g \in L^1 (
-\mathbb{S}^1 )\)</span>为<span class="math inline">\(\mathbb{S}^1\)</span>上的概率密度函数，定义 <span class="math display">\[
+<p><strong>引理3.1</strong>   设<span class="math inline">\(f，g \in L^1
+( \mathbb{S}^1 )\)</span>为<span class="math inline">\(\mathbb{S}^1\)</span>上的概率密度函数，定义 <span class="math display">\[
 I(\alpha,f,g):=\int^1_0|F^{-1}(t)-(G^{\alpha})^{-1}(t)|^2 \, dt
 \]</span> 则<span class="math inline">\(I(\alpha,f,g)\)</span>满足以下性质：</p>
 <p>  (i) 对于固定的<span class="math inline">\(f，g\)</span>，令<span class="math inline">\(I ( \alpha ):= I( \alpha; f , g)\)</span>     (a)
@@ -499,7 +501,7 @@ L^1(\mathbb{S}^1)\)</span>是Lipschitz连续的，Lipschitz常数<span class="ma
 <p><strong>引理3.1表示关于<span class="math inline">\(\alpha\)</span>的优化问题是凸的，等价于求解非线性方程<span class="math inline">\(I&#39;(\alpha) = 0\)</span></strong>
 。利用已知的最优映射，我们可以推导出梯度公式<span class="math inline">\(\frac{\delta W^2_2(f,g)}{\delta
 f}\)</span>如下：</p>
-<p><strong>注3.1</strong> (<span class="math inline">\(W_2\)</span>在<span class="math inline">\(\mathbb{S}^1\)</span>上的Fréchet梯度) 对于<span class="math inline">\(f，g \in D\)</span>，根据定理2.2，梯度<span class="math inline">\(\frac{\delta W^2_2(f,g)}{\delta
+<p><strong>注3.1</strong> (<span class="math inline">\(W_2\)</span>在<span class="math inline">\(\mathbb{S}^1\)</span>上的Fréchet梯度)   对于<span class="math inline">\(f，g \in D\)</span>，根据定理2.2，梯度<span class="math inline">\(\frac{\delta W^2_2(f,g)}{\delta
 f}\)</span>恰好为Kantorovich势。基于定理2.1中最优映射与Kantorovich势之间的联系，<span class="math inline">\(W^2_2\)</span>在<span class="math inline">\(\mathbb{S}^1\)</span>上的Fréchet梯度由下面沿圆周的积分给出：
 <span class="math display">\[
 \frac{\delta W^2_2(f,g)}{\delta f}=2 \int^t_0(\tau-T(\tau)) \, d\tau + c
