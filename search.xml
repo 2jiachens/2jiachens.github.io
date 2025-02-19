@@ -182,6 +182,153 @@ i9-9900 K @ 3.60 Ghz /NVIDIA GeForce Rtx 3090 上进行 <img src="/2025/02/11/NA
       </tags>
   </entry>
   <entry>
+    <title>最优传输(Optimal Transportation)</title>
+    <url>/2025/02/09/OT1/</url>
+    <content><![CDATA[<h2 id="什么是最优传输">什么是最优传输？</h2>
+<p>最优传输最开始由Monge于1781年提出。一个典型的Monge问题是考虑将一堆具有一定形状的沙子搬运到指定的另外一个形状所需要的具有最小代价的搬运方法。
+如下图所示，我们想将左边红色区域的沙堆搬运到右边，形成右边绿色的沙堆的形状。我们想要找到消耗最少的搬运方式。
+<img src="/2025/02/09/OT1/1.jpg" alt="image">
+一句话来概括，就是<strong>如何用最少的代价将一个质量分布转为另一个质量分布。</strong>
+<span id="more"></span> ## 质量分布 质量分布其实就是两个测度空间<span class="math inline">\((X,\mu),(Y,\nu)\)</span>。一般情况下，质量不会凭空产生，所以我们会要求这两个分布的“总质量”是一样的，即<span class="math inline">\(\int_x d\mu=\int_Yd\nu\)</span>。
+问题有了考虑的对象，我们还可以定义成本函数<span class="math inline">\(c(x,y):X \times Y \to \mathbb
+R^+\)</span>，一般是有界的，来衡量将质量从点<span class="math inline">\(x\)</span>运到点<span class="math inline">\(y\)</span>的成本。那么如何去进行移动？主要有两个角度去考虑，分别是Monge问题和Kantorovich问题。</p>
+<h2 id="monge问题">Monge问题</h2>
+<p>Monge问题就是寻找一个保测度的映射<span class="math inline">\(T:X \to
+Y\)</span> <span class="math display">\[
+\underset{T} {\min} \int_X c(x,T(x))d \mu(x),T_{ \# } \mu= \nu
+\]</span> <span class="math inline">\(T_{
+\#  }\)</span>是前推算子（<span class="math inline">\(T_{ \#
+}\)</span>的作用对象是<span class="math inline">\(\mu\)</span>，表示把测度<span class="math inline">\(\mu\)</span>推到<span class="math inline">\(\nu\)</span>），这个“推”的过程就是一个保测度的过程，即
+<span class="math display">\[
+T_{ \#  }\mu = \nu \iff \forall B \subset Y,\nu (B)=\mu (T^{-1}(B))
+\]</span> <img src="/2025/02/09/OT1/2.jpg" alt="Monge Map">
+但是映射的定义就限制了我们不能实现“一对多”的操作，这就导致了一个很严重的问题，Monge问题不一定有解。比如一个狄拉克分布（在包含某个点的集合测度是1，其余是0）就不可能保测度地映射到高斯分布。
+我们可以让质量“可分”，即以概率的形式去进行“移动”。这就是Kantorovich问题。</p>
+<h2 id="kantorovich问题">Kantorovich问题</h2>
+<p>在Kantorovich问题中，Kantorovich问题中，我们对Monge问题进行松弛，不再寻找一个映射，而是寻找一个联合分布（耦合coupling），其中它的边界分布分别是<span class="math inline">\(\mu,\nu\)</span>。从而最小化总成本 <span class="math display">\[
+\underset{\pi}{\min}\int_{X \times Y}c(x,y)d\pi(x,y),P_{x
+\#  }\pi=\mu,P_{y \# }\pi=\nu
+\]</span> <img src="/2025/02/09/OT1/3.jpg" alt="Kantorovich Relaxation"> <span class="math inline">\(\pi(x,y)\)</span>就是从<span class="math inline">\(x\)</span>移动到<span class="math inline">\(y\)</span>的概率，上式是总成本的期望。
+这样的松弛之后，Kantorovich本质上变成了一个无限维的线性规划问题（如果分布是离散的，比如一堆点，我们要做的就是在两个点云之间做matching，那么<span class="math inline">\(\pi\)</span>就变成了一个矩阵，就变成了有限维的线性规划问题）
+线性规划理论告诉我们，如果耦合集合非空且紧，目标函数是下半连续的，那么线性规划一定可以取到最小值。也就保证了Kantorovich一定有解。</p>
+<h2 id="分布之间的度量-wasserstein距离">分布之间的度量-Wasserstein距离</h2>
+<p>比较两种分布的一些方法：</p>
+<p><strong>交叉熵</strong>：对应分布为<span class="math inline">\(p(x)\)</span>的随机变量，熵<span class="math inline">\(H(p)\)</span>表示其最优编码长度。交叉熵是按照概率分布<span class="math inline">\(q\)</span>的最优编码对真实分布为<span class="math inline">\(p\)</span>的信息进行编码的长度 交叉熵定义为 <span class="math display">\[
+H(p,q)=E_q[-logq(x)]=-\displaystyle\sum_{x}p(x)logq(x)
+\]</span> 在给定<span class="math inline">\(p\)</span>的情况下，如果<span class="math inline">\(q\)</span>和<span class="math inline">\(p\)</span>越接近，交叉熵越小；如果<span class="math inline">\(q\)</span>和<span class="math inline">\(p\)</span>越远，交叉熵越大</p>
+<p><strong>KL散度</strong>:是用概率分布<span class="math inline">\(q\)</span>来近似<span class="math inline">\(p\)</span>时所造成的信息损失量。KL散度是按照概率分布<span class="math inline">\(q\)</span>的最优编码对真实分布为<span class="math inline">\(p\)</span>的信息进行编码，其平均编码长度<span class="math inline">\(H(p,q)\)</span>和<span class="math inline">\(p\)</span>的最优平均编码长度<span class="math inline">\(H(p)\)</span>之间的差异。对于离散概率分布<span class="math inline">\(p\)</span>和<span class="math inline">\(q\)</span>，从<span class="math inline">\(q\)</span>到<span class="math inline">\(p\)</span>的KL散度定义为: <span class="math display">\[
+D_{KL}(p\parallel q)=H(p,q)-H(p)=\sum_x p(x)log{\frac {p(x)} {q(x)} }
+\]</span>
+KL散度可以是衡量两个概率分布之间的距离。KL散度总是非负的，只有当<span class="math inline">\(p=q\)</span>时，<span class="math inline">\(D_{KL}(p\parallel
+q)=0\)</span>。两个分布越接近，KL散度越小；两个分布越远，KL散度越大。但KL散度并不是一个真正的度量或距离，一是KL散度不满足距离的对称性，二是KL散度不满足距离的三角不等式性质。</p>
+<p><strong>JS散度</strong>：
+JS散度是一种对称的衡量两个分布相似度的度量方式，定义为 <span class="math display">\[
+D_{JS}(p\parallel q)={\frac 1 2}D_{KL}(p \parallel m)+{\frac 1
+2}D_{KL}(q \parallel m)
+\]</span> 其中，<span class="math inline">\(m={\frac 1 2}(p+q)\)</span>
+JS 散度是KL散度一种改进。但两种散度都存在一个问题，即如果两个分布p, q
+没有重叠或者重叠非常少时，KL散度和JS 散度都很难衡量两个分布的距离</p>
+<p><strong>Wasserstein距离</strong>： Wasserstein 距离（Wasserstein
+Distance）也用于衡量两个分布之间的距离。对于两个分布<span class="math inline">\(q_1,q_2,p-Wasserstein\)</span>距离定义为 <span class="math display">\[
+W_p(q_1,q_2)=(\underset{\pi(x,y) \in U(x,y)} {\inf}E_{(x,y)\sim \pi
+(x,y)}[d(x,y)^p]) ^{1/p}
+\]</span> 其中，<span class="math inline">\(U(x,y)\)</span>是边际分布为<span class="math inline">\(q_1\)</span>和<span class="math inline">\(q_2\)</span>的所有可能的联合分布集合，<span class="math inline">\(d(x,y)\)</span>为<span class="math inline">\(x\)</span>和<span class="math inline">\(y\)</span>的距离 Wasserstein距离相比KL散度和JS
+散度的优势在于：即使两个分布没有重叠或者重叠非常少，Wasserstein
+距离仍然能反映两个分布的远近。</p>
+<p>我们可以发现，如果令<span class="math inline">\(d(x,y)^p=c(x,y)\)</span>，Wasserstein距离实际上就是从一个分布转换为另一个分布所要付出的代价。</p>
+<p>Wasserstein
+GAN就是将W-1距离作为损失函数，解决了GAN的许多问题，比如训练不稳定，判别器不能训练的“太好”等。究其原因主要是因为W-1度量比KL度量更“弱”：也就是说在K-L散度下收敛的序列在W-1距离下也一定收敛。这样的性质就保证了W-1可以捕捉到序列更多的几何信息（比如不重叠的分布的KL散度永远是0，但W-1距离不然。），训练会更鲁棒。</p>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>最优化</tag>
+        <tag>最优运输</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>两个曲线之间的距离</title>
+    <url>/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/</url>
+    <content><![CDATA[<h2 id="两个曲线之间的距离">两个曲线之间的距离</h2>
+<p>搜Fréchet怎么打的时候看到了Fréchet距离，感觉这两天接触的距离比较多，做下整理（说不定以后换个距离就是个创新点）</p>
+<p>本篇主要介绍两个距离：<strong>Fréchet距离</strong>和<strong>Hausdorff距离</strong>。以后看到了比较两个曲线的方法再做补充（之前介绍过的两个分布之间的距离也会写篇博客整理出来）
+<span id="more"></span></p>
+<h2 id="fréchet距离">Fréchet距离</h2>
+<p>Fréchet distance(弗雷歇距离)是法国数学家Maurice René
+Fréchet在1906年提出的一种路径空间相似形描述，这种描述同时还考虑进路径空间距离的因素，对于空间路径的相似性比较适用。</p>
+<p><strong>直观的理解，Fréchet distance就是最短的狗绳长度</strong>： ·
+主人走路径A，狗走路径B，他们有不同的配速方案。 ·
+主人和狗各自走完这两条路径过程中所需要的最短狗绳长度。（在某一种配速下需要的狗绳长度，但其他配速下需要的狗绳长度更长）
+<img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/1.jpg" alt="image"></p>
+<p><strong>严格的数学定义：</strong> 设<span class="math inline">\((\mathbb S ,d)\)</span>是一个度量空间，<span class="math inline">\(d\)</span>是<span class="math inline">\(\mathbb{S}\)</span>上的度量。 1. <span class="math inline">\(A\)</span>是<span class="math inline">\(\mathbb{S}\)</span>上的一个将单位区间映射到<span class="math inline">\(\mathbb{S}\)</span>的连续映射，例如：<span class="math inline">\(A:[0,1] \to \mathbb S\)</span>. 2.
+从单位区间到其自身的重参数化映射<span class="math inline">\(\alpha
+:[0,1]\to [0,1]\)</span>满足如下三个条件：1）<span class="math inline">\(\alpha\)</span>是连续的。 2）<span class="math inline">\(\alpha\)</span>是非降的，即对于任意的<span class="math inline">\(x,y \in [0,1],x\le y\)</span>，都有<span class="math inline">\(\alpha(x) \le \alpha(y)\)</span>。 3）<span class="math inline">\(\alpha\)</span>是满射。此时有<span class="math inline">\(\alpha(0)=0,\alpha(1)=1\)</span> 3. 设<span class="math inline">\(A\)</span>和<span class="math inline">\(B\)</span>是<span class="math inline">\(\mathbb{S}\)</span>上的两条曲线，即<span class="math inline">\(A:[0,1]\to \mathbb{S},B:[0,1]\to
+\mathbb{S}\)</span>。又<span class="math inline">\(\alpha\)</span>和<span class="math inline">\(\beta\)</span>是单位区间的两个重参数化映射，则曲线<span class="math inline">\(A\)</span>和<span class="math inline">\(B\)</span>之间的Fréchet距离定义为： <span class="math display">\[
+F(A,B)=\underset{\alpha ,\beta}{\inf}\underset{t \in [0,1]}{\max}\lbrace
+d(A(\alpha(t)),B(\beta(t)))
+\]</span></p>
+<p>解释：</p>
+<ul>
+<li>两条曲线<span class="math inline">\(A(\alpha(t))\)</span>和<span class="math inline">\(B(\beta(t))\)</span>之间距离最大值的下确界
+<ul>
+<li>t理解为时间</li>
+<li><span class="math inline">\(\alpha(t)\)</span>和<span class="math inline">\(\beta(t)\)</span>理解为人和狗随时间变化的速度</li>
+<li><span class="math inline">\(A(\alpha(t))\)</span>和<span class="math inline">\(B(\beta(t))\)</span>代表t时刻人和狗的位置</li>
+<li>最大值的下确界意思为,每一种人狗速度方案下，都有对应的距离最大值；那么对于所有的速度方案，这些距离最大值中最小的是哪个？</li>
+</ul></li>
+</ul>
+<p><strong>离散化</strong></p>
+<p>设定<span class="math inline">\(t\)</span>是时间点，该时刻，曲线<span class="math inline">\(A\)</span> 上的采样点为<span class="math inline">\(A(\alpha(t))\)</span>, 曲线<span class="math inline">\(B\)</span>上采样点为<span class="math inline">\(B(\alpha(t))\)</span>.
+如果使用欧氏距离，则容易定义<span class="math inline">\(d(A(\alpha(t)),B(\beta(t)))\)</span>.
+在每次采样中<span class="math inline">\(t\)</span>离散的遍历区间<span class="math inline">\([0,1]\)</span>, 得到该种采样下的最大距离<span class="math inline">\(\underset{t\in [0,1]}{\max} \lbrace
+d(A(\alpha(t)),B(\beta(t))) \rbrace\)</span>.
+Fréchet距离就是使该最大距离最小化的采样方式下的值。
+易于理解的，在离散方式下，我们不可能得到真实的Fréchet距离，而可以无限的趋近。但是越精确的值需要越大的计算量。</p>
+<p><img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/2.jpg"></p>
+<h2 id="hausdorff距离">Hausdorff距离</h2>
+<p>衡量两个集合之间的距离</p>
+<p><strong>定义</strong>: 给定欧氏空间中的两点集<span class="math inline">\(A=\lbrace a_1,a_2,... \rbrace , B=\lbrace
+b_1,b_2,...
+\rbrace\)</span>，豪斯多夫（Hausdorff）距离就是用来衡量这两个点集间的距离。定义公式如下:
+<span class="math display">\[
+H(A,B)=\max[h(A,B),h(B,A)]
+\]</span> 其中， <span class="math display">\[
+h(A,B)=\underset{a \in A}{\max}\underset{b\in B}{\min} \lVert a-b \rVert
+\\
+h(B,A)=\underset{b \in B}{\max}\underset{a\in A}{\min} \lVert b-a \rVert
+\]</span> <span class="math inline">\(H(A,B)\)</span>称为双向Hausdorff
+距离，<span class="math inline">\(h(A,B)\)</span>称为从点集A到点集B的单向 Hausdorff
+距离。相应地<span class="math inline">\(h(B,A)\)</span>称为从点集B到点集A的单向Hausdorff距离</p>
+<p><strong>一些图例</strong></p>
+<p><img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/3.jpg"> <img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/4.jpg"></p>
+<p><strong>性质</strong></p>
+<ul>
+<li><p>双向Hausdorff距离 <span class="math inline">\(H(A,B)\)</span>是单向 Hausdorff 距离<span class="math inline">\(h(A,B)\)</span>和<span class="math inline">\(h(B,A)\)</span>两者中较大者，显然它度量了两个点集间的最大不匹配程度。</p></li>
+<li><p>当<span class="math inline">\(A\)</span>和<span class="math inline">\(B\)</span>都是闭集的时候,Hausdorff距离满足度量的三个定理：</p></li>
+</ul>
+<ol type="1">
+<li><span class="math inline">\(H(A,B)\ge 0\)</span>，当且仅当<span class="math inline">\(A=B\)</span>时，<span class="math inline">\(H(A,B)= 0\)</span></li>
+<li><span class="math inline">\(H(A,B)=H(B,A)\)</span></li>
+<li><span class="math inline">\(H(A,B)+H(B,C)\ge H(A,C)\)</span></li>
+</ol>
+<ul>
+<li><p>若凸集<span class="math inline">\(A,B\)</span>满足<span class="math inline">\(A \nsubseteq B,B \nsubseteq A\)</span>并记<span class="math inline">\(\partial A,\partial B\)</span>分别为<span class="math inline">\(A,B\)</span>边界的集合，则<span class="math inline">\(A,B\)</span>的Hausdorff距离等于<span class="math inline">\(\partial A,\partial
+B\)</span>的Hausdorff距离</p></li>
+<li><p>Hausdorff距离易受到突发噪声的影响。</p></li>
+</ul>
+<p><img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/5.jpg"></p>
+<p>当图像受到噪声污染或存在遮挡等情况时，原始的Haudorff距离容易造成误匹配。所以，在1933年，Huttenlocher提出了部分
+Hausdorff距离的概念。</p>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>各种距离</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>OPTIMAL TRANSPORTATION FOR ELECTRICAL IMPEDANCE  TOMOGRAPHY</title>
     <url>/2025/02/13/OPTIMAL-TRANSPORTATION-FOR-ELECTRICAL-IMPEDANCE-TOMOGRAPHY/</url>
     <content><![CDATA[<h1 id="optimal-transportation-for-electrical-impedance-tomography电阻抗断层成像的最优传输">OPTIMAL
@@ -323,7 +470,7 @@ y) = \frac{1}{2} d^2( x , y)\)</span>为二次成本。假设概率测度<span c
 <strong>(?)</strong>。记号<span class="math inline">\(\exp_p
 X_p\)</span>是以<span class="math inline">\(p\in
 M\)</span>为起点，沿<span class="math inline">\(X_p∈TM\)</span>的方向，长度为<span class="math inline">\(| X_p
-|\)</span>的测地线段的端点。特别地，在欧氏空<span class="math inline">\(\exp_p X_p = x + X_p\)</span>中，等价于结果<span class="math inline">\(T ( x ) = x-\nabla \varphi ( x
+|\)</span>的测地线段的端点。特别地，在欧氏空间<span class="math inline">\(\exp_p X_p = x + X_p\)</span>中，等价于结果<span class="math inline">\(T ( x ) = x-\nabla \varphi ( x
 )\)</span>。<strong>定理2.1假设<span class="math inline">\(\mu\)</span>不给<span class="math inline">\(M\)</span>的体积测度的可忽略集赋予质量，从而保证了二次代价下最优映射的存在性和唯一性。</strong></p>
 <p>事实上，Monge的最优运输<span class="math inline">\(T\)</span>可能并不总是存在的。我们的工作主要集中在Monge问题上，因为我们感兴趣的是具有适当密度函数的测度。这里我们假设测度<span class="math inline">\(\mu\)</span>和<span class="math inline">\(\nu\)</span>具有密度函数<span class="math inline">\(f\)</span>和<span class="math inline">\(g\)</span>：<span class="math inline">\(d\mu = f (
 x ) dx，d\nu = g ( y ) dy\)</span>，其中<span class="math inline">\(dx\)</span>和<span class="math inline">\(dy\)</span>是<span class="math inline">\(M\)</span>的体积元.在整个过程中，用<span class="math inline">\(W_p( f , g)\)</span>代替<span class="math inline">\(W_p( \mu , \nu)\)</span>来表示<span class="math inline">\(\mu\)</span>和<span class="math inline">\(\nu\)</span>之间的Wasserstein距离。</p>
@@ -534,14 +681,158 @@ f_i , g_i)\)</span>，下面的估计成立： <span class="math display">\[
 \left|\alpha_1-\alpha_2\right| \leq
 \frac{1}{2}\left(\left\|f_1-f_2\right\|_{L^1[0,1]}+\left\|g_1-g_2\right\|_{L^1[0,1]}\right)
 \]</span></p>
+<h2 id="eit">EIT</h2>
+<p>设<span class="math inline">\(\Omega\)</span>是<span class="math inline">\(\mathbb{R}^2\)</span>中具有光滑边界<span class="math inline">\(\partial \Omega\)</span>的开有界区域，<span class="math inline">\(\sigma \in L^\infin(\Omega)\)</span>在<span class="math inline">\(\Omega\)</span>上严格为正。在我们的问题中，<span class="math inline">\(\Omega\)</span>是单位圆盘.
+EIT正问题采用椭圆型偏微分方程建模： <span class="math display">\[
+\begin{aligned}
+-\nabla \cdot(\sigma \nabla u) &amp; =0 &amp; &amp; \text { in } \Omega
+\\
+\sigma \frac{\partial u}{\partial n} &amp; =j &amp; &amp; \text { on }
+\partial \Omega
+\end{aligned} \qquad (5.1)
+\]</span> 式中<span class="math inline">\(u\)</span>和<span class="math inline">\(j\)</span>分别为电势和电流。这里引入Sobolev空间<span class="math inline">\(\~{H}^k(\partial \Omega)\)</span>和<span class="math inline">\(\~{H}^k(\Omega)\)</span>，其中<span class="math inline">\(k \in \mathbb{R}\)</span>， <span class="math display">\[
+\begin{aligned}
+\tilde{H}^k(\partial \Omega) &amp; :=\left\{v \in H^k(\partial \Omega):
+\int_{\partial \Omega} v \mathrm{~d} s=0\right\} \\
+\tilde{H}^k(\Omega) &amp; :=\left\{v \in H^k(\Omega): \int_{\partial
+\Omega} v \mathrm{~d} s=0\right\}
+\end{aligned} \qquad (5.2)
+\]</span> 对于每个<span class="math inline">\(j \in
+\tilde{H}^{-\frac{1}{2}}(\partial \Omega)\)</span>，存在唯一的<span class="math inline">\(u \in
+\tilde{H}^1(\Omega)\)</span>，使得式(5.1)成立。这里我们用<span class="math inline">\(u=F(\sigma) j\)</span>来表示(5.1)的正解。
+因此，对于每个满足条件的<span class="math inline">\(\sigma\)</span>，可以定义一个Neumann to Dirichlet
+(NtD)算子<span class="math inline">\(\Lambda(\sigma):
+\tilde{H}^{-\frac{1}{2}}(\partial \Omega) \rightarrow
+\tilde{H}^{\frac{1}{2}}(\partial \Omega)\)</span> ：</p>
+<p><span class="math display">\[
+\Lambda(\sigma) j=\phi, \quad \text { where } \phi=\gamma F(\sigma) j
+\qquad (5.3)
+\]</span></p>
+<p>其中<span class="math inline">\(\gamma\)</span>是投影<span class="math inline">\(\~{H}^1(\Omega)\)</span>到<span class="math inline">\(\~{H}^{\frac{1}{2}}(\partial
+\Omega)\)</span>的迹算子. NtD映射<span class="math inline">\(\Lambda(\sigma)\)</span>是自伴且正定的。而正问题就是已知<span class="math inline">\(\sigma\)</span>计算<span class="math inline">\(\Lambda(\sigma)\)</span>。反问题(EIT)
+[9、15、47]是已知<span class="math inline">\(\Lambda(\sigma)\)</span>，重构<span class="math inline">\(\sigma\)</span>，可以表述为一个优化问题:</p>
+<p><span class="math display">\[
+\sigma^*=\underset{\sigma \in \mathcal{A}}{\operatorname{argmin}}
+\mathcal{J}(\sigma), \quad \mathcal{J}(\sigma):=\sum_{n=1}^N
+\mathfrak{D}\left(\Lambda(\sigma) j_n, \tilde{\phi}_n\right) \qquad
+(5.4)
+\]</span></p>
+<p>其中，<span class="math inline">\(\left(j_1, \tilde{\phi}_1\right),
+\cdots,\left(j_N,
+\tilde{\phi}_N\right)\)</span>为NtD图谱的测量值。定义在边界上的误匹配函数<span class="math inline">\(\mathfrak{D}(\phi,
+\tilde{\phi})\)</span>衡量了<span class="math inline">\(\phi\)</span>和<span class="math inline">\(\tilde{\phi}\)</span>之间的差异。容许集<span class="math inline">\(\mathcal{A}\)</span>是:</p>
+<p><span class="math display">\[
+\mathcal{A}=\left\{\sigma \in L_{\infty}(\Omega): c_0 \leq \sigma \leq
+c_1 \text { on } \Omega,\left.\sigma\right|_{\partial
+\Omega}=\left.\sigma_0\right|_{\partial \Omega}\right\} \qquad (5.5)
+\]</span><br>
+</p>
+<p>在现有方法[15-17、29、32、44]中，选择<span class="math inline">\(\mathfrak{D}\)</span>为<span class="math inline">\(\partial \Omega\)</span>上的<span class="math inline">\(L^2\)</span>范数，并在<span class="math inline">\(\mathcal{J}(\sigma)\)</span>中加入正则化项<span class="math inline">\(\mathscr{R}(\sigma)\)</span>，得到新的目标泛函。</p>
+<p><span class="math display">\[
+\Psi(\sigma):=\mathcal{J}(\sigma)+\beta \mathscr{R}(\sigma)
+\]</span></p>
+<p>其中<span class="math inline">\(\beta\)</span>是正则化参数。由此产生的优化问题通常采用基于梯度的迭代优化方法进行求解。然而，由于EIT的不适定性[
+47 ]，重建容易受到边界测量中噪声的干扰。需要一个适当的<span class="math inline">\(\beta\)</span>值来稳定重建过程。然而，当噪声达到一定的阈值水平时，很难选择一个合适的<span class="math inline">\(\beta\)</span>来平衡重建的平滑性和准确性。</p>
+<p>在这里，我们应用二次Wasserstein距离来解决优化问题(5.4)，因为<span class="math inline">\(W_2\)</span>距离具有以下良好的性质[21]。事实上，在<span class="math inline">\(W_2\)</span>下，初始数据和扰动数据之间的差异很小，因为质量的局部消除使得最优映射接近恒等映射，从而对高频噪声具有鲁棒性[40]。例如[48]</p>
+<p><span class="math display">\[
+W_2\left(f_n, f\right)=O\left(\frac{1}{n}\right),
+\quad\left\|f_n-f\right\|_{L^2}=O(1)
+\]</span></p>
+<p>其中<span class="math inline">\(f_n=1+\sin (2 \pi n
+x)\)</span>是定义在<span class="math inline">\([0,1]\)</span>上的<span class="math inline">\(f=1\)</span>的扰动.同时，<span class="math inline">\(L^2\)</span>偏向于沿振幅轴方向的位移，而<span class="math inline">\(W_2\)</span>同时考虑了空间变化和振幅变化。这意味着<span class="math inline">\(W_2\)</span>比<span class="math inline">\(L^2\)</span>对数据的形状变化更敏感。此外，<span class="math inline">\(W_2\)</span>的梯度比注2.3中提到的输入数据<span class="math inline">\(f\)</span>更平滑，对反演产生了平滑作用。</p>
+<p>为了在<span class="math inline">\(W_2\)</span>的基础上进行优化，需要计算<span class="math inline">\(\mathcal{J}(\sigma)\)</span>和<span class="math inline">\(\mathcal{J}^{\prime}(\sigma)\)</span>，这涉及到<span class="math inline">\(W_2\)</span>的值和梯度的计算。对于EIT问题，选择误匹配函数<span class="math inline">\(\mathfrak{D}\)</span>为</p>
+<p><span class="math display">\[
+\mathfrak{D}(\phi, \tilde{\phi})=W_2^2(\mathcal{L}(\phi),
+\mathcal{L}(\tilde{\phi})) \qquad (5.7)
+\]</span></p>
+<p>其中<span class="math inline">\(\mathcal{L}\)</span>是将电势转化为具有单位质量的非负密度函数的正规化算子，即(3.4)中的<span class="math inline">\(\mathcal{L}(\phi) \in
+D\)</span>。由于我们测量了电势<span class="math inline">\(\phi \in
+\tilde{H}^{\frac{1}{2}}(\partial \Omega)\)</span>，所以<span class="math inline">\(\phi\)</span>在<span class="math inline">\(\partial
+\Omega\)</span>上的质量为零，自动满足质量守恒.因此，我们只需要重新刻度<span class="math inline">\(\phi\)</span>使其为正.为了达到这个目的，一个简单的方法[53]是增加一个正的常数<span class="math inline">\(a\)</span>：</p>
+<p><span class="math display">\[
+\mathcal{L}(\phi)=\frac{\phi+a}{\int_{\partial \Omega}(\phi+a)
+\mathrm{d} s}=\frac{1}{a} \phi+1, \quad \phi \in
+\tilde{H}^{\frac{1}{2}}(\partial \Omega) \qquad (5.8)
+\]</span></p>
+<p>在[53]中，<span class="math inline">\(W_2\)</span>的度量结构由于质量的归一化而丢失。然而，从(5.8)中我们知道<span class="math inline">\(W_2(\mathcal{L}(\phi),
+\mathcal{L}(\tilde{\phi}))\)</span>定义在<span class="math inline">\(\tilde{H}^{\frac{1}{2}}(\partial
+\Omega)\)</span>中的性质是保持的，因为质量对<span class="math inline">\(\tilde{H}^{\frac{1}{2}}(\partial
+\Omega)\)</span>中的函数是守恒的。 <span class="math inline">\(W_2(\mathcal{L}(\phi),
+\mathcal{L}(\tilde{\phi}))\)</span>的计算沿用上一节的方法，因此误<span class="math inline">\(\mathcal{J}(\sigma)\)</span>可以很容易地计算得到。</p>
+<p>另一个重要问题是推导<span class="math inline">\(\mathcal{J}(\sigma)\)</span>的Fréchet梯度。为了简化记号，我们在(5.4)中讨论了<span class="math inline">\(N=1\)</span>的情形.一阶扰动给出[41]：</p>
+<p><span class="math display">\[
+\begin{aligned}
+\delta \mathcal{J}=\left\langle\frac{\delta \mathcal{J}}{\delta \phi},
+\delta \phi\right\rangle_{L^2(\partial \Omega)} &amp;
+=\left\langle\frac{\delta \mathfrak{D}(\phi, \tilde{\phi})}{\delta
+\phi}, \delta \phi\right\rangle_{L^2(\partial
+\Omega)}=\left\langle\frac{\delta \mathfrak{D}(\phi,
+\tilde{\phi})}{\delta \phi}, \frac{\delta \Lambda(\sigma) j}{\delta
+\sigma} \delta \sigma\right\rangle_{L^2(\partial \Omega)} \\
+= &amp; \left\langle\left(\frac{\delta \Lambda(\sigma) j}{\delta
+\sigma}\right)^* \frac{\delta \mathfrak{D}(\phi, \tilde{\phi})}{\delta
+\phi}, \delta \sigma\right\rangle_{L^2(\Omega)}
+\end{aligned}
+\]</span></p>
+<p>式中<span class="math inline">\(\phi=\Lambda(\sigma)
+j\)</span>为状态变量。因此泛函的梯度由下式给出</p>
+<p><span class="math display">\[
+\mathcal{J}^{\prime}(\sigma)=\left(\frac{\delta \Lambda(\sigma)
+j}{\delta \sigma}\right)^* \frac{\delta \mathfrak{D}(\phi,
+\tilde{\phi})}{\delta \phi} \qquad(5.9)
+\]</span></p>
+<p>式中<span class="math inline">\(\mathfrak{D}\)</span>的梯度为</p>
+<p><span class="math display">\[
+\frac{\delta \mathfrak{D}(\phi, \tilde{\phi})}{\delta \phi}=\frac{1}{a}
+\frac{\delta W_2^2(\mathcal{L}(\phi), \mathcal{L}(\tilde{\phi}))}{\delta
+\mathcal{L}(\phi)} \qquad (5.10)
+\]</span></p>
+<p>由注3.1，梯度可按第4节（数值方法）的方法计算。对于伴随算子<span class="math inline">\(\frac{\delta \Lambda(\sigma) j}{\delta
+\sigma}\)</span>，在[9]中给出：</p>
+<p><span class="math display">\[
+\begin{aligned}
+\left(\frac{\delta \Lambda(\sigma) j}{\delta \sigma}\right)^*:
+\tilde{H}^{-\frac{1}{2}}(\partial \Omega) &amp; \longrightarrow
+L_1(\Omega) \\
+h &amp; \longmapsto-\nabla u \cdot \nabla \tilde{u}
+\end{aligned} \qquad (5.11)
+\]</span></p>
+<p>其中<span class="math inline">\(u=F(\sigma) j\)</span>，<span class="math inline">\(\tilde{u}=F(\sigma) h\)</span>。式(5.10)中<span class="math inline">\(W_2\)</span>的Fréchet梯度涉及超参数<span class="math inline">\(c\)</span>的选择，如式(3.11)所述。这里选择常数<span class="math inline">\(c\)</span>，使得</p>
+<p><span class="math display">\[
+\int_{\partial \Omega} \frac{\delta \mathfrak{D}(\phi,
+\tilde{\phi})}{\delta \phi} \mathrm{d} s=\frac{1}{a} \int_{\partial
+\Omega} \frac{\delta W_2^2(\mathcal{L}(\phi),
+\mathcal{L}(\tilde{\phi}))}{\delta \mathcal{L}(\phi)} \mathrm{d} s=0
+\]</span></p>
+<p>因此，回顾定义(5.2)，<span class="math inline">\(\frac{\delta
+\Omega(\phi, \bar{\phi})}{\delta \phi} \in
+\tilde{H}^{-\frac{1}{2}}(\partial
+\Omega)\)</span>，在算子(5.11)的定义域内。</p>
+<p>一般地，Fréchet梯度(5.9)被定义为<span class="math inline">\(\langle\cdot,
+\cdot\rangle_{L^2(\Omega)}\)</span>下的积分算子。改变<span class="math inline">\(L^2\)</span>到<span class="math inline">\(H_0^1\)</span>的底层空间，我们可以通过公式〈<span class="math inline">\(\left\langle\mathcal{J}^{\prime}(\sigma),
+\eta\right\rangle_{L^2(\Omega)}=\left\langle\mathcal{J}_s^{\prime}(\sigma),
+\eta\right\rangle_{H_0^1(\Omega)}\)</span>定义关于<span class="math inline">\(\langle\cdot,
+\cdot\rangle_{H_0^1(\Omega)}\)</span> 的梯度<span class="math inline">\(\mathcal{J}_s^{\prime}\)</span>，这等价于求解方程[29、31]：</p>
+<p><span class="math display">\[
+\begin{aligned}
+-\Delta \mathcal{J}_s^{\prime}(\sigma)+\mathcal{J}_s^{\prime}(\sigma)
+&amp; =\mathcal{J}^{\prime}(\sigma) &amp; &amp; \text { in } \Omega \\
+\mathcal{J}_s^{\prime}(\sigma) &amp; =0 &amp; &amp; \text { on }
+\partial \Omega
+\end{aligned}
+\]</span></p>
+<p>这个梯度<span class="math inline">\(\mathcal{J}_s^{\prime}\)</span>被称为Sobolev梯度[38]
+.对于EIT问题，我们采用Sobolev梯度<span class="math inline">\(\mathcal{J}_s^{\prime}\)</span>代替标准的<span class="math inline">\(L^2\)</span>梯度<span class="math inline">\(\mathcal{J}^{\prime}\)</span>。事实上，<span class="math inline">\(\mathcal{J}^{\prime}\)</span>一般不能给出合理的重构，而<span class="math inline">\(\mathcal{J}_s^{\prime}\)</span>稳定了不适定问题(5.4)
+。此外，<span class="math inline">\(\mathcal{J}_s^{\prime}\)</span>的应用自然地保留了式(5.5)中边界上的已知信息。梯度<span class="math inline">\(\mathcal{J}_s^{\prime}\)</span>也比振荡优化过程中优选的<span class="math inline">\(\mathcal{J}^{\prime}\)</span>更平滑。</p>
+<p>利用梯度信息，<strong>我们提出了带有非单调线搜索策略的Barzilai-Borwein梯度算法来最小化(5.6)</strong>。算法2总结了该方法的具体实现。</p>
 ]]></content>
       <categories>
         <category>论文精读</category>
       </categories>
       <tags>
         <tag>最优化</tag>
-        <tag>EIT</tag>
         <tag>最优运输</tag>
+        <tag>EIT</tag>
       </tags>
   </entry>
   <entry>
@@ -693,153 +984,6 @@ f(x)-f(y)\rVert}{d(x,y)}\)</span></p>
       <tags>
         <tag>最优化</tag>
         <tag>最优运输</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>最优传输(Optimal Transportation)</title>
-    <url>/2025/02/09/OT1/</url>
-    <content><![CDATA[<h2 id="什么是最优传输">什么是最优传输？</h2>
-<p>最优传输最开始由Monge于1781年提出。一个典型的Monge问题是考虑将一堆具有一定形状的沙子搬运到指定的另外一个形状所需要的具有最小代价的搬运方法。
-如下图所示，我们想将左边红色区域的沙堆搬运到右边，形成右边绿色的沙堆的形状。我们想要找到消耗最少的搬运方式。
-<img src="/2025/02/09/OT1/1.jpg" alt="image">
-一句话来概括，就是<strong>如何用最少的代价将一个质量分布转为另一个质量分布。</strong>
-<span id="more"></span> ## 质量分布 质量分布其实就是两个测度空间<span class="math inline">\((X,\mu),(Y,\nu)\)</span>。一般情况下，质量不会凭空产生，所以我们会要求这两个分布的“总质量”是一样的，即<span class="math inline">\(\int_x d\mu=\int_Yd\nu\)</span>。
-问题有了考虑的对象，我们还可以定义成本函数<span class="math inline">\(c(x,y):X \times Y \to \mathbb
-R^+\)</span>，一般是有界的，来衡量将质量从点<span class="math inline">\(x\)</span>运到点<span class="math inline">\(y\)</span>的成本。那么如何去进行移动？主要有两个角度去考虑，分别是Monge问题和Kantorovich问题。</p>
-<h2 id="monge问题">Monge问题</h2>
-<p>Monge问题就是寻找一个保测度的映射<span class="math inline">\(T:X \to
-Y\)</span> <span class="math display">\[
-\underset{T} {\min} \int_X c(x,T(x))d \mu(x),T_{ \# } \mu= \nu
-\]</span> <span class="math inline">\(T_{
-\#  }\)</span>是前推算子（<span class="math inline">\(T_{ \#
-}\)</span>的作用对象是<span class="math inline">\(\mu\)</span>，表示把测度<span class="math inline">\(\mu\)</span>推到<span class="math inline">\(\nu\)</span>），这个“推”的过程就是一个保测度的过程，即
-<span class="math display">\[
-T_{ \#  }\mu = \nu \iff \forall B \subset Y,\nu (B)=\mu (T^{-1}(B))
-\]</span> <img src="/2025/02/09/OT1/2.jpg" alt="Monge Map">
-但是映射的定义就限制了我们不能实现“一对多”的操作，这就导致了一个很严重的问题，Monge问题不一定有解。比如一个狄拉克分布（在包含某个点的集合测度是1，其余是0）就不可能保测度地映射到高斯分布。
-我们可以让质量“可分”，即以概率的形式去进行“移动”。这就是Kantorovich问题。</p>
-<h2 id="kantorovich问题">Kantorovich问题</h2>
-<p>在Kantorovich问题中，Kantorovich问题中，我们对Monge问题进行松弛，不再寻找一个映射，而是寻找一个联合分布（耦合coupling），其中它的边界分布分别是<span class="math inline">\(\mu,\nu\)</span>。从而最小化总成本 <span class="math display">\[
-\underset{\pi}{\min}\int_{X \times Y}c(x,y)d\pi(x,y),P_{x
-\#  }\pi=\mu,P_{y \# }\pi=\nu
-\]</span> <img src="/2025/02/09/OT1/3.jpg" alt="Kantorovich Relaxation"> <span class="math inline">\(\pi(x,y)\)</span>就是从<span class="math inline">\(x\)</span>移动到<span class="math inline">\(y\)</span>的概率，上式是总成本的期望。
-这样的松弛之后，Kantorovich本质上变成了一个无限维的线性规划问题（如果分布是离散的，比如一堆点，我们要做的就是在两个点云之间做matching，那么<span class="math inline">\(\pi\)</span>就变成了一个矩阵，就变成了有限维的线性规划问题）
-线性规划理论告诉我们，如果耦合集合非空且紧，目标函数是下半连续的，那么线性规划一定可以取到最小值。也就保证了Kantorovich一定有解。</p>
-<h2 id="分布之间的度量-wasserstein距离">分布之间的度量-Wasserstein距离</h2>
-<p>比较两种分布的一些方法：</p>
-<p><strong>交叉熵</strong>：对应分布为<span class="math inline">\(p(x)\)</span>的随机变量，熵<span class="math inline">\(H(p)\)</span>表示其最优编码长度。交叉熵是按照概率分布<span class="math inline">\(q\)</span>的最优编码对真实分布为<span class="math inline">\(p\)</span>的信息进行编码的长度 交叉熵定义为 <span class="math display">\[
-H(p,q)=E_q[-logq(x)]=-\displaystyle\sum_{x}p(x)logq(x)
-\]</span> 在给定<span class="math inline">\(p\)</span>的情况下，如果<span class="math inline">\(q\)</span>和<span class="math inline">\(p\)</span>越接近，交叉熵越小；如果<span class="math inline">\(q\)</span>和<span class="math inline">\(p\)</span>越远，交叉熵越大</p>
-<p><strong>KL散度</strong>:是用概率分布<span class="math inline">\(q\)</span>来近似<span class="math inline">\(p\)</span>时所造成的信息损失量。KL散度是按照概率分布<span class="math inline">\(q\)</span>的最优编码对真实分布为<span class="math inline">\(p\)</span>的信息进行编码，其平均编码长度<span class="math inline">\(H(p,q)\)</span>和<span class="math inline">\(p\)</span>的最优平均编码长度<span class="math inline">\(H(p)\)</span>之间的差异。对于离散概率分布<span class="math inline">\(p\)</span>和<span class="math inline">\(q\)</span>，从<span class="math inline">\(q\)</span>到<span class="math inline">\(p\)</span>的KL散度定义为: <span class="math display">\[
-D_{KL}(p\parallel q)=H(p,q)-H(p)=\sum_x p(x)log{\frac {p(x)} {q(x)} }
-\]</span>
-KL散度可以是衡量两个概率分布之间的距离。KL散度总是非负的，只有当<span class="math inline">\(p=q\)</span>时，<span class="math inline">\(D_{KL}(p\parallel
-q)=0\)</span>。两个分布越接近，KL散度越小；两个分布越远，KL散度越大。但KL散度并不是一个真正的度量或距离，一是KL散度不满足距离的对称性，二是KL散度不满足距离的三角不等式性质。</p>
-<p><strong>JS散度</strong>：
-JS散度是一种对称的衡量两个分布相似度的度量方式，定义为 <span class="math display">\[
-D_{JS}(p\parallel q)={\frac 1 2}D_{KL}(p \parallel m)+{\frac 1
-2}D_{KL}(q \parallel m)
-\]</span> 其中，<span class="math inline">\(m={\frac 1 2}(p+q)\)</span>
-JS 散度是KL散度一种改进。但两种散度都存在一个问题，即如果两个分布p, q
-没有重叠或者重叠非常少时，KL散度和JS 散度都很难衡量两个分布的距离</p>
-<p><strong>Wasserstein距离</strong>： Wasserstein 距离（Wasserstein
-Distance）也用于衡量两个分布之间的距离。对于两个分布<span class="math inline">\(q_1,q_2,p-Wasserstein\)</span>距离定义为 <span class="math display">\[
-W_p(q_1,q_2)=(\underset{\pi(x,y) \in U(x,y)} {\inf}E_{(x,y)\sim \pi
-(x,y)}[d(x,y)^p]) ^{1/p}
-\]</span> 其中，<span class="math inline">\(U(x,y)\)</span>是边际分布为<span class="math inline">\(q_1\)</span>和<span class="math inline">\(q_2\)</span>的所有可能的联合分布集合，<span class="math inline">\(d(x,y)\)</span>为<span class="math inline">\(x\)</span>和<span class="math inline">\(y\)</span>的距离 Wasserstein距离相比KL散度和JS
-散度的优势在于：即使两个分布没有重叠或者重叠非常少，Wasserstein
-距离仍然能反映两个分布的远近。</p>
-<p>我们可以发现，如果令<span class="math inline">\(d(x,y)^p=c(x,y)\)</span>，Wasserstein距离实际上就是从一个分布转换为另一个分布所要付出的代价。</p>
-<p>Wasserstein
-GAN就是将W-1距离作为损失函数，解决了GAN的许多问题，比如训练不稳定，判别器不能训练的“太好”等。究其原因主要是因为W-1度量比KL度量更“弱”：也就是说在K-L散度下收敛的序列在W-1距离下也一定收敛。这样的性质就保证了W-1可以捕捉到序列更多的几何信息（比如不重叠的分布的KL散度永远是0，但W-1距离不然。），训练会更鲁棒。</p>
-]]></content>
-      <categories>
-        <category>学习笔记</category>
-      </categories>
-      <tags>
-        <tag>最优化</tag>
-        <tag>最优运输</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>两个曲线之间的距离</title>
-    <url>/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/</url>
-    <content><![CDATA[<h2 id="两个曲线之间的距离">两个曲线之间的距离</h2>
-<p>搜Fréchet怎么打的时候看到了Fréchet距离，感觉这两天接触的距离比较多，做下整理（说不定以后换个距离就是个创新点）</p>
-<p>本篇主要介绍两个距离：<strong>Fréchet距离</strong>和<strong>Hausdorff距离</strong>。以后看到了比较两个曲线的方法再做补充（之前介绍过的两个分布之间的距离也会写篇博客整理出来）
-<span id="more"></span></p>
-<h2 id="fréchet距离">Fréchet距离</h2>
-<p>Fréchet distance(弗雷歇距离)是法国数学家Maurice René
-Fréchet在1906年提出的一种路径空间相似形描述，这种描述同时还考虑进路径空间距离的因素，对于空间路径的相似性比较适用。</p>
-<p><strong>直观的理解，Fréchet distance就是最短的狗绳长度</strong>： ·
-主人走路径A，狗走路径B，他们有不同的配速方案。 ·
-主人和狗各自走完这两条路径过程中所需要的最短狗绳长度。（在某一种配速下需要的狗绳长度，但其他配速下需要的狗绳长度更长）
-<img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/1.jpg" alt="image"></p>
-<p><strong>严格的数学定义：</strong> 设<span class="math inline">\((\mathbb S ,d)\)</span>是一个度量空间，<span class="math inline">\(d\)</span>是<span class="math inline">\(\mathbb{S}\)</span>上的度量。 1. <span class="math inline">\(A\)</span>是<span class="math inline">\(\mathbb{S}\)</span>上的一个将单位区间映射到<span class="math inline">\(\mathbb{S}\)</span>的连续映射，例如：<span class="math inline">\(A:[0,1] \to \mathbb S\)</span>. 2.
-从单位区间到其自身的重参数化映射<span class="math inline">\(\alpha
-:[0,1]\to [0,1]\)</span>满足如下三个条件：1）<span class="math inline">\(\alpha\)</span>是连续的。 2）<span class="math inline">\(\alpha\)</span>是非降的，即对于任意的<span class="math inline">\(x,y \in [0,1],x\le y\)</span>，都有<span class="math inline">\(\alpha(x) \le \alpha(y)\)</span>。 3）<span class="math inline">\(\alpha\)</span>是满射。此时有<span class="math inline">\(\alpha(0)=0,\alpha(1)=1\)</span> 3. 设<span class="math inline">\(A\)</span>和<span class="math inline">\(B\)</span>是<span class="math inline">\(\mathbb{S}\)</span>上的两条曲线，即<span class="math inline">\(A:[0,1]\to \mathbb{S},B:[0,1]\to
-\mathbb{S}\)</span>。又<span class="math inline">\(\alpha\)</span>和<span class="math inline">\(\beta\)</span>是单位区间的两个重参数化映射，则曲线<span class="math inline">\(A\)</span>和<span class="math inline">\(B\)</span>之间的Fréchet距离定义为： <span class="math display">\[
-F(A,B)=\underset{\alpha ,\beta}{\inf}\underset{t \in [0,1]}{\max}\lbrace
-d(A(\alpha(t)),B(\beta(t)))
-\]</span></p>
-<p>解释：</p>
-<ul>
-<li>两条曲线<span class="math inline">\(A(\alpha(t))\)</span>和<span class="math inline">\(B(\beta(t))\)</span>之间距离最大值的下确界
-<ul>
-<li>t理解为时间</li>
-<li><span class="math inline">\(\alpha(t)\)</span>和<span class="math inline">\(\beta(t)\)</span>理解为人和狗随时间变化的速度</li>
-<li><span class="math inline">\(A(\alpha(t))\)</span>和<span class="math inline">\(B(\beta(t))\)</span>代表t时刻人和狗的位置</li>
-<li>最大值的下确界意思为,每一种人狗速度方案下，都有对应的距离最大值；那么对于所有的速度方案，这些距离最大值中最小的是哪个？</li>
-</ul></li>
-</ul>
-<p><strong>离散化</strong></p>
-<p>设定<span class="math inline">\(t\)</span>是时间点，该时刻，曲线<span class="math inline">\(A\)</span> 上的采样点为<span class="math inline">\(A(\alpha(t))\)</span>, 曲线<span class="math inline">\(B\)</span>上采样点为<span class="math inline">\(B(\alpha(t))\)</span>.
-如果使用欧氏距离，则容易定义<span class="math inline">\(d(A(\alpha(t)),B(\beta(t)))\)</span>.
-在每次采样中<span class="math inline">\(t\)</span>离散的遍历区间<span class="math inline">\([0,1]\)</span>, 得到该种采样下的最大距离<span class="math inline">\(\underset{t\in [0,1]}{\max} \lbrace
-d(A(\alpha(t)),B(\beta(t))) \rbrace\)</span>.
-Fréchet距离就是使该最大距离最小化的采样方式下的值。
-易于理解的，在离散方式下，我们不可能得到真实的Fréchet距离，而可以无限的趋近。但是越精确的值需要越大的计算量。</p>
-<p><img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/2.jpg"></p>
-<h2 id="hausdorff距离">Hausdorff距离</h2>
-<p>衡量两个集合之间的距离</p>
-<p><strong>定义</strong>: 给定欧氏空间中的两点集<span class="math inline">\(A=\lbrace a_1,a_2,... \rbrace , B=\lbrace
-b_1,b_2,...
-\rbrace\)</span>，豪斯多夫（Hausdorff）距离就是用来衡量这两个点集间的距离。定义公式如下:
-<span class="math display">\[
-H(A,B)=\max[h(A,B),h(B,A)]
-\]</span> 其中， <span class="math display">\[
-h(A,B)=\underset{a \in A}{\max}\underset{b\in B}{\min} \lVert a-b \rVert
-\\
-h(B,A)=\underset{b \in B}{\max}\underset{a\in A}{\min} \lVert b-a \rVert
-\]</span> <span class="math inline">\(H(A,B)\)</span>称为双向Hausdorff
-距离，<span class="math inline">\(h(A,B)\)</span>称为从点集A到点集B的单向 Hausdorff
-距离。相应地<span class="math inline">\(h(B,A)\)</span>称为从点集B到点集A的单向Hausdorff距离</p>
-<p><strong>一些图例</strong></p>
-<p><img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/3.jpg"> <img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/4.jpg"></p>
-<p><strong>性质</strong></p>
-<ul>
-<li><p>双向Hausdorff距离 <span class="math inline">\(H(A,B)\)</span>是单向 Hausdorff 距离<span class="math inline">\(h(A,B)\)</span>和<span class="math inline">\(h(B,A)\)</span>两者中较大者，显然它度量了两个点集间的最大不匹配程度。</p></li>
-<li><p>当<span class="math inline">\(A\)</span>和<span class="math inline">\(B\)</span>都是闭集的时候,Hausdorff距离满足度量的三个定理：</p></li>
-</ul>
-<ol type="1">
-<li><span class="math inline">\(H(A,B)\ge 0\)</span>，当且仅当<span class="math inline">\(A=B\)</span>时，<span class="math inline">\(H(A,B)= 0\)</span></li>
-<li><span class="math inline">\(H(A,B)=H(B,A)\)</span></li>
-<li><span class="math inline">\(H(A,B)+H(B,C)\ge H(A,C)\)</span></li>
-</ol>
-<ul>
-<li><p>若凸集<span class="math inline">\(A,B\)</span>满足<span class="math inline">\(A \nsubseteq B,B \nsubseteq A\)</span>并记<span class="math inline">\(\partial A,\partial B\)</span>分别为<span class="math inline">\(A,B\)</span>边界的集合，则<span class="math inline">\(A,B\)</span>的Hausdorff距离等于<span class="math inline">\(\partial A,\partial
-B\)</span>的Hausdorff距离</p></li>
-<li><p>Hausdorff距离易受到突发噪声的影响。</p></li>
-</ul>
-<p><img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/5.jpg"></p>
-<p>当图像受到噪声污染或存在遮挡等情况时，原始的Haudorff距离容易造成误匹配。所以，在1933年，Huttenlocher提出了部分
-Hausdorff距离的概念。</p>
-]]></content>
-      <categories>
-        <category>学习笔记</category>
-      </categories>
-      <tags>
-        <tag>各种距离</tag>
       </tags>
   </entry>
 </search>

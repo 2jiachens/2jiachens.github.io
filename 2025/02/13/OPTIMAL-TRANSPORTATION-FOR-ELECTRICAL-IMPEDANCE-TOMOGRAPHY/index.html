@@ -28,11 +28,11 @@
 <meta property="og:description" content="OPTIMAL TRANSPORTATION FOR ELECTRICAL IMPEDANCE TOMOGRAPHY（电阻抗断层成像的最优传输） 期刊：MATHEMATICS OF COMPUTATION 时间：September 2024 摘要 这项工作建立了一个用基于测地线的二次Wasserstein距离(\(W_2\))求解逆边界问题的框架。Fréchet梯度的一般形式由最优运输">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-02-13T11:26:47.000Z">
-<meta property="article:modified_time" content="2025-02-17T15:00:18.264Z">
+<meta property="article:modified_time" content="2025-02-19T03:40:18.652Z">
 <meta property="article:author" content="宋嘉晨">
 <meta property="article:tag" content="最优化">
-<meta property="article:tag" content="EIT">
 <meta property="article:tag" content="最优运输">
+<meta property="article:tag" content="EIT">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://example.com/2025/02/13/OPTIMAL-TRANSPORTATION-FOR-ELECTRICAL-IMPEDANCE-TOMOGRAPHY/">
@@ -226,7 +226,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-02-17 23:00:18" itemprop="dateModified" datetime="2025-02-17T23:00:18+08:00">2025-02-17</time>
+                <time title="修改时间：2025-02-19 11:40:18" itemprop="dateModified" datetime="2025-02-19T11:40:18+08:00">2025-02-19</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -265,7 +265,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>14k</span>
+              <span>21k</span>
             </span>
 
         </div>
@@ -416,7 +416,7 @@ y) = \frac{1}{2} d^2( x , y)\)</span>为二次成本。假设概率测度<span c
 <strong>(?)</strong>。记号<span class="math inline">\(\exp_p
 X_p\)</span>是以<span class="math inline">\(p\in
 M\)</span>为起点，沿<span class="math inline">\(X_p∈TM\)</span>的方向，长度为<span class="math inline">\(| X_p
-|\)</span>的测地线段的端点。特别地，在欧氏空<span class="math inline">\(\exp_p X_p = x + X_p\)</span>中，等价于结果<span class="math inline">\(T ( x ) = x-\nabla \varphi ( x
+|\)</span>的测地线段的端点。特别地，在欧氏空间<span class="math inline">\(\exp_p X_p = x + X_p\)</span>中，等价于结果<span class="math inline">\(T ( x ) = x-\nabla \varphi ( x
 )\)</span>。<strong>定理2.1假设<span class="math inline">\(\mu\)</span>不给<span class="math inline">\(M\)</span>的体积测度的可忽略集赋予质量，从而保证了二次代价下最优映射的存在性和唯一性。</strong></p>
 <p>事实上，Monge的最优运输<span class="math inline">\(T\)</span>可能并不总是存在的。我们的工作主要集中在Monge问题上，因为我们感兴趣的是具有适当密度函数的测度。这里我们假设测度<span class="math inline">\(\mu\)</span>和<span class="math inline">\(\nu\)</span>具有密度函数<span class="math inline">\(f\)</span>和<span class="math inline">\(g\)</span>：<span class="math inline">\(d\mu = f (
 x ) dx，d\nu = g ( y ) dy\)</span>，其中<span class="math inline">\(dx\)</span>和<span class="math inline">\(dy\)</span>是<span class="math inline">\(M\)</span>的体积元.在整个过程中，用<span class="math inline">\(W_p( f , g)\)</span>代替<span class="math inline">\(W_p( \mu , \nu)\)</span>来表示<span class="math inline">\(\mu\)</span>和<span class="math inline">\(\nu\)</span>之间的Wasserstein距离。</p>
@@ -627,6 +627,150 @@ f_i , g_i)\)</span>，下面的估计成立： <span class="math display">\[
 \left|\alpha_1-\alpha_2\right| \leq
 \frac{1}{2}\left(\left\|f_1-f_2\right\|_{L^1[0,1]}+\left\|g_1-g_2\right\|_{L^1[0,1]}\right)
 \]</span></p>
+<h2 id="eit">EIT</h2>
+<p>设<span class="math inline">\(\Omega\)</span>是<span class="math inline">\(\mathbb{R}^2\)</span>中具有光滑边界<span class="math inline">\(\partial \Omega\)</span>的开有界区域，<span class="math inline">\(\sigma \in L^\infin(\Omega)\)</span>在<span class="math inline">\(\Omega\)</span>上严格为正。在我们的问题中，<span class="math inline">\(\Omega\)</span>是单位圆盘.
+EIT正问题采用椭圆型偏微分方程建模： <span class="math display">\[
+\begin{aligned}
+-\nabla \cdot(\sigma \nabla u) &amp; =0 &amp; &amp; \text { in } \Omega
+\\
+\sigma \frac{\partial u}{\partial n} &amp; =j &amp; &amp; \text { on }
+\partial \Omega
+\end{aligned} \qquad (5.1)
+\]</span> 式中<span class="math inline">\(u\)</span>和<span class="math inline">\(j\)</span>分别为电势和电流。这里引入Sobolev空间<span class="math inline">\(\~{H}^k(\partial \Omega)\)</span>和<span class="math inline">\(\~{H}^k(\Omega)\)</span>，其中<span class="math inline">\(k \in \mathbb{R}\)</span>， <span class="math display">\[
+\begin{aligned}
+\tilde{H}^k(\partial \Omega) &amp; :=\left\{v \in H^k(\partial \Omega):
+\int_{\partial \Omega} v \mathrm{~d} s=0\right\} \\
+\tilde{H}^k(\Omega) &amp; :=\left\{v \in H^k(\Omega): \int_{\partial
+\Omega} v \mathrm{~d} s=0\right\}
+\end{aligned} \qquad (5.2)
+\]</span> 对于每个<span class="math inline">\(j \in
+\tilde{H}^{-\frac{1}{2}}(\partial \Omega)\)</span>，存在唯一的<span class="math inline">\(u \in
+\tilde{H}^1(\Omega)\)</span>，使得式(5.1)成立。这里我们用<span class="math inline">\(u=F(\sigma) j\)</span>来表示(5.1)的正解。
+因此，对于每个满足条件的<span class="math inline">\(\sigma\)</span>，可以定义一个Neumann to Dirichlet
+(NtD)算子<span class="math inline">\(\Lambda(\sigma):
+\tilde{H}^{-\frac{1}{2}}(\partial \Omega) \rightarrow
+\tilde{H}^{\frac{1}{2}}(\partial \Omega)\)</span> ：</p>
+<p><span class="math display">\[
+\Lambda(\sigma) j=\phi, \quad \text { where } \phi=\gamma F(\sigma) j
+\qquad (5.3)
+\]</span></p>
+<p>其中<span class="math inline">\(\gamma\)</span>是投影<span class="math inline">\(\~{H}^1(\Omega)\)</span>到<span class="math inline">\(\~{H}^{\frac{1}{2}}(\partial
+\Omega)\)</span>的迹算子. NtD映射<span class="math inline">\(\Lambda(\sigma)\)</span>是自伴且正定的。而正问题就是已知<span class="math inline">\(\sigma\)</span>计算<span class="math inline">\(\Lambda(\sigma)\)</span>。反问题(EIT)
+[9、15、47]是已知<span class="math inline">\(\Lambda(\sigma)\)</span>，重构<span class="math inline">\(\sigma\)</span>，可以表述为一个优化问题:</p>
+<p><span class="math display">\[
+\sigma^*=\underset{\sigma \in \mathcal{A}}{\operatorname{argmin}}
+\mathcal{J}(\sigma), \quad \mathcal{J}(\sigma):=\sum_{n=1}^N
+\mathfrak{D}\left(\Lambda(\sigma) j_n, \tilde{\phi}_n\right) \qquad
+(5.4)
+\]</span></p>
+<p>其中，<span class="math inline">\(\left(j_1, \tilde{\phi}_1\right),
+\cdots,\left(j_N,
+\tilde{\phi}_N\right)\)</span>为NtD图谱的测量值。定义在边界上的误匹配函数<span class="math inline">\(\mathfrak{D}(\phi,
+\tilde{\phi})\)</span>衡量了<span class="math inline">\(\phi\)</span>和<span class="math inline">\(\tilde{\phi}\)</span>之间的差异。容许集<span class="math inline">\(\mathcal{A}\)</span>是:</p>
+<p><span class="math display">\[
+\mathcal{A}=\left\{\sigma \in L_{\infty}(\Omega): c_0 \leq \sigma \leq
+c_1 \text { on } \Omega,\left.\sigma\right|_{\partial
+\Omega}=\left.\sigma_0\right|_{\partial \Omega}\right\} \qquad (5.5)
+\]</span><br>
+</p>
+<p>在现有方法[15-17、29、32、44]中，选择<span class="math inline">\(\mathfrak{D}\)</span>为<span class="math inline">\(\partial \Omega\)</span>上的<span class="math inline">\(L^2\)</span>范数，并在<span class="math inline">\(\mathcal{J}(\sigma)\)</span>中加入正则化项<span class="math inline">\(\mathscr{R}(\sigma)\)</span>，得到新的目标泛函。</p>
+<p><span class="math display">\[
+\Psi(\sigma):=\mathcal{J}(\sigma)+\beta \mathscr{R}(\sigma)
+\]</span></p>
+<p>其中<span class="math inline">\(\beta\)</span>是正则化参数。由此产生的优化问题通常采用基于梯度的迭代优化方法进行求解。然而，由于EIT的不适定性[
+47 ]，重建容易受到边界测量中噪声的干扰。需要一个适当的<span class="math inline">\(\beta\)</span>值来稳定重建过程。然而，当噪声达到一定的阈值水平时，很难选择一个合适的<span class="math inline">\(\beta\)</span>来平衡重建的平滑性和准确性。</p>
+<p>在这里，我们应用二次Wasserstein距离来解决优化问题(5.4)，因为<span class="math inline">\(W_2\)</span>距离具有以下良好的性质[21]。事实上，在<span class="math inline">\(W_2\)</span>下，初始数据和扰动数据之间的差异很小，因为质量的局部消除使得最优映射接近恒等映射，从而对高频噪声具有鲁棒性[40]。例如[48]</p>
+<p><span class="math display">\[
+W_2\left(f_n, f\right)=O\left(\frac{1}{n}\right),
+\quad\left\|f_n-f\right\|_{L^2}=O(1)
+\]</span></p>
+<p>其中<span class="math inline">\(f_n=1+\sin (2 \pi n
+x)\)</span>是定义在<span class="math inline">\([0,1]\)</span>上的<span class="math inline">\(f=1\)</span>的扰动.同时，<span class="math inline">\(L^2\)</span>偏向于沿振幅轴方向的位移，而<span class="math inline">\(W_2\)</span>同时考虑了空间变化和振幅变化。这意味着<span class="math inline">\(W_2\)</span>比<span class="math inline">\(L^2\)</span>对数据的形状变化更敏感。此外，<span class="math inline">\(W_2\)</span>的梯度比注2.3中提到的输入数据<span class="math inline">\(f\)</span>更平滑，对反演产生了平滑作用。</p>
+<p>为了在<span class="math inline">\(W_2\)</span>的基础上进行优化，需要计算<span class="math inline">\(\mathcal{J}(\sigma)\)</span>和<span class="math inline">\(\mathcal{J}^{\prime}(\sigma)\)</span>，这涉及到<span class="math inline">\(W_2\)</span>的值和梯度的计算。对于EIT问题，选择误匹配函数<span class="math inline">\(\mathfrak{D}\)</span>为</p>
+<p><span class="math display">\[
+\mathfrak{D}(\phi, \tilde{\phi})=W_2^2(\mathcal{L}(\phi),
+\mathcal{L}(\tilde{\phi})) \qquad (5.7)
+\]</span></p>
+<p>其中<span class="math inline">\(\mathcal{L}\)</span>是将电势转化为具有单位质量的非负密度函数的正规化算子，即(3.4)中的<span class="math inline">\(\mathcal{L}(\phi) \in
+D\)</span>。由于我们测量了电势<span class="math inline">\(\phi \in
+\tilde{H}^{\frac{1}{2}}(\partial \Omega)\)</span>，所以<span class="math inline">\(\phi\)</span>在<span class="math inline">\(\partial
+\Omega\)</span>上的质量为零，自动满足质量守恒.因此，我们只需要重新刻度<span class="math inline">\(\phi\)</span>使其为正.为了达到这个目的，一个简单的方法[53]是增加一个正的常数<span class="math inline">\(a\)</span>：</p>
+<p><span class="math display">\[
+\mathcal{L}(\phi)=\frac{\phi+a}{\int_{\partial \Omega}(\phi+a)
+\mathrm{d} s}=\frac{1}{a} \phi+1, \quad \phi \in
+\tilde{H}^{\frac{1}{2}}(\partial \Omega) \qquad (5.8)
+\]</span></p>
+<p>在[53]中，<span class="math inline">\(W_2\)</span>的度量结构由于质量的归一化而丢失。然而，从(5.8)中我们知道<span class="math inline">\(W_2(\mathcal{L}(\phi),
+\mathcal{L}(\tilde{\phi}))\)</span>定义在<span class="math inline">\(\tilde{H}^{\frac{1}{2}}(\partial
+\Omega)\)</span>中的性质是保持的，因为质量对<span class="math inline">\(\tilde{H}^{\frac{1}{2}}(\partial
+\Omega)\)</span>中的函数是守恒的。 <span class="math inline">\(W_2(\mathcal{L}(\phi),
+\mathcal{L}(\tilde{\phi}))\)</span>的计算沿用上一节的方法，因此误<span class="math inline">\(\mathcal{J}(\sigma)\)</span>可以很容易地计算得到。</p>
+<p>另一个重要问题是推导<span class="math inline">\(\mathcal{J}(\sigma)\)</span>的Fréchet梯度。为了简化记号，我们在(5.4)中讨论了<span class="math inline">\(N=1\)</span>的情形.一阶扰动给出[41]：</p>
+<p><span class="math display">\[
+\begin{aligned}
+\delta \mathcal{J}=\left\langle\frac{\delta \mathcal{J}}{\delta \phi},
+\delta \phi\right\rangle_{L^2(\partial \Omega)} &amp;
+=\left\langle\frac{\delta \mathfrak{D}(\phi, \tilde{\phi})}{\delta
+\phi}, \delta \phi\right\rangle_{L^2(\partial
+\Omega)}=\left\langle\frac{\delta \mathfrak{D}(\phi,
+\tilde{\phi})}{\delta \phi}, \frac{\delta \Lambda(\sigma) j}{\delta
+\sigma} \delta \sigma\right\rangle_{L^2(\partial \Omega)} \\
+= &amp; \left\langle\left(\frac{\delta \Lambda(\sigma) j}{\delta
+\sigma}\right)^* \frac{\delta \mathfrak{D}(\phi, \tilde{\phi})}{\delta
+\phi}, \delta \sigma\right\rangle_{L^2(\Omega)}
+\end{aligned}
+\]</span></p>
+<p>式中<span class="math inline">\(\phi=\Lambda(\sigma)
+j\)</span>为状态变量。因此泛函的梯度由下式给出</p>
+<p><span class="math display">\[
+\mathcal{J}^{\prime}(\sigma)=\left(\frac{\delta \Lambda(\sigma)
+j}{\delta \sigma}\right)^* \frac{\delta \mathfrak{D}(\phi,
+\tilde{\phi})}{\delta \phi} \qquad(5.9)
+\]</span></p>
+<p>式中<span class="math inline">\(\mathfrak{D}\)</span>的梯度为</p>
+<p><span class="math display">\[
+\frac{\delta \mathfrak{D}(\phi, \tilde{\phi})}{\delta \phi}=\frac{1}{a}
+\frac{\delta W_2^2(\mathcal{L}(\phi), \mathcal{L}(\tilde{\phi}))}{\delta
+\mathcal{L}(\phi)} \qquad (5.10)
+\]</span></p>
+<p>由注3.1，梯度可按第4节（数值方法）的方法计算。对于伴随算子<span class="math inline">\(\frac{\delta \Lambda(\sigma) j}{\delta
+\sigma}\)</span>，在[9]中给出：</p>
+<p><span class="math display">\[
+\begin{aligned}
+\left(\frac{\delta \Lambda(\sigma) j}{\delta \sigma}\right)^*:
+\tilde{H}^{-\frac{1}{2}}(\partial \Omega) &amp; \longrightarrow
+L_1(\Omega) \\
+h &amp; \longmapsto-\nabla u \cdot \nabla \tilde{u}
+\end{aligned} \qquad (5.11)
+\]</span></p>
+<p>其中<span class="math inline">\(u=F(\sigma) j\)</span>，<span class="math inline">\(\tilde{u}=F(\sigma) h\)</span>。式(5.10)中<span class="math inline">\(W_2\)</span>的Fréchet梯度涉及超参数<span class="math inline">\(c\)</span>的选择，如式(3.11)所述。这里选择常数<span class="math inline">\(c\)</span>，使得</p>
+<p><span class="math display">\[
+\int_{\partial \Omega} \frac{\delta \mathfrak{D}(\phi,
+\tilde{\phi})}{\delta \phi} \mathrm{d} s=\frac{1}{a} \int_{\partial
+\Omega} \frac{\delta W_2^2(\mathcal{L}(\phi),
+\mathcal{L}(\tilde{\phi}))}{\delta \mathcal{L}(\phi)} \mathrm{d} s=0
+\]</span></p>
+<p>因此，回顾定义(5.2)，<span class="math inline">\(\frac{\delta
+\Omega(\phi, \bar{\phi})}{\delta \phi} \in
+\tilde{H}^{-\frac{1}{2}}(\partial
+\Omega)\)</span>，在算子(5.11)的定义域内。</p>
+<p>一般地，Fréchet梯度(5.9)被定义为<span class="math inline">\(\langle\cdot,
+\cdot\rangle_{L^2(\Omega)}\)</span>下的积分算子。改变<span class="math inline">\(L^2\)</span>到<span class="math inline">\(H_0^1\)</span>的底层空间，我们可以通过公式〈<span class="math inline">\(\left\langle\mathcal{J}^{\prime}(\sigma),
+\eta\right\rangle_{L^2(\Omega)}=\left\langle\mathcal{J}_s^{\prime}(\sigma),
+\eta\right\rangle_{H_0^1(\Omega)}\)</span>定义关于<span class="math inline">\(\langle\cdot,
+\cdot\rangle_{H_0^1(\Omega)}\)</span> 的梯度<span class="math inline">\(\mathcal{J}_s^{\prime}\)</span>，这等价于求解方程[29、31]：</p>
+<p><span class="math display">\[
+\begin{aligned}
+-\Delta \mathcal{J}_s^{\prime}(\sigma)+\mathcal{J}_s^{\prime}(\sigma)
+&amp; =\mathcal{J}^{\prime}(\sigma) &amp; &amp; \text { in } \Omega \\
+\mathcal{J}_s^{\prime}(\sigma) &amp; =0 &amp; &amp; \text { on }
+\partial \Omega
+\end{aligned}
+\]</span></p>
+<p>这个梯度<span class="math inline">\(\mathcal{J}_s^{\prime}\)</span>被称为Sobolev梯度[38]
+.对于EIT问题，我们采用Sobolev梯度<span class="math inline">\(\mathcal{J}_s^{\prime}\)</span>代替标准的<span class="math inline">\(L^2\)</span>梯度<span class="math inline">\(\mathcal{J}^{\prime}\)</span>。事实上，<span class="math inline">\(\mathcal{J}^{\prime}\)</span>一般不能给出合理的重构，而<span class="math inline">\(\mathcal{J}_s^{\prime}\)</span>稳定了不适定问题(5.4)
+。此外，<span class="math inline">\(\mathcal{J}_s^{\prime}\)</span>的应用自然地保留了式(5.5)中边界上的已知信息。梯度<span class="math inline">\(\mathcal{J}_s^{\prime}\)</span>也比振荡优化过程中优选的<span class="math inline">\(\mathcal{J}^{\prime}\)</span>更平滑。</p>
+<p>利用梯度信息，<strong>我们提出了带有非单调线搜索策略的Barzilai-Borwein梯度算法来最小化(5.6)</strong>。算法2总结了该方法的具体实现。</p>
 
     </div>
 
@@ -637,8 +781,8 @@ f_i , g_i)\)</span>，下面的估计成立： <span class="math display">\[
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/%E6%9C%80%E4%BC%98%E5%8C%96/" rel="tag"># 最优化</a>
-              <a href="/tags/EIT/" rel="tag"># EIT</a>
               <a href="/tags/%E6%9C%80%E4%BC%98%E8%BF%90%E8%BE%93/" rel="tag"># 最优运输</a>
+              <a href="/tags/EIT/" rel="tag"># EIT</a>
           </div>
 
         
@@ -714,7 +858,7 @@ f_i , g_i)\)</span>，下面的估计成立： <span class="math display">\[
       <div class="post-toc-wrap sidebar-panel">
           <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#optimal-transportation-for-electrical-impedance-tomography%E7%94%B5%E9%98%BB%E6%8A%97%E6%96%AD%E5%B1%82%E6%88%90%E5%83%8F%E7%9A%84%E6%9C%80%E4%BC%98%E4%BC%A0%E8%BE%93"><span class="nav-text">OPTIMAL
 TRANSPORTATION FOR ELECTRICAL IMPEDANCE
-TOMOGRAPHY（电阻抗断层成像的最优传输）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%91%98%E8%A6%81"><span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E4%BC%98%E4%BC%A0%E8%BE%93%E7%90%86%E8%AE%BA"><span class="nav-text">最优传输理论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E9%97%AE%E9%A2%98%E5%92%8C%E5%AF%B9%E5%81%B6%E9%97%AE%E9%A2%98"><span class="nav-text">原问题和对偶问题:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#wasserstein%E8%B7%9D%E7%A6%BB"><span class="nav-text">Wasserstein距离</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mathbbs1%E4%B8%8A%E7%9A%84%E6%9C%80%E4%BC%98%E8%BF%90%E8%BE%93"><span class="nav-text">\(\mathbb{S}^1\)(?)上的最优运输</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E5%80%BC%E6%96%B9%E6%B3%95"><span class="nav-text">数值方法</span></a></li></ol></li></ol></div>
+TOMOGRAPHY（电阻抗断层成像的最优传输）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%91%98%E8%A6%81"><span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E4%BC%98%E4%BC%A0%E8%BE%93%E7%90%86%E8%AE%BA"><span class="nav-text">最优传输理论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E9%97%AE%E9%A2%98%E5%92%8C%E5%AF%B9%E5%81%B6%E9%97%AE%E9%A2%98"><span class="nav-text">原问题和对偶问题:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#wasserstein%E8%B7%9D%E7%A6%BB"><span class="nav-text">Wasserstein距离</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mathbbs1%E4%B8%8A%E7%9A%84%E6%9C%80%E4%BC%98%E8%BF%90%E8%BE%93"><span class="nav-text">\(\mathbb{S}^1\)(?)上的最优运输</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E5%80%BC%E6%96%B9%E6%B3%95"><span class="nav-text">数值方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#eit"><span class="nav-text">EIT</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -780,13 +924,13 @@ TOMOGRAPHY（电阻抗断层成像的最优传输）</span></a><ol class="nav-ch
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">31k</span>
+    <span title="站点总字数">37k</span>
 </div>
 
 <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共31k字</span>
+  <span class="post-count">博客全站共37k字</span>
   <span class="post-meta-divider">|</span>
   本站总访问量<span id="busuanzi_value_site_pv"></span>次
   <span class="post-meta-divider">|</span>
@@ -797,7 +941,7 @@ TOMOGRAPHY（电阻抗断层成像的最优传输）</span></a><ol class="nav-ch
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共31k字</span>
+  <span class="post-count">博客全站共37k字</span>
 </div>
 
 
