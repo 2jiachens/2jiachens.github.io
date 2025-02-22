@@ -1,6 +1,187 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Lagrange对偶（Lagrange duality）</title>
+    <url>/2025/02/10/Lagrange%E5%AF%B9%E5%81%B6/</url>
+    <content><![CDATA[<h2 id="问题背景">问题背景</h2>
+<p>在一个优化问题中，原始问题通常会带有很多约束条件，这样直接求解原始问题往往是很困难的，于是考虑将原始问题转化为它的对偶问题，通过求解它的对偶问题来得到原始问题的解。<strong>对偶性</strong>（Duality）是凸优化问题的核心内容。
+<span id="more"></span></p>
+<h2 id="原始问题及其转化">原始问题及其转化</h2>
+<p><strong>原始问题</strong></p>
+<p>将一个原始最优化问题写成如下形式 <span class="math display">\[
+\underset{x}{\min} \quad f_0(x) \\ s.t. \quad f_i(x) \le 0,i=1,2,...,m
+\\ \qquad h_j(x)=0,j=1,2,...,p
+\]</span> 在求解原问题的对偶问题时，并不要求原始问题一定是凸问题，<span class="math inline">\(f\)</span>和<span class="math inline">\(g\)</span>可以是一般函数而不一定非得是凸函数。</p>
+<p><strong>拉格朗日函数</strong></p>
+<p>将原始问题的拉格朗日函数定义为 <span class="math display">\[
+L(x,\lambda,\nu)=f_0(x)+\sum^m_{i=1}\lambda_i f_i(x)+\sum^p_{j=1}\nu_j
+h_j(x)
+\]</span> 其中，<span class="math inline">\(x\in \mathbb
+R^n,\lambda\in\mathbb R^m,\nu\in\mathbb R^p\)</span>
+可以看到，拉格朗日函数<span class="math inline">\(L\)</span>相当于原始问题引入了两个新变量<span class="math inline">\(\lambda,\nu\)</span>，称为拉格朗日乘子</p>
+<p><strong>拉格朗日对偶函数</strong></p>
+<p>拉格朗日对偶函数通过对拉格朗日函数<span class="math inline">\(x\)</span>取下确界得到，即 <span class="math display">\[
+g(\lambda,\nu)=\underset{x}{\inf}L(x,\lambda,\nu)
+\]</span> 对偶函数有如下两条重要性质
+1.对偶函数一定是凹函数，其凹性与原目标函数和约束函数凹凸与否无关
+2.对<span class="math inline">\(\forall\lambda\ge0,\forall\nu\)</span>，如果原问题最优解对应的目标函数值为<span class="math inline">\(P^*\)</span>，则<span class="math inline">\(g(\lambda,\nu)\le p^*\)</span></p>
+<h2 id="拉格朗日对偶问题">拉格朗日对偶问题</h2>
+<p>根据对偶函数的重要性质2，对<span class="math inline">\(\forall\lambda\ge0,\forall\nu\)</span>，对偶函数<span class="math inline">\(g(\lambda,\nu)\)</span>是原问题最优值<span class="math inline">\(P^*\)</span>的一个下界，最好的下界就是最大化对偶函数，因此构造原问题的对偶问题：
+<span class="math display">\[
+\underset{\lambda,\nu}{\max}\quad g(\lambda,\nu) \\ s.t.\quad \lambda
+\ge 0
+\]</span>
+由于对偶函数是凹函数，故拉格朗日对偶问题一定是凸优化问题，其对应的最优解为<span class="math inline">\(\lambda^*,\nu^*\)</span>，若对应的最优值为<span class="math inline">\(d^*\)</span>，则总有<span class="math inline">\(d^* \le p^*\)</span></p>
+<p>当<span class="math inline">\(d^* \le p^*\)</span>时，称为弱对偶
+当<span class="math inline">\(d^* = p^*\)</span>时，称为强对偶 将<span class="math inline">\(p^*-d^*\)</span>称为对偶间隙</p>
+<blockquote>
+<p>在解存在的情况下，弱对偶总是成立的。
+满足强对偶时，可以通过求解对偶问题来得到原始问题的解</p>
+</blockquote>
+<h2 id="slater条件">Slater条件</h2>
+<p>Slater条件用于判断什么情况下强对偶是成立的。
+在<strong>原问题是凸问题</strong>的情况下，若<span class="math inline">\(\exists x \in
+relint(D)\)</span>，使得约束条件满足： <span class="math display">\[
+f_i(x)&lt;0,h_j(x)=0\quad i=1,2,...,p
+\]</span> 则强对偶成立 &gt;<span class="math inline">\(relint(D)表示原始凸问题定义域的相对内部，即在定义域上除了边界点以外的所有点\)</span></p>
+<h2 id="kkt条件">KKT条件</h2>
+<p>在强对偶且<span class="math inline">\(L\)</span>对<span class="math inline">\(x\)</span>可微的前提下，设<span class="math inline">\(x^*,\lambda^*,\nu^*\)</span>分别是原问题和对偶问题的最优解，则以下四组条件称为KKT条件
+<span class="math display">\[
+\begin{cases}
+   \frac{\partial L(x^*,\lambda^*,\nu^*)}{\partial x^*} |_{x=x^*}=0
+&amp;\text{(稳定性条件)} \\ \lambda^*_i f_i(x^*)=0
+&amp;\text{(互松弛条件)}\\ f_i(x^*)\le 0,h_j(x^*)=0
+&amp;\text{(原问题可行性)} \\ \lambda_i^* \ge 0
+&amp;\text{(对偶问题可行性)}
+    &amp;\text{if } d
+\end{cases}
+\]</span></p>
+<p>对<strong>一般的原问题</strong>，KKT
+条件是$x<sup><em>,<sup><em>,<sup>* <span class="math inline">\(为最优解的必要条件，即只要\)</span>x</sup></em>,</sup></em>,</sup>*$为最优解，则一定满足
+KKT 条件。</p>
+<p>对<strong>原问题为凸问题</strong>，KKT条件是<span class="math inline">\(x^*,\lambda^*,\nu^*\)</span>
+为最优解的充要条件</p>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>最优化</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>NAS-PINN</title>
+    <url>/2025/02/11/NAS-PINN/</url>
+    <content><![CDATA[<h1 id="nas-pinn-neural-architecture-search-guided-physics-informed-neural-network-for-solving-pdesnas-pinn神经网络结构搜索引导的物理信息神经网络用于求解偏微分方程">NAS-PINN:
+Neural architecture search-guided physics-informed neural network for
+solving
+PDEs(NAS-PINN：神经网络结构搜索引导的物理信息神经网络，用于求解偏微分方程)</h1>
+<h2 id="摘要">摘要</h2>
+<p>物理信息神经网络( PINN
+)自提出以来一直是求解偏微分方程的主流框架。通过损失函数将物理信息融入到神经网络中，它可以以无监督的方式预测PDEs的解。然而，神经网络结构的设计基本依赖于先验知识和经验，这造成了很大的麻烦和较高的计算开销。因此，<strong>我们提出了一种神经结构搜索引导的方法，即NAS
+- PINN，用于自动搜索求解某些PDEs的最佳神经结构</strong>。
+通过将搜索空间松弛为连续空间，并利用掩码实现不同形状张量的添加，NAS -
+PINN可以通过双层优化进行训练，其中内层循环优化神经网络的权重和偏置，外层循环优化网络结构参数。我们通过包括Poisson，Burgers和Advection方程在内的几个数值实验来验证NAS
+-
+PINN的能力。总结了求解不同PDE的有效神经网络结构的特点，可用于指导PINN中神经网络的设计。研究发现，更多的隐藏层并不一定意味着更好的性能，有时可能是有害的。
+特别是对于Poisson和Advection，在PINNs中更适合采用神经元数目较多的浅层神经网络。研究还表明，对于复杂问题，具有残差连接的神经网络可以提高PINNs的性能。
+<span id="more"></span></p>
+<h2 id="介绍">介绍</h2>
+<p>神经网络结构搜索( Neural Architecture Search，NAS
+)是一种在特定搜索空间中搜索最优神经网络结构的算法。传统的NAS算法通过神经网络模块的排列组合来构建架构，并对这些架构进行训练和测试以确定其性能，然后根据性能排序选择最佳的神经网络架构。这样的离散过程面临着计算效率低和计算成本高的问题。因此，减少计算开销、提高搜索效率一直是NAS的主要研究热点之一。
+<strong>本文将NAS融入PINN的框架中，提出了一种神经架构搜索引导的物理信息神经网络(
+NAS-PINN)</strong>。我们实现了用少量数据自动搜索求解给定PDE的最佳神经网络结构。掩码用于张量的添加，以帮助搜索每层中不同数量的神经元。通过对一系列PDE的数值实验，验证了所提方法的有效性.通过对数值结果的分析，总结了高效神经网络结构的特点，为PINNs的进一步研究提供了指导。</p>
+<h2 id="方法">方法</h2>
+<h3 id="pinn的框架">PINN的框架</h3>
+<p><img src="/2025/02/11/NAS-PINN/1.jpg"></p>
+<h3 id="可微nas">可微NAS</h3>
+<p>在传统的NAS算法中，神经网络的层数通常是固定的，并为每一层提供特定的操作选择。这样的配置使得搜索空间不连续，无法通过基于梯度的方法进行优化，极大地限制了算法的收敛速度和效率。
+Liu等人[ 29 ]提出了DARTS，并引入了可微NAS的概念。设<span class="math inline">\(O\)</span>是一个由候选操作组成的集合，其中任何一个操作都表示关于输入x的某个函数<span class="math inline">\(o(x)\)</span>.通过对候选操作施加松弛，可以使搜索空间连续：
+<span class="math display">\[
+\bar{o}^{(i,j)}(x)=\sum_{o\in
+O}\frac{exp(\alpha^{(i,j)}_o)}{\textstyle\sum_{o&#39;\in
+O}exp(\alpha^{(i,j)_{o&#39;}})}o(x) \qquad (6)
+\]</span> 其中<span class="math inline">\(\bar
+o^{(i,j)}(x)\)</span>为松弛后第<span class="math inline">\(i\)</span>层与第<span class="math inline">\(j\)</span>层之间的混合运算，<span class="math inline">\(\alpha^{(i,j)}_o\)</span>为运算<span class="math inline">\(o\)</span>的权.现在测试和比较所有可能的操作组合的离散过程可以简化为通过基于梯度的优化方法学习一组合适的权重<span class="math inline">\(\alpha^{(i,j)}_o\)</span>。当算法收敛时，通过选择权重最高的候选操作，可以将松弛的搜索空间提取到离散的神经架构中。</p>
+<h3 id="掩码">掩码</h3>
+<p>虽然式(6)将搜索空间缩小为一个连续的空间，张量运算只允许相同形状的张量相加，使得搜索神经元个数不切实际，如图2(a)所示。受卷积神经网络中零填充的启发，我们可以将神经元填充到最大数量k，如图2
+(b)所示。在图2(c)中，通过将填充的神经元乘以一个零张量掩码，我们将额外的神经元去激活，以模拟不同数量的神经元。最后，通过共享权重，可以将可选的隐藏层减少为一个，输出y可以表示为：
+<span class="math display">\[
+\mathbf{y} = \sigma(\mathbf{w}\cdot\mathbf{x}+\mathbf{b})\cdot
+\begin{pmatrix}
+[g_1,g_2,g_3]\times     
+\begin{bmatrix}
+   \mathbf{mask}_1 \\
+   \mathbf{mask}_2 \\
+   \mathbf{mask}_3
+\end{bmatrix}^T
+\end{pmatrix}
+\]</span> 其中<span class="math inline">\(\sigma(\cdot)\)</span>为激活函数，<span class="math inline">\(\mathbf{w}\)</span>和<span class="math inline">\(\mathbf{b}\)</span>分别为单隐层的权值和偏置，<span class="math inline">\(g_i\)</span>为标量，为每个神经元个数的权值，<span class="math inline">\(\mathbf{mask}_i\)</span>为每个神经元个数的掩码，形状为<span class="math inline">\(1\times k\)</span>。假设神经元个数为<span class="math inline">\(j\)</span>，则<span class="math inline">\(\mathbf{mask}\)</span>的前<span class="math inline">\(j\)</span>个元素为1，其余<span class="math inline">\((k-j)\)</span>个元素为0。 <img src="/2025/02/11/NAS-PINN/2.jpg" alt="fig.2">
+为了确定层数，我们引入身份变换作为操作，即跳过该层，且输出<span class="math inline">\(\mathbf{y}\)</span>变为: <span class="math display">\[
+\mathbf{y} = \alpha_1 \cdot
+\mathbf{x}+\alpha_2\cdot\sigma(\mathbf{w}\cdot\mathbf{x}+\mathbf{b})\cdot
+\begin{pmatrix}
+[g_1,g_2,g_3]\times     
+\begin{bmatrix}
+   \mathbf{mask}_1 \\
+   \mathbf{mask}_2 \\
+   \mathbf{mask}_3
+\end{bmatrix}^T
+\end{pmatrix} \qquad (8)
+\]</span> 其中，<span class="math inline">\(\alpha_1\)</span>为身份转换权重，表示跳过该层，<span class="math inline">\(\alpha_2\)</span>为保留该层的权重。
+式(8)给出了每层输入和输出之间的映射关系，通过反复应用，可以建立一个DNN模型，其中最合适的层可以根据权重<span class="math inline">\(\alpha\)</span>来选择，最合适的每层神经元可以根据权重<span class="math inline">\(g\)</span>来决定。这里，我们将<span class="math inline">\(\alpha\)</span>和<span class="math inline">\(g\)</span>统称为<span class="math inline">\(\boldsymbol{\alpha}\)</span>，<span class="math inline">\(\bf{w}\)</span>和<span class="math inline">\(\bf{b}\)</span>统称为<span class="math inline">\(\boldsymbol{\theta}\)</span>。</p>
+<h3 id="mas-pinn">MAS-PINN</h3>
+<p>现在我们可以得到NAS -
+PINN的整体框架，如图3所示，它可以被认为是一个<strong>双层优化问题</strong>。在内循环中，对DNN的权值和偏置<span class="math inline">\(\boldsymbol{\theta}\)</span>进行优化，而在外循环中，优化目标是寻找最佳的<span class="math inline">\(\boldsymbol{\alpha}\)</span>。其过程可以表示为：
+<span class="math display">\[
+\underset{\boldsymbol{\alpha}}{min}MSE(\boldsymbol{\theta}^*,\boldsymbol{\alpha})
+\\ s.t. \boldsymbol{\theta}^*=
+\underset{\boldsymbol{\theta}}{argmin}Loss(\boldsymbol{\theta},\boldsymbol{\alpha})
+\]</span> 内环的损失函数可以设计为式( 2 ) ~ ( 5
+)（PINN损失函数：数据匹配损失，PDE残差损失，边界条件损失）和外环的损失函数可以写成：
+<span class="math display">\[
+MSE=\frac{1}{n}\sum^n_{i=1}(\hat u-u)^2  \qquad(10)
+\]</span>
+其中u是已知的解析解或数值解，n是数据点的个数，对于外循环，所需的n可以很小。这样的双层优化问题可以通过交替优化来解决，相应的过程在算法1中展示。
+当训练结束时，可以根据<span class="math inline">\(\boldsymbol{\alpha}\)</span>推导出离散的神经网络模型。基本上，我们可以首先通过比较<span class="math inline">\(a_1\)</span>和<span class="math inline">\(a_2\)</span>来决定是否跳过某一层。如果保留该层，我们可以根据<span class="math inline">\(g\)</span>来决定神经元的数量。如果跳过某一层，则无需考察其权重<span class="math inline">\(g\)</span>。 在一些<span class="math inline">\(a_1\)</span>和<span class="math inline">\(a_2\)</span>相对接近的情况下，我们假设跳过层和保留层同样重要，并给出了一个混合模型。在混合模型中，层是身份变换和神经网络操作的组合。神经元的数量决定于一个离散的神经元，因此这些层可以表示为：
+<span class="math display">\[
+\mathbf{y} = \alpha_1 \cdot
+\mathbf{x}+\alpha_2\cdot\sigma(\mathbf{w}\cdot\mathbf{x}+\mathbf{b})\cdot
+(g_{max}\times \boldsymbol{mask}_{max})^T
+\]</span> 式中,<span class="math inline">\(g_{max}\)</span>为所有权值<span class="math inline">\(g\)</span>中的最大值，<span class="math inline">\(\boldsymbol{mask}_{max}\)</span>为对应于<span class="math inline">\(g_{max}\)</span>的零张量掩码。 <img src="/2025/02/11/NAS-PINN/3.jpg" alt="fig.3"> <img src="/2025/02/11/NAS-PINN/4.jpg" alt="algorithm 1"></p>
+<h2 id="实验">实验</h2>
+<h3 id="possion-equation">Possion equation</h3>
+<p>泊松方程是一类描述电磁场和热场的基本偏微分方程，在电磁学和机械工程中有着广泛的应用。这里，我们考虑一个带有Dirichlet边界条件的二维Poisson方程：
+<img src="/2025/02/11/NAS-PINN/5.jpg" alt="possion equation"> 该方程有解析解：
+<img src="/2025/02/11/NAS-PINN/6.jpg" alt="analytical solution">
+我们首先考虑正方形计算域中的泊松方程，以验证所提出的NAS -
+PINN的有效性。我们构造了一个相对较小的搜索空间，它是一个最多包含5个隐藏层的神经网络，每层包含30、50或70个神经元。对离散搜索空间中的每一种可能的神经架构分别进行训练和测试，作为网格搜索的近似实例。然后，我们使用NAS
+-
+PINN来搜索一个神经结构，并研究它是否是最好的。所有离散搜索空间中的363个架构由Adam训练，其中500个配置点在域内随机采样，100个边界点均匀分布在边界上。
+在架构搜索阶段，1000个配置点和200个边界点采用与之前相同的策略进行采样，以搜索最佳的神经架构，并将Adam应用于架构搜索阶段。然后以与363架构相同的方式从头开始训练得到的神经架构。</p>
+<p>为了进行更全面的比较，还对传统的Auto
+ML方法SMAC进行了测试。SMAC是一个通用的用于超参数优化的贝叶斯优化包，对于所讨论的问题，需要优化的超参数是隐藏层的数量和神经元的数量。对于SMAC，一个相当小的研究空间包括15种不同的神经结构，其中每个隐藏层的神经元数量只能是相同的。SMAC使用与架构搜索阶段相同的1000个配置点和200个边界点。
+最后，均匀采样1000000个点，测试所有收敛的神经架构。不同架构的预测解和误差分布如图4所示，L2误差如表1所示。所有实验均重复5次，L2误差由5次重复的平均值得到。
+这些结构以序列的形式描述在表1中。序列的第一个和最后一个元素代表输入和输出通道，而其他元素代表每一层的神经元数目。例如，98号架构的输入大小为n×2，其中n为批次大小，2代表坐标x和y，第一层隐含层有70个神经元。通过NAS
+- PINN得到的架构为No.358。</p>
+<p>从表1和图4中，我们可以清楚地看到NAS-PINN的神经架构具有最小的L2误差和最小的最大误差值，并且其误差分布相比于其他架构也有所改善。因此，所提出的NASPINN确实可以在给定的搜索空间中找到最佳的神经网络结构。此外，虽然No.98也表现出相对较好的性能(在363种可能的体系结构中,它是第二好的体系结构)，但它比NAS-PINN的架构拥有更多的参数，这表明更多的参数并不一定意味着更好的性能，一个适当设计的神经架构显得尤为重要。
+此外，在PINNs中，更深的神经网络总是更好的这一常识似乎并不是在所有情况下都是正确的。至少对于给定的泊松方程，浅层但宽的神经网络(隐含层较少,但每层神经元较多的神经网络)优于深层的神经网络。</p>
+<p>与SMAC相比，NAS - PINN可以在更大、更灵活的搜索空间中进行搜索，从而NAS
+-
+PINN更有可能找到真正最佳的神经架构。值得注意的是，虽然SMAC在只有15个神经结构的较小搜索空间中进行搜索，但它需要SMAC
+2。08 h找到357号架构，而NAS -
+PINN使用1.57h，从363个不同的架构中找到358号架构。所有的数值实验均在Intel(R)Core
+i9-9900 K @ 3.60 Ghz /NVIDIA GeForce Rtx 3090 上进行 <img src="/2025/02/11/NAS-PINN/7.jpg" alt="fig.4"> <img src="/2025/02/11/NAS-PINN/8.jpg" alt="table.1"></p>
+]]></content>
+      <categories>
+        <category>论文泛读</category>
+      </categories>
+      <tags>
+        <tag>神经网络架构</tag>
+        <tag>PINN</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>最优传输(Optimal Transportation)</title>
     <url>/2025/02/09/OT1/</url>
     <content><![CDATA[<h2 id="什么是最优传输">什么是最优传输？</h2>
@@ -454,7 +635,7 @@ EIT正问题采用椭圆型偏微分方程建模： <span class="math display">\
 \Lambda(\sigma) j=\phi, \quad \text { where } \phi=\gamma F(\sigma) j
 \qquad (5.3)
 \]</span></p>
-<p>其中<span class="math inline">\(\gamma\)</span>是投影<span class="math inline">\(\~{H}^1(\Omega)\)</span>到<span class="math inline">\(\~{H}^{\frac{1}{2}}(\partial
+<p>其中<span class="math inline">\(\gamma\)</span>是投影<span class="math inline">\(\tilde{H}^1(\Omega)\)</span>到<span class="math inline">\(\tilde   {H}^{\frac{1}{2}}(\partial
 \Omega)\)</span>的迹算子. NtD映射<span class="math inline">\(\Lambda(\sigma)\)</span>是自伴且正定的。而正问题就是已知<span class="math inline">\(\sigma\)</span>计算<span class="math inline">\(\Lambda(\sigma)\)</span>。反问题(EIT)
 [9、15、47]是已知<span class="math inline">\(\Lambda(\sigma)\)</span>，重构<span class="math inline">\(\sigma\)</span>，可以表述为一个优化问题:</p>
 <p><span class="math display">\[
@@ -475,7 +656,7 @@ c_1 \text { on } \Omega,\left.\sigma\right|_{\partial
 </p>
 <p>在现有方法[15-17、29、32、44]中，选择<span class="math inline">\(\mathfrak{D}\)</span>为<span class="math inline">\(\partial \Omega\)</span>上的<span class="math inline">\(L^2\)</span>范数，并在<span class="math inline">\(\mathcal{J}(\sigma)\)</span>中加入正则化项<span class="math inline">\(\mathscr{R}(\sigma)\)</span>，得到新的目标泛函。</p>
 <p><span class="math display">\[
-\Psi(\sigma):=\mathcal{J}(\sigma)+\beta \mathscr{R}(\sigma)
+\Psi(\sigma):=\mathcal{J}(\sigma)+\beta \mathscr{R}(\sigma) \qquad (5.6)
 \]</span></p>
 <p>其中<span class="math inline">\(\beta\)</span>是正则化参数。由此产生的优化问题通常采用基于梯度的迭代优化方法进行求解。然而，由于EIT的不适定性[
 47 ]，重建容易受到边界测量中噪声的干扰。需要一个适当的<span class="math inline">\(\beta\)</span>值来稳定重建过程。然而，当噪声达到一定的阈值水平时，很难选择一个合适的<span class="math inline">\(\beta\)</span>来平衡重建的平滑性和准确性。</p>
@@ -504,8 +685,8 @@ D\)</span>。由于我们测量了电势<span class="math inline">\(\phi \in
 \mathcal{L}(\tilde{\phi}))\)</span>定义在<span class="math inline">\(\tilde{H}^{\frac{1}{2}}(\partial
 \Omega)\)</span>中的性质是保持的，因为质量对<span class="math inline">\(\tilde{H}^{\frac{1}{2}}(\partial
 \Omega)\)</span>中的函数是守恒的。 <span class="math inline">\(W_2(\mathcal{L}(\phi),
-\mathcal{L}(\tilde{\phi}))\)</span>的计算沿用上一节的方法，因此误<span class="math inline">\(\mathcal{J}(\sigma)\)</span>可以很容易地计算得到。</p>
-<p>另一个重要问题是推导<span class="math inline">\(\mathcal{J}(\sigma)\)</span>的Fréchet梯度。为了简化记号，我们在(5.4)中讨论了<span class="math inline">\(N=1\)</span>的情形.一阶扰动给出[41]：</p>
+\mathcal{L}(\tilde{\phi}))\)</span>的计算沿用上一节的方法，因此误匹配函数<span class="math inline">\(\mathcal{J}(\sigma)\)</span>可以很容易地计算得到。</p>
+<p>另一个重要问题是推导<span class="math inline">\(\mathcal{J}(\sigma)\)</span>的Fréchet梯度。为了简化记号，我们在(5.4)中讨论了<span class="math inline">\(N=1\)</span>的情形。一阶扰动给出[41]：</p>
 <p><span class="math display">\[
 \begin{aligned}
 \delta \mathcal{J}=\left\langle\frac{\delta \mathcal{J}}{\delta \phi},
@@ -533,8 +714,8 @@ j}{\delta \sigma}\right)^* \frac{\delta \mathfrak{D}(\phi,
 \frac{\delta W_2^2(\mathcal{L}(\phi), \mathcal{L}(\tilde{\phi}))}{\delta
 \mathcal{L}(\phi)} \qquad (5.10)
 \]</span></p>
-<p>由注3.1，梯度可按第4节（数值方法）的方法计算。对于伴随算子<span class="math inline">\(\frac{\delta \Lambda(\sigma) j}{\delta
-\sigma}\)</span>，在[9]中给出：</p>
+<p>由注3.1，梯度可按第4节（数值方法）的方法计算。对于<span class="math inline">\(\frac{\delta \Lambda(\sigma) j}{\delta
+\sigma}\)</span>的伴随算子，在[9]中给出：</p>
 <p><span class="math display">\[
 \begin{aligned}
 \left(\frac{\delta \Lambda(\sigma) j}{\delta \sigma}\right)^*:
@@ -551,11 +732,11 @@ h &amp; \longmapsto-\nabla u \cdot \nabla \tilde{u}
 \mathcal{L}(\tilde{\phi}))}{\delta \mathcal{L}(\phi)} \mathrm{d} s=0
 \]</span></p>
 <p>因此，回顾定义(5.2)，<span class="math inline">\(\frac{\delta
-\Omega(\phi, \bar{\phi})}{\delta \phi} \in
+\mathfrak{D}(\phi, \bar{\phi})}{\delta \phi} \in
 \tilde{H}^{-\frac{1}{2}}(\partial
 \Omega)\)</span>，在算子(5.11)的定义域内。</p>
 <p>一般地，Fréchet梯度(5.9)被定义为<span class="math inline">\(\langle\cdot,
-\cdot\rangle_{L^2(\Omega)}\)</span>下的积分算子。改变<span class="math inline">\(L^2\)</span>到<span class="math inline">\(H_0^1\)</span>的底层空间，我们可以通过公式〈<span class="math inline">\(\left\langle\mathcal{J}^{\prime}(\sigma),
+\cdot\rangle_{L^2(\Omega)}\)</span>下的积分算子。改变下标空间<span class="math inline">\(L^2\)</span>到<span class="math inline">\(H_0^1\)</span>，我们可以通过公式〈<span class="math inline">\(\left\langle\mathcal{J}^{\prime}(\sigma),
 \eta\right\rangle_{L^2(\Omega)}=\left\langle\mathcal{J}_s^{\prime}(\sigma),
 \eta\right\rangle_{H_0^1(\Omega)}\)</span>定义关于<span class="math inline">\(\langle\cdot,
 \cdot\rangle_{H_0^1(\Omega)}\)</span> 的梯度<span class="math inline">\(\mathcal{J}_s^{\prime}\)</span>，这等价于求解方程[29、31]：</p>
@@ -571,6 +752,95 @@ h &amp; \longmapsto-\nabla u \cdot \nabla \tilde{u}
 .对于EIT问题，我们采用Sobolev梯度<span class="math inline">\(\mathcal{J}_s^{\prime}\)</span>代替标准的<span class="math inline">\(L^2\)</span>梯度<span class="math inline">\(\mathcal{J}^{\prime}\)</span>。事实上，<span class="math inline">\(\mathcal{J}^{\prime}\)</span>一般不能给出合理的重构，而<span class="math inline">\(\mathcal{J}_s^{\prime}\)</span>稳定了不适定问题(5.4)
 。此外，<span class="math inline">\(\mathcal{J}_s^{\prime}\)</span>的应用自然地保留了式(5.5)中边界上的已知信息。梯度<span class="math inline">\(\mathcal{J}_s^{\prime}\)</span>也比振荡优化过程中优选的<span class="math inline">\(\mathcal{J}^{\prime}\)</span>更平滑。</p>
 <p>利用梯度信息，<strong>我们提出了带有非单调线搜索策略的Barzilai-Borwein梯度算法来最小化(5.6)</strong>。算法2总结了该方法的具体实现。</p>
+<p><span class="math display">\[
+    \begin{array}{l}
+   \hline \
+   \textbf{算法2} \quad Barzilai-Borwein梯度算法 \\
+   \hline \
+   \qquad \textbf{给定}初始值\sigma_0，参数M \in \mathbb{N}^{+}, \tau
+\in(0,1), 0&lt;\rho_1&lt;\rho_2&lt;1, 0&lt;s_{\min }&lt;s_{\max
+}，最大迭代次数K_{\max } \\
+   \qquad \textbf{设定}初始值k:=0, s_0:=s_{\max },
+\sigma_{+}:=\sigma_0，计算\mathcal{J}_s^{\prime}\left(\sigma_0\right)\\
+   \qquad \textbf{while} \, k&lt;K_{\max } \, \textbf{do} \\
+      \qquad \quad \textbf{while}\\
+         \qquad \qquad \qquad \qquad \Psi\left(\sigma_{+}\right) \geq
+\underset{0 \leq j \leq M-1} {\max}
+\Psi\left(\sigma_{k-j}\right)-\frac{\tau}{2
+s_k}\left\|\sigma_{+}-\sigma_k\right\|_{H^1(\Omega)}^2 \\
+      \qquad \quad \textbf{do}\\
+         \qquad \qquad 选择\rho \in\left[\rho_1,
+\rho_2\right]，更新s_k:=\rho * s_k \\
+         \qquad \qquad 令\gamma_k=\sigma_k-s_k
+\mathcal{J}_s^{\prime}\left(\sigma_k\right)。解决代理问题 \\
+         (5.13) \qquad \qquad \qquad  \sigma_{+}:=\underset{\sigma \in
+\mathcal{A}}{\operatorname{argmin}} \frac{1}{2
+s_k}\left\|\sigma-\gamma_k\right\|_{H^1(\Omega)}^2+\beta
+\mathscr{R}(\sigma)\\
+      \qquad \quad \textbf{end while} \\
+   \qquad \quad
+令\sigma_{k+1}:=\sigma_{+}，计算\mathcal{J}_s^{\prime}\left(\sigma_{k+1}\right)。然后计算
+\\
+   \qquad \qquad \qquad x_k  :=\left\langle\sigma_{k+1}-\sigma_k,
+\sigma_{k+1}-\sigma_k\right\rangle_{H^1(\Omega)}\\
+   \qquad \qquad \qquad y_k:=\left\langle\sigma_{k+1}-\sigma_k,
+\mathcal{J}_s^{\prime}\left(\sigma_{k+1}\right)-\mathcal{J}_s^{\prime}\left(\sigma_k\right)\right\rangle_{H^1(\Omega)}\\
+   \qquad \quad \textbf{if} \, \,  y_k \leq 0 \, \, \textbf{then}\\
+   \qquad \qquad s_{k+1}:=s_{\max }\\
+   \qquad \quad \textbf{else}\\
+   \qquad \qquad s_{k+1}:=\min \left\{s_{\max }, \max \left\{s_{\min },
+\frac{x_k}{y_k}\right\}\right\} \\
+   \qquad \quad \textbf{end if}\\
+   \qquad \quad k:=k+1\\
+   \qquad \textbf{end while}\\
+   \qquad 输出\sigma_k为重构 \\
+   \hline
+\end{array}
+\]</span></p>
+<p>这里我们在<span class="math inline">\(H^1\)</span>范数中，首先在每一步中对<span class="math inline">\(\mathcal{J}(\sigma)\)</span>在<span class="math inline">\(\sigma_k\)</span>处进行局部线性化：</p>
+<p><span class="math display">\[
+\mathcal{J}(\sigma) \approx
+\mathcal{J}\left(\sigma_k\right)+\left\langle\mathcal{J}_s^{\prime}\left(\sigma_k\right),
+\sigma-\sigma_k\right\rangle_{H^1(\Omega)}+\frac{1}{2
+s_k}\left\|\sigma-\sigma_k\right\|_{H^1(\Omega)}^2 \qquad (5.14)
+\]</span></p>
+<p>由Barzilai-Borwein规则初始化的步长<span class="math inline">\(s_k\)</span>意在提供Hessian的标量近似<span class="math inline">\(s_k I\)</span>。将式(5.14)代入式(5.6)，<span class="math inline">\(\Psi\)</span>的最小化问题归结为代理问题(5.13)</p>
+<p>代理问题( 5.13 )对于一些正则化项如<span class="math inline">\(\mathscr{R}(\sigma)=\frac{1}{2}\lVert \nabla
+\sigma\rVert_{L^2(\Omega)}^2\)</span>是凸的，这意味着它可以直接使用一阶最优性条件来求解。然而，对于我们实验中使用的全变差正则化<span class="math inline">\(\mathscr{R}(\sigma)=\lVert \nabla
+\sigma\rVert_{L^1(\Omega)}\)</span>不再是凸的。我们取光滑逼近<span class="math inline">\(\mathscr{R}(\sigma)=\int_{\Omega} \sqrt{|\nabla
+\sigma|^2+\epsilon} \mathrm{d} x\)</span>，然后用<span class="math inline">\(\mathscr{R}(\sigma)\)</span>在 <span class="math inline">\(\sigma_k\)</span>附近的二阶展开式代替<span class="math inline">\(\mathscr{R}(\sigma)\)</span>：</p>
+<p><span class="math display">\[
+\mathscr{R}(\sigma) \approx
+\mathscr{R}\left(\sigma_k\right)+\left\langle\mathscr{R}^{\prime}\left(\sigma_k\right),
+\sigma-\sigma_k\right\rangle_{L^2(\Omega)}+\frac{1}{2}\left\langle\mathscr{R}^{\prime
+\prime}\left(\sigma_k\right)\left(\sigma-\sigma_k\right),
+\sigma-\sigma_k\right\rangle_{L^2(\Omega)}
+\]</span></p>
+<p>因此，代理问题变成了一个二次型，可以通过求解关于<span class="math inline">\(\sigma\)</span>的线性变分方程来解决：</p>
+<p><span class="math display">\[
+\begin{aligned}
+\langle\sigma, \eta\rangle_{H^1(\Omega)}+s_k \beta \cdot A_k(\sigma,
+\eta) &amp; =\left\langle\gamma_k, \eta\right\rangle_{H^1(\Omega)}-s_k
+\beta \cdot B_k(\eta), \quad \forall \eta \in H_0^1(\Omega) \\
+\left.\sigma\right|_{\partial \Omega} &amp; =\sigma_0
+\end{aligned}
+\]</span></p>
+<p>这里，双线性形式<span class="math inline">\(A_k(\sigma,
+\eta)\)</span>和线性形式<span class="math inline">\(B_k(\eta)\)</span>可由下式计算：</p>
+<p><span class="math display">\[
+\begin{aligned}
+A_k(\sigma, \eta) &amp;
+:=\left\langle\mathscr{R}\left(\sigma_k\right)^{-1} \nabla \sigma,
+\nabla
+\eta\right\rangle_{L^2(\Omega)}-\left\langle\mathscr{R}\left(\sigma_k\right)^{-3}
+\nabla \sigma_k \cdot \nabla \sigma, \nabla \sigma_k \cdot \nabla
+\eta\right\rangle_{L^2(\Omega)} \\
+B_k(\eta) &amp;
+\left.:=\left.\left\langle\mathscr{R}\left(\sigma_k\right)^{-3}\right|
+\nabla \sigma_k\right|^2 \nabla \sigma_k, \nabla
+\eta\right\rangle_{L^2(\Omega)}
+\end{aligned}
+\]</span></p>
 ]]></content>
       <categories>
         <category>论文精读</category>
@@ -579,187 +849,6 @@ h &amp; \longmapsto-\nabla u \cdot \nabla \tilde{u}
         <tag>最优化</tag>
         <tag>最优运输</tag>
         <tag>EIT</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Lagrange对偶（Lagrange duality）</title>
-    <url>/2025/02/10/Lagrange%E5%AF%B9%E5%81%B6/</url>
-    <content><![CDATA[<h2 id="问题背景">问题背景</h2>
-<p>在一个优化问题中，原始问题通常会带有很多约束条件，这样直接求解原始问题往往是很困难的，于是考虑将原始问题转化为它的对偶问题，通过求解它的对偶问题来得到原始问题的解。<strong>对偶性</strong>（Duality）是凸优化问题的核心内容。
-<span id="more"></span></p>
-<h2 id="原始问题及其转化">原始问题及其转化</h2>
-<p><strong>原始问题</strong></p>
-<p>将一个原始最优化问题写成如下形式 <span class="math display">\[
-\underset{x}{\min} \quad f_0(x) \\ s.t. \quad f_i(x) \le 0,i=1,2,...,m
-\\ \qquad h_j(x)=0,j=1,2,...,p
-\]</span> 在求解原问题的对偶问题时，并不要求原始问题一定是凸问题，<span class="math inline">\(f\)</span>和<span class="math inline">\(g\)</span>可以是一般函数而不一定非得是凸函数。</p>
-<p><strong>拉格朗日函数</strong></p>
-<p>将原始问题的拉格朗日函数定义为 <span class="math display">\[
-L(x,\lambda,\nu)=f_0(x)+\sum^m_{i=1}\lambda_i f_i(x)+\sum^p_{j=1}\nu_j
-h_j(x)
-\]</span> 其中，<span class="math inline">\(x\in \mathbb
-R^n,\lambda\in\mathbb R^m,\nu\in\mathbb R^p\)</span>
-可以看到，拉格朗日函数<span class="math inline">\(L\)</span>相当于原始问题引入了两个新变量<span class="math inline">\(\lambda,\nu\)</span>，称为拉格朗日乘子</p>
-<p><strong>拉格朗日对偶函数</strong></p>
-<p>拉格朗日对偶函数通过对拉格朗日函数<span class="math inline">\(x\)</span>取下确界得到，即 <span class="math display">\[
-g(\lambda,\nu)=\underset{x}{\inf}L(x,\lambda,\nu)
-\]</span> 对偶函数有如下两条重要性质
-1.对偶函数一定是凹函数，其凹性与原目标函数和约束函数凹凸与否无关
-2.对<span class="math inline">\(\forall\lambda\ge0,\forall\nu\)</span>，如果原问题最优解对应的目标函数值为<span class="math inline">\(P^*\)</span>，则<span class="math inline">\(g(\lambda,\nu)\le p^*\)</span></p>
-<h2 id="拉格朗日对偶问题">拉格朗日对偶问题</h2>
-<p>根据对偶函数的重要性质2，对<span class="math inline">\(\forall\lambda\ge0,\forall\nu\)</span>，对偶函数<span class="math inline">\(g(\lambda,\nu)\)</span>是原问题最优值<span class="math inline">\(P^*\)</span>的一个下界，最好的下界就是最大化对偶函数，因此构造原问题的对偶问题：
-<span class="math display">\[
-\underset{\lambda,\nu}{\max}\quad g(\lambda,\nu) \\ s.t.\quad \lambda
-\ge 0
-\]</span>
-由于对偶函数是凹函数，故拉格朗日对偶问题一定是凸优化问题，其对应的最优解为<span class="math inline">\(\lambda^*,\nu^*\)</span>，若对应的最优值为<span class="math inline">\(d^*\)</span>，则总有<span class="math inline">\(d^* \le p^*\)</span></p>
-<p>当<span class="math inline">\(d^* \le p^*\)</span>时，称为弱对偶
-当<span class="math inline">\(d^* = p^*\)</span>时，称为强对偶 将<span class="math inline">\(p^*-d^*\)</span>称为对偶间隙</p>
-<blockquote>
-<p>在解存在的情况下，弱对偶总是成立的。
-满足强对偶时，可以通过求解对偶问题来得到原始问题的解</p>
-</blockquote>
-<h2 id="slater条件">Slater条件</h2>
-<p>Slater条件用于判断什么情况下强对偶是成立的。
-在<strong>原问题是凸问题</strong>的情况下，若<span class="math inline">\(\exists x \in
-relint(D)\)</span>，使得约束条件满足： <span class="math display">\[
-f_i(x)&lt;0,h_j(x)=0\quad i=1,2,...,p
-\]</span> 则强对偶成立 &gt;<span class="math inline">\(relint(D)表示原始凸问题定义域的相对内部，即在定义域上除了边界点以外的所有点\)</span></p>
-<h2 id="kkt条件">KKT条件</h2>
-<p>在强对偶且<span class="math inline">\(L\)</span>对<span class="math inline">\(x\)</span>可微的前提下，设<span class="math inline">\(x^*,\lambda^*,\nu^*\)</span>分别是原问题和对偶问题的最优解，则以下四组条件称为KKT条件
-<span class="math display">\[
-\begin{cases}
-   \frac{\partial L(x^*,\lambda^*,\nu^*)}{\partial x^*} |_{x=x^*}=0
-&amp;\text{(稳定性条件)} \\ \lambda^*_i f_i(x^*)=0
-&amp;\text{(互松弛条件)}\\ f_i(x^*)\le 0,h_j(x^*)=0
-&amp;\text{(原问题可行性)} \\ \lambda_i^* \ge 0
-&amp;\text{(对偶问题可行性)}
-    &amp;\text{if } d
-\end{cases}
-\]</span></p>
-<p>对<strong>一般的原问题</strong>，KKT
-条件是$x<sup><em>,<sup><em>,<sup>* <span class="math inline">\(为最优解的必要条件，即只要\)</span>x</sup></em>,</sup></em>,</sup>*$为最优解，则一定满足
-KKT 条件。</p>
-<p>对<strong>原问题为凸问题</strong>，KKT条件是<span class="math inline">\(x^*,\lambda^*,\nu^*\)</span>
-为最优解的充要条件</p>
-]]></content>
-      <categories>
-        <category>学习笔记</category>
-      </categories>
-      <tags>
-        <tag>最优化</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>NAS-PINN</title>
-    <url>/2025/02/11/NAS-PINN/</url>
-    <content><![CDATA[<h1 id="nas-pinn-neural-architecture-search-guided-physics-informed-neural-network-for-solving-pdesnas-pinn神经网络结构搜索引导的物理信息神经网络用于求解偏微分方程">NAS-PINN:
-Neural architecture search-guided physics-informed neural network for
-solving
-PDEs(NAS-PINN：神经网络结构搜索引导的物理信息神经网络，用于求解偏微分方程)</h1>
-<h2 id="摘要">摘要</h2>
-<p>物理信息神经网络( PINN
-)自提出以来一直是求解偏微分方程的主流框架。通过损失函数将物理信息融入到神经网络中，它可以以无监督的方式预测PDEs的解。然而，神经网络结构的设计基本依赖于先验知识和经验，这造成了很大的麻烦和较高的计算开销。因此，<strong>我们提出了一种神经结构搜索引导的方法，即NAS
-- PINN，用于自动搜索求解某些PDEs的最佳神经结构</strong>。
-通过将搜索空间松弛为连续空间，并利用掩码实现不同形状张量的添加，NAS -
-PINN可以通过双层优化进行训练，其中内层循环优化神经网络的权重和偏置，外层循环优化网络结构参数。我们通过包括Poisson，Burgers和Advection方程在内的几个数值实验来验证NAS
--
-PINN的能力。总结了求解不同PDE的有效神经网络结构的特点，可用于指导PINN中神经网络的设计。研究发现，更多的隐藏层并不一定意味着更好的性能，有时可能是有害的。
-特别是对于Poisson和Advection，在PINNs中更适合采用神经元数目较多的浅层神经网络。研究还表明，对于复杂问题，具有残差连接的神经网络可以提高PINNs的性能。
-<span id="more"></span></p>
-<h2 id="介绍">介绍</h2>
-<p>神经网络结构搜索( Neural Architecture Search，NAS
-)是一种在特定搜索空间中搜索最优神经网络结构的算法。传统的NAS算法通过神经网络模块的排列组合来构建架构，并对这些架构进行训练和测试以确定其性能，然后根据性能排序选择最佳的神经网络架构。这样的离散过程面临着计算效率低和计算成本高的问题。因此，减少计算开销、提高搜索效率一直是NAS的主要研究热点之一。
-<strong>本文将NAS融入PINN的框架中，提出了一种神经架构搜索引导的物理信息神经网络(
-NAS-PINN)</strong>。我们实现了用少量数据自动搜索求解给定PDE的最佳神经网络结构。掩码用于张量的添加，以帮助搜索每层中不同数量的神经元。通过对一系列PDE的数值实验，验证了所提方法的有效性.通过对数值结果的分析，总结了高效神经网络结构的特点，为PINNs的进一步研究提供了指导。</p>
-<h2 id="方法">方法</h2>
-<h3 id="pinn的框架">PINN的框架</h3>
-<p><img src="/2025/02/11/NAS-PINN/1.jpg"></p>
-<h3 id="可微nas">可微NAS</h3>
-<p>在传统的NAS算法中，神经网络的层数通常是固定的，并为每一层提供特定的操作选择。这样的配置使得搜索空间不连续，无法通过基于梯度的方法进行优化，极大地限制了算法的收敛速度和效率。
-Liu等人[ 29 ]提出了DARTS，并引入了可微NAS的概念。设<span class="math inline">\(O\)</span>是一个由候选操作组成的集合，其中任何一个操作都表示关于输入x的某个函数<span class="math inline">\(o(x)\)</span>.通过对候选操作施加松弛，可以使搜索空间连续：
-<span class="math display">\[
-\bar{o}^{(i,j)}(x)=\sum_{o\in
-O}\frac{exp(\alpha^{(i,j)}_o)}{\textstyle\sum_{o&#39;\in
-O}exp(\alpha^{(i,j)_{o&#39;}})}o(x) \qquad (6)
-\]</span> 其中<span class="math inline">\(\bar
-o^{(i,j)}(x)\)</span>为松弛后第<span class="math inline">\(i\)</span>层与第<span class="math inline">\(j\)</span>层之间的混合运算，<span class="math inline">\(\alpha^{(i,j)}_o\)</span>为运算<span class="math inline">\(o\)</span>的权.现在测试和比较所有可能的操作组合的离散过程可以简化为通过基于梯度的优化方法学习一组合适的权重<span class="math inline">\(\alpha^{(i,j)}_o\)</span>。当算法收敛时，通过选择权重最高的候选操作，可以将松弛的搜索空间提取到离散的神经架构中。</p>
-<h3 id="掩码">掩码</h3>
-<p>虽然式(6)将搜索空间缩小为一个连续的空间，张量运算只允许相同形状的张量相加，使得搜索神经元个数不切实际，如图2(a)所示。受卷积神经网络中零填充的启发，我们可以将神经元填充到最大数量k，如图2
-(b)所示。在图2(c)中，通过将填充的神经元乘以一个零张量掩码，我们将额外的神经元去激活，以模拟不同数量的神经元。最后，通过共享权重，可以将可选的隐藏层减少为一个，输出y可以表示为：
-<span class="math display">\[
-\mathbf{y} = \sigma(\mathbf{w}\cdot\mathbf{x}+\mathbf{b})\cdot
-\begin{pmatrix}
-[g_1,g_2,g_3]\times     
-\begin{bmatrix}
-   \mathbf{mask}_1 \\
-   \mathbf{mask}_2 \\
-   \mathbf{mask}_3
-\end{bmatrix}^T
-\end{pmatrix}
-\]</span> 其中<span class="math inline">\(\sigma(\cdot)\)</span>为激活函数，<span class="math inline">\(\mathbf{w}\)</span>和<span class="math inline">\(\mathbf{b}\)</span>分别为单隐层的权值和偏置，<span class="math inline">\(g_i\)</span>为标量，为每个神经元个数的权值，<span class="math inline">\(\mathbf{mask}_i\)</span>为每个神经元个数的掩码，形状为<span class="math inline">\(1\times k\)</span>。假设神经元个数为<span class="math inline">\(j\)</span>，则<span class="math inline">\(\mathbf{mask}\)</span>的前<span class="math inline">\(j\)</span>个元素为1，其余<span class="math inline">\((k-j)\)</span>个元素为0。 <img src="/2025/02/11/NAS-PINN/2.jpg" alt="fig.2">
-为了确定层数，我们引入身份变换作为操作，即跳过该层，且输出<span class="math inline">\(\mathbf{y}\)</span>变为: <span class="math display">\[
-\mathbf{y} = \alpha_1 \cdot
-\mathbf{x}+\alpha_2\cdot\sigma(\mathbf{w}\cdot\mathbf{x}+\mathbf{b})\cdot
-\begin{pmatrix}
-[g_1,g_2,g_3]\times     
-\begin{bmatrix}
-   \mathbf{mask}_1 \\
-   \mathbf{mask}_2 \\
-   \mathbf{mask}_3
-\end{bmatrix}^T
-\end{pmatrix} \qquad (8)
-\]</span> 其中，<span class="math inline">\(\alpha_1\)</span>为身份转换权重，表示跳过该层，<span class="math inline">\(\alpha_2\)</span>为保留该层的权重。
-式(8)给出了每层输入和输出之间的映射关系，通过反复应用，可以建立一个DNN模型，其中最合适的层可以根据权重<span class="math inline">\(\alpha\)</span>来选择，最合适的每层神经元可以根据权重<span class="math inline">\(g\)</span>来决定。这里，我们将<span class="math inline">\(\alpha\)</span>和<span class="math inline">\(g\)</span>统称为<span class="math inline">\(\boldsymbol{\alpha}\)</span>，<span class="math inline">\(\bf{w}\)</span>和<span class="math inline">\(\bf{b}\)</span>统称为<span class="math inline">\(\boldsymbol{\theta}\)</span>。</p>
-<h3 id="mas-pinn">MAS-PINN</h3>
-<p>现在我们可以得到NAS -
-PINN的整体框架，如图3所示，它可以被认为是一个<strong>双层优化问题</strong>。在内循环中，对DNN的权值和偏置<span class="math inline">\(\boldsymbol{\theta}\)</span>进行优化，而在外循环中，优化目标是寻找最佳的<span class="math inline">\(\boldsymbol{\alpha}\)</span>。其过程可以表示为：
-<span class="math display">\[
-\underset{\boldsymbol{\alpha}}{min}MSE(\boldsymbol{\theta}^*,\boldsymbol{\alpha})
-\\ s.t. \boldsymbol{\theta}^*=
-\underset{\boldsymbol{\theta}}{argmin}Loss(\boldsymbol{\theta},\boldsymbol{\alpha})
-\]</span> 内环的损失函数可以设计为式( 2 ) ~ ( 5
-)（PINN损失函数：数据匹配损失，PDE残差损失，边界条件损失）和外环的损失函数可以写成：
-<span class="math display">\[
-MSE=\frac{1}{n}\sum^n_{i=1}(\hat u-u)^2  \qquad(10)
-\]</span>
-其中u是已知的解析解或数值解，n是数据点的个数，对于外循环，所需的n可以很小。这样的双层优化问题可以通过交替优化来解决，相应的过程在算法1中展示。
-当训练结束时，可以根据<span class="math inline">\(\boldsymbol{\alpha}\)</span>推导出离散的神经网络模型。基本上，我们可以首先通过比较<span class="math inline">\(a_1\)</span>和<span class="math inline">\(a_2\)</span>来决定是否跳过某一层。如果保留该层，我们可以根据<span class="math inline">\(g\)</span>来决定神经元的数量。如果跳过某一层，则无需考察其权重<span class="math inline">\(g\)</span>。 在一些<span class="math inline">\(a_1\)</span>和<span class="math inline">\(a_2\)</span>相对接近的情况下，我们假设跳过层和保留层同样重要，并给出了一个混合模型。在混合模型中，层是身份变换和神经网络操作的组合。神经元的数量决定于一个离散的神经元，因此这些层可以表示为：
-<span class="math display">\[
-\mathbf{y} = \alpha_1 \cdot
-\mathbf{x}+\alpha_2\cdot\sigma(\mathbf{w}\cdot\mathbf{x}+\mathbf{b})\cdot
-(g_{max}\times \boldsymbol{mask}_{max})^T
-\]</span> 式中,<span class="math inline">\(g_{max}\)</span>为所有权值<span class="math inline">\(g\)</span>中的最大值，<span class="math inline">\(\boldsymbol{mask}_{max}\)</span>为对应于<span class="math inline">\(g_{max}\)</span>的零张量掩码。 <img src="/2025/02/11/NAS-PINN/3.jpg" alt="fig.3"> <img src="/2025/02/11/NAS-PINN/4.jpg" alt="algorithm 1"></p>
-<h2 id="实验">实验</h2>
-<h3 id="possion-equation">Possion equation</h3>
-<p>泊松方程是一类描述电磁场和热场的基本偏微分方程，在电磁学和机械工程中有着广泛的应用。这里，我们考虑一个带有Dirichlet边界条件的二维Poisson方程：
-<img src="/2025/02/11/NAS-PINN/5.jpg" alt="possion equation"> 该方程有解析解：
-<img src="/2025/02/11/NAS-PINN/6.jpg" alt="analytical solution">
-我们首先考虑正方形计算域中的泊松方程，以验证所提出的NAS -
-PINN的有效性。我们构造了一个相对较小的搜索空间，它是一个最多包含5个隐藏层的神经网络，每层包含30、50或70个神经元。对离散搜索空间中的每一种可能的神经架构分别进行训练和测试，作为网格搜索的近似实例。然后，我们使用NAS
--
-PINN来搜索一个神经结构，并研究它是否是最好的。所有离散搜索空间中的363个架构由Adam训练，其中500个配置点在域内随机采样，100个边界点均匀分布在边界上。
-在架构搜索阶段，1000个配置点和200个边界点采用与之前相同的策略进行采样，以搜索最佳的神经架构，并将Adam应用于架构搜索阶段。然后以与363架构相同的方式从头开始训练得到的神经架构。</p>
-<p>为了进行更全面的比较，还对传统的Auto
-ML方法SMAC进行了测试。SMAC是一个通用的用于超参数优化的贝叶斯优化包，对于所讨论的问题，需要优化的超参数是隐藏层的数量和神经元的数量。对于SMAC，一个相当小的研究空间包括15种不同的神经结构，其中每个隐藏层的神经元数量只能是相同的。SMAC使用与架构搜索阶段相同的1000个配置点和200个边界点。
-最后，均匀采样1000000个点，测试所有收敛的神经架构。不同架构的预测解和误差分布如图4所示，L2误差如表1所示。所有实验均重复5次，L2误差由5次重复的平均值得到。
-这些结构以序列的形式描述在表1中。序列的第一个和最后一个元素代表输入和输出通道，而其他元素代表每一层的神经元数目。例如，98号架构的输入大小为n×2，其中n为批次大小，2代表坐标x和y，第一层隐含层有70个神经元。通过NAS
-- PINN得到的架构为No.358。</p>
-<p>从表1和图4中，我们可以清楚地看到NAS-PINN的神经架构具有最小的L2误差和最小的最大误差值，并且其误差分布相比于其他架构也有所改善。因此，所提出的NASPINN确实可以在给定的搜索空间中找到最佳的神经网络结构。此外，虽然No.98也表现出相对较好的性能(在363种可能的体系结构中,它是第二好的体系结构)，但它比NAS-PINN的架构拥有更多的参数，这表明更多的参数并不一定意味着更好的性能，一个适当设计的神经架构显得尤为重要。
-此外，在PINNs中，更深的神经网络总是更好的这一常识似乎并不是在所有情况下都是正确的。至少对于给定的泊松方程，浅层但宽的神经网络(隐含层较少,但每层神经元较多的神经网络)优于深层的神经网络。</p>
-<p>与SMAC相比，NAS - PINN可以在更大、更灵活的搜索空间中进行搜索，从而NAS
--
-PINN更有可能找到真正最佳的神经架构。值得注意的是，虽然SMAC在只有15个神经结构的较小搜索空间中进行搜索，但它需要SMAC
-2。08 h找到357号架构，而NAS -
-PINN使用1.57h，从363个不同的架构中找到358号架构。所有的数值实验均在Intel(R)Core
-i9-9900 K @ 3.60 Ghz /NVIDIA GeForce Rtx 3090 上进行 <img src="/2025/02/11/NAS-PINN/7.jpg" alt="fig.4"> <img src="/2025/02/11/NAS-PINN/8.jpg" alt="table.1"></p>
-]]></content>
-      <categories>
-        <category>论文泛读</category>
-      </categories>
-      <tags>
-        <tag>神经网络架构</tag>
-        <tag>PINN</tag>
       </tags>
   </entry>
   <entry>

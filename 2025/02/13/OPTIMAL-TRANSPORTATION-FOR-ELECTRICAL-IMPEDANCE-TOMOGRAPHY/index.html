@@ -33,7 +33,7 @@
 <meta property="og:image" content="http://example.com/2025/02/13/OPTIMAL-TRANSPORTATION-FOR-ELECTRICAL-IMPEDANCE-TOMOGRAPHY/4.jpg">
 <meta property="og:image" content="http://example.com/2025/02/13/OPTIMAL-TRANSPORTATION-FOR-ELECTRICAL-IMPEDANCE-TOMOGRAPHY/5.jpg">
 <meta property="article:published_time" content="2025-02-13T11:26:47.000Z">
-<meta property="article:modified_time" content="2025-02-22T03:17:37.093Z">
+<meta property="article:modified_time" content="2025-02-22T11:39:04.641Z">
 <meta property="article:author" content="宋嘉晨">
 <meta property="article:tag" content="最优化">
 <meta property="article:tag" content="最优运输">
@@ -232,7 +232,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-02-22 11:17:37" itemprop="dateModified" datetime="2025-02-22T11:17:37+08:00">2025-02-22</time>
+                <time title="修改时间：2025-02-22 19:39:04" itemprop="dateModified" datetime="2025-02-22T19:39:04+08:00">2025-02-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -271,7 +271,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>21k</span>
+              <span>24k</span>
             </span>
 
         </div>
@@ -668,7 +668,7 @@ EIT正问题采用椭圆型偏微分方程建模： <span class="math display">\
 \Lambda(\sigma) j=\phi, \quad \text { where } \phi=\gamma F(\sigma) j
 \qquad (5.3)
 \]</span></p>
-<p>其中<span class="math inline">\(\gamma\)</span>是投影<span class="math inline">\(\~{H}^1(\Omega)\)</span>到<span class="math inline">\(\~{H}^{\frac{1}{2}}(\partial
+<p>其中<span class="math inline">\(\gamma\)</span>是投影<span class="math inline">\(\tilde{H}^1(\Omega)\)</span>到<span class="math inline">\(\tilde   {H}^{\frac{1}{2}}(\partial
 \Omega)\)</span>的迹算子. NtD映射<span class="math inline">\(\Lambda(\sigma)\)</span>是自伴且正定的。而正问题就是已知<span class="math inline">\(\sigma\)</span>计算<span class="math inline">\(\Lambda(\sigma)\)</span>。反问题(EIT)
 [9、15、47]是已知<span class="math inline">\(\Lambda(\sigma)\)</span>，重构<span class="math inline">\(\sigma\)</span>，可以表述为一个优化问题:</p>
 <p><span class="math display">\[
@@ -689,7 +689,7 @@ c_1 \text { on } \Omega,\left.\sigma\right|_{\partial
 </p>
 <p>在现有方法[15-17、29、32、44]中，选择<span class="math inline">\(\mathfrak{D}\)</span>为<span class="math inline">\(\partial \Omega\)</span>上的<span class="math inline">\(L^2\)</span>范数，并在<span class="math inline">\(\mathcal{J}(\sigma)\)</span>中加入正则化项<span class="math inline">\(\mathscr{R}(\sigma)\)</span>，得到新的目标泛函。</p>
 <p><span class="math display">\[
-\Psi(\sigma):=\mathcal{J}(\sigma)+\beta \mathscr{R}(\sigma)
+\Psi(\sigma):=\mathcal{J}(\sigma)+\beta \mathscr{R}(\sigma) \qquad (5.6)
 \]</span></p>
 <p>其中<span class="math inline">\(\beta\)</span>是正则化参数。由此产生的优化问题通常采用基于梯度的迭代优化方法进行求解。然而，由于EIT的不适定性[
 47 ]，重建容易受到边界测量中噪声的干扰。需要一个适当的<span class="math inline">\(\beta\)</span>值来稳定重建过程。然而，当噪声达到一定的阈值水平时，很难选择一个合适的<span class="math inline">\(\beta\)</span>来平衡重建的平滑性和准确性。</p>
@@ -718,8 +718,8 @@ D\)</span>。由于我们测量了电势<span class="math inline">\(\phi \in
 \mathcal{L}(\tilde{\phi}))\)</span>定义在<span class="math inline">\(\tilde{H}^{\frac{1}{2}}(\partial
 \Omega)\)</span>中的性质是保持的，因为质量对<span class="math inline">\(\tilde{H}^{\frac{1}{2}}(\partial
 \Omega)\)</span>中的函数是守恒的。 <span class="math inline">\(W_2(\mathcal{L}(\phi),
-\mathcal{L}(\tilde{\phi}))\)</span>的计算沿用上一节的方法，因此误<span class="math inline">\(\mathcal{J}(\sigma)\)</span>可以很容易地计算得到。</p>
-<p>另一个重要问题是推导<span class="math inline">\(\mathcal{J}(\sigma)\)</span>的Fréchet梯度。为了简化记号，我们在(5.4)中讨论了<span class="math inline">\(N=1\)</span>的情形.一阶扰动给出[41]：</p>
+\mathcal{L}(\tilde{\phi}))\)</span>的计算沿用上一节的方法，因此误匹配函数<span class="math inline">\(\mathcal{J}(\sigma)\)</span>可以很容易地计算得到。</p>
+<p>另一个重要问题是推导<span class="math inline">\(\mathcal{J}(\sigma)\)</span>的Fréchet梯度。为了简化记号，我们在(5.4)中讨论了<span class="math inline">\(N=1\)</span>的情形。一阶扰动给出[41]：</p>
 <p><span class="math display">\[
 \begin{aligned}
 \delta \mathcal{J}=\left\langle\frac{\delta \mathcal{J}}{\delta \phi},
@@ -747,8 +747,8 @@ j}{\delta \sigma}\right)^* \frac{\delta \mathfrak{D}(\phi,
 \frac{\delta W_2^2(\mathcal{L}(\phi), \mathcal{L}(\tilde{\phi}))}{\delta
 \mathcal{L}(\phi)} \qquad (5.10)
 \]</span></p>
-<p>由注3.1，梯度可按第4节（数值方法）的方法计算。对于伴随算子<span class="math inline">\(\frac{\delta \Lambda(\sigma) j}{\delta
-\sigma}\)</span>，在[9]中给出：</p>
+<p>由注3.1，梯度可按第4节（数值方法）的方法计算。对于<span class="math inline">\(\frac{\delta \Lambda(\sigma) j}{\delta
+\sigma}\)</span>的伴随算子，在[9]中给出：</p>
 <p><span class="math display">\[
 \begin{aligned}
 \left(\frac{\delta \Lambda(\sigma) j}{\delta \sigma}\right)^*:
@@ -765,11 +765,11 @@ h &amp; \longmapsto-\nabla u \cdot \nabla \tilde{u}
 \mathcal{L}(\tilde{\phi}))}{\delta \mathcal{L}(\phi)} \mathrm{d} s=0
 \]</span></p>
 <p>因此，回顾定义(5.2)，<span class="math inline">\(\frac{\delta
-\Omega(\phi, \bar{\phi})}{\delta \phi} \in
+\mathfrak{D}(\phi, \bar{\phi})}{\delta \phi} \in
 \tilde{H}^{-\frac{1}{2}}(\partial
 \Omega)\)</span>，在算子(5.11)的定义域内。</p>
 <p>一般地，Fréchet梯度(5.9)被定义为<span class="math inline">\(\langle\cdot,
-\cdot\rangle_{L^2(\Omega)}\)</span>下的积分算子。改变<span class="math inline">\(L^2\)</span>到<span class="math inline">\(H_0^1\)</span>的底层空间，我们可以通过公式〈<span class="math inline">\(\left\langle\mathcal{J}^{\prime}(\sigma),
+\cdot\rangle_{L^2(\Omega)}\)</span>下的积分算子。改变下标空间<span class="math inline">\(L^2\)</span>到<span class="math inline">\(H_0^1\)</span>，我们可以通过公式〈<span class="math inline">\(\left\langle\mathcal{J}^{\prime}(\sigma),
 \eta\right\rangle_{L^2(\Omega)}=\left\langle\mathcal{J}_s^{\prime}(\sigma),
 \eta\right\rangle_{H_0^1(\Omega)}\)</span>定义关于<span class="math inline">\(\langle\cdot,
 \cdot\rangle_{H_0^1(\Omega)}\)</span> 的梯度<span class="math inline">\(\mathcal{J}_s^{\prime}\)</span>，这等价于求解方程[29、31]：</p>
@@ -785,6 +785,95 @@ h &amp; \longmapsto-\nabla u \cdot \nabla \tilde{u}
 .对于EIT问题，我们采用Sobolev梯度<span class="math inline">\(\mathcal{J}_s^{\prime}\)</span>代替标准的<span class="math inline">\(L^2\)</span>梯度<span class="math inline">\(\mathcal{J}^{\prime}\)</span>。事实上，<span class="math inline">\(\mathcal{J}^{\prime}\)</span>一般不能给出合理的重构，而<span class="math inline">\(\mathcal{J}_s^{\prime}\)</span>稳定了不适定问题(5.4)
 。此外，<span class="math inline">\(\mathcal{J}_s^{\prime}\)</span>的应用自然地保留了式(5.5)中边界上的已知信息。梯度<span class="math inline">\(\mathcal{J}_s^{\prime}\)</span>也比振荡优化过程中优选的<span class="math inline">\(\mathcal{J}^{\prime}\)</span>更平滑。</p>
 <p>利用梯度信息，<strong>我们提出了带有非单调线搜索策略的Barzilai-Borwein梯度算法来最小化(5.6)</strong>。算法2总结了该方法的具体实现。</p>
+<p><span class="math display">\[
+    \begin{array}{l}
+   \hline \
+   \textbf{算法2} \quad Barzilai-Borwein梯度算法 \\
+   \hline \
+   \qquad \textbf{给定}初始值\sigma_0，参数M \in \mathbb{N}^{+}, \tau
+\in(0,1), 0&lt;\rho_1&lt;\rho_2&lt;1, 0&lt;s_{\min }&lt;s_{\max
+}，最大迭代次数K_{\max } \\
+   \qquad \textbf{设定}初始值k:=0, s_0:=s_{\max },
+\sigma_{+}:=\sigma_0，计算\mathcal{J}_s^{\prime}\left(\sigma_0\right)\\
+   \qquad \textbf{while} \, k&lt;K_{\max } \, \textbf{do} \\
+      \qquad \quad \textbf{while}\\
+         \qquad \qquad \qquad \qquad \Psi\left(\sigma_{+}\right) \geq
+\underset{0 \leq j \leq M-1} {\max}
+\Psi\left(\sigma_{k-j}\right)-\frac{\tau}{2
+s_k}\left\|\sigma_{+}-\sigma_k\right\|_{H^1(\Omega)}^2 \\
+      \qquad \quad \textbf{do}\\
+         \qquad \qquad 选择\rho \in\left[\rho_1,
+\rho_2\right]，更新s_k:=\rho * s_k \\
+         \qquad \qquad 令\gamma_k=\sigma_k-s_k
+\mathcal{J}_s^{\prime}\left(\sigma_k\right)。解决代理问题 \\
+         (5.13) \qquad \qquad \qquad  \sigma_{+}:=\underset{\sigma \in
+\mathcal{A}}{\operatorname{argmin}} \frac{1}{2
+s_k}\left\|\sigma-\gamma_k\right\|_{H^1(\Omega)}^2+\beta
+\mathscr{R}(\sigma)\\
+      \qquad \quad \textbf{end while} \\
+   \qquad \quad
+令\sigma_{k+1}:=\sigma_{+}，计算\mathcal{J}_s^{\prime}\left(\sigma_{k+1}\right)。然后计算
+\\
+   \qquad \qquad \qquad x_k  :=\left\langle\sigma_{k+1}-\sigma_k,
+\sigma_{k+1}-\sigma_k\right\rangle_{H^1(\Omega)}\\
+   \qquad \qquad \qquad y_k:=\left\langle\sigma_{k+1}-\sigma_k,
+\mathcal{J}_s^{\prime}\left(\sigma_{k+1}\right)-\mathcal{J}_s^{\prime}\left(\sigma_k\right)\right\rangle_{H^1(\Omega)}\\
+   \qquad \quad \textbf{if} \, \,  y_k \leq 0 \, \, \textbf{then}\\
+   \qquad \qquad s_{k+1}:=s_{\max }\\
+   \qquad \quad \textbf{else}\\
+   \qquad \qquad s_{k+1}:=\min \left\{s_{\max }, \max \left\{s_{\min },
+\frac{x_k}{y_k}\right\}\right\} \\
+   \qquad \quad \textbf{end if}\\
+   \qquad \quad k:=k+1\\
+   \qquad \textbf{end while}\\
+   \qquad 输出\sigma_k为重构 \\
+   \hline
+\end{array}
+\]</span></p>
+<p>这里我们在<span class="math inline">\(H^1\)</span>范数中，首先在每一步中对<span class="math inline">\(\mathcal{J}(\sigma)\)</span>在<span class="math inline">\(\sigma_k\)</span>处进行局部线性化：</p>
+<p><span class="math display">\[
+\mathcal{J}(\sigma) \approx
+\mathcal{J}\left(\sigma_k\right)+\left\langle\mathcal{J}_s^{\prime}\left(\sigma_k\right),
+\sigma-\sigma_k\right\rangle_{H^1(\Omega)}+\frac{1}{2
+s_k}\left\|\sigma-\sigma_k\right\|_{H^1(\Omega)}^2 \qquad (5.14)
+\]</span></p>
+<p>由Barzilai-Borwein规则初始化的步长<span class="math inline">\(s_k\)</span>意在提供Hessian的标量近似<span class="math inline">\(s_k I\)</span>。将式(5.14)代入式(5.6)，<span class="math inline">\(\Psi\)</span>的最小化问题归结为代理问题(5.13)</p>
+<p>代理问题( 5.13 )对于一些正则化项如<span class="math inline">\(\mathscr{R}(\sigma)=\frac{1}{2}\lVert \nabla
+\sigma\rVert_{L^2(\Omega)}^2\)</span>是凸的，这意味着它可以直接使用一阶最优性条件来求解。然而，对于我们实验中使用的全变差正则化<span class="math inline">\(\mathscr{R}(\sigma)=\lVert \nabla
+\sigma\rVert_{L^1(\Omega)}\)</span>不再是凸的。我们取光滑逼近<span class="math inline">\(\mathscr{R}(\sigma)=\int_{\Omega} \sqrt{|\nabla
+\sigma|^2+\epsilon} \mathrm{d} x\)</span>，然后用<span class="math inline">\(\mathscr{R}(\sigma)\)</span>在 <span class="math inline">\(\sigma_k\)</span>附近的二阶展开式代替<span class="math inline">\(\mathscr{R}(\sigma)\)</span>：</p>
+<p><span class="math display">\[
+\mathscr{R}(\sigma) \approx
+\mathscr{R}\left(\sigma_k\right)+\left\langle\mathscr{R}^{\prime}\left(\sigma_k\right),
+\sigma-\sigma_k\right\rangle_{L^2(\Omega)}+\frac{1}{2}\left\langle\mathscr{R}^{\prime
+\prime}\left(\sigma_k\right)\left(\sigma-\sigma_k\right),
+\sigma-\sigma_k\right\rangle_{L^2(\Omega)}
+\]</span></p>
+<p>因此，代理问题变成了一个二次型，可以通过求解关于<span class="math inline">\(\sigma\)</span>的线性变分方程来解决：</p>
+<p><span class="math display">\[
+\begin{aligned}
+\langle\sigma, \eta\rangle_{H^1(\Omega)}+s_k \beta \cdot A_k(\sigma,
+\eta) &amp; =\left\langle\gamma_k, \eta\right\rangle_{H^1(\Omega)}-s_k
+\beta \cdot B_k(\eta), \quad \forall \eta \in H_0^1(\Omega) \\
+\left.\sigma\right|_{\partial \Omega} &amp; =\sigma_0
+\end{aligned}
+\]</span></p>
+<p>这里，双线性形式<span class="math inline">\(A_k(\sigma,
+\eta)\)</span>和线性形式<span class="math inline">\(B_k(\eta)\)</span>可由下式计算：</p>
+<p><span class="math display">\[
+\begin{aligned}
+A_k(\sigma, \eta) &amp;
+:=\left\langle\mathscr{R}\left(\sigma_k\right)^{-1} \nabla \sigma,
+\nabla
+\eta\right\rangle_{L^2(\Omega)}-\left\langle\mathscr{R}\left(\sigma_k\right)^{-3}
+\nabla \sigma_k \cdot \nabla \sigma, \nabla \sigma_k \cdot \nabla
+\eta\right\rangle_{L^2(\Omega)} \\
+B_k(\eta) &amp;
+\left.:=\left.\left\langle\mathscr{R}\left(\sigma_k\right)^{-3}\right|
+\nabla \sigma_k\right|^2 \nabla \sigma_k, \nabla
+\eta\right\rangle_{L^2(\Omega)}
+\end{aligned}
+\]</span></p>
 
     </div>
 
@@ -938,13 +1027,13 @@ TOMOGRAPHY（电阻抗断层成像的最优传输）</span></a><ol class="nav-ch
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">37k</span>
+    <span title="站点总字数">41k</span>
 </div>
 
 <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共37k字</span>
+  <span class="post-count">博客全站共41k字</span>
   <span class="post-meta-divider">|</span>
   本站总访问量<span id="busuanzi_value_site_pv"></span>次
   <span class="post-meta-divider">|</span>
@@ -955,7 +1044,7 @@ TOMOGRAPHY（电阻抗断层成像的最优传输）</span></a><ol class="nav-ch
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共37k字</span>
+  <span class="post-count">博客全站共41k字</span>
 </div>
 
 
