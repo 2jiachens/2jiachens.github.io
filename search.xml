@@ -1,485 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>NAS-PINN</title>
-    <url>/2025/02/11/NAS-PINN/</url>
-    <content><![CDATA[<h1 id="nas-pinn-neural-architecture-search-guided-physics-informed-neural-network-for-solving-pdesnas-pinn神经网络结构搜索引导的物理信息神经网络用于求解偏微分方程">NAS-PINN:
-Neural architecture search-guided physics-informed neural network for
-solving
-PDEs(NAS-PINN：神经网络结构搜索引导的物理信息神经网络，用于求解偏微分方程)</h1>
-<h2 id="摘要">摘要</h2>
-<p>物理信息神经网络( PINN
-)自提出以来一直是求解偏微分方程的主流框架。通过损失函数将物理信息融入到神经网络中，它可以以无监督的方式预测PDEs的解。然而，神经网络结构的设计基本依赖于先验知识和经验，这造成了很大的麻烦和较高的计算开销。因此，<strong>我们提出了一种神经结构搜索引导的方法，即NAS
-- PINN，用于自动搜索求解某些PDEs的最佳神经结构</strong>。
-通过将搜索空间松弛为连续空间，并利用掩码实现不同形状张量的添加，NAS -
-PINN可以通过双层优化进行训练，其中内层循环优化神经网络的权重和偏置，外层循环优化网络结构参数。我们通过包括Poisson，Burgers和Advection方程在内的几个数值实验来验证NAS
--
-PINN的能力。总结了求解不同PDE的有效神经网络结构的特点，可用于指导PINN中神经网络的设计。研究发现，更多的隐藏层并不一定意味着更好的性能，有时可能是有害的。
-特别是对于Poisson和Advection，在PINNs中更适合采用神经元数目较多的浅层神经网络。研究还表明，对于复杂问题，具有残差连接的神经网络可以提高PINNs的性能。
-<span id="more"></span></p>
-<h2 id="介绍">介绍</h2>
-<p>神经网络结构搜索( Neural Architecture Search，NAS
-)是一种在特定搜索空间中搜索最优神经网络结构的算法。传统的NAS算法通过神经网络模块的排列组合来构建架构，并对这些架构进行训练和测试以确定其性能，然后根据性能排序选择最佳的神经网络架构。这样的离散过程面临着计算效率低和计算成本高的问题。因此，减少计算开销、提高搜索效率一直是NAS的主要研究热点之一。
-<strong>本文将NAS融入PINN的框架中，提出了一种神经架构搜索引导的物理信息神经网络(
-NAS-PINN)</strong>。我们实现了用少量数据自动搜索求解给定PDE的最佳神经网络结构。掩码用于张量的添加，以帮助搜索每层中不同数量的神经元。通过对一系列PDE的数值实验，验证了所提方法的有效性.通过对数值结果的分析，总结了高效神经网络结构的特点，为PINNs的进一步研究提供了指导。</p>
-<h2 id="方法">方法</h2>
-<h3 id="pinn的框架">PINN的框架</h3>
-<p><img src="/2025/02/11/NAS-PINN/1.jpg"></p>
-<h3 id="可微nas">可微NAS</h3>
-<p>在传统的NAS算法中，神经网络的层数通常是固定的，并为每一层提供特定的操作选择。这样的配置使得搜索空间不连续，无法通过基于梯度的方法进行优化，极大地限制了算法的收敛速度和效率。
-Liu等人[ 29 ]提出了DARTS，并引入了可微NAS的概念。设<span class="math inline">\(O\)</span>是一个由候选操作组成的集合，其中任何一个操作都表示关于输入x的某个函数<span class="math inline">\(o(x)\)</span>.通过对候选操作施加松弛，可以使搜索空间连续：
-<span class="math display">\[
-\bar{o}^{(i,j)}(x)=\sum_{o\in
-O}\frac{exp(\alpha^{(i,j)}_o)}{\textstyle\sum_{o&#39;\in
-O}exp(\alpha^{(i,j)_{o&#39;}})}o(x) \qquad (6)
-\]</span> 其中<span class="math inline">\(\bar
-o^{(i,j)}(x)\)</span>为松弛后第<span class="math inline">\(i\)</span>层与第<span class="math inline">\(j\)</span>层之间的混合运算，<span class="math inline">\(\alpha^{(i,j)}_o\)</span>为运算<span class="math inline">\(o\)</span>的权.现在测试和比较所有可能的操作组合的离散过程可以简化为通过基于梯度的优化方法学习一组合适的权重<span class="math inline">\(\alpha^{(i,j)}_o\)</span>。当算法收敛时，通过选择权重最高的候选操作，可以将松弛的搜索空间提取到离散的神经架构中。</p>
-<h3 id="掩码">掩码</h3>
-<p>虽然式(6)将搜索空间缩小为一个连续的空间，张量运算只允许相同形状的张量相加，使得搜索神经元个数不切实际，如图2(a)所示。受卷积神经网络中零填充的启发，我们可以将神经元填充到最大数量k，如图2
-(b)所示。在图2(c)中，通过将填充的神经元乘以一个零张量掩码，我们将额外的神经元去激活，以模拟不同数量的神经元。最后，通过共享权重，可以将可选的隐藏层减少为一个，输出y可以表示为：
-<span class="math display">\[
-\mathbf{y} = \sigma(\mathbf{w}\cdot\mathbf{x}+\mathbf{b})\cdot
-\begin{pmatrix}
-[g_1,g_2,g_3]\times     
-\begin{bmatrix}
-   \mathbf{mask}_1 \\
-   \mathbf{mask}_2 \\
-   \mathbf{mask}_3
-\end{bmatrix}^T
-\end{pmatrix}
-\]</span> 其中<span class="math inline">\(\sigma(\cdot)\)</span>为激活函数，<span class="math inline">\(\mathbf{w}\)</span>和<span class="math inline">\(\mathbf{b}\)</span>分别为单隐层的权值和偏置，<span class="math inline">\(g_i\)</span>为标量，为每个神经元个数的权值，<span class="math inline">\(\mathbf{mask}_i\)</span>为每个神经元个数的掩码，形状为<span class="math inline">\(1\times k\)</span>。假设神经元个数为<span class="math inline">\(j\)</span>，则<span class="math inline">\(\mathbf{mask}\)</span>的前<span class="math inline">\(j\)</span>个元素为1，其余<span class="math inline">\((k-j)\)</span>个元素为0。 <img src="/2025/02/11/NAS-PINN/2.jpg" alt="fig.2">
-为了确定层数，我们引入身份变换作为操作，即跳过该层，且输出<span class="math inline">\(\mathbf{y}\)</span>变为: <span class="math display">\[
-\mathbf{y} = \alpha_1 \cdot
-\mathbf{x}+\alpha_2\cdot\sigma(\mathbf{w}\cdot\mathbf{x}+\mathbf{b})\cdot
-\begin{pmatrix}
-[g_1,g_2,g_3]\times     
-\begin{bmatrix}
-   \mathbf{mask}_1 \\
-   \mathbf{mask}_2 \\
-   \mathbf{mask}_3
-\end{bmatrix}^T
-\end{pmatrix} \qquad (8)
-\]</span> 其中，<span class="math inline">\(\alpha_1\)</span>为身份转换权重，表示跳过该层，<span class="math inline">\(\alpha_2\)</span>为保留该层的权重。
-式(8)给出了每层输入和输出之间的映射关系，通过反复应用，可以建立一个DNN模型，其中最合适的层可以根据权重<span class="math inline">\(\alpha\)</span>来选择，最合适的每层神经元可以根据权重<span class="math inline">\(g\)</span>来决定。这里，我们将<span class="math inline">\(\alpha\)</span>和<span class="math inline">\(g\)</span>统称为<span class="math inline">\(\boldsymbol{\alpha}\)</span>，<span class="math inline">\(\bf{w}\)</span>和<span class="math inline">\(\bf{b}\)</span>统称为<span class="math inline">\(\boldsymbol{\theta}\)</span>。</p>
-<h3 id="mas-pinn">MAS-PINN</h3>
-<p>现在我们可以得到NAS -
-PINN的整体框架，如图3所示，它可以被认为是一个<strong>双层优化问题</strong>。在内循环中，对DNN的权值和偏置<span class="math inline">\(\boldsymbol{\theta}\)</span>进行优化，而在外循环中，优化目标是寻找最佳的<span class="math inline">\(\boldsymbol{\alpha}\)</span>。其过程可以表示为：
-<span class="math display">\[
-\underset{\boldsymbol{\alpha}}{min}MSE(\boldsymbol{\theta}^*,\boldsymbol{\alpha})
-\\ s.t. \boldsymbol{\theta}^*=
-\underset{\boldsymbol{\theta}}{argmin}Loss(\boldsymbol{\theta},\boldsymbol{\alpha})
-\]</span> 内环的损失函数可以设计为式( 2 ) ~ ( 5
-)（PINN损失函数：数据匹配损失，PDE残差损失，边界条件损失）和外环的损失函数可以写成：
-<span class="math display">\[
-MSE=\frac{1}{n}\sum^n_{i=1}(\hat u-u)^2  \qquad(10)
-\]</span>
-其中u是已知的解析解或数值解，n是数据点的个数，对于外循环，所需的n可以很小。这样的双层优化问题可以通过交替优化来解决，相应的过程在算法1中展示。
-当训练结束时，可以根据<span class="math inline">\(\boldsymbol{\alpha}\)</span>推导出离散的神经网络模型。基本上，我们可以首先通过比较<span class="math inline">\(a_1\)</span>和<span class="math inline">\(a_2\)</span>来决定是否跳过某一层。如果保留该层，我们可以根据<span class="math inline">\(g\)</span>来决定神经元的数量。如果跳过某一层，则无需考察其权重<span class="math inline">\(g\)</span>。 在一些<span class="math inline">\(a_1\)</span>和<span class="math inline">\(a_2\)</span>相对接近的情况下，我们假设跳过层和保留层同样重要，并给出了一个混合模型。在混合模型中，层是身份变换和神经网络操作的组合。神经元的数量决定于一个离散的神经元，因此这些层可以表示为：
-<span class="math display">\[
-\mathbf{y} = \alpha_1 \cdot
-\mathbf{x}+\alpha_2\cdot\sigma(\mathbf{w}\cdot\mathbf{x}+\mathbf{b})\cdot
-(g_{max}\times \boldsymbol{mask}_{max})^T
-\]</span> 式中,<span class="math inline">\(g_{max}\)</span>为所有权值<span class="math inline">\(g\)</span>中的最大值，<span class="math inline">\(\boldsymbol{mask}_{max}\)</span>为对应于<span class="math inline">\(g_{max}\)</span>的零张量掩码。 <img src="/2025/02/11/NAS-PINN/3.jpg" alt="fig.3"> <img src="/2025/02/11/NAS-PINN/4.jpg" alt="algorithm 1"></p>
-<h2 id="实验">实验</h2>
-<h3 id="possion-equation">Possion equation</h3>
-<p>泊松方程是一类描述电磁场和热场的基本偏微分方程，在电磁学和机械工程中有着广泛的应用。这里，我们考虑一个带有Dirichlet边界条件的二维Poisson方程：
-<img src="/2025/02/11/NAS-PINN/5.jpg" alt="possion equation"> 该方程有解析解：
-<img src="/2025/02/11/NAS-PINN/6.jpg" alt="analytical solution">
-我们首先考虑正方形计算域中的泊松方程，以验证所提出的NAS -
-PINN的有效性。我们构造了一个相对较小的搜索空间，它是一个最多包含5个隐藏层的神经网络，每层包含30、50或70个神经元。对离散搜索空间中的每一种可能的神经架构分别进行训练和测试，作为网格搜索的近似实例。然后，我们使用NAS
--
-PINN来搜索一个神经结构，并研究它是否是最好的。所有离散搜索空间中的363个架构由Adam训练，其中500个配置点在域内随机采样，100个边界点均匀分布在边界上。
-在架构搜索阶段，1000个配置点和200个边界点采用与之前相同的策略进行采样，以搜索最佳的神经架构，并将Adam应用于架构搜索阶段。然后以与363架构相同的方式从头开始训练得到的神经架构。</p>
-<p>为了进行更全面的比较，还对传统的Auto
-ML方法SMAC进行了测试。SMAC是一个通用的用于超参数优化的贝叶斯优化包，对于所讨论的问题，需要优化的超参数是隐藏层的数量和神经元的数量。对于SMAC，一个相当小的研究空间包括15种不同的神经结构，其中每个隐藏层的神经元数量只能是相同的。SMAC使用与架构搜索阶段相同的1000个配置点和200个边界点。
-最后，均匀采样1000000个点，测试所有收敛的神经架构。不同架构的预测解和误差分布如图4所示，L2误差如表1所示。所有实验均重复5次，L2误差由5次重复的平均值得到。
-这些结构以序列的形式描述在表1中。序列的第一个和最后一个元素代表输入和输出通道，而其他元素代表每一层的神经元数目。例如，98号架构的输入大小为n×2，其中n为批次大小，2代表坐标x和y，第一层隐含层有70个神经元。通过NAS
-- PINN得到的架构为No.358。</p>
-<p>从表1和图4中，我们可以清楚地看到NAS-PINN的神经架构具有最小的L2误差和最小的最大误差值，并且其误差分布相比于其他架构也有所改善。因此，所提出的NASPINN确实可以在给定的搜索空间中找到最佳的神经网络结构。此外，虽然No.98也表现出相对较好的性能(在363种可能的体系结构中,它是第二好的体系结构)，但它比NAS-PINN的架构拥有更多的参数，这表明更多的参数并不一定意味着更好的性能，一个适当设计的神经架构显得尤为重要。
-此外，在PINNs中，更深的神经网络总是更好的这一常识似乎并不是在所有情况下都是正确的。至少对于给定的泊松方程，浅层但宽的神经网络(隐含层较少,但每层神经元较多的神经网络)优于深层的神经网络。</p>
-<p>与SMAC相比，NAS - PINN可以在更大、更灵活的搜索空间中进行搜索，从而NAS
--
-PINN更有可能找到真正最佳的神经架构。值得注意的是，虽然SMAC在只有15个神经结构的较小搜索空间中进行搜索，但它需要SMAC
-2。08 h找到357号架构，而NAS -
-PINN使用1.57h，从363个不同的架构中找到358号架构。所有的数值实验均在Intel(R)Core
-i9-9900 K @ 3.60 Ghz /NVIDIA GeForce Rtx 3090 上进行 <img src="/2025/02/11/NAS-PINN/7.jpg" alt="fig.4"> <img src="/2025/02/11/NAS-PINN/8.jpg" alt="table.1"></p>
-]]></content>
-      <categories>
-        <category>论文泛读</category>
-      </categories>
-      <tags>
-        <tag>神经网络架构</tag>
-        <tag>PINN</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Lagrange对偶（Lagrange duality）</title>
-    <url>/2025/02/10/Lagrange%E5%AF%B9%E5%81%B6/</url>
-    <content><![CDATA[<h2 id="问题背景">问题背景</h2>
-<p>在一个优化问题中，原始问题通常会带有很多约束条件，这样直接求解原始问题往往是很困难的，于是考虑将原始问题转化为它的对偶问题，通过求解它的对偶问题来得到原始问题的解。<strong>对偶性</strong>（Duality）是凸优化问题的核心内容。
-<span id="more"></span></p>
-<h2 id="原始问题及其转化">原始问题及其转化</h2>
-<p><strong>原始问题</strong></p>
-<p>将一个原始最优化问题写成如下形式 <span class="math display">\[
-\underset{x}{\min} \quad f_0(x) \\ s.t. \quad f_i(x) \le 0,i=1,2,...,m
-\\ \qquad h_j(x)=0,j=1,2,...,p
-\]</span> 在求解原问题的对偶问题时，并不要求原始问题一定是凸问题，<span class="math inline">\(f\)</span>和<span class="math inline">\(g\)</span>可以是一般函数而不一定非得是凸函数。</p>
-<p><strong>拉格朗日函数</strong></p>
-<p>将原始问题的拉格朗日函数定义为 <span class="math display">\[
-L(x,\lambda,\nu)=f_0(x)+\sum^m_{i=1}\lambda_i f_i(x)+\sum^p_{j=1}\nu_j
-h_j(x)
-\]</span> 其中，<span class="math inline">\(x\in \mathbb
-R^n,\lambda\in\mathbb R^m,\nu\in\mathbb R^p\)</span>
-可以看到，拉格朗日函数<span class="math inline">\(L\)</span>相当于原始问题引入了两个新变量<span class="math inline">\(\lambda,\nu\)</span>，称为拉格朗日乘子</p>
-<p><strong>拉格朗日对偶函数</strong></p>
-<p>拉格朗日对偶函数通过对拉格朗日函数<span class="math inline">\(x\)</span>取下确界得到，即 <span class="math display">\[
-g(\lambda,\nu)=\underset{x}{\inf}L(x,\lambda,\nu)
-\]</span> 对偶函数有如下两条重要性质
-1.对偶函数一定是凹函数，其凹性与原目标函数和约束函数凹凸与否无关
-2.对<span class="math inline">\(\forall\lambda\ge0,\forall\nu\)</span>，如果原问题最优解对应的目标函数值为<span class="math inline">\(P^*\)</span>，则<span class="math inline">\(g(\lambda,\nu)\le p^*\)</span></p>
-<h2 id="拉格朗日对偶问题">拉格朗日对偶问题</h2>
-<p>根据对偶函数的重要性质2，对<span class="math inline">\(\forall\lambda\ge0,\forall\nu\)</span>，对偶函数<span class="math inline">\(g(\lambda,\nu)\)</span>是原问题最优值<span class="math inline">\(P^*\)</span>的一个下界，最好的下界就是最大化对偶函数，因此构造原问题的对偶问题：
-<span class="math display">\[
-\underset{\lambda,\nu}{\max}\quad g(\lambda,\nu) \\ s.t.\quad \lambda
-\ge 0
-\]</span>
-由于对偶函数是凹函数，故拉格朗日对偶问题一定是凸优化问题，其对应的最优解为<span class="math inline">\(\lambda^*,\nu^*\)</span>，若对应的最优值为<span class="math inline">\(d^*\)</span>，则总有<span class="math inline">\(d^* \le p^*\)</span></p>
-<p>当<span class="math inline">\(d^* \le p^*\)</span>时，称为弱对偶
-当<span class="math inline">\(d^* = p^*\)</span>时，称为强对偶 将<span class="math inline">\(p^*-d^*\)</span>称为对偶间隙</p>
-<blockquote>
-<p>在解存在的情况下，弱对偶总是成立的。
-满足强对偶时，可以通过求解对偶问题来得到原始问题的解</p>
-</blockquote>
-<h2 id="slater条件">Slater条件</h2>
-<p>Slater条件用于判断什么情况下强对偶是成立的。
-在<strong>原问题是凸问题</strong>的情况下，若<span class="math inline">\(\exists x \in
-relint(D)\)</span>，使得约束条件满足： <span class="math display">\[
-f_i(x)&lt;0,h_j(x)=0\quad i=1,2,...,p
-\]</span> 则强对偶成立 &gt;<span class="math inline">\(relint(D)表示原始凸问题定义域的相对内部，即在定义域上除了边界点以外的所有点\)</span></p>
-<h2 id="kkt条件">KKT条件</h2>
-<p>在强对偶且<span class="math inline">\(L\)</span>对<span class="math inline">\(x\)</span>可微的前提下，设<span class="math inline">\(x^*,\lambda^*,\nu^*\)</span>分别是原问题和对偶问题的最优解，则以下四组条件称为KKT条件
-<span class="math display">\[
-\begin{cases}
-   \frac{\partial L(x^*,\lambda^*,\nu^*)}{\partial x^*} |_{x=x^*}=0
-&amp;\text{(稳定性条件)} \\ \lambda^*_i f_i(x^*)=0
-&amp;\text{(互松弛条件)}\\ f_i(x^*)\le 0,h_j(x^*)=0
-&amp;\text{(原问题可行性)} \\ \lambda_i^* \ge 0
-&amp;\text{(对偶问题可行性)}
-    &amp;\text{if } d
-\end{cases}
-\]</span></p>
-<p>对<strong>一般的原问题</strong>，KKT
-条件是$x<sup><em>,<sup><em>,<sup>* <span class="math inline">\(为最优解的必要条件，即只要\)</span>x</sup></em>,</sup></em>,</sup>*$为最优解，则一定满足
-KKT 条件。</p>
-<p>对<strong>原问题为凸问题</strong>，KKT条件是<span class="math inline">\(x^*,\lambda^*,\nu^*\)</span>
-为最优解的充要条件</p>
-]]></content>
-      <categories>
-        <category>学习笔记</category>
-      </categories>
-      <tags>
-        <tag>最优化</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>最优传输(Optimal Transportation)</title>
-    <url>/2025/02/09/OT1/</url>
-    <content><![CDATA[<h2 id="什么是最优传输">什么是最优传输？</h2>
-<p>最优传输最开始由Monge于1781年提出。一个典型的Monge问题是考虑将一堆具有一定形状的沙子搬运到指定的另外一个形状所需要的具有最小代价的搬运方法。
-如下图所示，我们想将左边红色区域的沙堆搬运到右边，形成右边绿色的沙堆的形状。我们想要找到消耗最少的搬运方式。
-<img src="/2025/02/09/OT1/1.jpg" alt="image">
-一句话来概括，就是<strong>如何用最少的代价将一个质量分布转为另一个质量分布。</strong>
-<span id="more"></span> ## 质量分布 质量分布其实就是两个测度空间<span class="math inline">\((X,\mu),(Y,\nu)\)</span>。一般情况下，质量不会凭空产生，所以我们会要求这两个分布的“总质量”是一样的，即<span class="math inline">\(\int_x d\mu=\int_Yd\nu\)</span>。
-问题有了考虑的对象，我们还可以定义成本函数<span class="math inline">\(c(x,y):X \times Y \to \mathbb
-R^+\)</span>，一般是有界的，来衡量将质量从点<span class="math inline">\(x\)</span>运到点<span class="math inline">\(y\)</span>的成本。那么如何去进行移动？主要有两个角度去考虑，分别是Monge问题和Kantorovich问题。</p>
-<h2 id="monge问题">Monge问题</h2>
-<p>Monge问题就是寻找一个保测度的映射<span class="math inline">\(T:X \to
-Y\)</span> <span class="math display">\[
-\underset{T} {\min} \int_X c(x,T(x))d \mu(x),T_{ \# } \mu= \nu
-\]</span> <span class="math inline">\(T_{
-\#  }\)</span>是前推算子（<span class="math inline">\(T_{ \#
-}\)</span>的作用对象是<span class="math inline">\(\mu\)</span>，表示把测度<span class="math inline">\(\mu\)</span>推到<span class="math inline">\(\nu\)</span>），这个“推”的过程就是一个保测度的过程，即
-<span class="math display">\[
-T_{ \#  }\mu = \nu \iff \forall B \subset Y,\nu (B)=\mu (T^{-1}(B))
-\]</span> <img src="/2025/02/09/OT1/2.jpg" alt="Monge Map">
-但是映射的定义就限制了我们不能实现“一对多”的操作，这就导致了一个很严重的问题，Monge问题不一定有解。比如一个狄拉克分布（在包含某个点的集合测度是1，其余是0）就不可能保测度地映射到高斯分布。
-我们可以让质量“可分”，即以概率的形式去进行“移动”。这就是Kantorovich问题。</p>
-<h2 id="kantorovich问题">Kantorovich问题</h2>
-<p>在Kantorovich问题中，Kantorovich问题中，我们对Monge问题进行松弛，不再寻找一个映射，而是寻找一个联合分布（耦合coupling），其中它的边界分布分别是<span class="math inline">\(\mu,\nu\)</span>。从而最小化总成本 <span class="math display">\[
-\underset{\pi}{\min}\int_{X \times Y}c(x,y)d\pi(x,y),P_{x
-\#  }\pi=\mu,P_{y \# }\pi=\nu
-\]</span> <img src="/2025/02/09/OT1/3.jpg" alt="Kantorovich Relaxation"> <span class="math inline">\(\pi(x,y)\)</span>就是从<span class="math inline">\(x\)</span>移动到<span class="math inline">\(y\)</span>的概率，上式是总成本的期望。
-这样的松弛之后，Kantorovich本质上变成了一个无限维的线性规划问题（如果分布是离散的，比如一堆点，我们要做的就是在两个点云之间做matching，那么<span class="math inline">\(\pi\)</span>就变成了一个矩阵，就变成了有限维的线性规划问题）
-线性规划理论告诉我们，如果耦合集合非空且紧，目标函数是下半连续的，那么线性规划一定可以取到最小值。也就保证了Kantorovich一定有解。</p>
-<h2 id="分布之间的度量-wasserstein距离">分布之间的度量-Wasserstein距离</h2>
-<p>比较两种分布的一些方法：</p>
-<p><strong>交叉熵</strong>：对应分布为<span class="math inline">\(p(x)\)</span>的随机变量，熵<span class="math inline">\(H(p)\)</span>表示其最优编码长度。交叉熵是按照概率分布<span class="math inline">\(q\)</span>的最优编码对真实分布为<span class="math inline">\(p\)</span>的信息进行编码的长度 交叉熵定义为 <span class="math display">\[
-H(p,q)=E_q[-logq(x)]=-\displaystyle\sum_{x}p(x)logq(x)
-\]</span> 在给定<span class="math inline">\(p\)</span>的情况下，如果<span class="math inline">\(q\)</span>和<span class="math inline">\(p\)</span>越接近，交叉熵越小；如果<span class="math inline">\(q\)</span>和<span class="math inline">\(p\)</span>越远，交叉熵越大</p>
-<p><strong>KL散度</strong>:是用概率分布<span class="math inline">\(q\)</span>来近似<span class="math inline">\(p\)</span>时所造成的信息损失量。KL散度是按照概率分布<span class="math inline">\(q\)</span>的最优编码对真实分布为<span class="math inline">\(p\)</span>的信息进行编码，其平均编码长度<span class="math inline">\(H(p,q)\)</span>和<span class="math inline">\(p\)</span>的最优平均编码长度<span class="math inline">\(H(p)\)</span>之间的差异。对于离散概率分布<span class="math inline">\(p\)</span>和<span class="math inline">\(q\)</span>，从<span class="math inline">\(q\)</span>到<span class="math inline">\(p\)</span>的KL散度定义为: <span class="math display">\[
-D_{KL}(p\parallel q)=H(p,q)-H(p)=\sum_x p(x)log{\frac {p(x)} {q(x)} }
-\]</span>
-KL散度可以是衡量两个概率分布之间的距离。KL散度总是非负的，只有当<span class="math inline">\(p=q\)</span>时，<span class="math inline">\(D_{KL}(p\parallel
-q)=0\)</span>。两个分布越接近，KL散度越小；两个分布越远，KL散度越大。但KL散度并不是一个真正的度量或距离，一是KL散度不满足距离的对称性，二是KL散度不满足距离的三角不等式性质。</p>
-<p><strong>JS散度</strong>：
-JS散度是一种对称的衡量两个分布相似度的度量方式，定义为 <span class="math display">\[
-D_{JS}(p\parallel q)={\frac 1 2}D_{KL}(p \parallel m)+{\frac 1
-2}D_{KL}(q \parallel m)
-\]</span> 其中，<span class="math inline">\(m={\frac 1 2}(p+q)\)</span>
-JS 散度是KL散度一种改进。但两种散度都存在一个问题，即如果两个分布p, q
-没有重叠或者重叠非常少时，KL散度和JS 散度都很难衡量两个分布的距离</p>
-<p><strong>Wasserstein距离</strong>： Wasserstein 距离（Wasserstein
-Distance）也用于衡量两个分布之间的距离。对于两个分布<span class="math inline">\(q_1,q_2,p-Wasserstein\)</span>距离定义为 <span class="math display">\[
-W_p(q_1,q_2)=(\underset{\pi(x,y) \in U(x,y)} {\inf}E_{(x,y)\sim \pi
-(x,y)}[d(x,y)^p]) ^{1/p}
-\]</span> 其中，<span class="math inline">\(U(x,y)\)</span>是边际分布为<span class="math inline">\(q_1\)</span>和<span class="math inline">\(q_2\)</span>的所有可能的联合分布集合，<span class="math inline">\(d(x,y)\)</span>为<span class="math inline">\(x\)</span>和<span class="math inline">\(y\)</span>的距离 Wasserstein距离相比KL散度和JS
-散度的优势在于：即使两个分布没有重叠或者重叠非常少，Wasserstein
-距离仍然能反映两个分布的远近。</p>
-<p>我们可以发现，如果令<span class="math inline">\(d(x,y)^p=c(x,y)\)</span>，Wasserstein距离实际上就是从一个分布转换为另一个分布所要付出的代价。</p>
-<p>Wasserstein
-GAN就是将W-1距离作为损失函数，解决了GAN的许多问题，比如训练不稳定，判别器不能训练的“太好”等。究其原因主要是因为W-1度量比KL度量更“弱”：也就是说在K-L散度下收敛的序列在W-1距离下也一定收敛。这样的性质就保证了W-1可以捕捉到序列更多的几何信息（比如不重叠的分布的KL散度永远是0，但W-1距离不然。），训练会更鲁棒。</p>
-]]></content>
-      <categories>
-        <category>学习笔记</category>
-      </categories>
-      <tags>
-        <tag>最优化</tag>
-        <tag>最优运输</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>最优传输（二）</title>
-    <url>/2025/02/10/OT2/</url>
-    <content><![CDATA[<h1 id="kantorovich问题的对偶问题">Kantorovich问题的对偶问题</h1>
-<p>这篇文章我们讲讲对偶理论，并且探究对偶问题和Kantorovich问题之间的关系
-<span id="more"></span></p>
-<h2 id="离散版本的kantorovich问题对偶">离散版本的Kantorovich问题对偶</h2>
-<p>有两个离散分布<span class="math inline">\(a=\sum_i
-a_i\delta_{x_i},b=\sum_j b_i\delta_{y_i}\)</span>，分别包含离散点<span class="math inline">\(\lbrace {x_i} \rbrace_{i=1}^n, \lbrace {y_j}
-\rbrace_{j=1}^m\)</span></p>
-<p>有一个成本矩阵<span class="math inline">\(C \in \mathbb R^{n\times
-m}\)</span>,<span class="math inline">\(C_{ij}\)</span>就是从<span class="math inline">\(x_i\)</span>运到<span class="math inline">\(y_j\)</span>的成本</p>
-<p>我们寻找一个联合分布的矩阵<span class="math inline">\(P\in \mathbb
-R^{n \times m}\)</span>使得总成本最小化 <span class="math display">\[
-\underset{p\in U(a,b)}{\min}\langle C,P \rangle = \underset{p\in
-U(a,b)}{\min} \sum_{i,j}C_{ij}P_{ij}
-\]</span> 其中，<span class="math inline">\(U(a,b)=\{\pi \in \mathbb
-R^{n\times m}_+|\pi1_m=a\in\mathbb R^n,\pi^T1_m=b\in\mathbb
-R^m\}\)</span></p>
-<p>拉格朗日对偶形式： <span class="math display">\[
-\underset{P\ge 0}{\min}\underset{(f,g)\in \mathbb R^n \times \mathbb
-R^m}{\max}\langle C,P \rangle + \langle a-P1_m,f \rangle + \langle
-b-P^T1_n,g \rangle
-\]</span></p>
-<p>交换min，max，有</p>
-<p><span class="math display">\[
-\underset{(f,g)\in \mathbb R^n\times \mathbb R^m}{\max}\langle a,f
-\rangle + \langle b,g \rangle + \underset{P\ge 0}{\min}\langle
-C-f1^T_m-1_ng^T,P \rangle
-\]</span></p>
-<p>可以将后面min的变为约束</p>
-<p><span class="math display">\[
-C-f1^T_m-1_ng^T=C-f \oplus g \ge 0
-\]</span></p>
-<p>综上，我们得到了对偶问题：</p>
-<p><span class="math display">\[
-\underset{(f,g)\in R(a,b)}{max}\langle f,a \rangle + \langle g,b \rangle
-\]</span></p>
-<p>其中，<span class="math inline">\(R(a,b)=\{(f,g)\in \mathbb R^n\times
-R^m:f_i+g_i \le C_{ij}\}\)</span></p>
-<h2 id="连续版本的kantorovich问题对偶">连续版本的Kantorovich问题对偶</h2>
-<p>现在两个分布变为连续的<span class="math inline">\(\alpha(x),x\in
-X,\beta(y),y\in Y\)</span>，成本函数连续化<span class="math inline">\(c(x_i,y_j)=C_{ij}\)</span>，我们将上面的乘子向量<span class="math inline">\(f,g\)</span>推广成<span class="math inline">\(f(x_i)=f_i,g(y_j)=g_j\)</span>。得到对偶形式为
-<span class="math display">\[
-\underset{(f,g)\in R(c)}{\sup}\int_X f(x) \, d\alpha(x)+\int_Y g(y) \,
-d\beta(y)
-\]</span> 其中<span class="math inline">\(R(c)=\{(f,g):\forall
-(x,y),f(x_i)+g(y_j) \le c(x_i,y_j)\}\)</span></p>
-<h3 id="通俗理解原问题和对偶问题">通俗理解原问题和对偶问题</h3>
-<p>假设有一个运营商运营着<span class="math inline">\(n\)</span>个仓库和<span class="math inline">\(m\)</span>个工厂，每个仓库有<span class="math inline">\(a_i\)</span>质量的商品，每个工厂需要<span class="math inline">\(b_j\)</span>质量的商品，从<span class="math inline">\(i\)</span>仓库到<span class="math inline">\(j\)</span>工厂运输单位质量的商品需要成本<span class="math inline">\(C_{ij}\)</span>。</p>
-<p><strong>原问题就是站在运营商的角度考虑</strong>：找出最优的传输方案<span class="math inline">\(P^*\)</span>使得传输总成本<span class="math inline">\(\sum_{i,j}C_{ij}P_{ij}\)</span>最小。</p>
-<p>假设这个运营商外包给了一个供应商，供应商只需要给每个仓库和工厂定价：单位质量的商品第<span class="math inline">\(i\)</span>个仓库收取<span class="math inline">\(f_i\)</span>的费用，第<span class="math inline">\(j\)</span>个工厂收取<span class="math inline">\(g_j\)</span>的费用。</p>
-<p>供应商不能随便定价，供应商在定价过程中需要保证所有<span class="math inline">\(f_i+g_j \le
-C_{ij}\)</span>，一旦超过这个价格，那在某些路径上运营商就要付出额外的价格，还不如自己运呢。</p>
-<p>所以对偶问题就是站在供应商的角度来考虑：在<span class="math inline">\(f_i+g_j \le C_{ij}\)</span>的情况下希望收费<span class="math inline">\(\langle f,a \rangle + \langle g,b
-\rangle\)</span>最大。</p>
-<h2 id="互补松弛条件">互补松弛条件</h2>
-<p>考虑原问题的最优解<span class="math inline">\(P^*\)</span>和对偶问题最优对<span class="math inline">\((f^*,g^*)\)</span>的关系，并且证明他们满足互补松弛条件</p>
-<p>设<span class="math inline">\(\bar z\)</span>为原问题的最优解，<span class="math inline">\(\underline
-z\)</span>为对偶问题的最优解，先证明<strong>弱对偶性</strong>满足，即<span class="math inline">\(\bar z \ge \underline z\)</span></p>
-<p>首先对原始问题进行一下改写，把决策变量<span class="math inline">\(P\)</span>“拉直”为<span class="math inline">\(p\)</span>： <span class="math display">\[
-P\in \mathbb R^{n \times m}\in U(a,b) \iff p \in \mathbb R^{nm}_+,Ap=
-\begin{bmatrix}
-   a  \\
-   b
-\end{bmatrix}
-\]</span> 其中 <span class="math display">\[
-A=
-\begin{bmatrix}
-   1^T_n \otimes I_m  \\
-   I_n \otimes1^T_m
-\end{bmatrix},A \in \mathbb R^{(n+m)\times nm}
-\]</span> 定义<span class="math inline">\(c\)</span>也为成本矩阵对应的展平形式，则原始问题的拉格朗日函数：
-<span class="math display">\[
-H(h)=\underset{p\in \mathbb R^{nm}_+}{\min}(c^Tp-h^T(Ap-q))
-\]</span> 其中<span class="math inline">\(q=\begin{bmatrix}
-   a  \\
-   b
-\end{bmatrix}\)</span>。这是一个松弛问题，因为约束<span class="math inline">\(Ap=q\)</span>被软化为罚函数形式。对于原问题的最优解<span class="math inline">\(p^*\)</span>，对于任何<span class="math inline">\(h\)</span>，有： <span class="math display">\[
-H(h)\le c^T p^*-h^T(Ap^*-q)=c^T p^*=\bar z
-\]</span> 当<span class="math inline">\(h\)</span>满足对偶可行性(<span class="math inline">\(A^Th\le c\)</span>)时，对偶问题的目标值<span class="math inline">\(h^Tq\)</span>是拉格朗日函数的下界。</p>
-<p>因此结合上式： <span class="math display">\[
-\underline z=\underset{h,A^Th \le c}{\max}h^Tq\le
-\underset{h}{\max}h^Tq+\underset{p\in \mathbb
-R^{mn}_+}{\min}(c^T-h^TA)p=\underset{h\in \mathbb R^{n+m}}{\max}H(h)\le
-c^T p^*=\bar z
-\]</span>
-这表明对偶问题的最优值不超过原始问题的最优值，从而证明了弱对偶性。</p>
-<p>可以证明强对偶性也是满足的，证明过程需要slater条件。</p>
-<p>对于连续型，也是有如下定理保证了强对偶性：</p>
-<blockquote>
-<p>设<span class="math inline">\(\mu\)</span>和<span class="math inline">\(\nu\)</span>是定义在完备可分度量空间<span class="math inline">\(X\)</span>和<span class="math inline">\(Y\)</span>上的概率测度，<span class="math inline">\(c:X\times Y \to \mathbb
-R_+\)</span>是一个可测函数，那么： <span class="math display">\[
-\underset{\pi\in\Pi(\mu,\nu)}{\inf}\int_{X\times Y}c \, d\pi =
-\underset{(\varphi,\psi)}{\sup}\lbrack \int_X \varphi \, d\mu + \int_Y
-\psi \, d\nu \rbrack
-\]</span></p>
-</blockquote>
-<p>最优化理论告诉我们，如果强对偶性满足，那么我们可以使用KKT中的经典的互补松弛条件得到：
-<span class="math display">\[
-P^*(x,y)(f^*(x)+g^*(y)-c(x,y))=0
-\]</span></p>
-<p>这就是原问题的最优解<span class="math inline">\(P^*\)</span>和对偶问题最优对<span class="math inline">\((f^*,g^*)\)</span>的关系。即在支撑集上<span class="math inline">\(P^*&gt;0\)</span>，对偶问题的最优函数永远满足<span class="math inline">\(f^*(x)+g^*(y)=c(x,y)\)</span></p>
-<h2 id="c-变换">c-变换</h2>
-<p>现在我们知道对偶问题两个函数的一个很重要的性质，就是在<span class="math inline">\(P^*\)</span>支撑集上有<span class="math inline">\(f^*(x)+g^*(y)=c(x,y)\)</span></p>
-<p>下面假设这个函数对不是最优的，如果我们固定了<span class="math inline">\(f(x)\)</span>，能否得到一个“最好”的<span class="math inline">\(g(y)\)</span>使得对偶问题的目标函数尽可能大？c-变换就回答了这个问题</p>
-<p>因为 <span class="math display">\[
-f(x)+g(y)\le c(x,y)\\
-\iff g(y)\le c(x,y)-f(x)\\
-\iff g(y)\le \underset{x}{\inf} \{c(x,y)-f(x)\}
-\]</span> 而<span class="math inline">\(f(x)\)</span>已经固定，我们希望<span class="math inline">\(\int g(y) \, d\beta(y)\)</span>越大越好，所以<span class="math inline">\(g(y)\)</span>越大越好，自然就得到了一个“最好的”函数：
-<span class="math display">\[
-\bar f(y)=\underset{x}{\inf}\{c(x,y)-f(x)\}
-\]</span> 这个<span class="math inline">\(\bar f(y)\)</span>就叫做<span class="math inline">\(f\)</span>的c-变换</p>
-<p>如果一个函数<span class="math inline">\(f\)</span>可以写成某个<span class="math inline">\(g\)</span>的c-变换，那么就称<span class="math inline">\(f\)</span>是c-凹的</p>
-<p><strong>注</strong>：对偶问题的最优解<span class="math inline">\((f^*,g^*)\)</span>一定是c-凹的。否则令另一个是其c-变换，目标函数变大，矛盾。</p>
-<p>下面定理还保证了最优对的存在性： &gt;设<span class="math inline">\(\mu\)</span>和<span class="math inline">\(\nu\)</span>是<span class="math inline">\(X\)</span>和<span class="math inline">\(Y\)</span>上的概率测度使得 <span class="math display">\[
-\int_{X\times Y}c(x,y) \, d\mu(x) \, d\nu(y)&lt;\infty
-\]</span> 则对偶 Kantorovich 问题存在一个最优对<span class="math inline">\((\varphi,\psi)\)</span>且<span class="math inline">\(\bar \varphi = \psi\)</span>，<span class="math inline">\(\bar \psi=\varphi\)</span>几乎处处成立。</p>
-<h2 id="kantorovichrubinstein定理">Kantorovich–Rubinstein定理</h2>
-<p>虽然对偶问题要求两个函数<span class="math inline">\(f,g\)</span>
-，但通过c-transform可以将这两个函数“联系”起来，对偶问题从 <span class="math display">\[
-\underset{(f,g)\in R(c)}{\sup}\int_X f \, d\mu + \int_Y g \, d\nu
-\]</span> 变为 <span class="math display">\[
-\underset{f}{\sup}\int_X f \, d\mu + \int_Y \bar f \, d\nu
-\]</span> 我们可以证明，如果在度量空间<span class="math inline">\(X=Y\)</span>上，<span class="math inline">\(d(x,y)\)</span>是度量，且<span class="math inline">\(c(x,y)=d(x,y)\)</span>。如果<span class="math inline">\(f=\bar g\)</span>是一组c-变换，那么<span class="math inline">\(f\)</span>是d-Lipschitz的。</p>
-<p>证明如下： <span class="math display">\[
-f(z)=\underset{y}{\inf} \lbrace d(z,y)-g(y) \rbrace \le
-\underset{y}{\inf} \lbrace d(z,x)+d(x,y)-g(y) \rbrace=f(x)+d(z,x)
-\]</span> 互换<span class="math inline">\(z,x\)</span>即得到<span class="math inline">\(|f(x)-g(z)|\le d(x,z)\)</span></p>
-<p>然后我们可以继续证明，如果<span class="math inline">\(f\)</span>是d-Lipschitz的，那么其c-变换<span class="math inline">\(\bar f = -f\)</span>： &gt;令<span class="math inline">\(x=y\)</span>，有<span class="math inline">\(\bar
-f(x)=\underset{x}{\inf}\{d(x,x)-f(x)\}\le -f(x)\)</span>，又因为<span class="math inline">\(f\)</span>是d-Lipschitz的。所以<span class="math inline">\(\bar f(y)=\underset{x}{\inf}\{d(x,y)-f(x)\}\ge
--f(y)\)</span>。所以<span class="math inline">\(\bar f=-f\)</span></p>
-<p>综上，结合强对偶性，我们有 <span class="math display">\[
-\underset{\pi\in U(a,b)}{\inf}\int_{X^2}d(x,y)\,
-d\pi=\underset{f}{\sup}\int_X f \, d\mu + \int_X \bar f \, d\nu =
-\underset{\lVert f \rVert_{\text{Lip}}\le 1}{\sup}\int_X f \, d\mu -
-\int_X  f \, d\nu
-\]</span> 其中，<span class="math inline">\(\lVert f
-\rVert_{\text{Lip}}=\underset{x \not = y}{\sup}\frac {\lVert
-f(x)-f(y)\rVert}{d(x,y)}\)</span></p>
-<p>我们现在得到了一个非常好非常好的结论：当成本函数是一个度量的时候，对偶问题可以变成上面的形式，我们只需要求解一个d-Lipschitz函数就可以了。</p>
-]]></content>
-      <categories>
-        <category>学习笔记</category>
-      </categories>
-      <tags>
-        <tag>最优化</tag>
-        <tag>最优运输</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>两个曲线之间的距离</title>
-    <url>/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/</url>
-    <content><![CDATA[<h2 id="两个曲线之间的距离">两个曲线之间的距离</h2>
-<p>搜Fréchet怎么打的时候看到了Fréchet距离，感觉这两天接触的距离比较多，做下整理（说不定以后换个距离就是个创新点）</p>
-<p>本篇主要介绍两个距离：<strong>Fréchet距离</strong>和<strong>Hausdorff距离</strong>。以后看到了比较两个曲线的方法再做补充（之前介绍过的两个分布之间的距离也会写篇博客整理出来）
-<span id="more"></span></p>
-<h2 id="fréchet距离">Fréchet距离</h2>
-<p>Fréchet distance(弗雷歇距离)是法国数学家Maurice René
-Fréchet在1906年提出的一种路径空间相似形描述，这种描述同时还考虑进路径空间距离的因素，对于空间路径的相似性比较适用。</p>
-<p><strong>直观的理解，Fréchet distance就是最短的狗绳长度</strong>： ·
-主人走路径A，狗走路径B，他们有不同的配速方案。 ·
-主人和狗各自走完这两条路径过程中所需要的最短狗绳长度。（在某一种配速下需要的狗绳长度，但其他配速下需要的狗绳长度更长）
-<img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/1.jpg" alt="image"></p>
-<p><strong>严格的数学定义：</strong> 设<span class="math inline">\((\mathbb S ,d)\)</span>是一个度量空间，<span class="math inline">\(d\)</span>是<span class="math inline">\(\mathbb{S}\)</span>上的度量。 1. <span class="math inline">\(A\)</span>是<span class="math inline">\(\mathbb{S}\)</span>上的一个将单位区间映射到<span class="math inline">\(\mathbb{S}\)</span>的连续映射，例如：<span class="math inline">\(A:[0,1] \to \mathbb S\)</span>. 2.
-从单位区间到其自身的重参数化映射<span class="math inline">\(\alpha
-:[0,1]\to [0,1]\)</span>满足如下三个条件：1）<span class="math inline">\(\alpha\)</span>是连续的。 2）<span class="math inline">\(\alpha\)</span>是非降的，即对于任意的<span class="math inline">\(x,y \in [0,1],x\le y\)</span>，都有<span class="math inline">\(\alpha(x) \le \alpha(y)\)</span>。 3）<span class="math inline">\(\alpha\)</span>是满射。此时有<span class="math inline">\(\alpha(0)=0,\alpha(1)=1\)</span> 3. 设<span class="math inline">\(A\)</span>和<span class="math inline">\(B\)</span>是<span class="math inline">\(\mathbb{S}\)</span>上的两条曲线，即<span class="math inline">\(A:[0,1]\to \mathbb{S},B:[0,1]\to
-\mathbb{S}\)</span>。又<span class="math inline">\(\alpha\)</span>和<span class="math inline">\(\beta\)</span>是单位区间的两个重参数化映射，则曲线<span class="math inline">\(A\)</span>和<span class="math inline">\(B\)</span>之间的Fréchet距离定义为： <span class="math display">\[
-F(A,B)=\underset{\alpha ,\beta}{\inf}\underset{t \in [0,1]}{\max}\lbrace
-d(A(\alpha(t)),B(\beta(t)))
-\]</span></p>
-<p>解释：</p>
-<ul>
-<li>两条曲线<span class="math inline">\(A(\alpha(t))\)</span>和<span class="math inline">\(B(\beta(t))\)</span>之间距离最大值的下确界
-<ul>
-<li>t理解为时间</li>
-<li><span class="math inline">\(\alpha(t)\)</span>和<span class="math inline">\(\beta(t)\)</span>理解为人和狗随时间变化的速度</li>
-<li><span class="math inline">\(A(\alpha(t))\)</span>和<span class="math inline">\(B(\beta(t))\)</span>代表t时刻人和狗的位置</li>
-<li>最大值的下确界意思为,每一种人狗速度方案下，都有对应的距离最大值；那么对于所有的速度方案，这些距离最大值中最小的是哪个？</li>
-</ul></li>
-</ul>
-<p><strong>离散化</strong></p>
-<p>设定<span class="math inline">\(t\)</span>是时间点，该时刻，曲线<span class="math inline">\(A\)</span> 上的采样点为<span class="math inline">\(A(\alpha(t))\)</span>, 曲线<span class="math inline">\(B\)</span>上采样点为<span class="math inline">\(B(\alpha(t))\)</span>.
-如果使用欧氏距离，则容易定义<span class="math inline">\(d(A(\alpha(t)),B(\beta(t)))\)</span>.
-在每次采样中<span class="math inline">\(t\)</span>离散的遍历区间<span class="math inline">\([0,1]\)</span>, 得到该种采样下的最大距离<span class="math inline">\(\underset{t\in [0,1]}{\max} \lbrace
-d(A(\alpha(t)),B(\beta(t))) \rbrace\)</span>.
-Fréchet距离就是使该最大距离最小化的采样方式下的值。
-易于理解的，在离散方式下，我们不可能得到真实的Fréchet距离，而可以无限的趋近。但是越精确的值需要越大的计算量。</p>
-<p><img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/2.jpg"></p>
-<h2 id="hausdorff距离">Hausdorff距离</h2>
-<p>衡量两个集合之间的距离</p>
-<p><strong>定义</strong>: 给定欧氏空间中的两点集<span class="math inline">\(A=\lbrace a_1,a_2,... \rbrace , B=\lbrace
-b_1,b_2,...
-\rbrace\)</span>，豪斯多夫（Hausdorff）距离就是用来衡量这两个点集间的距离。定义公式如下:
-<span class="math display">\[
-H(A,B)=\max[h(A,B),h(B,A)]
-\]</span> 其中， <span class="math display">\[
-h(A,B)=\underset{a \in A}{\max}\underset{b\in B}{\min} \lVert a-b \rVert
-\\
-h(B,A)=\underset{b \in B}{\max}\underset{a\in A}{\min} \lVert b-a \rVert
-\]</span> <span class="math inline">\(H(A,B)\)</span>称为双向Hausdorff
-距离，<span class="math inline">\(h(A,B)\)</span>称为从点集A到点集B的单向 Hausdorff
-距离。相应地<span class="math inline">\(h(B,A)\)</span>称为从点集B到点集A的单向Hausdorff距离</p>
-<p><strong>一些图例</strong></p>
-<p><img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/3.jpg"> <img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/4.jpg"></p>
-<p><strong>性质</strong></p>
-<ul>
-<li><p>双向Hausdorff距离 <span class="math inline">\(H(A,B)\)</span>是单向 Hausdorff 距离<span class="math inline">\(h(A,B)\)</span>和<span class="math inline">\(h(B,A)\)</span>两者中较大者，显然它度量了两个点集间的最大不匹配程度。</p></li>
-<li><p>当<span class="math inline">\(A\)</span>和<span class="math inline">\(B\)</span>都是闭集的时候,Hausdorff距离满足度量的三个定理：</p></li>
-</ul>
-<ol type="1">
-<li><span class="math inline">\(H(A,B)\ge 0\)</span>，当且仅当<span class="math inline">\(A=B\)</span>时，<span class="math inline">\(H(A,B)= 0\)</span></li>
-<li><span class="math inline">\(H(A,B)=H(B,A)\)</span></li>
-<li><span class="math inline">\(H(A,B)+H(B,C)\ge H(A,C)\)</span></li>
-</ol>
-<ul>
-<li><p>若凸集<span class="math inline">\(A,B\)</span>满足<span class="math inline">\(A \nsubseteq B,B \nsubseteq A\)</span>并记<span class="math inline">\(\partial A,\partial B\)</span>分别为<span class="math inline">\(A,B\)</span>边界的集合，则<span class="math inline">\(A,B\)</span>的Hausdorff距离等于<span class="math inline">\(\partial A,\partial
-B\)</span>的Hausdorff距离</p></li>
-<li><p>Hausdorff距离易受到突发噪声的影响。</p></li>
-</ul>
-<p><img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/5.jpg"></p>
-<p>当图像受到噪声污染或存在遮挡等情况时，原始的Haudorff距离容易造成误匹配。所以，在1933年，Huttenlocher提出了部分
-Hausdorff距离的概念。</p>
-]]></content>
-      <categories>
-        <category>学习笔记</category>
-      </categories>
-      <tags>
-        <tag>各种距离</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>OPTIMAL TRANSPORTATION FOR ELECTRICAL IMPEDANCE  TOMOGRAPHY</title>
     <url>/2025/02/13/OPTIMAL-TRANSPORTATION-FOR-ELECTRICAL-IMPEDANCE-TOMOGRAPHY/</url>
     <content><![CDATA[<h1 id="optimal-transportation-for-electrical-impedance-tomography电阻抗断层成像的最优传输">OPTIMAL
@@ -968,7 +489,7 @@ h &amp; \longmapsto-\nabla u \cdot \nabla \tilde{u}
 \tilde{H}^{-\frac{1}{2}}(\partial
 \Omega)\)</span>，在算子(5.11)的定义域内。</p>
 <p>一般地，Fréchet梯度(5.9)被定义为<span class="math inline">\(\langle\cdot,
-\cdot\rangle_{L^2(\Omega)}\)</span>下的积分算子。改变下标空间<span class="math inline">\(L^2\)</span>到<span class="math inline">\(H_0^1\)</span>，我们可以通过公式〈<span class="math inline">\(\left\langle\mathcal{J}^{\prime}(\sigma),
+\cdot\rangle_{L^2(\Omega)}\)</span>下的积分算子。改变下标空间<span class="math inline">\(L^2\)</span>到<span class="math inline">\(H_0^1\)</span>，我们可以通过公式<span class="math inline">\(\left\langle\mathcal{J}^{\prime}(\sigma),
 \eta\right\rangle_{L^2(\Omega)}=\left\langle\mathcal{J}_s^{\prime}(\sigma),
 \eta\right\rangle_{H_0^1(\Omega)}\)</span>定义关于<span class="math inline">\(\langle\cdot,
 \cdot\rangle_{H_0^1(\Omega)}\)</span> 的梯度<span class="math inline">\(\mathcal{J}_s^{\prime}\)</span>，这等价于求解方程[29、31]：</p>
@@ -981,7 +502,7 @@ h &amp; \longmapsto-\nabla u \cdot \nabla \tilde{u}
 \end{aligned}
 \]</span></p>
 <p>这个梯度<span class="math inline">\(\mathcal{J}_s^{\prime}\)</span>被称为Sobolev梯度[38]
-.对于EIT问题，我们采用Sobolev梯度<span class="math inline">\(\mathcal{J}_s^{\prime}\)</span>代替标准的<span class="math inline">\(L^2\)</span>梯度<span class="math inline">\(\mathcal{J}^{\prime}\)</span>。事实上，<span class="math inline">\(\mathcal{J}^{\prime}\)</span>一般不能给出合理的重构，而<span class="math inline">\(\mathcal{J}_s^{\prime}\)</span>稳定了不适定问题(5.4)
+。对于EIT问题，我们采用Sobolev梯度<span class="math inline">\(\mathcal{J}_s^{\prime}\)</span>代替标准的<span class="math inline">\(L^2\)</span>梯度<span class="math inline">\(\mathcal{J}^{\prime}\)</span>。事实上，<span class="math inline">\(\mathcal{J}^{\prime}\)</span>一般不能给出合理的重构，而<span class="math inline">\(\mathcal{J}_s^{\prime}\)</span>稳定了不适定问题(5.4)
 。此外，<span class="math inline">\(\mathcal{J}_s^{\prime}\)</span>的应用自然地保留了式(5.5)中边界上的已知信息。梯度<span class="math inline">\(\mathcal{J}_s^{\prime}\)</span>也比振荡优化过程中优选的<span class="math inline">\(\mathcal{J}^{\prime}\)</span>更平滑。</p>
 <p>利用梯度信息，<strong>我们提出了带有非单调线搜索策略的Barzilai-Borwein梯度算法来最小化(5.6)</strong>。算法2总结了该方法的具体实现。</p>
 <p><span class="math display">\[
@@ -1081,6 +602,657 @@ B_k(\eta) &amp;
         <tag>最优化</tag>
         <tag>最优运输</tag>
         <tag>EIT</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Lagrange对偶（Lagrange duality）</title>
+    <url>/2025/02/10/Lagrange%E5%AF%B9%E5%81%B6/</url>
+    <content><![CDATA[<h2 id="问题背景">问题背景</h2>
+<p>在一个优化问题中，原始问题通常会带有很多约束条件，这样直接求解原始问题往往是很困难的，于是考虑将原始问题转化为它的对偶问题，通过求解它的对偶问题来得到原始问题的解。<strong>对偶性</strong>（Duality）是凸优化问题的核心内容。
+<span id="more"></span></p>
+<h2 id="原始问题及其转化">原始问题及其转化</h2>
+<p><strong>原始问题</strong></p>
+<p>将一个原始最优化问题写成如下形式 <span class="math display">\[
+\underset{x}{\min} \quad f_0(x) \\ s.t. \quad f_i(x) \le 0,i=1,2,...,m
+\\ \qquad h_j(x)=0,j=1,2,...,p
+\]</span> 在求解原问题的对偶问题时，并不要求原始问题一定是凸问题，<span class="math inline">\(f\)</span>和<span class="math inline">\(g\)</span>可以是一般函数而不一定非得是凸函数。</p>
+<p><strong>拉格朗日函数</strong></p>
+<p>将原始问题的拉格朗日函数定义为 <span class="math display">\[
+L(x,\lambda,\nu)=f_0(x)+\sum^m_{i=1}\lambda_i f_i(x)+\sum^p_{j=1}\nu_j
+h_j(x)
+\]</span> 其中，<span class="math inline">\(x\in \mathbb
+R^n,\lambda\in\mathbb R^m,\nu\in\mathbb R^p\)</span>
+可以看到，拉格朗日函数<span class="math inline">\(L\)</span>相当于原始问题引入了两个新变量<span class="math inline">\(\lambda,\nu\)</span>，称为拉格朗日乘子</p>
+<p><strong>拉格朗日对偶函数</strong></p>
+<p>拉格朗日对偶函数通过对拉格朗日函数<span class="math inline">\(x\)</span>取下确界得到，即 <span class="math display">\[
+g(\lambda,\nu)=\underset{x}{\inf}L(x,\lambda,\nu)
+\]</span> 对偶函数有如下两条重要性质
+1.对偶函数一定是凹函数，其凹性与原目标函数和约束函数凹凸与否无关
+2.对<span class="math inline">\(\forall\lambda\ge0,\forall\nu\)</span>，如果原问题最优解对应的目标函数值为<span class="math inline">\(P^*\)</span>，则<span class="math inline">\(g(\lambda,\nu)\le p^*\)</span></p>
+<h2 id="拉格朗日对偶问题">拉格朗日对偶问题</h2>
+<p>根据对偶函数的重要性质2，对<span class="math inline">\(\forall\lambda\ge0,\forall\nu\)</span>，对偶函数<span class="math inline">\(g(\lambda,\nu)\)</span>是原问题最优值<span class="math inline">\(P^*\)</span>的一个下界，最好的下界就是最大化对偶函数，因此构造原问题的对偶问题：
+<span class="math display">\[
+\underset{\lambda,\nu}{\max}\quad g(\lambda,\nu) \\ s.t.\quad \lambda
+\ge 0
+\]</span>
+由于对偶函数是凹函数，故拉格朗日对偶问题一定是凸优化问题，其对应的最优解为<span class="math inline">\(\lambda^*,\nu^*\)</span>，若对应的最优值为<span class="math inline">\(d^*\)</span>，则总有<span class="math inline">\(d^* \le p^*\)</span></p>
+<p>当<span class="math inline">\(d^* \le p^*\)</span>时，称为弱对偶
+当<span class="math inline">\(d^* = p^*\)</span>时，称为强对偶 将<span class="math inline">\(p^*-d^*\)</span>称为对偶间隙</p>
+<blockquote>
+<p>在解存在的情况下，弱对偶总是成立的。
+满足强对偶时，可以通过求解对偶问题来得到原始问题的解</p>
+</blockquote>
+<h2 id="slater条件">Slater条件</h2>
+<p>Slater条件用于判断什么情况下强对偶是成立的。
+在<strong>原问题是凸问题</strong>的情况下，若<span class="math inline">\(\exists x \in
+relint(D)\)</span>，使得约束条件满足： <span class="math display">\[
+f_i(x)&lt;0,h_j(x)=0\quad i=1,2,...,p
+\]</span> 则强对偶成立 &gt;<span class="math inline">\(relint(D)表示原始凸问题定义域的相对内部，即在定义域上除了边界点以外的所有点\)</span></p>
+<h2 id="kkt条件">KKT条件</h2>
+<p>在强对偶且<span class="math inline">\(L\)</span>对<span class="math inline">\(x\)</span>可微的前提下，设<span class="math inline">\(x^*,\lambda^*,\nu^*\)</span>分别是原问题和对偶问题的最优解，则以下四组条件称为KKT条件
+<span class="math display">\[
+\begin{cases}
+   \frac{\partial L(x^*,\lambda^*,\nu^*)}{\partial x^*} |_{x=x^*}=0
+&amp;\text{(稳定性条件)} \\ \lambda^*_i f_i(x^*)=0
+&amp;\text{(互松弛条件)}\\ f_i(x^*)\le 0,h_j(x^*)=0
+&amp;\text{(原问题可行性)} \\ \lambda_i^* \ge 0
+&amp;\text{(对偶问题可行性)}
+    &amp;\text{if } d
+\end{cases}
+\]</span></p>
+<p>对<strong>一般的原问题</strong>，KKT
+条件是$x<sup><em>,<sup><em>,<sup>* <span class="math inline">\(为最优解的必要条件，即只要\)</span>x</sup></em>,</sup></em>,</sup>*$为最优解，则一定满足
+KKT 条件。</p>
+<p>对<strong>原问题为凸问题</strong>，KKT条件是<span class="math inline">\(x^*,\lambda^*,\nu^*\)</span>
+为最优解的充要条件</p>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>最优化</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>最优传输(Optimal Transportation)</title>
+    <url>/2025/02/09/OT1/</url>
+    <content><![CDATA[<h2 id="什么是最优传输">什么是最优传输？</h2>
+<p>最优传输最开始由Monge于1781年提出。一个典型的Monge问题是考虑将一堆具有一定形状的沙子搬运到指定的另外一个形状所需要的具有最小代价的搬运方法。
+如下图所示，我们想将左边红色区域的沙堆搬运到右边，形成右边绿色的沙堆的形状。我们想要找到消耗最少的搬运方式。
+<img src="/2025/02/09/OT1/1.jpg" alt="image">
+一句话来概括，就是<strong>如何用最少的代价将一个质量分布转为另一个质量分布。</strong>
+<span id="more"></span> ## 质量分布 质量分布其实就是两个测度空间<span class="math inline">\((X,\mu),(Y,\nu)\)</span>。一般情况下，质量不会凭空产生，所以我们会要求这两个分布的“总质量”是一样的，即<span class="math inline">\(\int_x d\mu=\int_Yd\nu\)</span>。
+问题有了考虑的对象，我们还可以定义成本函数<span class="math inline">\(c(x,y):X \times Y \to \mathbb
+R^+\)</span>，一般是有界的，来衡量将质量从点<span class="math inline">\(x\)</span>运到点<span class="math inline">\(y\)</span>的成本。那么如何去进行移动？主要有两个角度去考虑，分别是Monge问题和Kantorovich问题。</p>
+<h2 id="monge问题">Monge问题</h2>
+<p>Monge问题就是寻找一个保测度的映射<span class="math inline">\(T:X \to
+Y\)</span> <span class="math display">\[
+\underset{T} {\min} \int_X c(x,T(x))d \mu(x),T_{ \# } \mu= \nu
+\]</span> <span class="math inline">\(T_{
+\#  }\)</span>是前推算子（<span class="math inline">\(T_{ \#
+}\)</span>的作用对象是<span class="math inline">\(\mu\)</span>，表示把测度<span class="math inline">\(\mu\)</span>推到<span class="math inline">\(\nu\)</span>），这个“推”的过程就是一个保测度的过程，即
+<span class="math display">\[
+T_{ \#  }\mu = \nu \iff \forall B \subset Y,\nu (B)=\mu (T^{-1}(B))
+\]</span> <img src="/2025/02/09/OT1/2.jpg" alt="Monge Map">
+但是映射的定义就限制了我们不能实现“一对多”的操作，这就导致了一个很严重的问题，Monge问题不一定有解。比如一个狄拉克分布（在包含某个点的集合测度是1，其余是0）就不可能保测度地映射到高斯分布。
+我们可以让质量“可分”，即以概率的形式去进行“移动”。这就是Kantorovich问题。</p>
+<h2 id="kantorovich问题">Kantorovich问题</h2>
+<p>在Kantorovich问题中，Kantorovich问题中，我们对Monge问题进行松弛，不再寻找一个映射，而是寻找一个联合分布（耦合coupling），其中它的边界分布分别是<span class="math inline">\(\mu,\nu\)</span>。从而最小化总成本 <span class="math display">\[
+\underset{\pi}{\min}\int_{X \times Y}c(x,y)d\pi(x,y),P_{x
+\#  }\pi=\mu,P_{y \# }\pi=\nu
+\]</span> <img src="/2025/02/09/OT1/3.jpg" alt="Kantorovich Relaxation"> <span class="math inline">\(\pi(x,y)\)</span>就是从<span class="math inline">\(x\)</span>移动到<span class="math inline">\(y\)</span>的概率，上式是总成本的期望。
+这样的松弛之后，Kantorovich本质上变成了一个无限维的线性规划问题（如果分布是离散的，比如一堆点，我们要做的就是在两个点云之间做matching，那么<span class="math inline">\(\pi\)</span>就变成了一个矩阵，就变成了有限维的线性规划问题）
+线性规划理论告诉我们，如果耦合集合非空且紧，目标函数是下半连续的，那么线性规划一定可以取到最小值。也就保证了Kantorovich一定有解。</p>
+<h2 id="分布之间的度量-wasserstein距离">分布之间的度量-Wasserstein距离</h2>
+<p>比较两种分布的一些方法：</p>
+<p><strong>交叉熵</strong>：对应分布为<span class="math inline">\(p(x)\)</span>的随机变量，熵<span class="math inline">\(H(p)\)</span>表示其最优编码长度。交叉熵是按照概率分布<span class="math inline">\(q\)</span>的最优编码对真实分布为<span class="math inline">\(p\)</span>的信息进行编码的长度 交叉熵定义为 <span class="math display">\[
+H(p,q)=E_q[-logq(x)]=-\displaystyle\sum_{x}p(x)logq(x)
+\]</span> 在给定<span class="math inline">\(p\)</span>的情况下，如果<span class="math inline">\(q\)</span>和<span class="math inline">\(p\)</span>越接近，交叉熵越小；如果<span class="math inline">\(q\)</span>和<span class="math inline">\(p\)</span>越远，交叉熵越大</p>
+<p><strong>KL散度</strong>:是用概率分布<span class="math inline">\(q\)</span>来近似<span class="math inline">\(p\)</span>时所造成的信息损失量。KL散度是按照概率分布<span class="math inline">\(q\)</span>的最优编码对真实分布为<span class="math inline">\(p\)</span>的信息进行编码，其平均编码长度<span class="math inline">\(H(p,q)\)</span>和<span class="math inline">\(p\)</span>的最优平均编码长度<span class="math inline">\(H(p)\)</span>之间的差异。对于离散概率分布<span class="math inline">\(p\)</span>和<span class="math inline">\(q\)</span>，从<span class="math inline">\(q\)</span>到<span class="math inline">\(p\)</span>的KL散度定义为: <span class="math display">\[
+D_{KL}(p\parallel q)=H(p,q)-H(p)=\sum_x p(x)log{\frac {p(x)} {q(x)} }
+\]</span>
+KL散度可以是衡量两个概率分布之间的距离。KL散度总是非负的，只有当<span class="math inline">\(p=q\)</span>时，<span class="math inline">\(D_{KL}(p\parallel
+q)=0\)</span>。两个分布越接近，KL散度越小；两个分布越远，KL散度越大。但KL散度并不是一个真正的度量或距离，一是KL散度不满足距离的对称性，二是KL散度不满足距离的三角不等式性质。</p>
+<p><strong>JS散度</strong>：
+JS散度是一种对称的衡量两个分布相似度的度量方式，定义为 <span class="math display">\[
+D_{JS}(p\parallel q)={\frac 1 2}D_{KL}(p \parallel m)+{\frac 1
+2}D_{KL}(q \parallel m)
+\]</span> 其中，<span class="math inline">\(m={\frac 1 2}(p+q)\)</span>
+JS 散度是KL散度一种改进。但两种散度都存在一个问题，即如果两个分布p, q
+没有重叠或者重叠非常少时，KL散度和JS 散度都很难衡量两个分布的距离</p>
+<p><strong>Wasserstein距离</strong>： Wasserstein 距离（Wasserstein
+Distance）也用于衡量两个分布之间的距离。对于两个分布<span class="math inline">\(q_1,q_2,p-Wasserstein\)</span>距离定义为 <span class="math display">\[
+W_p(q_1,q_2)=(\underset{\pi(x,y) \in U(x,y)} {\inf}E_{(x,y)\sim \pi
+(x,y)}[d(x,y)^p]) ^{1/p}
+\]</span> 其中，<span class="math inline">\(U(x,y)\)</span>是边际分布为<span class="math inline">\(q_1\)</span>和<span class="math inline">\(q_2\)</span>的所有可能的联合分布集合，<span class="math inline">\(d(x,y)\)</span>为<span class="math inline">\(x\)</span>和<span class="math inline">\(y\)</span>的距离 Wasserstein距离相比KL散度和JS
+散度的优势在于：即使两个分布没有重叠或者重叠非常少，Wasserstein
+距离仍然能反映两个分布的远近。</p>
+<p>我们可以发现，如果令<span class="math inline">\(d(x,y)^p=c(x,y)\)</span>，Wasserstein距离实际上就是从一个分布转换为另一个分布所要付出的代价。</p>
+<p>Wasserstein
+GAN就是将W-1距离作为损失函数，解决了GAN的许多问题，比如训练不稳定，判别器不能训练的“太好”等。究其原因主要是因为W-1度量比KL度量更“弱”：也就是说在K-L散度下收敛的序列在W-1距离下也一定收敛。这样的性质就保证了W-1可以捕捉到序列更多的几何信息（比如不重叠的分布的KL散度永远是0，但W-1距离不然。），训练会更鲁棒。</p>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>最优化</tag>
+        <tag>最优运输</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>NAS-PINN</title>
+    <url>/2025/02/11/NAS-PINN/</url>
+    <content><![CDATA[<h1 id="nas-pinn-neural-architecture-search-guided-physics-informed-neural-network-for-solving-pdesnas-pinn神经网络结构搜索引导的物理信息神经网络用于求解偏微分方程">NAS-PINN:
+Neural architecture search-guided physics-informed neural network for
+solving
+PDEs(NAS-PINN：神经网络结构搜索引导的物理信息神经网络，用于求解偏微分方程)</h1>
+<h2 id="摘要">摘要</h2>
+<p>物理信息神经网络( PINN
+)自提出以来一直是求解偏微分方程的主流框架。通过损失函数将物理信息融入到神经网络中，它可以以无监督的方式预测PDEs的解。然而，神经网络结构的设计基本依赖于先验知识和经验，这造成了很大的麻烦和较高的计算开销。因此，<strong>我们提出了一种神经结构搜索引导的方法，即NAS
+- PINN，用于自动搜索求解某些PDEs的最佳神经结构</strong>。
+通过将搜索空间松弛为连续空间，并利用掩码实现不同形状张量的添加，NAS -
+PINN可以通过双层优化进行训练，其中内层循环优化神经网络的权重和偏置，外层循环优化网络结构参数。我们通过包括Poisson，Burgers和Advection方程在内的几个数值实验来验证NAS
+-
+PINN的能力。总结了求解不同PDE的有效神经网络结构的特点，可用于指导PINN中神经网络的设计。研究发现，更多的隐藏层并不一定意味着更好的性能，有时可能是有害的。
+特别是对于Poisson和Advection，在PINNs中更适合采用神经元数目较多的浅层神经网络。研究还表明，对于复杂问题，具有残差连接的神经网络可以提高PINNs的性能。
+<span id="more"></span></p>
+<h2 id="介绍">介绍</h2>
+<p>神经网络结构搜索( Neural Architecture Search，NAS
+)是一种在特定搜索空间中搜索最优神经网络结构的算法。传统的NAS算法通过神经网络模块的排列组合来构建架构，并对这些架构进行训练和测试以确定其性能，然后根据性能排序选择最佳的神经网络架构。这样的离散过程面临着计算效率低和计算成本高的问题。因此，减少计算开销、提高搜索效率一直是NAS的主要研究热点之一。
+<strong>本文将NAS融入PINN的框架中，提出了一种神经架构搜索引导的物理信息神经网络(
+NAS-PINN)</strong>。我们实现了用少量数据自动搜索求解给定PDE的最佳神经网络结构。掩码用于张量的添加，以帮助搜索每层中不同数量的神经元。通过对一系列PDE的数值实验，验证了所提方法的有效性.通过对数值结果的分析，总结了高效神经网络结构的特点，为PINNs的进一步研究提供了指导。</p>
+<h2 id="方法">方法</h2>
+<h3 id="pinn的框架">PINN的框架</h3>
+<p><img src="/2025/02/11/NAS-PINN/1.jpg"></p>
+<h3 id="可微nas">可微NAS</h3>
+<p>在传统的NAS算法中，神经网络的层数通常是固定的，并为每一层提供特定的操作选择。这样的配置使得搜索空间不连续，无法通过基于梯度的方法进行优化，极大地限制了算法的收敛速度和效率。
+Liu等人[ 29 ]提出了DARTS，并引入了可微NAS的概念。设<span class="math inline">\(O\)</span>是一个由候选操作组成的集合，其中任何一个操作都表示关于输入x的某个函数<span class="math inline">\(o(x)\)</span>.通过对候选操作施加松弛，可以使搜索空间连续：
+<span class="math display">\[
+\bar{o}^{(i,j)}(x)=\sum_{o\in
+O}\frac{exp(\alpha^{(i,j)}_o)}{\textstyle\sum_{o&#39;\in
+O}exp(\alpha^{(i,j)_{o&#39;}})}o(x) \qquad (6)
+\]</span> 其中<span class="math inline">\(\bar
+o^{(i,j)}(x)\)</span>为松弛后第<span class="math inline">\(i\)</span>层与第<span class="math inline">\(j\)</span>层之间的混合运算，<span class="math inline">\(\alpha^{(i,j)}_o\)</span>为运算<span class="math inline">\(o\)</span>的权.现在测试和比较所有可能的操作组合的离散过程可以简化为通过基于梯度的优化方法学习一组合适的权重<span class="math inline">\(\alpha^{(i,j)}_o\)</span>。当算法收敛时，通过选择权重最高的候选操作，可以将松弛的搜索空间提取到离散的神经架构中。</p>
+<h3 id="掩码">掩码</h3>
+<p>虽然式(6)将搜索空间缩小为一个连续的空间，张量运算只允许相同形状的张量相加，使得搜索神经元个数不切实际，如图2(a)所示。受卷积神经网络中零填充的启发，我们可以将神经元填充到最大数量k，如图2
+(b)所示。在图2(c)中，通过将填充的神经元乘以一个零张量掩码，我们将额外的神经元去激活，以模拟不同数量的神经元。最后，通过共享权重，可以将可选的隐藏层减少为一个，输出y可以表示为：
+<span class="math display">\[
+\mathbf{y} = \sigma(\mathbf{w}\cdot\mathbf{x}+\mathbf{b})\cdot
+\begin{pmatrix}
+[g_1,g_2,g_3]\times     
+\begin{bmatrix}
+   \mathbf{mask}_1 \\
+   \mathbf{mask}_2 \\
+   \mathbf{mask}_3
+\end{bmatrix}^T
+\end{pmatrix}
+\]</span> 其中<span class="math inline">\(\sigma(\cdot)\)</span>为激活函数，<span class="math inline">\(\mathbf{w}\)</span>和<span class="math inline">\(\mathbf{b}\)</span>分别为单隐层的权值和偏置，<span class="math inline">\(g_i\)</span>为标量，为每个神经元个数的权值，<span class="math inline">\(\mathbf{mask}_i\)</span>为每个神经元个数的掩码，形状为<span class="math inline">\(1\times k\)</span>。假设神经元个数为<span class="math inline">\(j\)</span>，则<span class="math inline">\(\mathbf{mask}\)</span>的前<span class="math inline">\(j\)</span>个元素为1，其余<span class="math inline">\((k-j)\)</span>个元素为0。 <img src="/2025/02/11/NAS-PINN/2.jpg" alt="fig.2">
+为了确定层数，我们引入身份变换作为操作，即跳过该层，且输出<span class="math inline">\(\mathbf{y}\)</span>变为: <span class="math display">\[
+\mathbf{y} = \alpha_1 \cdot
+\mathbf{x}+\alpha_2\cdot\sigma(\mathbf{w}\cdot\mathbf{x}+\mathbf{b})\cdot
+\begin{pmatrix}
+[g_1,g_2,g_3]\times     
+\begin{bmatrix}
+   \mathbf{mask}_1 \\
+   \mathbf{mask}_2 \\
+   \mathbf{mask}_3
+\end{bmatrix}^T
+\end{pmatrix} \qquad (8)
+\]</span> 其中，<span class="math inline">\(\alpha_1\)</span>为身份转换权重，表示跳过该层，<span class="math inline">\(\alpha_2\)</span>为保留该层的权重。
+式(8)给出了每层输入和输出之间的映射关系，通过反复应用，可以建立一个DNN模型，其中最合适的层可以根据权重<span class="math inline">\(\alpha\)</span>来选择，最合适的每层神经元可以根据权重<span class="math inline">\(g\)</span>来决定。这里，我们将<span class="math inline">\(\alpha\)</span>和<span class="math inline">\(g\)</span>统称为<span class="math inline">\(\boldsymbol{\alpha}\)</span>，<span class="math inline">\(\bf{w}\)</span>和<span class="math inline">\(\bf{b}\)</span>统称为<span class="math inline">\(\boldsymbol{\theta}\)</span>。</p>
+<h3 id="mas-pinn">MAS-PINN</h3>
+<p>现在我们可以得到NAS -
+PINN的整体框架，如图3所示，它可以被认为是一个<strong>双层优化问题</strong>。在内循环中，对DNN的权值和偏置<span class="math inline">\(\boldsymbol{\theta}\)</span>进行优化，而在外循环中，优化目标是寻找最佳的<span class="math inline">\(\boldsymbol{\alpha}\)</span>。其过程可以表示为：
+<span class="math display">\[
+\underset{\boldsymbol{\alpha}}{min}MSE(\boldsymbol{\theta}^*,\boldsymbol{\alpha})
+\\ s.t. \boldsymbol{\theta}^*=
+\underset{\boldsymbol{\theta}}{argmin}Loss(\boldsymbol{\theta},\boldsymbol{\alpha})
+\]</span> 内环的损失函数可以设计为式( 2 ) ~ ( 5
+)（PINN损失函数：数据匹配损失，PDE残差损失，边界条件损失）和外环的损失函数可以写成：
+<span class="math display">\[
+MSE=\frac{1}{n}\sum^n_{i=1}(\hat u-u)^2  \qquad(10)
+\]</span>
+其中u是已知的解析解或数值解，n是数据点的个数，对于外循环，所需的n可以很小。这样的双层优化问题可以通过交替优化来解决，相应的过程在算法1中展示。
+当训练结束时，可以根据<span class="math inline">\(\boldsymbol{\alpha}\)</span>推导出离散的神经网络模型。基本上，我们可以首先通过比较<span class="math inline">\(a_1\)</span>和<span class="math inline">\(a_2\)</span>来决定是否跳过某一层。如果保留该层，我们可以根据<span class="math inline">\(g\)</span>来决定神经元的数量。如果跳过某一层，则无需考察其权重<span class="math inline">\(g\)</span>。 在一些<span class="math inline">\(a_1\)</span>和<span class="math inline">\(a_2\)</span>相对接近的情况下，我们假设跳过层和保留层同样重要，并给出了一个混合模型。在混合模型中，层是身份变换和神经网络操作的组合。神经元的数量决定于一个离散的神经元，因此这些层可以表示为：
+<span class="math display">\[
+\mathbf{y} = \alpha_1 \cdot
+\mathbf{x}+\alpha_2\cdot\sigma(\mathbf{w}\cdot\mathbf{x}+\mathbf{b})\cdot
+(g_{max}\times \boldsymbol{mask}_{max})^T
+\]</span> 式中,<span class="math inline">\(g_{max}\)</span>为所有权值<span class="math inline">\(g\)</span>中的最大值，<span class="math inline">\(\boldsymbol{mask}_{max}\)</span>为对应于<span class="math inline">\(g_{max}\)</span>的零张量掩码。 <img src="/2025/02/11/NAS-PINN/3.jpg" alt="fig.3"> <img src="/2025/02/11/NAS-PINN/4.jpg" alt="algorithm 1"></p>
+<h2 id="实验">实验</h2>
+<h3 id="possion-equation">Possion equation</h3>
+<p>泊松方程是一类描述电磁场和热场的基本偏微分方程，在电磁学和机械工程中有着广泛的应用。这里，我们考虑一个带有Dirichlet边界条件的二维Poisson方程：
+<img src="/2025/02/11/NAS-PINN/5.jpg" alt="possion equation"> 该方程有解析解：
+<img src="/2025/02/11/NAS-PINN/6.jpg" alt="analytical solution">
+我们首先考虑正方形计算域中的泊松方程，以验证所提出的NAS -
+PINN的有效性。我们构造了一个相对较小的搜索空间，它是一个最多包含5个隐藏层的神经网络，每层包含30、50或70个神经元。对离散搜索空间中的每一种可能的神经架构分别进行训练和测试，作为网格搜索的近似实例。然后，我们使用NAS
+-
+PINN来搜索一个神经结构，并研究它是否是最好的。所有离散搜索空间中的363个架构由Adam训练，其中500个配置点在域内随机采样，100个边界点均匀分布在边界上。
+在架构搜索阶段，1000个配置点和200个边界点采用与之前相同的策略进行采样，以搜索最佳的神经架构，并将Adam应用于架构搜索阶段。然后以与363架构相同的方式从头开始训练得到的神经架构。</p>
+<p>为了进行更全面的比较，还对传统的Auto
+ML方法SMAC进行了测试。SMAC是一个通用的用于超参数优化的贝叶斯优化包，对于所讨论的问题，需要优化的超参数是隐藏层的数量和神经元的数量。对于SMAC，一个相当小的研究空间包括15种不同的神经结构，其中每个隐藏层的神经元数量只能是相同的。SMAC使用与架构搜索阶段相同的1000个配置点和200个边界点。
+最后，均匀采样1000000个点，测试所有收敛的神经架构。不同架构的预测解和误差分布如图4所示，L2误差如表1所示。所有实验均重复5次，L2误差由5次重复的平均值得到。
+这些结构以序列的形式描述在表1中。序列的第一个和最后一个元素代表输入和输出通道，而其他元素代表每一层的神经元数目。例如，98号架构的输入大小为n×2，其中n为批次大小，2代表坐标x和y，第一层隐含层有70个神经元。通过NAS
+- PINN得到的架构为No.358。</p>
+<p>从表1和图4中，我们可以清楚地看到NAS-PINN的神经架构具有最小的L2误差和最小的最大误差值，并且其误差分布相比于其他架构也有所改善。因此，所提出的NASPINN确实可以在给定的搜索空间中找到最佳的神经网络结构。此外，虽然No.98也表现出相对较好的性能(在363种可能的体系结构中,它是第二好的体系结构)，但它比NAS-PINN的架构拥有更多的参数，这表明更多的参数并不一定意味着更好的性能，一个适当设计的神经架构显得尤为重要。
+此外，在PINNs中，更深的神经网络总是更好的这一常识似乎并不是在所有情况下都是正确的。至少对于给定的泊松方程，浅层但宽的神经网络(隐含层较少,但每层神经元较多的神经网络)优于深层的神经网络。</p>
+<p>与SMAC相比，NAS - PINN可以在更大、更灵活的搜索空间中进行搜索，从而NAS
+-
+PINN更有可能找到真正最佳的神经架构。值得注意的是，虽然SMAC在只有15个神经结构的较小搜索空间中进行搜索，但它需要SMAC
+2。08 h找到357号架构，而NAS -
+PINN使用1.57h，从363个不同的架构中找到358号架构。所有的数值实验均在Intel(R)Core
+i9-9900 K @ 3.60 Ghz /NVIDIA GeForce Rtx 3090 上进行 <img src="/2025/02/11/NAS-PINN/7.jpg" alt="fig.4"> <img src="/2025/02/11/NAS-PINN/8.jpg" alt="table.1"></p>
+]]></content>
+      <categories>
+        <category>论文泛读</category>
+      </categories>
+      <tags>
+        <tag>神经网络架构</tag>
+        <tag>PINN</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>两个曲线之间的距离</title>
+    <url>/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/</url>
+    <content><![CDATA[<h2 id="两个曲线之间的距离">两个曲线之间的距离</h2>
+<p>搜Fréchet怎么打的时候看到了Fréchet距离，感觉这两天接触的距离比较多，做下整理（说不定以后换个距离就是个创新点）</p>
+<p>本篇主要介绍两个距离：<strong>Fréchet距离</strong>和<strong>Hausdorff距离</strong>。以后看到了比较两个曲线的方法再做补充（之前介绍过的两个分布之间的距离也会写篇博客整理出来）
+<span id="more"></span></p>
+<h2 id="fréchet距离">Fréchet距离</h2>
+<p>Fréchet distance(弗雷歇距离)是法国数学家Maurice René
+Fréchet在1906年提出的一种路径空间相似形描述，这种描述同时还考虑进路径空间距离的因素，对于空间路径的相似性比较适用。</p>
+<p><strong>直观的理解，Fréchet distance就是最短的狗绳长度</strong>： ·
+主人走路径A，狗走路径B，他们有不同的配速方案。 ·
+主人和狗各自走完这两条路径过程中所需要的最短狗绳长度。（在某一种配速下需要的狗绳长度，但其他配速下需要的狗绳长度更长）
+<img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/1.jpg" alt="image"></p>
+<p><strong>严格的数学定义：</strong> 设<span class="math inline">\((\mathbb S ,d)\)</span>是一个度量空间，<span class="math inline">\(d\)</span>是<span class="math inline">\(\mathbb{S}\)</span>上的度量。 1. <span class="math inline">\(A\)</span>是<span class="math inline">\(\mathbb{S}\)</span>上的一个将单位区间映射到<span class="math inline">\(\mathbb{S}\)</span>的连续映射，例如：<span class="math inline">\(A:[0,1] \to \mathbb S\)</span>. 2.
+从单位区间到其自身的重参数化映射<span class="math inline">\(\alpha
+:[0,1]\to [0,1]\)</span>满足如下三个条件：1）<span class="math inline">\(\alpha\)</span>是连续的。 2）<span class="math inline">\(\alpha\)</span>是非降的，即对于任意的<span class="math inline">\(x,y \in [0,1],x\le y\)</span>，都有<span class="math inline">\(\alpha(x) \le \alpha(y)\)</span>。 3）<span class="math inline">\(\alpha\)</span>是满射。此时有<span class="math inline">\(\alpha(0)=0,\alpha(1)=1\)</span> 3. 设<span class="math inline">\(A\)</span>和<span class="math inline">\(B\)</span>是<span class="math inline">\(\mathbb{S}\)</span>上的两条曲线，即<span class="math inline">\(A:[0,1]\to \mathbb{S},B:[0,1]\to
+\mathbb{S}\)</span>。又<span class="math inline">\(\alpha\)</span>和<span class="math inline">\(\beta\)</span>是单位区间的两个重参数化映射，则曲线<span class="math inline">\(A\)</span>和<span class="math inline">\(B\)</span>之间的Fréchet距离定义为： <span class="math display">\[
+F(A,B)=\underset{\alpha ,\beta}{\inf}\underset{t \in [0,1]}{\max}\lbrace
+d(A(\alpha(t)),B(\beta(t)))
+\]</span></p>
+<p>解释：</p>
+<ul>
+<li>两条曲线<span class="math inline">\(A(\alpha(t))\)</span>和<span class="math inline">\(B(\beta(t))\)</span>之间距离最大值的下确界
+<ul>
+<li>t理解为时间</li>
+<li><span class="math inline">\(\alpha(t)\)</span>和<span class="math inline">\(\beta(t)\)</span>理解为人和狗随时间变化的速度</li>
+<li><span class="math inline">\(A(\alpha(t))\)</span>和<span class="math inline">\(B(\beta(t))\)</span>代表t时刻人和狗的位置</li>
+<li>最大值的下确界意思为,每一种人狗速度方案下，都有对应的距离最大值；那么对于所有的速度方案，这些距离最大值中最小的是哪个？</li>
+</ul></li>
+</ul>
+<p><strong>离散化</strong></p>
+<p>设定<span class="math inline">\(t\)</span>是时间点，该时刻，曲线<span class="math inline">\(A\)</span> 上的采样点为<span class="math inline">\(A(\alpha(t))\)</span>, 曲线<span class="math inline">\(B\)</span>上采样点为<span class="math inline">\(B(\alpha(t))\)</span>.
+如果使用欧氏距离，则容易定义<span class="math inline">\(d(A(\alpha(t)),B(\beta(t)))\)</span>.
+在每次采样中<span class="math inline">\(t\)</span>离散的遍历区间<span class="math inline">\([0,1]\)</span>, 得到该种采样下的最大距离<span class="math inline">\(\underset{t\in [0,1]}{\max} \lbrace
+d(A(\alpha(t)),B(\beta(t))) \rbrace\)</span>.
+Fréchet距离就是使该最大距离最小化的采样方式下的值。
+易于理解的，在离散方式下，我们不可能得到真实的Fréchet距离，而可以无限的趋近。但是越精确的值需要越大的计算量。</p>
+<p><img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/2.jpg"></p>
+<h2 id="hausdorff距离">Hausdorff距离</h2>
+<p>衡量两个集合之间的距离</p>
+<p><strong>定义</strong>: 给定欧氏空间中的两点集<span class="math inline">\(A=\lbrace a_1,a_2,... \rbrace , B=\lbrace
+b_1,b_2,...
+\rbrace\)</span>，豪斯多夫（Hausdorff）距离就是用来衡量这两个点集间的距离。定义公式如下:
+<span class="math display">\[
+H(A,B)=\max[h(A,B),h(B,A)]
+\]</span> 其中， <span class="math display">\[
+h(A,B)=\underset{a \in A}{\max}\underset{b\in B}{\min} \lVert a-b \rVert
+\\
+h(B,A)=\underset{b \in B}{\max}\underset{a\in A}{\min} \lVert b-a \rVert
+\]</span> <span class="math inline">\(H(A,B)\)</span>称为双向Hausdorff
+距离，<span class="math inline">\(h(A,B)\)</span>称为从点集A到点集B的单向 Hausdorff
+距离。相应地<span class="math inline">\(h(B,A)\)</span>称为从点集B到点集A的单向Hausdorff距离</p>
+<p><strong>一些图例</strong></p>
+<p><img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/3.jpg"> <img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/4.jpg"></p>
+<p><strong>性质</strong></p>
+<ul>
+<li><p>双向Hausdorff距离 <span class="math inline">\(H(A,B)\)</span>是单向 Hausdorff 距离<span class="math inline">\(h(A,B)\)</span>和<span class="math inline">\(h(B,A)\)</span>两者中较大者，显然它度量了两个点集间的最大不匹配程度。</p></li>
+<li><p>当<span class="math inline">\(A\)</span>和<span class="math inline">\(B\)</span>都是闭集的时候,Hausdorff距离满足度量的三个定理：</p></li>
+</ul>
+<ol type="1">
+<li><span class="math inline">\(H(A,B)\ge 0\)</span>，当且仅当<span class="math inline">\(A=B\)</span>时，<span class="math inline">\(H(A,B)= 0\)</span></li>
+<li><span class="math inline">\(H(A,B)=H(B,A)\)</span></li>
+<li><span class="math inline">\(H(A,B)+H(B,C)\ge H(A,C)\)</span></li>
+</ol>
+<ul>
+<li><p>若凸集<span class="math inline">\(A,B\)</span>满足<span class="math inline">\(A \nsubseteq B,B \nsubseteq A\)</span>并记<span class="math inline">\(\partial A,\partial B\)</span>分别为<span class="math inline">\(A,B\)</span>边界的集合，则<span class="math inline">\(A,B\)</span>的Hausdorff距离等于<span class="math inline">\(\partial A,\partial
+B\)</span>的Hausdorff距离</p></li>
+<li><p>Hausdorff距离易受到突发噪声的影响。</p></li>
+</ul>
+<p><img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/5.jpg"></p>
+<p>当图像受到噪声污染或存在遮挡等情况时，原始的Haudorff距离容易造成误匹配。所以，在1933年，Huttenlocher提出了部分
+Hausdorff距离的概念。</p>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>各种距离</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>最优传输（二）</title>
+    <url>/2025/02/10/OT2/</url>
+    <content><![CDATA[<h1 id="kantorovich问题的对偶问题">Kantorovich问题的对偶问题</h1>
+<p>这篇文章我们讲讲对偶理论，并且探究对偶问题和Kantorovich问题之间的关系
+<span id="more"></span></p>
+<h2 id="离散版本的kantorovich问题对偶">离散版本的Kantorovich问题对偶</h2>
+<p>有两个离散分布<span class="math inline">\(a=\sum_i
+a_i\delta_{x_i},b=\sum_j b_i\delta_{y_i}\)</span>，分别包含离散点<span class="math inline">\(\lbrace {x_i} \rbrace_{i=1}^n, \lbrace {y_j}
+\rbrace_{j=1}^m\)</span></p>
+<p>有一个成本矩阵<span class="math inline">\(C \in \mathbb R^{n\times
+m}\)</span>,<span class="math inline">\(C_{ij}\)</span>就是从<span class="math inline">\(x_i\)</span>运到<span class="math inline">\(y_j\)</span>的成本</p>
+<p>我们寻找一个联合分布的矩阵<span class="math inline">\(P\in \mathbb
+R^{n \times m}\)</span>使得总成本最小化 <span class="math display">\[
+\underset{p\in U(a,b)}{\min}\langle C,P \rangle = \underset{p\in
+U(a,b)}{\min} \sum_{i,j}C_{ij}P_{ij}
+\]</span> 其中，<span class="math inline">\(U(a,b)=\{\pi \in \mathbb
+R^{n\times m}_+|\pi1_m=a\in\mathbb R^n,\pi^T1_m=b\in\mathbb
+R^m\}\)</span></p>
+<p>拉格朗日对偶形式： <span class="math display">\[
+\underset{P\ge 0}{\min}\underset{(f,g)\in \mathbb R^n \times \mathbb
+R^m}{\max}\langle C,P \rangle + \langle a-P1_m,f \rangle + \langle
+b-P^T1_n,g \rangle
+\]</span></p>
+<p>交换min，max，有</p>
+<p><span class="math display">\[
+\underset{(f,g)\in \mathbb R^n\times \mathbb R^m}{\max}\langle a,f
+\rangle + \langle b,g \rangle + \underset{P\ge 0}{\min}\langle
+C-f1^T_m-1_ng^T,P \rangle
+\]</span></p>
+<p>可以将后面min的变为约束</p>
+<p><span class="math display">\[
+C-f1^T_m-1_ng^T=C-f \oplus g \ge 0
+\]</span></p>
+<p>综上，我们得到了对偶问题：</p>
+<p><span class="math display">\[
+\underset{(f,g)\in R(a,b)}{max}\langle f,a \rangle + \langle g,b \rangle
+\]</span></p>
+<p>其中，<span class="math inline">\(R(a,b)=\{(f,g)\in \mathbb R^n\times
+R^m:f_i+g_i \le C_{ij}\}\)</span></p>
+<h2 id="连续版本的kantorovich问题对偶">连续版本的Kantorovich问题对偶</h2>
+<p>现在两个分布变为连续的<span class="math inline">\(\alpha(x),x\in
+X,\beta(y),y\in Y\)</span>，成本函数连续化<span class="math inline">\(c(x_i,y_j)=C_{ij}\)</span>，我们将上面的乘子向量<span class="math inline">\(f,g\)</span>推广成<span class="math inline">\(f(x_i)=f_i,g(y_j)=g_j\)</span>。得到对偶形式为
+<span class="math display">\[
+\underset{(f,g)\in R(c)}{\sup}\int_X f(x) \, d\alpha(x)+\int_Y g(y) \,
+d\beta(y)
+\]</span> 其中<span class="math inline">\(R(c)=\{(f,g):\forall
+(x,y),f(x_i)+g(y_j) \le c(x_i,y_j)\}\)</span></p>
+<h3 id="通俗理解原问题和对偶问题">通俗理解原问题和对偶问题</h3>
+<p>假设有一个运营商运营着<span class="math inline">\(n\)</span>个仓库和<span class="math inline">\(m\)</span>个工厂，每个仓库有<span class="math inline">\(a_i\)</span>质量的商品，每个工厂需要<span class="math inline">\(b_j\)</span>质量的商品，从<span class="math inline">\(i\)</span>仓库到<span class="math inline">\(j\)</span>工厂运输单位质量的商品需要成本<span class="math inline">\(C_{ij}\)</span>。</p>
+<p><strong>原问题就是站在运营商的角度考虑</strong>：找出最优的传输方案<span class="math inline">\(P^*\)</span>使得传输总成本<span class="math inline">\(\sum_{i,j}C_{ij}P_{ij}\)</span>最小。</p>
+<p>假设这个运营商外包给了一个供应商，供应商只需要给每个仓库和工厂定价：单位质量的商品第<span class="math inline">\(i\)</span>个仓库收取<span class="math inline">\(f_i\)</span>的费用，第<span class="math inline">\(j\)</span>个工厂收取<span class="math inline">\(g_j\)</span>的费用。</p>
+<p>供应商不能随便定价，供应商在定价过程中需要保证所有<span class="math inline">\(f_i+g_j \le
+C_{ij}\)</span>，一旦超过这个价格，那在某些路径上运营商就要付出额外的价格，还不如自己运呢。</p>
+<p>所以对偶问题就是站在供应商的角度来考虑：在<span class="math inline">\(f_i+g_j \le C_{ij}\)</span>的情况下希望收费<span class="math inline">\(\langle f,a \rangle + \langle g,b
+\rangle\)</span>最大。</p>
+<h2 id="互补松弛条件">互补松弛条件</h2>
+<p>考虑原问题的最优解<span class="math inline">\(P^*\)</span>和对偶问题最优对<span class="math inline">\((f^*,g^*)\)</span>的关系，并且证明他们满足互补松弛条件</p>
+<p>设<span class="math inline">\(\bar z\)</span>为原问题的最优解，<span class="math inline">\(\underline
+z\)</span>为对偶问题的最优解，先证明<strong>弱对偶性</strong>满足，即<span class="math inline">\(\bar z \ge \underline z\)</span></p>
+<p>首先对原始问题进行一下改写，把决策变量<span class="math inline">\(P\)</span>“拉直”为<span class="math inline">\(p\)</span>： <span class="math display">\[
+P\in \mathbb R^{n \times m}\in U(a,b) \iff p \in \mathbb R^{nm}_+,Ap=
+\begin{bmatrix}
+   a  \\
+   b
+\end{bmatrix}
+\]</span> 其中 <span class="math display">\[
+A=
+\begin{bmatrix}
+   1^T_n \otimes I_m  \\
+   I_n \otimes1^T_m
+\end{bmatrix},A \in \mathbb R^{(n+m)\times nm}
+\]</span> 定义<span class="math inline">\(c\)</span>也为成本矩阵对应的展平形式，则原始问题的拉格朗日函数：
+<span class="math display">\[
+H(h)=\underset{p\in \mathbb R^{nm}_+}{\min}(c^Tp-h^T(Ap-q))
+\]</span> 其中<span class="math inline">\(q=\begin{bmatrix}
+   a  \\
+   b
+\end{bmatrix}\)</span>。这是一个松弛问题，因为约束<span class="math inline">\(Ap=q\)</span>被软化为罚函数形式。对于原问题的最优解<span class="math inline">\(p^*\)</span>，对于任何<span class="math inline">\(h\)</span>，有： <span class="math display">\[
+H(h)\le c^T p^*-h^T(Ap^*-q)=c^T p^*=\bar z
+\]</span> 当<span class="math inline">\(h\)</span>满足对偶可行性(<span class="math inline">\(A^Th\le c\)</span>)时，对偶问题的目标值<span class="math inline">\(h^Tq\)</span>是拉格朗日函数的下界。</p>
+<p>因此结合上式： <span class="math display">\[
+\underline z=\underset{h,A^Th \le c}{\max}h^Tq\le
+\underset{h}{\max}h^Tq+\underset{p\in \mathbb
+R^{mn}_+}{\min}(c^T-h^TA)p=\underset{h\in \mathbb R^{n+m}}{\max}H(h)\le
+c^T p^*=\bar z
+\]</span>
+这表明对偶问题的最优值不超过原始问题的最优值，从而证明了弱对偶性。</p>
+<p>可以证明强对偶性也是满足的，证明过程需要slater条件。</p>
+<p>对于连续型，也是有如下定理保证了强对偶性：</p>
+<blockquote>
+<p>设<span class="math inline">\(\mu\)</span>和<span class="math inline">\(\nu\)</span>是定义在完备可分度量空间<span class="math inline">\(X\)</span>和<span class="math inline">\(Y\)</span>上的概率测度，<span class="math inline">\(c:X\times Y \to \mathbb
+R_+\)</span>是一个可测函数，那么： <span class="math display">\[
+\underset{\pi\in\Pi(\mu,\nu)}{\inf}\int_{X\times Y}c \, d\pi =
+\underset{(\varphi,\psi)}{\sup}\lbrack \int_X \varphi \, d\mu + \int_Y
+\psi \, d\nu \rbrack
+\]</span></p>
+</blockquote>
+<p>最优化理论告诉我们，如果强对偶性满足，那么我们可以使用KKT中的经典的互补松弛条件得到：
+<span class="math display">\[
+P^*(x,y)(f^*(x)+g^*(y)-c(x,y))=0
+\]</span></p>
+<p>这就是原问题的最优解<span class="math inline">\(P^*\)</span>和对偶问题最优对<span class="math inline">\((f^*,g^*)\)</span>的关系。即在支撑集上<span class="math inline">\(P^*&gt;0\)</span>，对偶问题的最优函数永远满足<span class="math inline">\(f^*(x)+g^*(y)=c(x,y)\)</span></p>
+<h2 id="c-变换">c-变换</h2>
+<p>现在我们知道对偶问题两个函数的一个很重要的性质，就是在<span class="math inline">\(P^*\)</span>支撑集上有<span class="math inline">\(f^*(x)+g^*(y)=c(x,y)\)</span></p>
+<p>下面假设这个函数对不是最优的，如果我们固定了<span class="math inline">\(f(x)\)</span>，能否得到一个“最好”的<span class="math inline">\(g(y)\)</span>使得对偶问题的目标函数尽可能大？c-变换就回答了这个问题</p>
+<p>因为 <span class="math display">\[
+f(x)+g(y)\le c(x,y)\\
+\iff g(y)\le c(x,y)-f(x)\\
+\iff g(y)\le \underset{x}{\inf} \{c(x,y)-f(x)\}
+\]</span> 而<span class="math inline">\(f(x)\)</span>已经固定，我们希望<span class="math inline">\(\int g(y) \, d\beta(y)\)</span>越大越好，所以<span class="math inline">\(g(y)\)</span>越大越好，自然就得到了一个“最好的”函数：
+<span class="math display">\[
+\bar f(y)=\underset{x}{\inf}\{c(x,y)-f(x)\}
+\]</span> 这个<span class="math inline">\(\bar f(y)\)</span>就叫做<span class="math inline">\(f\)</span>的c-变换</p>
+<p>如果一个函数<span class="math inline">\(f\)</span>可以写成某个<span class="math inline">\(g\)</span>的c-变换，那么就称<span class="math inline">\(f\)</span>是c-凹的</p>
+<p><strong>注</strong>：对偶问题的最优解<span class="math inline">\((f^*,g^*)\)</span>一定是c-凹的。否则令另一个是其c-变换，目标函数变大，矛盾。</p>
+<p>下面定理还保证了最优对的存在性： &gt;设<span class="math inline">\(\mu\)</span>和<span class="math inline">\(\nu\)</span>是<span class="math inline">\(X\)</span>和<span class="math inline">\(Y\)</span>上的概率测度使得 <span class="math display">\[
+\int_{X\times Y}c(x,y) \, d\mu(x) \, d\nu(y)&lt;\infty
+\]</span> 则对偶 Kantorovich 问题存在一个最优对<span class="math inline">\((\varphi,\psi)\)</span>且<span class="math inline">\(\bar \varphi = \psi\)</span>，<span class="math inline">\(\bar \psi=\varphi\)</span>几乎处处成立。</p>
+<h2 id="kantorovichrubinstein定理">Kantorovich–Rubinstein定理</h2>
+<p>虽然对偶问题要求两个函数<span class="math inline">\(f,g\)</span>
+，但通过c-transform可以将这两个函数“联系”起来，对偶问题从 <span class="math display">\[
+\underset{(f,g)\in R(c)}{\sup}\int_X f \, d\mu + \int_Y g \, d\nu
+\]</span> 变为 <span class="math display">\[
+\underset{f}{\sup}\int_X f \, d\mu + \int_Y \bar f \, d\nu
+\]</span> 我们可以证明，如果在度量空间<span class="math inline">\(X=Y\)</span>上，<span class="math inline">\(d(x,y)\)</span>是度量，且<span class="math inline">\(c(x,y)=d(x,y)\)</span>。如果<span class="math inline">\(f=\bar g\)</span>是一组c-变换，那么<span class="math inline">\(f\)</span>是d-Lipschitz的。</p>
+<p>证明如下： <span class="math display">\[
+f(z)=\underset{y}{\inf} \lbrace d(z,y)-g(y) \rbrace \le
+\underset{y}{\inf} \lbrace d(z,x)+d(x,y)-g(y) \rbrace=f(x)+d(z,x)
+\]</span> 互换<span class="math inline">\(z,x\)</span>即得到<span class="math inline">\(|f(x)-g(z)|\le d(x,z)\)</span></p>
+<p>然后我们可以继续证明，如果<span class="math inline">\(f\)</span>是d-Lipschitz的，那么其c-变换<span class="math inline">\(\bar f = -f\)</span>： &gt;令<span class="math inline">\(x=y\)</span>，有<span class="math inline">\(\bar
+f(x)=\underset{x}{\inf}\{d(x,x)-f(x)\}\le -f(x)\)</span>，又因为<span class="math inline">\(f\)</span>是d-Lipschitz的。所以<span class="math inline">\(\bar f(y)=\underset{x}{\inf}\{d(x,y)-f(x)\}\ge
+-f(y)\)</span>。所以<span class="math inline">\(\bar f=-f\)</span></p>
+<p>综上，结合强对偶性，我们有 <span class="math display">\[
+\underset{\pi\in U(a,b)}{\inf}\int_{X^2}d(x,y)\,
+d\pi=\underset{f}{\sup}\int_X f \, d\mu + \int_X \bar f \, d\nu =
+\underset{\lVert f \rVert_{\text{Lip}}\le 1}{\sup}\int_X f \, d\mu -
+\int_X  f \, d\nu
+\]</span> 其中，<span class="math inline">\(\lVert f
+\rVert_{\text{Lip}}=\underset{x \not = y}{\sup}\frac {\lVert
+f(x)-f(y)\rVert}{d(x,y)}\)</span></p>
+<p>我们现在得到了一个非常好非常好的结论：当成本函数是一个度量的时候，对偶问题可以变成上面的形式，我们只需要求解一个d-Lipschitz函数就可以了。</p>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>最优化</tag>
+        <tag>最优运输</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Unsupervised Noise Adaptive Speech Enhancement by Discriminator-Constrained Optimal Transport</title>
+    <url>/2025/02/24/Unsupervised-Noise-Adaptive-Speech-Enhancement-by-Discriminator-Constrained-Optimal-Transport/</url>
+    <content><![CDATA[<h1 id="unsupervised-noise-adaptive-speech-enhancement-by-discriminator-constrained-optimal-transport判别器约束最优传输的无监督噪声自适应语音增强">Unsupervised
+Noise Adaptive Speech Enhancement by Discriminator-Constrained Optimal
+Transport（判别器约束最优传输的无监督噪声自适应语音增强）</h1>
+<p>会议：NeurIPS</p>
+<p>时间：2021</p>
+<h2 id="摘要">摘要</h2>
+<p>本文提出了一种新的判别器约束的最优传输网络(DOTN)，该网络执行无监督的域自适应语音增强(SE)，这是语音处理中必不可少的回归任务。<strong>DOTN旨在利用从源域获得的知识，在目标域中估计带噪语音的干净参考</strong>。训练和测试数据之间的领域转换已被报道是不同领域学习问题的障碍。尽管有丰富的文献研究无监督域适应分类，但所提出的方法，特别是在回归中，仍然是稀缺的，并且往往依赖于关于输入数据的额外信息。<strong>提出的DOTN方法将数学分析中的最优传输(OT)理论与生成对抗框架进行策略性融合，以帮助评估目标域中的连续标签</strong>。在两个SE任务上的实验结果表明，通过扩展经典的OT公式，我们提出的DOTN以一种纯无监督的方式优于先前的对抗域适应框架。</p>
+<h2 id="介绍">介绍</h2>
+<p>语音增强(SE)的目标是将低质量的语音信号转换为质量和可懂度提高的语音信号。SE作为语音处理领域的一个重要的回归任务，已被广泛用作语音相关应用的预处理器，如语音编码[1]、自动语音识别(
+Automatic Speech Recognition，ASR )
+[2]、说话人识别[3]和辅助听觉设备[4、5]。最近机器学习的进展使SE技术取得了重大进展。一般来说，基于学习的SE方法在训练阶段估计从带噪语音信号到干净语音信号的映射函数的变换[6]。估计变换在测试阶段将带噪语音信号转换为类干净信号。各种神经网络模型已被用于表征噪声到干净变换。这类模型的著名例子包括全连接神经网络[7]，深度去噪自编码器[8]，卷积神经网络[9]，长短期记忆网络[10]和Transformer
+[11]。为了有效地处理各种噪声情况，我们通常准备相当数量的涵盖各种噪声类型的训练数据来训练SE模型。<strong>然而在实际应用场景中，测试数据中的噪声类型可能并不总是包含在训练集中。因此，从训练数据中学习到的噪声到干净的转换不能很好地应用于处理测试噪声，从而导致有限的增强性能</strong>。这种训练-测试不匹配通常被称为<strong>SE的域不匹配问题</strong>。需要一种有效的解决方案，<strong>通过制定与测试条件相匹配的精确的噪声到干净的转换来执行域适应来调整SE模型</strong>。大多数现有的领域自适应方法至少依赖于以下一种自适应机制：对齐领域不变特征[12、13、14]和对抗训练，其中在训练过程中引入判别器作为领域分类器[15、16、17]。</p>
+<p><strong>本研究旨在通过引入最优传输(OT)来解决SE的无监督域适应问题。特别地，我们考虑在目标域上用完全无标签的数据进行SE测试，且只有源域的有标签数据可供参考</strong>。一般而言，OT理论通过比较两个(概率)分布，并考虑介于两者之间的所有可能的运输方案，从而找到一个具有最小位移成本的方案。OT的概念可以用来最小化域失配，从而实现无监督的域自适应。即使使用OT提供的数学特性，由于人类语音具有的复杂结构，获得优异SE性能的障碍仍然存在。为了进一步克服这些障碍，生成对抗网络(Generative
+Adversarial
+Network，GAN)的另一个概念被整合来帮助实现复杂的SE域自适应。虽然现有的域转换技术"域对抗训练"和我们的提案在名称上有相似之处，但其基本结构有本质的不同。该方法的一个关键要素在于<strong>一个用于检测语音输出特征的判别器，而不是一个域分类器</strong>。更准确地说，我们的方法中的<strong>判别器通过学习源标签的概率分布来控制输出语音质量</strong>。这种新颖的方法专为无监督的SE域自适应而设计，表现出优异的性能，并在VoiceBank和TIMIT数据集上进行了验证。</p>
+<h3 id="贡献">贡献</h3>
+<p>我们<strong>提出了一种新的方法，专门用于回归环境下的无监督域适应</strong>。这一领域的研究成果仍然十分有限；此外，现有的方法往往需要对源域进行额外的分类，或者可能尚未得到强回归应用的支持。相反，我们的方法不需要源样本、源标签和目标样本以外的任何额外的输入信息。我们的方法被应用于两个标准化SE任务，即VoiceBank
+-
+DEMAND和TIMIT，并在语音质量感知评价(PESQ)和短时客观可懂度(STOI)评分方面取得了优异的自适应性能。
+此外，由于输入要求简单，我们可以通过增加目标域中允许的噪声类型的数量来很容易地研究目标样本复杂度对我们方法的影响，这在我们所知之前的文献中没有被报道过。</p>
+<h2 id="相关工作">相关工作</h2>
+<h3 id="对抗域适应adversarial-domain-adaptation">对抗域适应（Adversarial
+domain adaptation）</h3>
+<p>领域对抗训练( Domain Adversarial Training，DAT
+)的主要目标是<strong>通过利用来自目标领域的大量未标记数据，训练出能够适应其他相似领域的深度模型(从源域)</strong>[15、18]。传统的DAT系统由<strong>深度特征提取器、标签预测器和领域分类器</strong>三部分组成。通过使用梯度反转层，提取的深度特征对主要学习任务具有判别性，并且在源域和目标域之间的转换具有不变性。DAT方法已被应用和证实可以有效地补偿许多任务中源(训练时间)和目标(测试时间)条件的不匹配，例如语音信号处理[19、20]、图像处理[15、21]和可穿戴传感器信号处理[22]。DAT方法已被应用和证实可以有效地<strong>补偿许多任务中源(训练时间)和目标(测试时间)条件的不匹配</strong>，例如语音信号处理[19、20]、图像处理[15、21]和可穿戴传感器信号处理[22]。后来发展的多源域对抗网络(MDAN)
+[23]扩展了原有的DAT，解除了单域迁移的约束，利用多个域分类器为主要学习任务提取有判别力的深度特征，同时对多个域迁移[3、24]具有不变性。</p>
+<h3 id="域适应的最优传输optimal-transport-for-domain-adaptation">域适应的最优传输（Optimal
+transport for domain adaptation）</h3>
+<p>迄今为止，OT
+[25、26]已被用于域适应[27、28]，并取得了相关的分析结果[29]。不仅如此，在[30、31]的联合分配框架下，OT的概念被证明是更有用的。最近，为了提高OT对异常值的敏感性，Robust
+OT被提出[32]。此外，还提出了一种将对抗域适应的概念与OT和边界分离相结合的方法[33]。然而，在这些研究中进行的几乎所有实验都是分类问题，不像SE任务是我们研究的重点。</p>
+<h3 id="语音增强中的域适应domain-adaptation-in-speech-enhancement">语音增强中的域适应（Domain
+adaptation in speech enhancement）</h3>
+<p>现有的SE方法中的域适应可以分为两类：有监督和无监督。对于有监督域自适应，测试条件中的成对噪声和干净语音信号可用来调整SE模型中的参数。在[34、35]中，已经提出了基于迁移学习的方法来适应SE模型，以缓解语料不匹配。为了克服灾难性遗忘问题，Lee等人在对SE模型进行预形成域适应时，提出了一种结合曲率正则化和路径优化增强策略的SERIL算法[36]。相反，对于无监督域适应，只提供带噪语音信号，而相应的干净对应物是无法获得的。一般而言，无监督域适应对现实场景具有较好的适用性。在[37]中，SE的无监督域适应是通过最小化教师分类器和学生分类器产生的后验概率之间的库尔贝克-莱布勒散度来实现的，而没有成对的噪声-干净的适应数据。在[19、38]中，DAT方法用于使SE模型适应新的噪声条件。
+<strong>尽管现有的无监督领域自适应方法取得了很好的性能，但需要额外的信息</strong>，例如单词标签、语言模型和噪声类型标签。在本文中，我们提出了一种新的方法：判别器约束的OT网络(
+DOTN
+)来对SE进行无监督域适应。与相关工作不同，<strong>DOTN在适应原始SE模型以匹配新的噪声条件时不需要额外的标签信息</strong>。我们的实验表明，DOTN能够有效地将SE模型适应于新的测试条件，并且取得了比之前的对抗域适应方法更好的适应性能，这些对抗域适应方法需要额外的噪声类型信息。</p>
+<h2 id="方法">方法</h2>
+<h3 id="问题设置与注释">问题设置与注释</h3>
+<p>考虑具有配对数据的源域<span class="math inline">\(\left(\mathbf{X}^s,
+\mathbf{Y}^s\right)=\left\{\left(\mathbf{x}_i^s,
+\mathbf{y}_i^s\right)\right\}_{i=1}^{N_s}\)</span>，其中<span class="math inline">\(\mathbf{x}_i^s \in \mathbb{R}^n, \mathbf{y}_i^s
+\in \mathbb{R}^m\)</span>表示样本<span class="math inline">\(i\)</span>的输入和对应的标签。无监督域适应假设存在另一个目标域，只包含未标记的数据，<span class="math inline">\(\mathbf{X}^t=\left\{\mathbf{x}_i^t \in
+\mathbb{R}^n\right\}_{i=1}^{N_s}\)</span>。目标是根据源域提供的知识，为目标标签<span class="math inline">\(\mathbf{Y}^t=\left\{\mathbf{y}_i^t\right\}_{i=1}^{N_t}\)</span>(存在但不为人知)寻求一个真值估计器(或统计假设)<span class="math inline">\(f: \mathbb{R}^n \rightarrow
+\mathbb{R}^m\)</span>。</p>
+<p>数据集<span class="math inline">\(\mathcal{D}\)</span>的概率分布用<span class="math inline">\(\mathbb{P}_{\mathcal{D}}\)</span>表示，这里<span class="math inline">\(\mathcal{D}\)</span>要么是<span class="math inline">\(\mathbf{X}^s, \mathbf{Y}^s,
+\mathbf{X}^t\)</span>或<span class="math inline">\(\mathbf{Y}^t\)</span>在我们的讨论中。我们的问题是寻找一个函数<span class="math inline">\(f\)</span>，使得<span class="math inline">\(f\)</span>在<span class="math inline">\(\mathbf{Y}^t\)</span>中诱导一个概率分布<span class="math inline">\(\mathbb{P}_{f\left(\mathbf{X}^t\right)}\)</span>，在一定测度下有<span class="math inline">\(\mathbb{P}_{f\left(\mathbf{X}^t\right)}
+\rightarrow
+\mathbb{P}_{\mathbf{Y}^t}\)</span>。我们提出使用OT的概念来解决这个问题。</p>
+<h3 id="提出模型判别器约束的最优运输网络-discriminator-constrained-optimal-transport-networkdotn">提出模型：判别器约束的最优运输网络
+Discriminator-Constrained Optimal Transport Network(DOTN)</h3>
+<p>给定一对分布<span class="math inline">\(\mathbb{P}_{\mathcal{D}_1}\)</span>和<span class="math inline">\(\mathbb{P}_{\mathcal{D}_2}\)</span>和一个置换成本矩阵<span class="math inline">\(C \geq 0\)</span>，OT求解运输计划<span class="math inline">\(\gamma \in \prod\left(\mathbb{P}_ {\mathcal{D}_
+1},
+\mathbb{P}_{\mathcal{D}_2}\right)\)</span>使得总成本(在离散的设定下)最小</p>
+<p><span class="math display">\[
+\min _{\gamma \in \Pi\left(\mathbb{P}_{\mathcal{D}_1},
+\mathbb{P}_{\mathcal{D}_2}\right)}\langle C, \gamma\rangle_F,
+\]</span></p>
+<p>其中<span class="math inline">\(\prod\left(\mathbb{P}_{\mathcal{D}_1},
+\mathbb{P}_{\mathcal{D}_2}\right)\)</span>表示边际<span class="math inline">\(\mathbb{P}_{\mathcal{D}_1}\)</span>和<span class="math inline">\(\mathbb{P}_{\mathcal{D}_1}\)</span>的联合分布空间，<span class="math inline">\(\cdot\langle\cdot,
+\cdot\rangle_F\)</span>为Frobenius积，并且<span class="math inline">\(C\)</span>的项<span class="math inline">\(C_{i
+j}\)</span>表示第i个和第j个样本的置换成本。可以证明，这个问题的最小值是一个距离，并且当相应的代价是范数[25、26]时称为Wasserstein距离</p>
+<p><strong>我们提出的方法包括两部分：OT对齐和Wasserstein生成对抗网络（WGAN）训练
+[39，40]。这两个步骤都基于OT，但是，它们被考虑为两对不同的分布，并采用不同的算法。</strong></p>
+<p><strong>通过联合分配最佳运输进行调整</strong>
+ 我们的适应机制依赖于源域和目标域的联合分布之间的对齐（对于目标域，标签是估计标签）。特别是，我们通过最小化联合分布<span class="math inline">\(\mathbb{P}_{\mathbf{X}^s} \times
+\mathbb{P}_{\mathbf{Y}^s}\)</span>和<span class="math inline">\(\mathbb{P}_{\mathbf{X}^t} \times
+\mathbb{P}_{f\left(\mathbf{X}^t\right)}\)</span>之间的OT损失来近似<span class="math inline">\(f\)</span>，并选择一个成本矩阵</p>
+<p><span class="math display">\[
+C_{i
+j}=\alpha\left\|\mathbf{x}_i^s-\mathbf{x}_j^t\right\|^2+\beta\left\|\mathbf{y}_i^s-f\left(\mathbf{x}_j^t\right)\right\|^2,
+\quad(\alpha, \beta&gt;0) \qquad (2)
+\]</span></p>
+<p>通过对齐源域和目标域的联合分布，当 OT
+寻找每个目标样本最“相似”的源样本时，自然而然地实现了噪声适应。</p>
+<p>尽管 OT
+为每个样本提供了准确的估计值，但每个估计误差的影响可能会在训练过程中累积，并在不保留语音数据结构的情况下将
+f 误导到方便的局部最小值。为了避免这种情况，我们采用了 Wasserstein
+生成对抗网络（WGAN）训练来补充和增强我们的适应系统。</p>
+<p><strong>输出和源标签的判别训练</strong>
+ 与我们考虑输入和标签的联合分布的适应不同，我们专注于源标签分布<span class="math inline">\(\mathbb{P}_{\mathbf{Y}^s}\)</span>和输出分布<span class="math inline">\(\mathbb{P}_{f\left(\mathbf{X}^t\right)}\)</span>的WGAN训练。在生成对抗训练的术语中，我们将<span class="math inline">\(f\)</span>视为生成器，并引入基于卷积神经网络的判别器<span class="math inline">\(h\)</span>作为
+“评判者”。一般来说，我们使用判别器来决定<span class="math inline">\(f\)</span>的输出是否与源标签
+“相似”。从形式上讲，WGAN 算法求解</p>
+<p><span class="math display">\[
+\min _f \max _{h \in \mathcal{L}}\left\{\mathbb{E}_{y \sim
+\mathbb{P}_{\mathbf{Y}^s}}(h(y))-\mathbb{E}_{x \sim
+\mathbb{P}_{\mathbf{x}^t}}(h(f(x)))\right\}
+\]</span></p>
+<p>由Kantorovich-Rubinstein 对偶性 [25]，其中<span class="math inline">\(\mathcal{L}\)</span>是 1-Lipschitz
+函数的集合。在这种情况下，在最优判别器下，最小化相对于生成器参数的值函数，使分布<span class="math inline">\(\mathbb{P}_{\mathbf{Y}^s}\)</span>和<span class="math inline">\(\mathbb{P}_{f\left(\mathbf{X}^t\right)}\)</span>之间的
+Wasserstein 距离最小。</p>
+<p>这种判别性训练补充了我们的对齐方式，并从源标签和目标标签估计之间的明确关系中提供了额外的约束。这些约束支持联合分布对齐，并在梯度下降训练过程中提供进一步的指导。当我们的判别性训练支持联合分布对齐时，实验的性能会大大提高。</p>
+<h3 id="损失函数和提出的算法">损失函数和提出的算法</h3>
+<p>我们的域对齐可以通过解决下面的优化问题来实现：</p>
+<p><span class="math display">\[
+\min _{\gamma, f} \mathcal{L}_1+\mathcal{L}_2=\min _{\gamma, f}
+\frac{1}{N^s}
+\sum_i\left\|\mathbf{y}_i^s-f\left(\mathbf{x}_i^s\right)\right\|^2+\sum_{i,
+j} \gamma_{i
+j}\left(\alpha\left\|\mathbf{x}_i^s-\mathbf{x}_j^t\right\|^2+\beta\left\|\mathbf{y}_i^s-f\left(\mathbf{x}_j^t\right)\right\|^2\right)
+\qquad (4)
+\]</span></p>
+<p>其中<span class="math inline">\(\alpha,
+\beta&gt;0\)</span>是平衡所选择的参数。值得注意的是，第一个术语强调了源域的知识在训练过程中不会被遗忘，这在[31、41、42]中都有所体现。没有这种重视，就不能很好地保持源领域知识，从而整体性能可能会下降。在SE实验中也观察到了这一现象。第二项是用于域对齐的。为了说明一些直觉，考虑理想情况其中Eq.
+(4)完全极小化为零，从而导致</p>
+<p><span class="math display">\[
+\left\|\mathbf{x}_i^s-\mathbf{x}_j^t\right\|^2 \equiv 0 \text { and
+}\left\|\mathbf{y}_i^s-f\left(\mathbf{x}_j^t\right)\right\|^2 \equiv 0
+\quad \Rightarrow \quad \mathbf{x}_i^s=\mathbf{x}_j^t \text { and }
+\mathbf{y}_i^s=f\left(\mathbf{x}_j^t\right)
+\]</span></p>
+<p>对于所有<span class="math inline">\(i,
+j\)</span>。这表明对于每个给定的目标域样本<span class="math inline">\(\mathbf{x}_j^t\)</span>，都会找到来自源域的相同样本<span class="math inline">\(\mathbf{x}_
+i^s\)</span>,然后由相应的源标签构建未知目标标签。尽管实际上不太可能发生零损失的理想情况，但OT损失旨在寻找最“相似”的对应关系，这需要Eq.（4）的域对齐直觉。从这个角度来看，虽然<span class="math inline">\(C_{i j}\)</span>中的项<span class="math inline">\(\left\|\mathbf{x}_ i^s-\mathbf{x}_
+j^t\right\|\)</span>（在方程 （2） 中）与<span class="math inline">\(f\)</span>和<span class="math inline">\(h\)</span>的网络反向传播没有直接关系，但它不能被忽视，因为丢弃该项将导致错误的运输计划<span class="math inline">\(\gamma_{i j}\)</span>并最终导致不希望的对齐。</p>
+<p>对于判别式训练，判别器<span class="math inline">\(h\)</span>由判别器损失函数<span class="math inline">\(\mathcal{L}_h=\frac{1}{m} \sum_{i=1}^m
+h\left(\mathbf{y}_i^s\right)-h\left(f\left(\mathbf{x}_i^t\right)\right)\)</span>训练，<span class="math inline">\(f\)</span>遵循生成器损失函数<span class="math inline">\(\mathcal{L}_f=-\frac{1}{m} \sum_{i=1}^m
+h\left(f\left(\mathbf{x}_i^t\right)\right)\)</span>，其中<span class="math inline">\(m\)</span>是批量大小。由于我们的框架中有多组参数<span class="math inline">\(\gamma, h\)</span>和<span class="math inline">\(f\)</span>，因此每次都会更新一组参数，而其他一组参数是固定的。</p>
+<p><span class="math display">\[
+    \begin{array}{l}
+   \hline \
+   \textbf{算法1} \quad \text{DOTN，提出的算法} \\
+   \hline \
+    \textbf{需要：}
+\mathbf{x}^s，源域输入。\mathbf{y}^s，源域标签。\mathbf{x}^t，目标域输入。c，裁剪参数。m，批量大小。\\
+    \qquad n_f, n_h, n_s：
+分别是每次生成器训练、判别器训练和源域训练的OT迭代次数。n，迭代次数。\\
+    \textbf{需要：}
+\theta_f，估计器f的初始参数。\theta_h，判别器h的初始参数 \\
+    \quad \textbf{for} \, \, 每批源样本 \left(\mathbf{x}^s,
+\mathbf{y}^s\right)和目标样本\left(\mathbf{y}^t\right) \, \,
+\textbf{do}\\
+    \qquad \quad 固定\theta_f，用OT求解方程（4）中的\gamma\\
+    \qquad \quad 固定 \gamma，\theta_f \leftarrow
+\operatorname{Adam}\left(\nabla_{\theta_f} \mathcal{L}_2, \theta_f,
+\theta_h\right) \text {. } \\
+    \qquad \quad \textbf{if} \, \, n \bmod n_f==0 \textbf { then }\\
+    \qquad \qquad \quad \theta_f \leftarrow
+\operatorname{Adam}\left(\nabla_{\theta_f} \mathcal{L}_1, \theta_f,
+\theta_h\right) .\\
+    \qquad \quad \textbf{end if} \\
+    \qquad \quad \textbf{if} \, \, n \bmod n_f==0 \textbf { then }\\
+    \qquad \qquad \quad \theta_f \leftarrow
+\operatorname{Adam}\left(\nabla_{\theta_f} \mathcal{L}_f, \theta_f,
+\theta_h\right) .\\
+    \qquad \quad \textbf{end if} \\
+    \qquad \quad \textbf{if} \, \, n \bmod n_h==0 \textbf { then }\\
+    \qquad \qquad \quad \theta_h \leftarrow
+\operatorname{Adam}\left(\nabla_{\theta_h} \mathcal{L}_h, \theta_f,
+\theta_h\right) .\\
+    \qquad \qquad \quad \theta_h \leftarrow
+\operatorname{clip}\left(\theta_h,-c, c\right) \\
+    \qquad \quad \textbf{end if} \\  
+    \quad \textbf{end for}\\  
+   \hline
+\end{array}
+\]</span></p>
+<h2 id="结论">结论</h2>
+<p>在这项研究中，我们提出了一种新的DOTN方法，该方法专为回归设置中的无监督域适应而设计。我们的方法巧妙地融合了OT和生成对抗框架，根据源域提供的信息在目标域中实现无监督学习，不需要额外的结构或输入，例如多源域和噪声类型标签。我们的实验表明，所提出的方法能够在SE中实现卓越的适应性能，在VoiceBank-DEMAND和TIMIT数据集的PESQ和STOI分数上优于其他对抗域适应方法。此外，我们表明，当适度增加目标样本的复杂度时（通过增加目标域中的噪声类型数量），只观察到小程度的退化。这表明我们的方法对目标域中的样本复杂性是稳健的。</p>
+]]></content>
+      <categories>
+        <category>论文泛读</category>
+      </categories>
+      <tags>
+        <tag>最优化</tag>
+        <tag>最优运输</tag>
+        <tag>SE（语音增强）</tag>
       </tags>
   </entry>
 </search>

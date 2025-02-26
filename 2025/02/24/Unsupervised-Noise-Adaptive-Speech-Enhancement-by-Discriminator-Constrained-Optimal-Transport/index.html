@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Unsupervised Noise Adaptive Speech Enhancement by Discriminator-Constrained Optimal Transport（判别器约束最优传输的无监督噪声自适应语音增强） 会议：NeurIPS 时间：2021 摘要 本文提出了一种新的判别器约束的最优传输网络(DOTN)，该网络执行无监督的域自适应语音增强(SE)，这是语音">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unsupervised Noise Adaptive Speech Enhancement by Discriminator-Constrained Optimal Transport">
+<meta property="og:url" content="http://example.com/2025/02/24/Unsupervised-Noise-Adaptive-Speech-Enhancement-by-Discriminator-Constrained-Optimal-Transport/index.html">
+<meta property="og:site_name" content="我的博客">
+<meta property="og:description" content="Unsupervised Noise Adaptive Speech Enhancement by Discriminator-Constrained Optimal Transport（判别器约束最优传输的无监督噪声自适应语音增强） 会议：NeurIPS 时间：2021 摘要 本文提出了一种新的判别器约束的最优传输网络(DOTN)，该网络执行无监督的域自适应语音增强(SE)，这是语音">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-02-24T03:26:51.000Z">
+<meta property="article:modified_time" content="2025-02-26T09:26:06.600Z">
+<meta property="article:author" content="宋嘉晨">
+<meta property="article:tag" content="最优化">
+<meta property="article:tag" content="最优运输">
+<meta property="article:tag" content="SE（语音增强）">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2025/02/24/Unsupervised-Noise-Adaptive-Speech-Enhancement-by-Discriminator-Constrained-Optimal-Transport/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Unsupervised Noise Adaptive Speech Enhancement by Discriminator-Constrained Optimal Transport | 我的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">我的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-guestbook">
+
+    <a href="/guestbook/" rel="section"><i class="fa fa-book fa-fw"></i>留言板</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/02/24/Unsupervised-Noise-Adaptive-Speech-Enhancement-by-Discriminator-Constrained-Optimal-Transport/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="宋嘉晨">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Unsupervised Noise Adaptive Speech Enhancement by Discriminator-Constrained Optimal Transport
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-02-24 11:26:51" itemprop="dateCreated datePublished" datetime="2025-02-24T11:26:51+08:00">2025-02-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-02-26 17:26:06" itemprop="dateModified" datetime="2025-02-26T17:26:06+08:00">2025-02-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%BA%E6%96%87%E6%B3%9B%E8%AF%BB/" itemprop="url" rel="index"><span itemprop="name">论文泛读</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2025/02/24/Unsupervised-Noise-Adaptive-Speech-Enhancement-by-Discriminator-Constrained-Optimal-Transport/" class="post-meta-item leancloud_visitors" data-flag-title="Unsupervised Noise Adaptive Speech Enhancement by Discriminator-Constrained Optimal Transport" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2025/02/24/Unsupervised-Noise-Adaptive-Speech-Enhancement-by-Discriminator-Constrained-Optimal-Transport/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2025/02/24/Unsupervised-Noise-Adaptive-Speech-Enhancement-by-Discriminator-Constrained-Optimal-Transport/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>8.9k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="unsupervised-noise-adaptive-speech-enhancement-by-discriminator-constrained-optimal-transport判别器约束最优传输的无监督噪声自适应语音增强">Unsupervised
+Noise Adaptive Speech Enhancement by Discriminator-Constrained Optimal
+Transport（判别器约束最优传输的无监督噪声自适应语音增强）</h1>
+<p>会议：NeurIPS</p>
+<p>时间：2021</p>
+<h2 id="摘要">摘要</h2>
+<p>本文提出了一种新的判别器约束的最优传输网络(DOTN)，该网络执行无监督的域自适应语音增强(SE)，这是语音处理中必不可少的回归任务。<strong>DOTN旨在利用从源域获得的知识，在目标域中估计带噪语音的干净参考</strong>。训练和测试数据之间的领域转换已被报道是不同领域学习问题的障碍。尽管有丰富的文献研究无监督域适应分类，但所提出的方法，特别是在回归中，仍然是稀缺的，并且往往依赖于关于输入数据的额外信息。<strong>提出的DOTN方法将数学分析中的最优传输(OT)理论与生成对抗框架进行策略性融合，以帮助评估目标域中的连续标签</strong>。在两个SE任务上的实验结果表明，通过扩展经典的OT公式，我们提出的DOTN以一种纯无监督的方式优于先前的对抗域适应框架。</p>
+<h2 id="介绍">介绍</h2>
+<p>语音增强(SE)的目标是将低质量的语音信号转换为质量和可懂度提高的语音信号。SE作为语音处理领域的一个重要的回归任务，已被广泛用作语音相关应用的预处理器，如语音编码[1]、自动语音识别(
+Automatic Speech Recognition，ASR )
+[2]、说话人识别[3]和辅助听觉设备[4、5]。最近机器学习的进展使SE技术取得了重大进展。一般来说，基于学习的SE方法在训练阶段估计从带噪语音信号到干净语音信号的映射函数的变换[6]。估计变换在测试阶段将带噪语音信号转换为类干净信号。各种神经网络模型已被用于表征噪声到干净变换。这类模型的著名例子包括全连接神经网络[7]，深度去噪自编码器[8]，卷积神经网络[9]，长短期记忆网络[10]和Transformer
+[11]。为了有效地处理各种噪声情况，我们通常准备相当数量的涵盖各种噪声类型的训练数据来训练SE模型。<strong>然而在实际应用场景中，测试数据中的噪声类型可能并不总是包含在训练集中。因此，从训练数据中学习到的噪声到干净的转换不能很好地应用于处理测试噪声，从而导致有限的增强性能</strong>。这种训练-测试不匹配通常被称为<strong>SE的域不匹配问题</strong>。需要一种有效的解决方案，<strong>通过制定与测试条件相匹配的精确的噪声到干净的转换来执行域适应来调整SE模型</strong>。大多数现有的领域自适应方法至少依赖于以下一种自适应机制：对齐领域不变特征[12、13、14]和对抗训练，其中在训练过程中引入判别器作为领域分类器[15、16、17]。</p>
+<p><strong>本研究旨在通过引入最优传输(OT)来解决SE的无监督域适应问题。特别地，我们考虑在目标域上用完全无标签的数据进行SE测试，且只有源域的有标签数据可供参考</strong>。一般而言，OT理论通过比较两个(概率)分布，并考虑介于两者之间的所有可能的运输方案，从而找到一个具有最小位移成本的方案。OT的概念可以用来最小化域失配，从而实现无监督的域自适应。即使使用OT提供的数学特性，由于人类语音具有的复杂结构，获得优异SE性能的障碍仍然存在。为了进一步克服这些障碍，生成对抗网络(Generative
+Adversarial
+Network，GAN)的另一个概念被整合来帮助实现复杂的SE域自适应。虽然现有的域转换技术"域对抗训练"和我们的提案在名称上有相似之处，但其基本结构有本质的不同。该方法的一个关键要素在于<strong>一个用于检测语音输出特征的判别器，而不是一个域分类器</strong>。更准确地说，我们的方法中的<strong>判别器通过学习源标签的概率分布来控制输出语音质量</strong>。这种新颖的方法专为无监督的SE域自适应而设计，表现出优异的性能，并在VoiceBank和TIMIT数据集上进行了验证。</p>
+<h3 id="贡献">贡献</h3>
+<p>我们<strong>提出了一种新的方法，专门用于回归环境下的无监督域适应</strong>。这一领域的研究成果仍然十分有限；此外，现有的方法往往需要对源域进行额外的分类，或者可能尚未得到强回归应用的支持。相反，我们的方法不需要源样本、源标签和目标样本以外的任何额外的输入信息。我们的方法被应用于两个标准化SE任务，即VoiceBank
+-
+DEMAND和TIMIT，并在语音质量感知评价(PESQ)和短时客观可懂度(STOI)评分方面取得了优异的自适应性能。
+此外，由于输入要求简单，我们可以通过增加目标域中允许的噪声类型的数量来很容易地研究目标样本复杂度对我们方法的影响，这在我们所知之前的文献中没有被报道过。</p>
+<h2 id="相关工作">相关工作</h2>
+<h3 id="对抗域适应adversarial-domain-adaptation">对抗域适应（Adversarial
+domain adaptation）</h3>
+<p>领域对抗训练( Domain Adversarial Training，DAT
+)的主要目标是<strong>通过利用来自目标领域的大量未标记数据，训练出能够适应其他相似领域的深度模型(从源域)</strong>[15、18]。传统的DAT系统由<strong>深度特征提取器、标签预测器和领域分类器</strong>三部分组成。通过使用梯度反转层，提取的深度特征对主要学习任务具有判别性，并且在源域和目标域之间的转换具有不变性。DAT方法已被应用和证实可以有效地补偿许多任务中源(训练时间)和目标(测试时间)条件的不匹配，例如语音信号处理[19、20]、图像处理[15、21]和可穿戴传感器信号处理[22]。DAT方法已被应用和证实可以有效地<strong>补偿许多任务中源(训练时间)和目标(测试时间)条件的不匹配</strong>，例如语音信号处理[19、20]、图像处理[15、21]和可穿戴传感器信号处理[22]。后来发展的多源域对抗网络(MDAN)
+[23]扩展了原有的DAT，解除了单域迁移的约束，利用多个域分类器为主要学习任务提取有判别力的深度特征，同时对多个域迁移[3、24]具有不变性。</p>
+<h3 id="域适应的最优传输optimal-transport-for-domain-adaptation">域适应的最优传输（Optimal
+transport for domain adaptation）</h3>
+<p>迄今为止，OT
+[25、26]已被用于域适应[27、28]，并取得了相关的分析结果[29]。不仅如此，在[30、31]的联合分配框架下，OT的概念被证明是更有用的。最近，为了提高OT对异常值的敏感性，Robust
+OT被提出[32]。此外，还提出了一种将对抗域适应的概念与OT和边界分离相结合的方法[33]。然而，在这些研究中进行的几乎所有实验都是分类问题，不像SE任务是我们研究的重点。</p>
+<h3 id="语音增强中的域适应domain-adaptation-in-speech-enhancement">语音增强中的域适应（Domain
+adaptation in speech enhancement）</h3>
+<p>现有的SE方法中的域适应可以分为两类：有监督和无监督。对于有监督域自适应，测试条件中的成对噪声和干净语音信号可用来调整SE模型中的参数。在[34、35]中，已经提出了基于迁移学习的方法来适应SE模型，以缓解语料不匹配。为了克服灾难性遗忘问题，Lee等人在对SE模型进行预形成域适应时，提出了一种结合曲率正则化和路径优化增强策略的SERIL算法[36]。相反，对于无监督域适应，只提供带噪语音信号，而相应的干净对应物是无法获得的。一般而言，无监督域适应对现实场景具有较好的适用性。在[37]中，SE的无监督域适应是通过最小化教师分类器和学生分类器产生的后验概率之间的库尔贝克-莱布勒散度来实现的，而没有成对的噪声-干净的适应数据。在[19、38]中，DAT方法用于使SE模型适应新的噪声条件。
+<strong>尽管现有的无监督领域自适应方法取得了很好的性能，但需要额外的信息</strong>，例如单词标签、语言模型和噪声类型标签。在本文中，我们提出了一种新的方法：判别器约束的OT网络(
+DOTN
+)来对SE进行无监督域适应。与相关工作不同，<strong>DOTN在适应原始SE模型以匹配新的噪声条件时不需要额外的标签信息</strong>。我们的实验表明，DOTN能够有效地将SE模型适应于新的测试条件，并且取得了比之前的对抗域适应方法更好的适应性能，这些对抗域适应方法需要额外的噪声类型信息。</p>
+<h2 id="方法">方法</h2>
+<h3 id="问题设置与注释">问题设置与注释</h3>
+<p>考虑具有配对数据的源域<span class="math inline">\(\left(\mathbf{X}^s,
+\mathbf{Y}^s\right)=\left\{\left(\mathbf{x}_i^s,
+\mathbf{y}_i^s\right)\right\}_{i=1}^{N_s}\)</span>，其中<span class="math inline">\(\mathbf{x}_i^s \in \mathbb{R}^n, \mathbf{y}_i^s
+\in \mathbb{R}^m\)</span>表示样本<span class="math inline">\(i\)</span>的输入和对应的标签。无监督域适应假设存在另一个目标域，只包含未标记的数据，<span class="math inline">\(\mathbf{X}^t=\left\{\mathbf{x}_i^t \in
+\mathbb{R}^n\right\}_{i=1}^{N_s}\)</span>。目标是根据源域提供的知识，为目标标签<span class="math inline">\(\mathbf{Y}^t=\left\{\mathbf{y}_i^t\right\}_{i=1}^{N_t}\)</span>(存在但不为人知)寻求一个真值估计器(或统计假设)<span class="math inline">\(f: \mathbb{R}^n \rightarrow
+\mathbb{R}^m\)</span>。</p>
+<p>数据集<span class="math inline">\(\mathcal{D}\)</span>的概率分布用<span class="math inline">\(\mathbb{P}_{\mathcal{D}}\)</span>表示，这里<span class="math inline">\(\mathcal{D}\)</span>要么是<span class="math inline">\(\mathbf{X}^s, \mathbf{Y}^s,
+\mathbf{X}^t\)</span>或<span class="math inline">\(\mathbf{Y}^t\)</span>在我们的讨论中。我们的问题是寻找一个函数<span class="math inline">\(f\)</span>，使得<span class="math inline">\(f\)</span>在<span class="math inline">\(\mathbf{Y}^t\)</span>中诱导一个概率分布<span class="math inline">\(\mathbb{P}_{f\left(\mathbf{X}^t\right)}\)</span>，在一定测度下有<span class="math inline">\(\mathbb{P}_{f\left(\mathbf{X}^t\right)}
+\rightarrow
+\mathbb{P}_{\mathbf{Y}^t}\)</span>。我们提出使用OT的概念来解决这个问题。</p>
+<h3 id="提出模型判别器约束的最优运输网络-discriminator-constrained-optimal-transport-networkdotn">提出模型：判别器约束的最优运输网络
+Discriminator-Constrained Optimal Transport Network(DOTN)</h3>
+<p>给定一对分布<span class="math inline">\(\mathbb{P}_{\mathcal{D}_1}\)</span>和<span class="math inline">\(\mathbb{P}_{\mathcal{D}_2}\)</span>和一个置换成本矩阵<span class="math inline">\(C \geq 0\)</span>，OT求解运输计划<span class="math inline">\(\gamma \in \prod\left(\mathbb{P}_ {\mathcal{D}_
+1},
+\mathbb{P}_{\mathcal{D}_2}\right)\)</span>使得总成本(在离散的设定下)最小</p>
+<p><span class="math display">\[
+\min _{\gamma \in \Pi\left(\mathbb{P}_{\mathcal{D}_1},
+\mathbb{P}_{\mathcal{D}_2}\right)}\langle C, \gamma\rangle_F,
+\]</span></p>
+<p>其中<span class="math inline">\(\prod\left(\mathbb{P}_{\mathcal{D}_1},
+\mathbb{P}_{\mathcal{D}_2}\right)\)</span>表示边际<span class="math inline">\(\mathbb{P}_{\mathcal{D}_1}\)</span>和<span class="math inline">\(\mathbb{P}_{\mathcal{D}_1}\)</span>的联合分布空间，<span class="math inline">\(\cdot\langle\cdot,
+\cdot\rangle_F\)</span>为Frobenius积，并且<span class="math inline">\(C\)</span>的项<span class="math inline">\(C_{i
+j}\)</span>表示第i个和第j个样本的置换成本。可以证明，这个问题的最小值是一个距离，并且当相应的代价是范数[25、26]时称为Wasserstein距离</p>
+<p><strong>我们提出的方法包括两部分：OT对齐和Wasserstein生成对抗网络（WGAN）训练
+[39，40]。这两个步骤都基于OT，但是，它们被考虑为两对不同的分布，并采用不同的算法。</strong></p>
+<p><strong>通过联合分配最佳运输进行调整</strong>
+ 我们的适应机制依赖于源域和目标域的联合分布之间的对齐（对于目标域，标签是估计标签）。特别是，我们通过最小化联合分布<span class="math inline">\(\mathbb{P}_{\mathbf{X}^s} \times
+\mathbb{P}_{\mathbf{Y}^s}\)</span>和<span class="math inline">\(\mathbb{P}_{\mathbf{X}^t} \times
+\mathbb{P}_{f\left(\mathbf{X}^t\right)}\)</span>之间的OT损失来近似<span class="math inline">\(f\)</span>，并选择一个成本矩阵</p>
+<p><span class="math display">\[
+C_{i
+j}=\alpha\left\|\mathbf{x}_i^s-\mathbf{x}_j^t\right\|^2+\beta\left\|\mathbf{y}_i^s-f\left(\mathbf{x}_j^t\right)\right\|^2,
+\quad(\alpha, \beta&gt;0) \qquad (2)
+\]</span></p>
+<p>通过对齐源域和目标域的联合分布，当 OT
+寻找每个目标样本最“相似”的源样本时，自然而然地实现了噪声适应。</p>
+<p>尽管 OT
+为每个样本提供了准确的估计值，但每个估计误差的影响可能会在训练过程中累积，并在不保留语音数据结构的情况下将
+f 误导到方便的局部最小值。为了避免这种情况，我们采用了 Wasserstein
+生成对抗网络（WGAN）训练来补充和增强我们的适应系统。</p>
+<p><strong>输出和源标签的判别训练</strong>
+ 与我们考虑输入和标签的联合分布的适应不同，我们专注于源标签分布<span class="math inline">\(\mathbb{P}_{\mathbf{Y}^s}\)</span>和输出分布<span class="math inline">\(\mathbb{P}_{f\left(\mathbf{X}^t\right)}\)</span>的WGAN训练。在生成对抗训练的术语中，我们将<span class="math inline">\(f\)</span>视为生成器，并引入基于卷积神经网络的判别器<span class="math inline">\(h\)</span>作为
+“评判者”。一般来说，我们使用判别器来决定<span class="math inline">\(f\)</span>的输出是否与源标签
+“相似”。从形式上讲，WGAN 算法求解</p>
+<p><span class="math display">\[
+\min _f \max _{h \in \mathcal{L}}\left\{\mathbb{E}_{y \sim
+\mathbb{P}_{\mathbf{Y}^s}}(h(y))-\mathbb{E}_{x \sim
+\mathbb{P}_{\mathbf{x}^t}}(h(f(x)))\right\}
+\]</span></p>
+<p>由Kantorovich-Rubinstein 对偶性 [25]，其中<span class="math inline">\(\mathcal{L}\)</span>是 1-Lipschitz
+函数的集合。在这种情况下，在最优判别器下，最小化相对于生成器参数的值函数，使分布<span class="math inline">\(\mathbb{P}_{\mathbf{Y}^s}\)</span>和<span class="math inline">\(\mathbb{P}_{f\left(\mathbf{X}^t\right)}\)</span>之间的
+Wasserstein 距离最小。</p>
+<p>这种判别性训练补充了我们的对齐方式，并从源标签和目标标签估计之间的明确关系中提供了额外的约束。这些约束支持联合分布对齐，并在梯度下降训练过程中提供进一步的指导。当我们的判别性训练支持联合分布对齐时，实验的性能会大大提高。</p>
+<h3 id="损失函数和提出的算法">损失函数和提出的算法</h3>
+<p>我们的域对齐可以通过解决下面的优化问题来实现：</p>
+<p><span class="math display">\[
+\min _{\gamma, f} \mathcal{L}_1+\mathcal{L}_2=\min _{\gamma, f}
+\frac{1}{N^s}
+\sum_i\left\|\mathbf{y}_i^s-f\left(\mathbf{x}_i^s\right)\right\|^2+\sum_{i,
+j} \gamma_{i
+j}\left(\alpha\left\|\mathbf{x}_i^s-\mathbf{x}_j^t\right\|^2+\beta\left\|\mathbf{y}_i^s-f\left(\mathbf{x}_j^t\right)\right\|^2\right)
+\qquad (4)
+\]</span></p>
+<p>其中<span class="math inline">\(\alpha,
+\beta&gt;0\)</span>是平衡所选择的参数。值得注意的是，第一个术语强调了源域的知识在训练过程中不会被遗忘，这在[31、41、42]中都有所体现。没有这种重视，就不能很好地保持源领域知识，从而整体性能可能会下降。在SE实验中也观察到了这一现象。第二项是用于域对齐的。为了说明一些直觉，考虑理想情况其中Eq.
+(4)完全极小化为零，从而导致</p>
+<p><span class="math display">\[
+\left\|\mathbf{x}_i^s-\mathbf{x}_j^t\right\|^2 \equiv 0 \text { and
+}\left\|\mathbf{y}_i^s-f\left(\mathbf{x}_j^t\right)\right\|^2 \equiv 0
+\quad \Rightarrow \quad \mathbf{x}_i^s=\mathbf{x}_j^t \text { and }
+\mathbf{y}_i^s=f\left(\mathbf{x}_j^t\right)
+\]</span></p>
+<p>对于所有<span class="math inline">\(i,
+j\)</span>。这表明对于每个给定的目标域样本<span class="math inline">\(\mathbf{x}_j^t\)</span>，都会找到来自源域的相同样本<span class="math inline">\(\mathbf{x}_
+i^s\)</span>,然后由相应的源标签构建未知目标标签。尽管实际上不太可能发生零损失的理想情况，但OT损失旨在寻找最“相似”的对应关系，这需要Eq.（4）的域对齐直觉。从这个角度来看，虽然<span class="math inline">\(C_{i j}\)</span>中的项<span class="math inline">\(\left\|\mathbf{x}_ i^s-\mathbf{x}_
+j^t\right\|\)</span>（在方程 （2） 中）与<span class="math inline">\(f\)</span>和<span class="math inline">\(h\)</span>的网络反向传播没有直接关系，但它不能被忽视，因为丢弃该项将导致错误的运输计划<span class="math inline">\(\gamma_{i j}\)</span>并最终导致不希望的对齐。</p>
+<p>对于判别式训练，判别器<span class="math inline">\(h\)</span>由判别器损失函数<span class="math inline">\(\mathcal{L}_h=\frac{1}{m} \sum_{i=1}^m
+h\left(\mathbf{y}_i^s\right)-h\left(f\left(\mathbf{x}_i^t\right)\right)\)</span>训练，<span class="math inline">\(f\)</span>遵循生成器损失函数<span class="math inline">\(\mathcal{L}_f=-\frac{1}{m} \sum_{i=1}^m
+h\left(f\left(\mathbf{x}_i^t\right)\right)\)</span>，其中<span class="math inline">\(m\)</span>是批量大小。由于我们的框架中有多组参数<span class="math inline">\(\gamma, h\)</span>和<span class="math inline">\(f\)</span>，因此每次都会更新一组参数，而其他一组参数是固定的。</p>
+<p><span class="math display">\[
+    \begin{array}{l}
+   \hline \
+   \textbf{算法1} \quad \text{DOTN，提出的算法} \\
+   \hline \
+    \textbf{需要：}
+\mathbf{x}^s，源域输入。\mathbf{y}^s，源域标签。\mathbf{x}^t，目标域输入。c，裁剪参数。m，批量大小。\\
+    \qquad n_f, n_h, n_s：
+分别是每次生成器训练、判别器训练和源域训练的OT迭代次数。n，迭代次数。\\
+    \textbf{需要：}
+\theta_f，估计器f的初始参数。\theta_h，判别器h的初始参数 \\
+    \quad \textbf{for} \, \, 每批源样本 \left(\mathbf{x}^s,
+\mathbf{y}^s\right)和目标样本\left(\mathbf{y}^t\right) \, \,
+\textbf{do}\\
+    \qquad \quad 固定\theta_f，用OT求解方程（4）中的\gamma\\
+    \qquad \quad 固定 \gamma，\theta_f \leftarrow
+\operatorname{Adam}\left(\nabla_{\theta_f} \mathcal{L}_2, \theta_f,
+\theta_h\right) \text {. } \\
+    \qquad \quad \textbf{if} \, \, n \bmod n_f==0 \textbf { then }\\
+    \qquad \qquad \quad \theta_f \leftarrow
+\operatorname{Adam}\left(\nabla_{\theta_f} \mathcal{L}_1, \theta_f,
+\theta_h\right) .\\
+    \qquad \quad \textbf{end if} \\
+    \qquad \quad \textbf{if} \, \, n \bmod n_f==0 \textbf { then }\\
+    \qquad \qquad \quad \theta_f \leftarrow
+\operatorname{Adam}\left(\nabla_{\theta_f} \mathcal{L}_f, \theta_f,
+\theta_h\right) .\\
+    \qquad \quad \textbf{end if} \\
+    \qquad \quad \textbf{if} \, \, n \bmod n_h==0 \textbf { then }\\
+    \qquad \qquad \quad \theta_h \leftarrow
+\operatorname{Adam}\left(\nabla_{\theta_h} \mathcal{L}_h, \theta_f,
+\theta_h\right) .\\
+    \qquad \qquad \quad \theta_h \leftarrow
+\operatorname{clip}\left(\theta_h,-c, c\right) \\
+    \qquad \quad \textbf{end if} \\  
+    \quad \textbf{end for}\\  
+   \hline
+\end{array}
+\]</span></p>
+<h2 id="结论">结论</h2>
+<p>在这项研究中，我们提出了一种新的DOTN方法，该方法专为回归设置中的无监督域适应而设计。我们的方法巧妙地融合了OT和生成对抗框架，根据源域提供的信息在目标域中实现无监督学习，不需要额外的结构或输入，例如多源域和噪声类型标签。我们的实验表明，所提出的方法能够在SE中实现卓越的适应性能，在VoiceBank-DEMAND和TIMIT数据集的PESQ和STOI分数上优于其他对抗域适应方法。此外，我们表明，当适度增加目标样本的复杂度时（通过增加目标域中的噪声类型数量），只观察到小程度的退化。这表明我们的方法对目标域中的样本复杂性是稳健的。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%9C%80%E4%BC%98%E5%8C%96/" rel="tag"># 最优化</a>
+              <a href="/tags/%E6%9C%80%E4%BC%98%E8%BF%90%E8%BE%93/" rel="tag"># 最优运输</a>
+              <a href="/tags/SE%EF%BC%88%E8%AF%AD%E9%9F%B3%E5%A2%9E%E5%BC%BA%EF%BC%89/" rel="tag"># SE（语音增强）</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/" rel="prev" title="两个曲线之间的距离">
+      <i class="fa fa-chevron-left"></i> 两个曲线之间的距离
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#unsupervised-noise-adaptive-speech-enhancement-by-discriminator-constrained-optimal-transport%E5%88%A4%E5%88%AB%E5%99%A8%E7%BA%A6%E6%9D%9F%E6%9C%80%E4%BC%98%E4%BC%A0%E8%BE%93%E7%9A%84%E6%97%A0%E7%9B%91%E7%9D%A3%E5%99%AA%E5%A3%B0%E8%87%AA%E9%80%82%E5%BA%94%E8%AF%AD%E9%9F%B3%E5%A2%9E%E5%BC%BA"><span class="nav-text">Unsupervised
+Noise Adaptive Speech Enhancement by Discriminator-Constrained Optimal
+Transport（判别器约束最优传输的无监督噪声自适应语音增强）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%91%98%E8%A6%81"><span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="nav-text">介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B4%A1%E7%8C%AE"><span class="nav-text">贡献</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E5%B7%A5%E4%BD%9C"><span class="nav-text">相关工作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E6%8A%97%E5%9F%9F%E9%80%82%E5%BA%94adversarial-domain-adaptation"><span class="nav-text">对抗域适应（Adversarial
+domain adaptation）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%9F%E9%80%82%E5%BA%94%E7%9A%84%E6%9C%80%E4%BC%98%E4%BC%A0%E8%BE%93optimal-transport-for-domain-adaptation"><span class="nav-text">域适应的最优传输（Optimal
+transport for domain adaptation）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%AD%E9%9F%B3%E5%A2%9E%E5%BC%BA%E4%B8%AD%E7%9A%84%E5%9F%9F%E9%80%82%E5%BA%94domain-adaptation-in-speech-enhancement"><span class="nav-text">语音增强中的域适应（Domain
+adaptation in speech enhancement）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B9%E6%B3%95"><span class="nav-text">方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E8%AE%BE%E7%BD%AE%E4%B8%8E%E6%B3%A8%E9%87%8A"><span class="nav-text">问题设置与注释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%90%E5%87%BA%E6%A8%A1%E5%9E%8B%E5%88%A4%E5%88%AB%E5%99%A8%E7%BA%A6%E6%9D%9F%E7%9A%84%E6%9C%80%E4%BC%98%E8%BF%90%E8%BE%93%E7%BD%91%E7%BB%9C-discriminator-constrained-optimal-transport-networkdotn"><span class="nav-text">提出模型：判别器约束的最优运输网络
+Discriminator-Constrained Optimal Transport Network(DOTN)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0%E5%92%8C%E6%8F%90%E5%87%BA%E7%9A%84%E7%AE%97%E6%B3%95"><span class="nav-text">损失函数和提出的算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E8%AE%BA"><span class="nav-text">结论</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="宋嘉晨"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">宋嘉晨</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">宋嘉晨</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">50k</span>
+</div>
+
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共50k字</span>
+  <span class="post-meta-divider">|</span>
+  本站总访问量<span id="busuanzi_value_site_pv"></span>次
+  <span class="post-meta-divider">|</span>
+  本站访客数<span id="busuanzi_value_site_uv"></span>人次
+  <span class="post-meta-divider">|</span>
+  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+</div>
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共50k字</span>
+</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'x2HNNt4kVm1AzbK4G5OMYocX-gzGzoHsz',
+      appKey     : 'UZukMakW4tBBED8F52h1Hgn4',
+      placeholder: "输入你的评论\n不输入昵称则为匿名",
+      avatar     : '',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : true,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/clicklove.js"></script>
