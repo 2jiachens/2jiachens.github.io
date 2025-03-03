@@ -1266,6 +1266,7 @@ Perception-Distortion Tradeoff（感知-失真权衡）</h1>
 <h2 id="摘要">摘要</h2>
 <p>图像复原算法通常是通过某种失真测度(例如：PSNR、SSIM、IFC、VIF)或通过量化感知质量的人类主观评分来评估的。在本文中，我们从数学上证明了失真和感知质量是相互矛盾的。具体来说，<strong>我们研究了从真实图像中正确判别图像复原算法输出的最佳概率</strong>。<strong>我们证明，随着平均扭曲的减小，这个概率必定增加(说明感知质量较差)</strong>。与通常的信念相反，这个结果对任何失真测度都是正确的，而不仅仅是PSNR或SSIM标准的问题。然而，正如我们在实验中所显示的那样，对于某些措施来说，(例如：VGG特征之间的距离)并不那么严重。我们还表明，生成对抗网络(Generative-adversarial-nets，GANs)为接近感知-失真界提供了一种原则性的方法。
 这构成了他们在低级视觉任务中观察到的成功的理论支持。基于我们的分析，我们提出了一种新的评估图像复原方法的方法，并使用它对最近的超分辨率算法进行了广泛的比较。</p>
+<span id="more"></span>
 <h2 id="介绍">介绍</h2>
 <p>在过去的几十年中，图像复原算法(例如去噪,去模糊,超分辨率等)在视觉质量和失真指标如峰值信噪比(PSNR)和结构相似性指数(SSIM)方面都取得了不断的进步[45]。然而，近年来，重建精度的提高似乎并不总是伴随着视觉质量的提高。事实上，也许是反直觉的，在感知质量方面占优势的算法，往往在例如PSNR和SSIM等方面处于劣势[22、16、6、38、51、49]。这种现象通常被解释为现有失真测度的一个缺点[44]，它推动了对替代的"更感性"标准的不断搜索。
 在本文中，我们对感知质量和失真测度之间的表观权衡提供了一个补充的解释。<strong>具体来说，我们证明了感知-失真平面中存在一个区域，无论算法方案(见图1)如何，这个区域都是无法达到的。此外，该区域的边界是单调的。因此，在其附近，只有可能改善感知质量或失真，其中一个是以牺牲另一个为代价的</strong>。对于所有的失真测度，感知-失真权衡是存在的，而不仅仅是均方误差(
@@ -1377,6 +1378,88 @@ NR 和 FR
       </categories>
       <tags>
         <tag>图像恢复</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Active_Contours_Without_Edges</title>
+    <url>/2025/03/03/Active-Contours-Without-Edges/</url>
+    <content><![CDATA[<h1 id="active-contours-without-edges">Active Contours Without
+Edges</h1>
+<p>期刊：IEEE Transactions on image processin</p>
+<p>时间：2001</p>
+<h2 id="摘要">摘要</h2>
+<p>在本文中，我们提出了一种新的活动轮廓模型，用于检测给定图像中的对象，基于曲线演化技术，用于分割和水平集的Mumford-Shah函数。我们的模型可以检测其边界不一定由梯度定义的对象。我们最小化了能量，这可以看作是最小分区问题的一个特殊情况。在水平集公式中，问题变成了一个
+“平均曲率流”
+--类似演化活动等值线，它将在所需的边界上停止。然而，停止项并不依赖于图像的梯度，就像经典的主动轮廓模型那样，而是与图像的特定分割有关。我们将给出一个使用有限差分的数值算法。最后，我们将介绍各种实验结果，特别是一些基于梯度的经典蛇方法不适用的示例。此外，初始曲线可以位于图像中的任何位置，并且会自动检测内部轮廓。</p>
+]]></content>
+      <categories>
+        <category>论文精读</category>
+      </categories>
+      <tags>
+        <tag>图像分割</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>图像处理的偏微分方程方法总结</title>
+    <url>/2025/03/03/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E7%9A%84%E5%81%8F%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/</url>
+    <content><![CDATA[<span id="more"></span>
+<h2 id="变分法和梯度下降流">变分法和梯度下降流</h2>
+<h3 id="变分原理">变分原理</h3>
+<p>所希望的解往往是由最小化某一能量泛函所确定的，在一维情况下，这一泛函可能有如下形式：
+<span class="math display">\[
+E(u)=\int_{x_0}^{x_1}F(x,u,u_x)\,dx  \qquad (1)
+\]</span> <span class="math inline">\(E(u)\)</span>的极值对应于变分<span class="math inline">\(\frac{\partial E}{\partial
+u}=0\)</span>所对应的函数。为了求出一阶变分<span class="math inline">\(E&#39;\)</span>，考虑对最优解<span class="math inline">\(u(x)\)</span>作一微扰，得<span class="math inline">\(u(x)+v(x)\)</span>，经推导有 <span class="math display">\[
+E(u+v)=E(u)+\int_{x_0}^{x_1}[v\frac{\partial F}{\partial
+u}-v\frac{d}{dx}(\frac{\partial F}{\partial u&#39;})] \, dx \qquad(2)
+\]</span> 可见，当<span class="math inline">\(E(u)\)</span>达到极值，对<span class="math inline">\(u(x)\)</span>的任一足够小微扰<span class="math inline">\(v(x),E\)</span>的值不变，故有 <span class="math display">\[
+\frac{\partial F}{\partial u}-\frac{d}{dx}(\frac{\partial F}{\partial
+u&#39;})=0
+\]</span> 此式称为变分问题式(1)的Euler方程。 二维情况： <span class="math display">\[
+E(u)=\iint_\Omega F(x,y,u,u_x,u_y)dxdy
+\]</span> 对应的Euler方程为 <span class="math display">\[
+\frac{\partial F}{\partial u}-\frac{d}{dx}(\frac{\partial F}{\partial
+u_x})-\frac{d}{dy}(\frac{\partial F}{\partial u_y})=0
+\]</span> 求解能量泛函极值问题归结为求解相应的Euler方程。</p>
+<h3 id="梯度下降流">梯度下降流</h3>
+<p>假定我们要求的解可随时间变化，即它可以表示为<span class="math inline">\(u(\cdot,t)\)</span>，并且这种随时间的变化总是使<span class="math inline">\(E(u(\cdot,t))\)</span>减小，那么<span class="math inline">\(u(\cdot,t)\)</span>应该怎样变化才能满足这一要求？以一维问题为例，令式（2）中的微扰项<span class="math inline">\(v(\cdot)\)</span>是由<span class="math inline">\(u(\cdot,t)\)</span>从<span class="math inline">\(t\)</span>到<span class="math inline">\(t+\Delta
+t\)</span>所产生的改变量，即 <span class="math display">\[
+v=\frac{\partial u}{\partial t}\Delta t
+\]</span> 式（2）就可改写为 <span class="math display">\[
+E(\cdot,t+\Delta t)=E(\cdot ,t)+\Delta t \int^{x_1}_{x_0}\frac{\partial
+u}{\partial t}[\frac{\partial F}{\partial u}-\frac{d}{dx}(\frac{\partial
+F}{\partial u&#39;})]\, dx
+\]</span> 于是只要令 <span class="math display">\[
+\frac{\partial u}{\partial t}=-[\frac{\partial F}{\partial
+u}-\frac{d}{dx}(\frac{\partial F}{\partial
+u&#39;})]=\frac{d}{dx}(\frac{\partial F}{\partial
+u&#39;})-\frac{\partial F}{\partial u} \qquad(3)
+\]</span> 就可以使<span class="math inline">\(E(u(\cdot,t))\)</span>不断减小，式（3）称为变分问题式（1）所对应的梯度下降流</p>
+<h2 id="曲线演化的线性热流">曲线演化的线性热流</h2>
+<h3 id="线性几何热流">线性几何热流</h3>
+<p>考虑一条简单封闭平面曲线 <span class="math display">\[
+C_0(p)=(x_0(p),y_0(p))
+\]</span> 为初始条件，按照热方程演化 <span class="math display">\[
+\frac{\partial C}{\partial t}=\frac{\partial^2 C}{\partial p^2}
+\qquad(4)
+\]</span> 得到曲线族 <span class="math display">\[
+C(p,t)=(x(p,t),y(p,t)), \qquad C(p,0)=C_0(p)
+\]</span> 用Fourier方法求解得到 <span class="math display">\[
+x(p,t)=x_0(p)*g(p,t),\qquad y(p,t)=y_0(p)*g(p,t)
+\\g(p,t)=\frac{1}{\sqrt{4\pi t}}\exp[\frac{-p^2}{4t}]
+\]</span>
+由此可见，曲线按式(4)做线性热运动，等价于对曲线上的每一点坐标<span class="math inline">\((x,y)\)</span>同时作Gaussian滤波。并且Gaussian滤波器的标准偏离<span class="math inline">\(\sigma\)</span>与演化时间<span class="math inline">\(t\)</span>有以下对应关系： <span class="math display">\[
+\sigma=\sqrt{2}t
+\]</span></p>
+<h2 id="非线性几何不变流">非线性几何不变流</h2>
+<h3 id="euclidean不变流">Euclidean不变流</h3>
+<p>线性热流式（4）提供了一个很好的平面曲线的多尺度表达，但它存在一个严重的不足之处，它不能保证一个简单的（不自相交的）闭合曲线在演化过程中始终保持为一条简单封闭曲线。</p>
+]]></content>
+      <categories>
+        <category>图书总结</category>
+      </categories>
+      <tags>
+        <tag>图像处理</tag>
       </tags>
   </entry>
 </search>

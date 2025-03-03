@@ -32,7 +32,7 @@
 <meta property="og:image" content="http://example.com/2025/03/02/The-Perception-Distortion-Tradeoff/The-Perception-Distortion-Tradeoff/3.png">
 <meta property="og:image" content="http://example.com/2025/03/02/The-Perception-Distortion-Tradeoff/The-Perception-Distortion-Tradeoff/4.png">
 <meta property="article:published_time" content="2025-03-02T02:30:01.000Z">
-<meta property="article:modified_time" content="2025-03-03T00:51:01.072Z">
+<meta property="article:modified_time" content="2025-03-03T04:04:52.621Z">
 <meta property="article:author" content="宋嘉晨">
 <meta property="article:tag" content="图像恢复">
 <meta name="twitter:card" content="summary">
@@ -229,7 +229,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-03 08:51:01" itemprop="dateModified" datetime="2025-03-03T08:51:01+08:00">2025-03-03</time>
+                <time title="修改时间：2025-03-03 12:04:52" itemprop="dateModified" datetime="2025-03-03T12:04:52+08:00">2025-03-03</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -287,6 +287,7 @@ Perception-Distortion Tradeoff（感知-失真权衡）</h1>
 <h2 id="摘要">摘要</h2>
 <p>图像复原算法通常是通过某种失真测度(例如：PSNR、SSIM、IFC、VIF)或通过量化感知质量的人类主观评分来评估的。在本文中，我们从数学上证明了失真和感知质量是相互矛盾的。具体来说，<strong>我们研究了从真实图像中正确判别图像复原算法输出的最佳概率</strong>。<strong>我们证明，随着平均扭曲的减小，这个概率必定增加(说明感知质量较差)</strong>。与通常的信念相反，这个结果对任何失真测度都是正确的，而不仅仅是PSNR或SSIM标准的问题。然而，正如我们在实验中所显示的那样，对于某些措施来说，(例如：VGG特征之间的距离)并不那么严重。我们还表明，生成对抗网络(Generative-adversarial-nets，GANs)为接近感知-失真界提供了一种原则性的方法。
 这构成了他们在低级视觉任务中观察到的成功的理论支持。基于我们的分析，我们提出了一种新的评估图像复原方法的方法，并使用它对最近的超分辨率算法进行了广泛的比较。</p>
+<span id="more"></span>
 <h2 id="介绍">介绍</h2>
 <p>在过去的几十年中，图像复原算法(例如去噪,去模糊,超分辨率等)在视觉质量和失真指标如峰值信噪比(PSNR)和结构相似性指数(SSIM)方面都取得了不断的进步[45]。然而，近年来，重建精度的提高似乎并不总是伴随着视觉质量的提高。事实上，也许是反直觉的，在感知质量方面占优势的算法，往往在例如PSNR和SSIM等方面处于劣势[22、16、6、38、51、49]。这种现象通常被解释为现有失真测度的一个缺点[44]，它推动了对替代的"更感性"标准的不断搜索。
 在本文中，我们对感知质量和失真测度之间的表观权衡提供了一个补充的解释。<strong>具体来说，我们证明了感知-失真平面中存在一个区域，无论算法方案(见图1)如何，这个区域都是无法达到的。此外，该区域的边界是单调的。因此，在其附近，只有可能改善感知质量或失真，其中一个是以牺牲另一个为代价的</strong>。对于所有的失真测度，感知-失真权衡是存在的，而不仅仅是均方误差(
@@ -413,7 +414,10 @@ NR 和 FR
     <a href="/2025/02/24/Unsupervised-Noise-Adaptive-Speech-Enhancement-by-Discriminator-Constrained-Optimal-Transport/" rel="prev" title="Unsupervised Noise Adaptive Speech Enhancement by Discriminator-Constrained Optimal Transport">
       <i class="fa fa-chevron-left"></i> Unsupervised Noise Adaptive Speech Enhancement by Discriminator-Constrained Optimal Transport
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2025/03/03/Active-Contours-Without-Edges/" rel="next" title="Active_Contours_Without_Edges">
+      Active_Contours_Without_Edges <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -489,20 +493,20 @@ Perception-Distortion Tradeoff（感知-失真权衡）</span></a><ol class="nav
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">10</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -539,13 +543,13 @@ Perception-Distortion Tradeoff（感知-失真权衡）</span></a><ol class="nav
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">55k</span>
+    <span title="站点总字数">57k</span>
 </div>
 
 <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共55k字</span>
+  <span class="post-count">博客全站共57k字</span>
   <span class="post-meta-divider">|</span>
   本站总访问量<span id="busuanzi_value_site_pv"></span>次
   <span class="post-meta-divider">|</span>
@@ -556,7 +560,7 @@ Perception-Distortion Tradeoff（感知-失真权衡）</span></a><ol class="nav
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共55k字</span>
+  <span class="post-count">博客全站共57k字</span>
 </div>
 
 
