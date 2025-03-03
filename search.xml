@@ -1146,7 +1146,7 @@ Discriminator-Constrained Optimal Transport Network(DOTN)</h3>
 \mathbb{P}_{\mathcal{D}_2}\right)}\langle C, \gamma\rangle_F,
 \]</span></p>
 <p>其中<span class="math inline">\(\prod\left(\mathbb{P}_{\mathcal{D}_1},
-\mathbb{P}_{\mathcal{D}_2}\right)\)</span>表示边际<span class="math inline">\(\mathbb{P}_{\mathcal{D}_1}\)</span>和<span class="math inline">\(\mathbb{P}_{\mathcal{D}_1}\)</span>的联合分布空间，<span class="math inline">\(\cdot\langle\cdot,
+\mathbb{P}_{\mathcal{D}_2}\right)\)</span>表示边际为<span class="math inline">\(\mathbb{P}_{\mathcal{D}_1}\)</span>和<span class="math inline">\(\mathbb{P}_{\mathcal{D}_1}\)</span>的联合分布空间，<span class="math inline">\(\langle\cdot,
 \cdot\rangle_F\)</span>为Frobenius积，并且<span class="math inline">\(C\)</span>的项<span class="math inline">\(C_{i
 j}\)</span>表示第i个和第j个样本的置换成本。可以证明，这个问题的最小值是一个距离，并且当相应的代价是范数[25、26]时称为Wasserstein距离</p>
 <p><strong>我们提出的方法包括两部分：OT对齐和Wasserstein生成对抗网络（WGAN）训练
@@ -1173,7 +1173,7 @@ f 误导到方便的局部最小值。为了避免这种情况，我们采用了
 <p><span class="math display">\[
 \min _f \max _{h \in \mathcal{L}}\left\{\mathbb{E}_{y \sim
 \mathbb{P}_{\mathbf{Y}^s}}(h(y))-\mathbb{E}_{x \sim
-\mathbb{P}_{\mathbf{x}^t}}(h(f(x)))\right\}
+\mathbb{P}_{\mathbf{X}^t}}(h(f(x)))\right\}
 \]</span></p>
 <p>由Kantorovich-Rubinstein 对偶性 [25]，其中<span class="math inline">\(\mathcal{L}\)</span>是 1-Lipschitz
 函数的集合。在这种情况下，在最优判别器下，最小化相对于生成器参数的值函数，使分布<span class="math inline">\(\mathbb{P}_{\mathbf{Y}^s}\)</span>和<span class="math inline">\(\mathbb{P}_{f\left(\mathbf{X}^t\right)}\)</span>之间的
@@ -1190,7 +1190,7 @@ j}\left(\alpha\left\|\mathbf{x}_i^s-\mathbf{x}_j^t\right\|^2+\beta\left\|\mathbf
 \qquad (4)
 \]</span></p>
 <p>其中<span class="math inline">\(\alpha,
-\beta&gt;0\)</span>是平衡所选择的参数。值得注意的是，第一个术语强调了源域的知识在训练过程中不会被遗忘，这在[31、41、42]中都有所体现。没有这种重视，就不能很好地保持源领域知识，从而整体性能可能会下降。在SE实验中也观察到了这一现象。第二项是用于域对齐的。为了说明一些直觉，考虑理想情况其中Eq.
+\beta&gt;0\)</span>是平衡所选择的参数。值得注意的是，第一项强调了源域的知识在训练过程中不会被遗忘，这在[31、41、42]中都有所体现。没有这种重视，就不能很好地保持源领域知识，从而整体性能可能会下降。在SE实验中也观察到了这一现象。第二项是用于域对齐的。为了说明一些直觉，考虑理想情况其中Eq.
 (4)完全极小化为零，从而导致</p>
 <p><span class="math display">\[
 \left\|\mathbf{x}_i^s-\mathbf{x}_j^t\right\|^2 \equiv 0 \text { and
@@ -1213,13 +1213,13 @@ h\left(f\left(\mathbf{x}_i^t\right)\right)\)</span>，其中<span class="math in
     \textbf{需要：}
 \mathbf{x}^s，源域输入。\mathbf{y}^s，源域标签。\mathbf{x}^t，目标域输入。c，裁剪参数。m，批量大小。\\
     \qquad n_f, n_h, n_s：
-分别是每次生成器训练、判别器训练和源域训练的OT迭代次数。n，迭代次数。\\
+分别是每次生成器训练、判别器训练和源域训练的\text{OT}迭代次数。n，迭代次数。\\
     \textbf{需要：}
 \theta_f，估计器f的初始参数。\theta_h，判别器h的初始参数 \\
     \quad \textbf{for} \, \, 每批源样本 \left(\mathbf{x}^s,
 \mathbf{y}^s\right)和目标样本\left(\mathbf{y}^t\right) \, \,
 \textbf{do}\\
-    \qquad \quad 固定\theta_f，用OT求解方程（4）中的\gamma\\
+    \qquad \quad 固定\theta_f，用\text{OT}求解方程（4）中的\gamma\\
     \qquad \quad 固定 \gamma，\theta_f \leftarrow
 \operatorname{Adam}\left(\nabla_{\theta_f} \mathcal{L}_2, \theta_f,
 \theta_h\right) \text {. } \\
@@ -1254,6 +1254,129 @@ h\left(f\left(\mathbf{x}_i^t\right)\right)\)</span>，其中<span class="math in
         <tag>最优化</tag>
         <tag>最优运输</tag>
         <tag>SE（语音增强）</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>The_Perception-Distortion_Tradeoff</title>
+    <url>/2025/03/02/The-Perception-Distortion-Tradeoff/</url>
+    <content><![CDATA[<h1 id="the-perception-distortion-tradeoff感知-失真权衡">The
+Perception-Distortion Tradeoff（感知-失真权衡）</h1>
+<p>会议： CVPR</p>
+<p>时间： 2018</p>
+<h2 id="摘要">摘要</h2>
+<p>图像复原算法通常是通过某种失真测度(例如：PSNR、SSIM、IFC、VIF)或通过量化感知质量的人类主观评分来评估的。在本文中，我们从数学上证明了失真和感知质量是相互矛盾的。具体来说，<strong>我们研究了从真实图像中正确判别图像复原算法输出的最佳概率</strong>。<strong>我们证明，随着平均扭曲的减小，这个概率必定增加(说明感知质量较差)</strong>。与通常的信念相反，这个结果对任何失真测度都是正确的，而不仅仅是PSNR或SSIM标准的问题。然而，正如我们在实验中所显示的那样，对于某些措施来说，(例如：VGG特征之间的距离)并不那么严重。我们还表明，生成对抗网络(Generative-adversarial-nets，GANs)为接近感知-失真界提供了一种原则性的方法。
+这构成了他们在低级视觉任务中观察到的成功的理论支持。基于我们的分析，我们提出了一种新的评估图像复原方法的方法，并使用它对最近的超分辨率算法进行了广泛的比较。</p>
+<h2 id="介绍">介绍</h2>
+<p>在过去的几十年中，图像复原算法(例如去噪,去模糊,超分辨率等)在视觉质量和失真指标如峰值信噪比(PSNR)和结构相似性指数(SSIM)方面都取得了不断的进步[45]。然而，近年来，重建精度的提高似乎并不总是伴随着视觉质量的提高。事实上，也许是反直觉的，在感知质量方面占优势的算法，往往在例如PSNR和SSIM等方面处于劣势[22、16、6、38、51、49]。这种现象通常被解释为现有失真测度的一个缺点[44]，它推动了对替代的"更感性"标准的不断搜索。
+在本文中，我们对感知质量和失真测度之间的表观权衡提供了一个补充的解释。<strong>具体来说，我们证明了感知-失真平面中存在一个区域，无论算法方案(见图1)如何，这个区域都是无法达到的。此外，该区域的边界是单调的。因此，在其附近，只有可能改善感知质量或失真，其中一个是以牺牲另一个为代价的</strong>。对于所有的失真测度，感知-失真权衡是存在的，而不仅仅是均方误差(
+MSE
+)或SSIM标准的问题。<strong>然而，对于某些措施而言，这种权衡要弱于其他措施。例如，我们通过实验发现最近提出的深度网络特征之间的距离[16、22]与感知质量之间的权衡弱于MSE。这与该度量比MSE更"感性"的观察一致</strong>。</p>
+<figure>
+<img src="/2025/03/02/The-Perception-Distortion-Tradeoff/The-Perception-Distortion-Tradeoff\1.png" alt="image">
+<figcaption aria-hidden="true">image</figcaption>
+</figure>
+<p>让我们来厘清失真与感知质量的区别。图像复原的目标是从退化图像<span class="math inline">\(y\)</span> (例如,噪声、模糊等)中估计出图像<span class="math inline">\(x\)</span>。失真是指重建图像<span class="math inline">\(x\)</span>与原始图像<span class="math inline">\(\hat{x}\)</span>之间的差异。感知质量，另一方面，仅指<span class="math inline">\(\hat{x}\)</span>的视觉质量，而不考虑它与<span class="math inline">\(x\)</span>的相似性。也就是说，它是<span class="math inline">\(\hat{x}\)</span>看起来像一个有效的自然图像的程度。一种越来越流行的测量感知质量的方法是使用real-vs.-fake用户研究，该研究考察了人类观察者判断<span class="math inline">\(\hat{x}\)</span>是真实的还是算法[15、53、39、8、6、14、54、11]
+(类似于生成对抗网络的思想[10])。因此，感知质量可以被定义为在这种鉴别实验中的最佳成功概率，正如我们所显示的那样，它<strong>正比于<span class="math inline">\(\hat{x}\)</span>的分布与自然图像的分布之间的距离</strong>。
+基于这些关于感知和失真的定义，我们遵循率失真理论的逻辑[4]。也就是说，我们寻求将最佳可达到的感知质量(对自然图像统计的最小偏差)的行为描述为最大允许平均失真的函数，对于任何估计量。该感知-失真函数(图1中的宽曲线)分离了感知-失真平面中的可达区域和不可达区域，从而描述了感知和失真之间的基本权衡。我们的分析表明，算法不可能同时非常准确，并产生愚弄观察者相信它们是真实的图像，不管用什么方法来量化精度。
+这种权衡意味着优化失真测度不仅是无效的，而且在视觉质量方面可能是有害的。这已经在[
+22、16、38、51、6]中得到了经验观察，但从未在理论上得到证实。
+从算法设计的角度，我们证明了生成对抗网络(GANs)提供了一种接近感知-失真边界的原则性方法。这为GANs在图像复原[22、38、35、51、36、15、55]上的优势提供了越来越多的实证支持。
+感知-失真权衡对低层视觉有重要影响。在某些应用中，重建精度是非常重要的。在另一些情况下，感知质量可能更受欢迎。同时实现这两个目标的不可能性呼吁了一种新的评估算法的方式：将它们放置在感知-失真平面上。我们使用这种新的方法对最近的超分辨率(
+SR )方法进行了广泛的比较，揭示了哪种SR方法最接近感知-失真界。</p>
+<h2 id="问题描述">问题描述</h2>
+<p>从统计学意义上讲，一幅自然图像<span class="math inline">\(x\)</span>可以看作是由自然图像<span class="math inline">\(p_X\)</span>的分布实现的。在图像复原中，我们通过某种条件分布<span class="math inline">\(p_{Y|X}\)</span>
+(对应于噪声、模糊、下采样等。)来观察一个关于<span class="math inline">\(x\)</span>的退化版本<span class="math inline">\(y\)</span>。给定<span class="math inline">\(y\)</span>，我们根据某种分布<span class="math inline">\(p_{\hat{X}|Y}\)</span>产生一个估计量<span class="math inline">\(\hat{x}\)</span>
+。这种描述很一般，因为它不限制估计量<span class="math inline">\(\hat{x}\)</span>是<span class="math inline">\(y\)</span>的确定性函数。该问题设置如图2所示。</p>
+<figure>
+<img src="/2025/03/02/The-Perception-Distortion-Tradeoff/The-Perception-Distortion-Tradeoff\2.png" alt="image">
+<figcaption aria-hidden="true">image</figcaption>
+</figure>
+<p>给定一个全参考相异性准则<span class="math inline">\(\Delta(x,\hat{x})\)</span>，估计量<span class="math inline">\(\hat{X}\)</span>的平均偏差由下式给出 <span class="math display">\[
+\mathbb{E}[\Delta(X, \hat{X})] \qquad (2)
+\]</span> 其中，期望关于联合分布<span class="math inline">\(p_{X,\hat{X}}\)</span>。该定义与在退化自然图像数据库中评估平均性能的通常做法一致。注意到一些失真措施，例如.
+SSIM，实际上是(越高越好)的相似性度量，但总是可以反转成为相异性度量。
+估计<span class="math inline">\(\hat{X}\)</span>的感知质量(如通过真实和虚假的人类观点研究进行量化)与它的重建图像的分布<span class="math inline">\(p_{\hat{X}}\)</span>和自然图像的分布<span class="math inline">\(p_X\)</span>之间的距离直接相关。因此，我们定义估计<span class="math inline">\(p_{\hat{X}}\)</span>的感知质量指标(越低越好)为
+<span class="math display">\[
+d\left(p_X, p_{\hat{X}}\right) \qquad (3)
+\]</span> 其中<span class="math inline">\(d(·,·)\)</span>是分布之间的一些散度，例如KL散度，TV距离，Wasserstein距离等。
+注意到，当算法的输出遵循自然图像的分布时,即<span class="math inline">\(p_{\hat{X}}=p_X\)</span>，可以获得尽可能好的感知质量。在这种情况下，通过查看重建图像，无法判断它们是由算法生成的。然而，并不是每一个具有这种性质的估计量都一定是准确的。事实上，我们可以通过随机绘制与原始"真实"图像无关的自然图像来达到完美的感知质量。在这种情况下，畸变将相当大。
+我们的目标是刻画(2)和(3)之间的权衡。</p>
+<h2 id="感知-失真平衡">感知-失真平衡</h2>
+<p>我们看到，低失真通常并不意味着良好的感知质量。那么，一个有趣的问题是：给定失真水平的估计器所能达到的最佳感知质量是什么？</p>
+<p><strong>定义1</strong> 信号恢复任务的感知-失真函数由下式给出</p>
+<p><span class="math display">\[
+P(D)=\min _{p_{\hat{X} \mid Y}} d\left(p_X, p_{\hat{X}}\right) \quad
+\text { s.t. } \quad \mathbb{E}[\Delta(X, \hat{X})] \leq D \qquad(9)
+\]</span></p>
+<p>其中<span class="math inline">\(\Delta(\cdot,\cdot)\)</span>是失真测度，<span class="math inline">\(d(\cdot,\cdot)\)</span>是分布之间的散度。
+简言之，<span class="math inline">\(P ( D )\)</span>是分布<span class="math inline">\(p_X\)</span>和<span class="math inline">\(p_{\hat{X}}\)</span>之间的最小偏差，它可以通过一个带有偏差<span class="math inline">\(D\)</span>的估计量来获得。为了直观地了解该函数的典型行为，考虑如下例子。</p>
+<p><strong>例1</strong> 假设<span class="math inline">\(Y=X+N\)</span>，其中<span class="math inline">\(X
+\sim \mathcal{N}(0,1)\)</span>和<span class="math inline">\(N \sim
+\mathcal{N}\left(0, \sigma_N\right)\)</span>是相互独立的.取"<span class="math inline">\(\Delta(\cdot,
+\cdot)\)</span>"为误差平方失真，<span class="math inline">\(d(\cdot,
+\cdot)\)</span>为KL散度。为了简单起见，我们把注意力限制在形如<span class="math inline">\(\hat{X}=a
+Y\)</span>的估计量上。在这种情况下，我们可以导出方程（9）的一个封闭形式的解。对图5中的若干噪声水平<span class="math inline">\(\sigma_N\)</span>作图。可以看出，最小可达<span class="math inline">\(d_{\mathrm{KL}}\left(p_X,
+p_{\hat{X}}\right)\)</span>随着最大允许失真(MSE)的增大而减小。此外，这种权衡是凸的，并且在更高的噪声水平<span class="math inline">\(\sigma_N\)</span>变得更加严重。</p>
+<figure>
+<img src="/2025/03/02/The-Perception-Distortion-Tradeoff/The-Perception-Distortion-Tradeoff\3.png" alt="image">
+<figcaption aria-hidden="true">image</figcaption>
+</figure>
+<p>在一般情况下，解析地求解(9)是不可能的。然而，事实证明，如图5所示的行为是典型的，正如我们接下来的(见附录中的证明)所示。</p>
+<p><strong>定理1</strong>
+(感知-失真权衡)。假设第3节的问题设定。如果式(3)的<span class="math inline">\(d(p,q)\)</span>在其第二个参数中为凸函数（<span class="math inline">\(d\left(p, \lambda q_1+(1-\lambda) q_2\right) \leq
+\lambda d\left(p, q_1\right)+(1-\lambda) d\left(p, q_2\right), \forall
+\lambda \in[0,1]\)</span>），则式(9)的感知-失真函数<span class="math inline">\(P(D)\)</span>为 1.单调不增 2.凸的</p>
+<p>注意到定理1对失真测度<span class="math inline">\(\Delta(·,·)\)</span>不做任何假设。这意味着对于任何失真测度，包括例如MSE、SSIM、VGG特征间的平方误差[
+16、22
+]等，都存在感知质量和失真之间的权衡。然而，这并不意味着所有的失真测度都具有相同的感知-失真函数。事实上，正如我们在Sec.6，对于捕获图像之间语义相似性的失真度量，这种权衡往往更不严重。</p>
+<p><span class="math inline">\(P(D)\)</span>的凸性意味着在低失真和高感知质量的极端情况下，这种权衡更加严重。这一点在考虑与真假图像区分能力相关的TV散度时尤为重要。(见Sec
+. 2.2)。由于<span class="math inline">\(P ( D
+)\)</span>在低失真的情况下更陡峭，因此对于失真已经很低的算法，任何小的失真改善都必然伴随着对鉴别器的欺骗能力的大幅度降低。同样，对于感知指数已经较低的算法，感知质量的任何微小提升，必然伴随着失真的大幅增加。让我们评论一下，<span class="math inline">\(d( p , q)\)</span>是凸的这一假设，并不是很有限制。
+例如，任意的<span class="math inline">\(f\)</span> -散度( e.g. KL , TV
+,Hellinger, <span class="math inline">\(\mathcal{X}^2\)</span>)以及Renyi散度，都满足这个假设[5、43]
+。在任何情况下，即使没有这个假设，函数<span class="math inline">\(P ( D
+)\)</span>也是单调非增的。</p>
+<h2 id="通过gan进行折衷">通过GAN进行折衷</h2>
+<p>存在一种系统的方法来设计逼近感知-失真曲线的估计器：使用GANs。具体来说，受[22、35、51、38、36、15]的启发，恢复问题可以通过修改GAN的生成器的损失来解决</p>
+<p><span class="math display">\[
+\ell_{\mathrm{gen}}=\ell_{\text {distortion }}+\lambda
+\ell_{\mathrm{adv}} \qquad(11)
+\]</span></p>
+<p>式中，<span class="math inline">\(\ell_{\text {distortion
+}}\)</span>原始图像与重建图像之间的失真，<span class="math inline">\(\ell_{\text {adv
+}}\)</span>为标准GAN对抗损失。众所周知，<span class="math inline">\(\ell_{\text {adv
+}}\)</span>正比于生成器和数据分布[10、1、34]
+(散度的类型取决于损失)之间的某种散度<span class="math inline">\(d\left(p_X,
+p_{\hat{X}}\right)\)</span>。因此，(11)实际上是对目标的近似。</p>
+<p><span class="math display">\[
+\ell_{\text {gen }} \approx \mathbb{E}[\Delta(x, \hat{x})]+\lambda
+d\left(p_X, p_{\hat{X}}\right)
+\]</span></p>
+<p>将<span class="math inline">\(\lambda\)</span>视为拉格朗日乘子，显然，对某个<span class="math inline">\(D\)</span>，最小化<span class="math inline">\(\ell_{\text {gen
+}}\)</span>等价于最小化(9)。改变<span class="math inline">\(\lambda\)</span>对应于改变<span class="math inline">\(D\)</span>，从而产生沿感知-失真函数的估计器。</p>
+<p>我们用这种方法来探索图4中<span class="math inline">\(\sigma=3\)</span>的数字去噪例子的感知失真权衡。我们训练了一个基于Wasserstein生成式对抗网络(WGAN)的去噪器[1、12]，其MSE失真损失为<span class="math inline">\(\ell_{\text {distortion }}\)</span>。这里，<span class="math inline">\(\ell_{\text {adv
+}}\)</span>正比于生成器和数据分布之间的Wasserstein距离<span class="math inline">\(d_W\left(p_X,
+p_{\hat{X}}\right)\)</span>。<strong>WGAN的一个有价值的性质是它的鉴别器(评论家)损失是<span class="math inline">\(d_W\left(p_X,
+p_{\hat{X}}\right)\)</span>的一个精确估计(直到一个常数因子)
+[1]。这使得我们可以很容易地计算训练好的去噪器的感知质量指标</strong>。我们得到具有几个<span class="math inline">\(\lambda
+\in[0,0.3]\)</span>值的估计量的集合。对于每个去噪器，我们通过最终的判别器损失来评估感知质量。如图6所示，连接感知-失真平面上的估计量的曲线是单调递减的。此外，它与逐渐从模糊和准确过渡到尖锐和不准确的估计有关。这条曲线显然与解析界
+(9)
+(用虚线表示)不重合。然而，它似乎与之相邻。<strong>这表现在WGAN曲线的最左端点非常接近理论界的最左端点，这与MMSE估计器相对应</strong>。WGAN训练细节和架构参见附录。</p>
+<p>除了MMSE估计器，图6还包括MAP估计器和一个从数据集(记为"随机抽签")中随机抽取图像的估计器。如上所述，通过WGAN判别器[1]的最终损失来评估这3个估计器的感知质量，训练来区分估计器的输出和数据集中的图像。<strong>值得注意的是，去噪WGAN估计器(D)实现了与MAP估计器相同的失真，但具有更好的感知质量。此外，它达到了与随机绘制估计器几乎相同的感知质量，但具有显著更低的失真</strong>。</p>
+<figure>
+<img src="/2025/03/02/The-Perception-Distortion-Tradeoff/The-Perception-Distortion-Tradeoff\4.png" alt="image">
+<figcaption aria-hidden="true">image</figcaption>
+</figure>
+<h2 id="结论">结论</h2>
+<p>我们证明并证明了失真和感知质量相互矛盾的反直觉现象。也就是说，算法的失真越小，它的分布就越必须偏离自然场景的统计数据。我们实证表明，许多流行的扭曲测量都存在这种权衡，包括那些被认为与人类感知密切相关的测量。因此，任何单独的失真测量都不适合评估图像恢复方法。我们的新方法利用一对
+NR 和 FR
+指标将每种算法置于感知失真平面上，从而有助于对图像恢复方法进行更翔实的比较。</p>
+]]></content>
+      <categories>
+        <category>论文泛读</category>
+      </categories>
+      <tags>
+        <tag>图像恢复</tag>
       </tags>
   </entry>
 </search>

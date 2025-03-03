@@ -28,7 +28,7 @@
 <meta property="og:description" content="Unsupervised Noise Adaptive Speech Enhancement by Discriminator-Constrained Optimal Transport（判别器约束最优传输的无监督噪声自适应语音增强） 会议：NeurIPS 时间：2021 摘要 本文提出了一种新的判别器约束的最优传输网络(DOTN)，该网络执行无监督的域自适应语音增强(SE)，这是语音">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-02-24T03:26:51.000Z">
-<meta property="article:modified_time" content="2025-02-26T09:28:34.967Z">
+<meta property="article:modified_time" content="2025-02-27T07:07:58.355Z">
 <meta property="article:author" content="宋嘉晨">
 <meta property="article:tag" content="最优化">
 <meta property="article:tag" content="最优运输">
@@ -226,7 +226,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-02-26 17:28:34" itemprop="dateModified" datetime="2025-02-26T17:28:34+08:00">2025-02-26</time>
+                <time title="修改时间：2025-02-27 15:07:58" itemprop="dateModified" datetime="2025-02-27T15:07:58+08:00">2025-02-27</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -337,7 +337,7 @@ Discriminator-Constrained Optimal Transport Network(DOTN)</h3>
 \mathbb{P}_{\mathcal{D}_2}\right)}\langle C, \gamma\rangle_F,
 \]</span></p>
 <p>其中<span class="math inline">\(\prod\left(\mathbb{P}_{\mathcal{D}_1},
-\mathbb{P}_{\mathcal{D}_2}\right)\)</span>表示边际<span class="math inline">\(\mathbb{P}_{\mathcal{D}_1}\)</span>和<span class="math inline">\(\mathbb{P}_{\mathcal{D}_1}\)</span>的联合分布空间，<span class="math inline">\(\cdot\langle\cdot,
+\mathbb{P}_{\mathcal{D}_2}\right)\)</span>表示边际为<span class="math inline">\(\mathbb{P}_{\mathcal{D}_1}\)</span>和<span class="math inline">\(\mathbb{P}_{\mathcal{D}_1}\)</span>的联合分布空间，<span class="math inline">\(\langle\cdot,
 \cdot\rangle_F\)</span>为Frobenius积，并且<span class="math inline">\(C\)</span>的项<span class="math inline">\(C_{i
 j}\)</span>表示第i个和第j个样本的置换成本。可以证明，这个问题的最小值是一个距离，并且当相应的代价是范数[25、26]时称为Wasserstein距离</p>
 <p><strong>我们提出的方法包括两部分：OT对齐和Wasserstein生成对抗网络（WGAN）训练
@@ -364,7 +364,7 @@ f 误导到方便的局部最小值。为了避免这种情况，我们采用了
 <p><span class="math display">\[
 \min _f \max _{h \in \mathcal{L}}\left\{\mathbb{E}_{y \sim
 \mathbb{P}_{\mathbf{Y}^s}}(h(y))-\mathbb{E}_{x \sim
-\mathbb{P}_{\mathbf{x}^t}}(h(f(x)))\right\}
+\mathbb{P}_{\mathbf{X}^t}}(h(f(x)))\right\}
 \]</span></p>
 <p>由Kantorovich-Rubinstein 对偶性 [25]，其中<span class="math inline">\(\mathcal{L}\)</span>是 1-Lipschitz
 函数的集合。在这种情况下，在最优判别器下，最小化相对于生成器参数的值函数，使分布<span class="math inline">\(\mathbb{P}_{\mathbf{Y}^s}\)</span>和<span class="math inline">\(\mathbb{P}_{f\left(\mathbf{X}^t\right)}\)</span>之间的
@@ -381,7 +381,7 @@ j}\left(\alpha\left\|\mathbf{x}_i^s-\mathbf{x}_j^t\right\|^2+\beta\left\|\mathbf
 \qquad (4)
 \]</span></p>
 <p>其中<span class="math inline">\(\alpha,
-\beta&gt;0\)</span>是平衡所选择的参数。值得注意的是，第一个术语强调了源域的知识在训练过程中不会被遗忘，这在[31、41、42]中都有所体现。没有这种重视，就不能很好地保持源领域知识，从而整体性能可能会下降。在SE实验中也观察到了这一现象。第二项是用于域对齐的。为了说明一些直觉，考虑理想情况其中Eq.
+\beta&gt;0\)</span>是平衡所选择的参数。值得注意的是，第一项强调了源域的知识在训练过程中不会被遗忘，这在[31、41、42]中都有所体现。没有这种重视，就不能很好地保持源领域知识，从而整体性能可能会下降。在SE实验中也观察到了这一现象。第二项是用于域对齐的。为了说明一些直觉，考虑理想情况其中Eq.
 (4)完全极小化为零，从而导致</p>
 <p><span class="math display">\[
 \left\|\mathbf{x}_i^s-\mathbf{x}_j^t\right\|^2 \equiv 0 \text { and
@@ -404,13 +404,13 @@ h\left(f\left(\mathbf{x}_i^t\right)\right)\)</span>，其中<span class="math in
     \textbf{需要：}
 \mathbf{x}^s，源域输入。\mathbf{y}^s，源域标签。\mathbf{x}^t，目标域输入。c，裁剪参数。m，批量大小。\\
     \qquad n_f, n_h, n_s：
-分别是每次生成器训练、判别器训练和源域训练的OT迭代次数。n，迭代次数。\\
+分别是每次生成器训练、判别器训练和源域训练的\text{OT}迭代次数。n，迭代次数。\\
     \textbf{需要：}
 \theta_f，估计器f的初始参数。\theta_h，判别器h的初始参数 \\
     \quad \textbf{for} \, \, 每批源样本 \left(\mathbf{x}^s,
 \mathbf{y}^s\right)和目标样本\left(\mathbf{y}^t\right) \, \,
 \textbf{do}\\
-    \qquad \quad 固定\theta_f，用OT求解方程（4）中的\gamma\\
+    \qquad \quad 固定\theta_f，用\text{OT}求解方程（4）中的\gamma\\
     \qquad \quad 固定 \gamma，\theta_f \leftarrow
 \operatorname{Adam}\left(\nabla_{\theta_f} \mathcal{L}_2, \theta_f,
 \theta_h\right) \text {. } \\
@@ -460,7 +460,10 @@ h\left(f\left(\mathbf{x}_i^t\right)\right)\)</span>，其中<span class="math in
     <a href="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/" rel="prev" title="两个曲线之间的距离">
       <i class="fa fa-chevron-left"></i> 两个曲线之间的距离
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2025/03/02/The-Perception-Distortion-Tradeoff/" rel="next" title="The_Perception-Distortion_Tradeoff">
+      The_Perception-Distortion_Tradeoff <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -541,7 +544,7 @@ Discriminator-Constrained Optimal Transport Network(DOTN)</span></a></li><li cla
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-count">8</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -554,7 +557,7 @@ Discriminator-Constrained Optimal Transport Network(DOTN)</span></a></li><li cla
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -591,13 +594,13 @@ Discriminator-Constrained Optimal Transport Network(DOTN)</span></a></li><li cla
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">50k</span>
+    <span title="站点总字数">55k</span>
 </div>
 
 <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共50k字</span>
+  <span class="post-count">博客全站共55k字</span>
   <span class="post-meta-divider">|</span>
   本站总访问量<span id="busuanzi_value_site_pv"></span>次
   <span class="post-meta-divider">|</span>
@@ -608,7 +611,7 @@ Discriminator-Constrained Optimal Transport Network(DOTN)</span></a></li><li cla
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共50k字</span>
+  <span class="post-count">博客全站共55k字</span>
 </div>
 
 
