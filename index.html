@@ -213,7 +213,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2025-03-03 11:18:11 / 修改时间：12:05:14" itemprop="dateCreated datePublished" datetime="2025-03-03T11:18:11+08:00">2025-03-03</time>
+              <time title="创建时间：2025-03-03 11:18:11 / 修改时间：15:39:41" itemprop="dateCreated datePublished" datetime="2025-03-03T11:18:11+08:00">2025-03-03</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -252,7 +252,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.9k</span>
+              <span>6.4k</span>
             </span>
 
         </div>
@@ -267,55 +267,204 @@
           <span id="more"></span>
 <h2 id="变分法和梯度下降流">变分法和梯度下降流</h2>
 <h3 id="变分原理">变分原理</h3>
-<p>所希望的解往往是由最小化某一能量泛函所确定的，在一维情况下，这一泛函可能有如下形式：
-<span class="math display">\[
+<p>所希望的解往往是由最小化某一能量泛函所确定的，在一维情况下，这一泛函可能有如下形式：</p>
+<p><span class="math display">\[
 E(u)=\int_{x_0}^{x_1}F(x,u,u_x)\,dx  \qquad (1)
-\]</span> <span class="math inline">\(E(u)\)</span>的极值对应于变分<span class="math inline">\(\frac{\partial E}{\partial
-u}=0\)</span>所对应的函数。为了求出一阶变分<span class="math inline">\(E&#39;\)</span>，考虑对最优解<span class="math inline">\(u(x)\)</span>作一微扰，得<span class="math inline">\(u(x)+v(x)\)</span>，经推导有 <span class="math display">\[
+\]</span></p>
+<p><span class="math inline">\(E(u)\)</span>的极值对应于变分<span class="math inline">\(\frac{\partial E}{\partial
+u}=0\)</span>所对应的函数。为了求出一阶变分<span class="math inline">\(E&#39;\)</span>，考虑对最优解<span class="math inline">\(u(x)\)</span>作一微扰，得<span class="math inline">\(u(x)+v(x)\)</span>，经推导有</p>
+<p><span class="math display">\[
 E(u+v)=E(u)+\int_{x_0}^{x_1}[v\frac{\partial F}{\partial
 u}-v\frac{d}{dx}(\frac{\partial F}{\partial u&#39;})] \, dx \qquad(2)
-\]</span> 可见，当<span class="math inline">\(E(u)\)</span>达到极值，对<span class="math inline">\(u(x)\)</span>的任一足够小微扰<span class="math inline">\(v(x),E\)</span>的值不变，故有 <span class="math display">\[
+\]</span></p>
+<p>可见，当<span class="math inline">\(E(u)\)</span>达到极值，对<span class="math inline">\(u(x)\)</span>的任一足够小微扰<span class="math inline">\(v(x),E\)</span>的值不变，故有</p>
+<p><span class="math display">\[
 \frac{\partial F}{\partial u}-\frac{d}{dx}(\frac{\partial F}{\partial
 u&#39;})=0
-\]</span> 此式称为变分问题式(1)的Euler方程。 二维情况： <span class="math display">\[
+\]</span></p>
+<p>此式称为变分问题式(1)的Euler方程。 二维情况：</p>
+<p><span class="math display">\[
 E(u)=\iint_\Omega F(x,y,u,u_x,u_y)dxdy
-\]</span> 对应的Euler方程为 <span class="math display">\[
+\]</span></p>
+<p>对应的Euler方程为</p>
+<p><span class="math display">\[
 \frac{\partial F}{\partial u}-\frac{d}{dx}(\frac{\partial F}{\partial
 u_x})-\frac{d}{dy}(\frac{\partial F}{\partial u_y})=0
-\]</span> 求解能量泛函极值问题归结为求解相应的Euler方程。</p>
+\]</span></p>
+<p>求解能量泛函极值问题归结为求解相应的Euler方程。</p>
 <h3 id="梯度下降流">梯度下降流</h3>
 <p>假定我们要求的解可随时间变化，即它可以表示为<span class="math inline">\(u(\cdot,t)\)</span>，并且这种随时间的变化总是使<span class="math inline">\(E(u(\cdot,t))\)</span>减小，那么<span class="math inline">\(u(\cdot,t)\)</span>应该怎样变化才能满足这一要求？以一维问题为例，令式（2）中的微扰项<span class="math inline">\(v(\cdot)\)</span>是由<span class="math inline">\(u(\cdot,t)\)</span>从<span class="math inline">\(t\)</span>到<span class="math inline">\(t+\Delta
-t\)</span>所产生的改变量，即 <span class="math display">\[
+t\)</span>所产生的改变量，即</p>
+<p><span class="math display">\[
 v=\frac{\partial u}{\partial t}\Delta t
-\]</span> 式（2）就可改写为 <span class="math display">\[
+\]</span></p>
+<p>式（2）就可改写为</p>
+<p><span class="math display">\[
 E(\cdot,t+\Delta t)=E(\cdot ,t)+\Delta t \int^{x_1}_{x_0}\frac{\partial
 u}{\partial t}[\frac{\partial F}{\partial u}-\frac{d}{dx}(\frac{\partial
 F}{\partial u&#39;})]\, dx
-\]</span> 于是只要令 <span class="math display">\[
+\]</span></p>
+<p>于是只要令</p>
+<p><span class="math display">\[
 \frac{\partial u}{\partial t}=-[\frac{\partial F}{\partial
 u}-\frac{d}{dx}(\frac{\partial F}{\partial
 u&#39;})]=\frac{d}{dx}(\frac{\partial F}{\partial
 u&#39;})-\frac{\partial F}{\partial u} \qquad(3)
-\]</span> 就可以使<span class="math inline">\(E(u(\cdot,t))\)</span>不断减小，式（3）称为变分问题式（1）所对应的梯度下降流</p>
+\]</span></p>
+<p>就可以使<span class="math inline">\(E(u(\cdot,t))\)</span>不断减小，式（3）称为变分问题式（1）所对应的梯度下降流</p>
+<h2 id="曲线演化问题">曲线演化问题</h2>
+<h3 id="曲线几何演化的一般方程式">曲线几何演化的一般方程式</h3>
+<p>曲线几何演化的一般方程式 <span class="math display">\[
+\frac{\partial C(p, t)}{\partial t}=\boldsymbol{V}=\alpha(p, t)
+\boldsymbol{T}+\beta(p, t) \boldsymbol{N}, \quad C(p, 0)=C_0(p) \quad(4)
+\]</span> 式中<span class="math inline">\(\alpha\)</span>和<span class="math inline">\(\beta\)</span>分别为切向速率和法向速率。</p>
+<p>曲线演化的一般方程式可以简化为 <span class="math display">\[
+\frac{\partial C}{\partial t}=\beta \boldsymbol{N} \qquad(5)
+\]</span></p>
+<h2 id="水平集方法">水平集方法</h2>
+<h3 id="基本概念">基本概念</h3>
+<p>一条平面封闭曲线可以采用隐式表达方法，即将它定义为一个二维函数<span class="math inline">\(u(x,y)\)</span>的水平集 <span class="math display">\[
+C=\lbrace (x,y),u(x,y)=c \rbrace
+\]</span></p>
+<p>这样，<span class="math inline">\(C\)</span>有某种变化，则我们可以将它归结为是由函数<span class="math inline">\(u(x,y)\)</span>发生了某种相应的变化所引起的。随时间变化的封闭曲线，可表达为随时间变化的二维函数<span class="math inline">\(u(x,y)\)</span>水平集，即 <span class="math display">\[
+C(t):=\lbrace (x,y),u(x,y,t)=c \rbrace
+\]</span></p>
+<p>当曲线<span class="math inline">\(C(t)\)</span>按（4）式演化时，嵌入函数<span class="math inline">\(u(x,y,t)\)</span>应如何演化呢？对上式中的函数<span class="math inline">\(u\)</span>求全导数<span class="math inline">\(\frac{du}{dt}\)</span>，由复合函数求导的链式规则可得
+<span class="math display">\[
+\frac{du}{dt}=\frac{\partial u}{\partial t}+\nabla u \cdot
+\frac{\partial(x,y)}{\partial t}=0
+\]</span></p>
+<p>考虑到式（4），<span class="math inline">\(\frac{\partial(x,y)}{\partial t}=\frac{\partial
+C}{\partial t}=\boldsymbol{V}\)</span>,于是得 <span class="math display">\[
+\frac{\partial u}{\partial t}=-\nabla u \cdot \boldsymbol{V}=-|\nabla u|
+\frac{\nabla u}{|\nabla u|} \cdot \boldsymbol{V}=|\nabla u|
+\boldsymbol{N} \cdot \boldsymbol{V}=\beta|\nabla u|  \qquad(6)
+\]</span> 式中，<span class="math inline">\(\beta=\boldsymbol{v}\cdot
+\boldsymbol{N}\)</span>是运动速度的法向分量。式（6）就是曲线演化水平集方法的基本方程式。</p>
+<p>式（6）的推导与常数<span class="math inline">\(c\)</span>的取值无关，为了方便，常取<span class="math inline">\(c=0\)</span>，即我们关心的曲线是嵌入函数的零水平集。</p>
+<p>至此，我们看到，对于封闭曲线<span class="math inline">\(C\)</span>在给定的初值<span class="math inline">\(C_0\)</span>条件下，按式（5）演化问题，等价于嵌入函数<span class="math inline">\(u(x,y)\)</span>在给定初值<span class="math inline">\(u_0(x,y)\)</span>条件下按（6）的演化，也就是说，只要在任何时刻<span class="math inline">\(t\)</span>取出<span class="math inline">\(u(x,y,t)=0\)</span>的水平集就可以确定当前曲线<span class="math inline">\(C(t)\)</span></p>
+<h3 id="水平集方法的优点">水平集方法的优点</h3>
+<p>第一，水平集方法的PDE是直接在固定坐标系<span class="math inline">\((x,y)\)</span>中给出的，因而是一种无参数的方法</p>
+<p>第二，可采用迎风方案作数值实现，以得到粘滞解</p>
+<p>第三，曲线在演化过程中可能发生拓扑变化，例如，一条封闭曲线演变为两条封闭曲线。如果采用标注质点法，则要求随时监测这种可能的变化。但是对于水平集方法而言，<span class="math inline">\(u(x,y,t)\)</span>只有数值上的变化而没有拓扑上的变化。曲线在拓扑上的任何变化，都将自动嵌入到<span class="math inline">\(u(x,y,t)\)</span>的数值变化之中。因此没有跟踪曲线拓扑变化和修改实现方案的必要。</p>
+<h2 id="变分水平集方法">变分水平集方法</h2>
+<h3 id="基本概念-1">基本概念</h3>
+<p>在将曲线演化应用于图像处理问题时，曲线运动方程往往来自于最小化闭合曲线<span class="math inline">\(C\)</span>的某一“能量”泛函。例如，测地线活动轮廓模型就是最小化如下泛函：
+<span class="math display">\[
+E(C)=\oint_C g(C) \, ds \qquad(7)
+\]</span></p>
+<p>式中<span class="math inline">\(g(x,y)ds\)</span>是“加权弧长微元”。可以证明，式（7）的梯度下降流为
+<span class="math display">\[
+\frac{\partial C}{\partial t}=[g(C)\kappa-\nabla g \cdot
+\boldsymbol{N}]\boldsymbol{N} \qquad (8)
+\]</span> 采用前面讨论的水平集方法，则对应的关于嵌入函数的PDE为 <span class="math display">\[
+\begin{aligned}
+\frac{\partial u}{\partial t} &amp; =(g \kappa-\nabla g \cdot
+\boldsymbol{N})|\nabla u| \\
+&amp; =|\nabla u| \operatorname{div}\left(g \frac{\nabla u}{|\nabla
+u|}\right)
+\end{aligned} \qquad(9)
+\]</span></p>
+<p>针对这类由曲线的能量泛函最小化所导出的曲线演化问题，有一种新的水平集方法，称之为变分水平集方法。</p>
+<p>首先，利用如下定义的特殊函数（Heaviside函数）： <span class="math display">\[
+H(z)= \begin{cases}1, &amp; z \geqslant 0 \\ 0, &amp; z&lt;0\end{cases}
+\]</span></p>
+<p>可将关于沿<span class="math inline">\(C\)</span>的环路积分式（7）在形式上改写为面积分
+<span class="math display">\[
+\oint_C g(C) \mathrm{d} s=\iint_{\Omega} g(x, y)|\nabla H(u)| \mathrm{d}
+x \mathrm{~d} y
+\]</span></p>
+<p>由于 <span class="math display">\[
+\nabla H(u)=\delta(u) \nabla u, \quad \delta(z)=\frac{\mathrm{d}
+H(z)}{\mathrm{d} z}
+\]</span> 这样一来，式（7）便可改写为嵌入函数<span class="math inline">\(u\)</span>的泛函 <span class="math display">\[
+E(u)=\iint_\delta g(x, y) \delta(u)|\nabla u| \mathrm{d} x \mathrm{~d} y
+\qquad(7&#39;)
+\]</span> 利用变分法，可以得到上式的梯度下降流 <span class="math display">\[
+\frac{\partial u}{\partial t}=\delta(u) \operatorname{div}\left(g
+\frac{\nabla u}{|\nabla u|}\right) \qquad(10)
+\]</span> 为了使它成为可实际计算的PDE，式中的<span class="math inline">\(\delta\)</span>函数需用正则化的<span class="math inline">\(\delta_{\epsilon}\)</span>作近似，即将（10）改写为
+<span class="math display">\[
+\frac{\partial u}{\partial t}=\delta_{\varepsilon}(u)
+\operatorname{div}\left(g \frac{\nabla u}{|\nabla u|}\right) \qquad(11)
+\]</span> 式中 <span class="math display">\[
+\delta_{\varepsilon}(z):=\frac{\mathrm{d}}{\mathrm{~d} z} H_\epsilon(z)
+\]</span> 这里，<span class="math inline">\(H_{\epsilon}(z)\)</span>称为正则化的Heaviside函数。原则上它可以是任意满足如下条件：
+<span class="math display">\[
+H_{\varepsilon}(z) \xrightarrow{\varepsilon \rightarrow 0} H(z)
+\]</span> 的函数。</p>
+<p>从表面上看，PDE式（9）与（7）似乎差别不大，只是用<span class="math inline">\(\delta_{\epsilon}(u)\)</span>取代了<span class="math inline">\(|\nabla
+u|\)</span>。但是，两者在数学上有本质的差别。式（7）属于双曲型，式（9）属于抛物型，稳定性较前者高。因而在数值实现时，可用较大的时间步长，并且常常无需对嵌入函数进行重新初始化。</p>
+<p>但是，这并不意味变分水平集方法就可取代水平集。因为能够采用变分水平集方法来求解曲线演化问题的前提是：该问题是来自最小化曲线<span class="math inline">\(C\)</span>的“能量”泛函<span class="math inline">\(E(u)\)</span>。这时通过引入嵌入函数<span class="math inline">\(u\)</span>和利用Heaviside函数，将<span class="math inline">\(E(C)\)</span>改造成<span class="math inline">\(E(u)\)</span>，通过变分法得到关于<span class="math inline">\(u\)</span>的PDE。而水平集方法是：先利用变分法最小化<span class="math inline">\(C\)</span>的“能量”泛函，得到关于<span class="math inline">\(C\)</span>的运动方程后，再引入嵌入函数，得到关于<span class="math inline">\(u\)</span>的PDE。问题在于，并不是所有的曲线和曲面的演化问题都是由“能量”泛函最小化而导出的。水平集方法是较变分水平集方法适用面更广的方法。</p>
 <h2 id="曲线演化的线性热流">曲线演化的线性热流</h2>
 <h3 id="线性几何热流">线性几何热流</h3>
-<p>考虑一条简单封闭平面曲线 <span class="math display">\[
+<p>考虑一条简单封闭平面曲线</p>
+<p><span class="math display">\[
 C_0(p)=(x_0(p),y_0(p))
-\]</span> 为初始条件，按照热方程演化 <span class="math display">\[
+\]</span></p>
+<p>为初始条件，按照热方程演化</p>
+<p><span class="math display">\[
 \frac{\partial C}{\partial t}=\frac{\partial^2 C}{\partial p^2}
-\qquad(4)
-\]</span> 得到曲线族 <span class="math display">\[
+\qquad(12)
+\]</span></p>
+<p>得到曲线族</p>
+<p><span class="math display">\[
 C(p,t)=(x(p,t),y(p,t)), \qquad C(p,0)=C_0(p)
-\]</span> 用Fourier方法求解得到 <span class="math display">\[
+\]</span></p>
+<p>用Fourier方法求解得到</p>
+<p><span class="math display">\[
 x(p,t)=x_0(p)*g(p,t),\qquad y(p,t)=y_0(p)*g(p,t)
 \\g(p,t)=\frac{1}{\sqrt{4\pi t}}\exp[\frac{-p^2}{4t}]
-\]</span>
-由此可见，曲线按式(4)做线性热运动，等价于对曲线上的每一点坐标<span class="math inline">\((x,y)\)</span>同时作Gaussian滤波。并且Gaussian滤波器的标准偏离<span class="math inline">\(\sigma\)</span>与演化时间<span class="math inline">\(t\)</span>有以下对应关系： <span class="math display">\[
+\]</span></p>
+<p>由此可见，曲线按式(12)做线性热运动，等价于对曲线上的每一点坐标<span class="math inline">\((x,y)\)</span>同时作Gaussian滤波。并且Gaussian滤波器的标准偏离<span class="math inline">\(\sigma\)</span>与演化时间<span class="math inline">\(t\)</span>有以下对应关系：</p>
+<p><span class="math display">\[
 \sigma=\sqrt{2}t
 \]</span></p>
 <h2 id="非线性几何不变流">非线性几何不变流</h2>
 <h3 id="euclidean不变流">Euclidean不变流</h3>
-<p>线性热流式（4）提供了一个很好的平面曲线的多尺度表达，但它存在一个严重的不足之处，它不能保证一个简单的（不自相交的）闭合曲线在演化过程中始终保持为一条简单封闭曲线。</p>
+<p>线性热流式（12）提供了一个很好的平面曲线的多尺度表达，但它存在一个严重的不足之处，它不能保证一个简单的（不自相交的）闭合曲线在演化过程中始终保持为一条简单封闭曲线。</p>
+<p>如果用曲线的Euclidean弧长<span class="math inline">\(s\)</span>取代参数<span class="math inline">\(p\)</span>，则式（12）变为</p>
+<p><span class="math display">\[
+\frac{\partial C}{\partial t}=\frac{\partial^2 C}{\partial s^2}
+\qquad(13)
+\]</span></p>
+<p>考虑到<span class="math inline">\(C_s=T,C_{ss}=T_s=\kappa
+N\)</span>，故式（13）可改写为</p>
+<p><span class="math display">\[
+\frac{\partial C}{\partial t}=\kappa N \qquad(14)
+\]</span> 可见Euclidean几何不变流也就是（平均）曲率运动（MCM）方程。</p>
+<p>如果令<span class="math inline">\(E(C)=\oint_C
+g(C)\,ds\)</span>中的函数<span class="math inline">\(g(x,y)=1\)</span>，即能量泛函简化为 <span class="math display">\[
+E(C)=\oint_C ds \qquad(15)
+\]</span> 那么，最小化这一泛函的意义就是使闭合曲线<span class="math inline">\(C\)</span>的全弧长缩短。这时对应的梯度下降流式（8）中，令<span class="math inline">\(g=1,\nabla
+g=0\)</span>，它将简化为式（14）。据此，也可将式（14）称为弧长缩短流。</p>
+<p>可以从三个不同的出发点得到同一个曲线运动方程：
+（1）集合论的形态学算子——中值滤波，在原盘结构元素半径<span class="math inline">\(r \to 0\)</span>的极限
+（2）Euclidean不变几何流——以Euclidean弧长为参数的热流
+（3）弧长缩短流——最小化式（15）的梯度下降流。</p>
+<h3 id="仿射不变几何流">仿射不变几何流</h3>
+<p>另一个有重要意义的曲线演化PDE是 <span class="math display">\[
+\frac{\partial C}{\partial t}=\frac{\partial^2 C}{\partial v^2}
+\qquad(16)
+\]</span> 式中<span class="math inline">\(v\)</span>表示仿射弧长。有
+<span class="math display">\[
+C_{v v}=\kappa^{1 / 3} \boldsymbol{N}+f\left(\kappa, \kappa_v\right)
+\boldsymbol{T} \\
+f\left(\kappa, \kappa_v\right)=\frac{\mathrm{d}^2 s}{\mathrm{~d}
+v^2}=\left(\kappa^{-1 / 3}\right)_v
+\]</span>
+考虑到运动速度的切线分量不影响曲线的几何形变，所以式（16）在几何上等价于
+<span class="math display">\[
+\frac{\partial C}{\partial t}=\kappa^{1 / 3} N \qquad(17)
+\]</span>
+此式称为仿射不变几何流。它将任何简单的非凸闭合形变为全凸的闭合曲线，在演化过程中，曲线逐渐平滑，不产生奇异性，也不发生自相交，因而它也生成一个尺度空间，称为仿射形态学尺度空间（AMSS）。</p>
+<p>对（17）采用水平集方法，可以得到关于嵌入函数<span class="math inline">\(u\)</span>的PDE为 <span class="math display">\[
+\frac{\partial u}{\partial t}=\kappa^{1 / 3}|\nabla u|=\left(u_{x x}
+u_y^2-2 u_x u_y u_{x y}+u_{y y} u_x^2\right)^{1 / 3}
+\]</span>
+由于在此PDE中不含有分式，因而不会像MCM方程那样出现“被零除”的问题。</p>
+<h2 id="测地线活动轮廓模型">测地线活动轮廓模型</h2>
+<h3 id="活动轮廓模型的基本概念">活动轮廓模型的基本概念</h3>
 
       
     </div>
@@ -1447,13 +1596,13 @@ PINN的能力。总结了求解不同PDE的有效神经网络结构的特点，�
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">57k</span>
+    <span title="站点总字数">62k</span>
 </div>
 
 <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共57k字</span>
+  <span class="post-count">博客全站共62k字</span>
   <span class="post-meta-divider">|</span>
   本站总访问量<span id="busuanzi_value_site_pv"></span>次
   <span class="post-meta-divider">|</span>
@@ -1464,7 +1613,7 @@ PINN的能力。总结了求解不同PDE的有效神经网络结构的特点，�
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共57k字</span>
+  <span class="post-count">博客全站共62k字</span>
 </div>
 
 
