@@ -31,7 +31,7 @@
 <meta property="og:image" content="http://example.com/2025/02/09/OT1/2.jpg">
 <meta property="og:image" content="http://example.com/2025/02/09/OT1/3.jpg">
 <meta property="article:published_time" content="2025-02-09T09:57:49.000Z">
-<meta property="article:modified_time" content="2025-02-17T15:01:14.360Z">
+<meta property="article:modified_time" content="2025-03-10T09:26:35.862Z">
 <meta property="article:author" content="宋嘉晨">
 <meta property="article:tag" content="最优化">
 <meta property="article:tag" content="最优运输">
@@ -229,7 +229,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-02-17 23:01:14" itemprop="dateModified" datetime="2025-02-17T23:01:14+08:00">2025-02-17</time>
+                <time title="修改时间：2025-03-10 17:26:35" itemprop="dateModified" datetime="2025-03-10T17:26:35+08:00">2025-03-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -285,7 +285,9 @@
 如下图所示，我们想将左边红色区域的沙堆搬运到右边，形成右边绿色的沙堆的形状。我们想要找到消耗最少的搬运方式。
 <img src="/2025/02/09/OT1/1.jpg" alt="image">
 一句话来概括，就是<strong>如何用最少的代价将一个质量分布转为另一个质量分布。</strong>
-<span id="more"></span> ## 质量分布 质量分布其实就是两个测度空间<span class="math inline">\((X,\mu),(Y,\nu)\)</span>。一般情况下，质量不会凭空产生，所以我们会要求这两个分布的“总质量”是一样的，即<span class="math inline">\(\int_x d\mu=\int_Yd\nu\)</span>。
+<span id="more"></span></p>
+<h2 id="质量分布">质量分布</h2>
+<p>质量分布其实就是两个测度空间<span class="math inline">\((X,\mu),(Y,\nu)\)</span>。一般情况下，质量不会凭空产生，所以我们会要求这两个分布的“总质量”是一样的，即<span class="math inline">\(\int_x d\mu=\int_Yd\nu\)</span>。
 问题有了考虑的对象，我们还可以定义成本函数<span class="math inline">\(c(x,y):X \times Y \to \mathbb
 R^+\)</span>，一般是有界的，来衡量将质量从点<span class="math inline">\(x\)</span>运到点<span class="math inline">\(y\)</span>的成本。那么如何去进行移动？主要有两个角度去考虑，分别是Monge问题和Kantorovich问题。</p>
 <h2 id="monge问题">Monge问题</h2>
@@ -415,7 +417,7 @@ GAN就是将W-1距离作为损失函数，解决了GAN的许多问题，比如�
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E6%9C%80%E4%BC%98%E4%BC%A0%E8%BE%93"><span class="nav-text">什么是最优传输？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#monge%E9%97%AE%E9%A2%98"><span class="nav-text">Monge问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kantorovich%E9%97%AE%E9%A2%98"><span class="nav-text">Kantorovich问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E5%B8%83%E4%B9%8B%E9%97%B4%E7%9A%84%E5%BA%A6%E9%87%8F-wasserstein%E8%B7%9D%E7%A6%BB"><span class="nav-text">分布之间的度量-Wasserstein距离</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E6%9C%80%E4%BC%98%E4%BC%A0%E8%BE%93"><span class="nav-text">什么是最优传输？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B4%A8%E9%87%8F%E5%88%86%E5%B8%83"><span class="nav-text">质量分布</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#monge%E9%97%AE%E9%A2%98"><span class="nav-text">Monge问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kantorovich%E9%97%AE%E9%A2%98"><span class="nav-text">Kantorovich问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E5%B8%83%E4%B9%8B%E9%97%B4%E7%9A%84%E5%BA%A6%E9%87%8F-wasserstein%E8%B7%9D%E7%A6%BB"><span class="nav-text">分布之间的度量-Wasserstein距离</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -431,7 +433,7 @@ GAN就是将W-1距离作为损失函数，解决了GAN的许多问题，比如�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-count">12</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -444,7 +446,7 @@ GAN就是将W-1距离作为损失函数，解决了GAN的许多问题，比如�
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -481,13 +483,13 @@ GAN就是将W-1距离作为损失函数，解决了GAN的许多问题，比如�
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">62k</span>
+    <span title="站点总字数">106k</span>
 </div>
 
 <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共62k字</span>
+  <span class="post-count">博客全站共106k字</span>
   <span class="post-meta-divider">|</span>
   本站总访问量<span id="busuanzi_value_site_pv"></span>次
   <span class="post-meta-divider">|</span>
@@ -498,7 +500,7 @@ GAN就是将W-1距离作为损失函数，解决了GAN的许多问题，比如�
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共62k字</span>
+  <span class="post-count">博客全站共106k字</span>
 </div>
 
 

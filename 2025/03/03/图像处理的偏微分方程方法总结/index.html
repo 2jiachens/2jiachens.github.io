@@ -27,11 +27,16 @@
 <meta property="og:site_name" content="我的博客">
 <meta property="og:description" content="变分法和梯度下降流 变分原理 所希望的解往往是由最小化某一能量泛函所确定的，在一维情况下，这一泛函可能有如下形式： \[ E(u)&#x3D;\int_{x_0}^{x_1}F(x,u,u_x)\,dx  \qquad (1) \] \(E(u)\)的极值对应于变分\(\frac{\partial E}{\partial u}&#x3D;0\)所对应的函数。为了求出一阶变分\(E&#39;\)，考虑">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2025/03/03/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E7%9A%84%E5%81%8F%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/1.png">
+<meta property="og:image" content="http://example.com/2025/03/03/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E7%9A%84%E5%81%8F%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/2.png">
+<meta property="og:image" content="http://example.com/2025/03/03/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E7%9A%84%E5%81%8F%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/3.png">
+<meta property="og:image" content="http://example.com/2025/03/03/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E7%9A%84%E5%81%8F%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/4.png">
 <meta property="article:published_time" content="2025-03-03T03:18:11.000Z">
-<meta property="article:modified_time" content="2025-03-03T07:39:41.559Z">
+<meta property="article:modified_time" content="2025-03-05T07:39:20.374Z">
 <meta property="article:author" content="宋嘉晨">
 <meta property="article:tag" content="图像处理">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2025/03/03/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E7%9A%84%E5%81%8F%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/1.png">
 
 <link rel="canonical" href="http://example.com/2025/03/03/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E7%9A%84%E5%81%8F%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/">
 
@@ -216,10 +221,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2025-03-03 11:18:11 / 修改时间：15:39:41" itemprop="dateCreated datePublished" datetime="2025-03-03T11:18:11+08:00">2025-03-03</time>
+              <time title="创建时间：2025-03-03 11:18:11" itemprop="dateCreated datePublished" datetime="2025-03-03T11:18:11+08:00">2025-03-03</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-05 15:39:20" itemprop="dateModified" datetime="2025-03-05T15:39:20+08:00">2025-03-05</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -257,7 +268,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>6.4k</span>
+              <span>12k</span>
             </span>
 
         </div>
@@ -316,7 +327,19 @@ u}-\frac{d}{dx}(\frac{\partial F}{\partial
 u&#39;})]=\frac{d}{dx}(\frac{\partial F}{\partial
 u&#39;})-\frac{\partial F}{\partial u} \qquad(3)
 \]</span></p>
-<p>就可以使<span class="math inline">\(E(u(\cdot,t))\)</span>不断减小，式（3）称为变分问题式（1）所对应的梯度下降流</p>
+<p>就可以使<span class="math inline">\(E(u(\cdot,t))\)</span>不断减小，式（3）称为变分问题式（1）所对应的梯度下降流。</p>
+<p>这样一来，我们可以从某一适当选定的初始函数<span class="math inline">\(u_0\)</span>开始，根据式（3）作迭代计算，直到<span class="math inline">\(u\)</span>达到稳态解为止。这时 <span class="math display">\[
+\frac{\partial u}{\partial t}=0 \Rightarrow \frac{\partial F}{\partial
+u}-\frac{\mathrm{d}}{\mathrm{~d} x}\left(\frac{\partial F}{\partial
+u^{\prime}}\right)=0
+\]</span> 可见梯度下降流式（3）的稳态解也就是Euler方程式的解。</p>
+<p>对于二维变分问题，类似推导，可得梯度下降流 <span class="math display">\[
+\frac{\partial u}{\partial t}=\frac{\mathrm{d}}{\mathrm{~d}
+x}\left(\frac{\partial F}{\partial
+u_x}\right)+\frac{\mathrm{d}}{\mathrm{~d} y}\left(\frac{\partial
+F}{\partial u_y}\right)-\frac{\partial F}{\partial u}
+\]</span></p>
+<p>值得特别注意的是：只有当<span class="math inline">\(E(u)\)</span>是凸性的，它有唯一极小值，从而梯度下降流可得到与初条件无关的唯一解。而当<span class="math inline">\(E(u)\)</span>非凸性时，梯度下降流可能由于选用不同的初条件<span class="math inline">\(u_0(x)\)</span>而得到不同的局部极小值而不是全局最小值。</p>
 <h2 id="曲线演化问题">曲线演化问题</h2>
 <h3 id="曲线几何演化的一般方程式">曲线几何演化的一般方程式</h3>
 <p>曲线几何演化的一般方程式 <span class="math display">\[
@@ -383,7 +406,7 @@ x \mathrm{~d} y
 \nabla H(u)=\delta(u) \nabla u, \quad \delta(z)=\frac{\mathrm{d}
 H(z)}{\mathrm{d} z}
 \]</span> 这样一来，式（7）便可改写为嵌入函数<span class="math inline">\(u\)</span>的泛函 <span class="math display">\[
-E(u)=\iint_\delta g(x, y) \delta(u)|\nabla u| \mathrm{d} x \mathrm{~d} y
+E(u)=\iint_\Omega g(x, y) \delta(u)|\nabla u| \mathrm{d} x \mathrm{~d} y
 \qquad(7&#39;)
 \]</span> 利用变分法，可以得到上式的梯度下降流 <span class="math display">\[
 \frac{\partial u}{\partial t}=\delta(u) \operatorname{div}\left(g
@@ -398,8 +421,8 @@ E(u)=\iint_\delta g(x, y) \delta(u)|\nabla u| \mathrm{d} x \mathrm{~d} y
 <span class="math display">\[
 H_{\varepsilon}(z) \xrightarrow{\varepsilon \rightarrow 0} H(z)
 \]</span> 的函数。</p>
-<p>从表面上看，PDE式（9）与（7）似乎差别不大，只是用<span class="math inline">\(\delta_{\epsilon}(u)\)</span>取代了<span class="math inline">\(|\nabla
-u|\)</span>。但是，两者在数学上有本质的差别。式（7）属于双曲型，式（9）属于抛物型，稳定性较前者高。因而在数值实现时，可用较大的时间步长，并且常常无需对嵌入函数进行重新初始化。</p>
+<p>从表面上看，PDE式（11）与（9）似乎差别不大，只是用<span class="math inline">\(\delta_{\epsilon}(u)\)</span>取代了<span class="math inline">\(|\nabla
+u|\)</span>。但是，两者在数学上有本质的差别。式（9）属于双曲型，式（11）属于抛物型，稳定性较前者高。因而在数值实现时，可用较大的时间步长，并且常常无需对嵌入函数进行重新初始化。</p>
 <p>但是，这并不意味变分水平集方法就可取代水平集。因为能够采用变分水平集方法来求解曲线演化问题的前提是：该问题是来自最小化曲线<span class="math inline">\(C\)</span>的“能量”泛函<span class="math inline">\(E(u)\)</span>。这时通过引入嵌入函数<span class="math inline">\(u\)</span>和利用Heaviside函数，将<span class="math inline">\(E(C)\)</span>改造成<span class="math inline">\(E(u)\)</span>，通过变分法得到关于<span class="math inline">\(u\)</span>的PDE。而水平集方法是：先利用变分法最小化<span class="math inline">\(C\)</span>的“能量”泛函，得到关于<span class="math inline">\(C\)</span>的运动方程后，再引入嵌入函数，得到关于<span class="math inline">\(u\)</span>的PDE。问题在于，并不是所有的曲线和曲面的演化问题都是由“能量”泛函最小化而导出的。水平集方法是较变分水平集方法适用面更广的方法。</p>
 <h2 id="曲线演化的线性热流">曲线演化的线性热流</h2>
 <h3 id="线性几何热流">线性几何热流</h3>
@@ -470,6 +493,96 @@ u_y^2-2 u_x u_y u_{x y}+u_{y y} u_x^2\right)^{1 / 3}
 由于在此PDE中不含有分式，因而不会像MCM方程那样出现“被零除”的问题。</p>
 <h2 id="测地线活动轮廓模型">测地线活动轮廓模型</h2>
 <h3 id="活动轮廓模型的基本概念">活动轮廓模型的基本概念</h3>
+<p>图像分割中的活动轮廓模型（active
+contour）或“蛇”（snake）模型的基本思想是将图像分割问题归结为最小化一个封闭曲线<span class="math inline">\(C(p)\)</span>的“能量”泛函： <span class="math display">\[
+E[C(p)]=\alpha \int_0^1\left|C_p(p)\right| \mathrm{d} p+\beta
+\int_0^1\left|C_{p p}(p)\right|^2 \mathrm{~d} p-\lambda \int_0^1|\nabla
+I[C(p)]| \mathrm{d} p \qquad(18)
+\]</span> 式中第一项的积分是曲线的Euclidean弧长，第二项 <span class="math display">\[
+\int_0^1\left|C_{p p}(p)\right|^2 \mathrm{~d}
+p=\int_0^1|\kappa|^2\left(\frac{\mathrm{~d} p}{\mathrm{~d} s}\right)^2
+\mathrm{~d} p
+\]</span>
+表示曲线“振荡”的能量。因而最小化这两项就是要求闭合曲线尽可能短并且尽可能光顺。但根据关于曲率运动演化性质的讨论可知，在短程化弧长的过程中，也将使曲线逐渐光顺，因而第二项可不必单独提出。如果图像中的对象与背景的分解处存在灰度值的较大差异，那么对象的轮廓就将形成明显的边缘，即图像的梯度模值<span class="math inline">\(|\nabla
+I|\)</span>，在对象的边界将达到局部极大值。注意到第三项的符号为负，最小化<span class="math inline">\(E(C)\)</span>对应于最大化第三项，这就要求曲线<span class="math inline">\(C\)</span>尽可能落在<span class="math inline">\(|\nabla
+I|\)</span>达到极大值的位置上。由此可见，“蛇”模型的基本出发点也是“基于边缘的”。由于这一模型的前提是<span class="math inline">\(C(p)\)</span>为封闭曲线，因而利用“蛇”模型分割时。将不会产生边缘断裂问题。</p>
+<p>为了避免出现第三项的负号，可引入一个新的函数<span class="math inline">\(g(r),r \in
+\R^+\)</span>。原则上，它可以时任何具有单调递减的非负函数，以保证<span class="math inline">\(|\nabla I|\)</span>的局部极大值对应于<span class="math inline">\(g(|\nabla
+I|)\)</span>的局部极小值，从而使最大化<span class="math inline">\(\int^1_0 |\nabla I[C(p)]| \,
+dp\)</span>等价于最小化<span class="math inline">\(\int g(\nabla
+I[C(p)])\,
+dp\)</span>。略去式（18）中的第二项，并按上述方法修改第三项，此模型便可改写成
+<span class="math display">\[
+E[C(p)]=\alpha_1 \int_0^1\left|C_p(p)\right| \mathrm{d} p+\alpha_2
+\int_0^1 g(\nabla I[C(p)]) \mathrm{d} p \qquad(19)
+\]</span></p>
+<p>但是，式（19）仍然存在一个严重缺陷，即它不依赖于曲线<span class="math inline">\(C\)</span>的几何形状和位置，而且还依赖于曲线的参数<span class="math inline">\(p\)</span>。为了克服这一缺陷，提出了不含自由参数测地线活动轮廓（geodesic
+active
+contour，GAC）模型。GAC模型的提出是PDE方法在图像分割应用中的重大突破。</p>
+<h3 id="gac模型的建立">GAC模型的建立</h3>
+<p>文献[35]提出用最小化以下“能量”泛函来确定活动轮廓： <span class="math display">\[
+L_R(C)=\int_0^{L(C)} g(|\nabla I[C(s)]|) \mathrm{d} s \qquad(20)
+\]</span></p>
+<p>式中<span class="math inline">\(L(C)\)</span>表示闭合曲线<span class="math inline">\(C\)</span>的弧长，而<span class="math inline">\(L_R
+(C)\)</span>则是“加权弧长”。由于以上泛函是建立在曲线固有参数——弧长之上的，消除了经典蛇模型依赖自由参数的缺陷。</p>
+<p>可以证明，最小化式（20）所对应的梯度下降流为 <span class="math display">\[
+\frac{\partial C}{\partial t}=g(C) \kappa N-(\nabla g \cdot N) N
+\qquad(21)
+\]</span></p>
+<h3 id="gac模型的行为分析">GAC模型的行为分析</h3>
+<p>对（21）的行为作一定性分析。我们看到式（21）右边的前一项是平均曲率运动（MCM）乘以非负标量因子<span class="math inline">\(g(x,y)\)</span>，因而这一项与MCM的行为是一致的，即在曲率为正的局部，曲线向内部收缩，而在曲率为负的局部，曲线将向外扩张，曲线的总长度将逐渐缩短，并逐渐平滑（曲率过零点逐渐减少）。不过现在这一运动收到函数<span class="math inline">\(g(x,y)\)</span>的控制，即在平坦区，有 <span class="math display">\[
+|\nabla I| \approx 0 \Rightarrow g \approx 1
+\]</span> 曲线将完全按照曲率运动方程演化，但在图像边缘附近，则因为 <span class="math display">\[
+|\nabla I| \gg K \Rightarrow g \approx 0
+\]</span> 使第一项失去作用。</p>
+<p>式（21）后一项的行为值得更仔细的考察。在图像平坦区，由于<span class="math inline">\(g \approx 1 \Rightarrow \nabla g \approx
+0\)</span>，于是这一项基本失去作用。对于在图像边缘附近的情况，用图4.14来进行讨论。图4.14中的闭合曲线表示一个“对象”的边缘，假定其内部灰度值较外部低。由于梯度模值在边缘达到局部极大值，从而边缘函数<span class="math inline">\(g\)</span>达到局部极小值。在图4.14中分别用<span class="math inline">\(|\nabla I|\)</span>和<span class="math inline">\(g(|\nabla I|)\)</span>曲线表示。由于<span class="math inline">\(\nabla g\)</span>的方向总是指向<span class="math inline">\(g\)</span>增大的方向，故不论在物体的内部还是外部，<span class="math inline">\(\nabla
+g\)</span>总是指向离开边缘的方向。现在假定曲线<span class="math inline">\(C(t)\)</span>已经运动到物体的边缘附近，按规定<span class="math inline">\(C(t)\)</span>的法方向<span class="math inline">\(N\)</span>总是指向曲线的内部。于是，如果当前曲线的位置是处在边界的外部，那么<span class="math inline">\(N\)</span>将与<span class="math inline">\(\nabla
+g\)</span>方向相反，即<span class="math inline">\((\nabla g \cdot
+N)\)</span>为负值，因而<span class="math inline">\(-(\nabla g \cdot
+N)N\)</span>与<span class="math inline">\(N\)</span>相一致，可见这时第二项的作用是使<span class="math inline">\(C(t)\)</span>从边界外部。向更靠近边界的方向运动；反之，如果当前曲线的位置是处在边界的内部，那么，由于<span class="math inline">\(\nabla g\)</span>与<span class="math inline">\(N\)</span>相一致，即<span class="math inline">\(\nabla g \cdot N\)</span>取正值，故<span class="math inline">\(-(\nabla g \cdot N)N\)</span>将与<span class="math inline">\(N\)</span>方向相反，也就是说第二项的作用是使<span class="math inline">\(C(t)\)</span>从边界内部，向靠近边界的方向运动。由此可见，式（21）第二项的行为是将曲线<span class="math inline">\(C(t)\)</span>推向<span class="math inline">\(|\nabla I|\)</span>的局部极大值（也就是<span class="math inline">\(g(|\nabla
+I|)\)</span>的局部极小值），并稳定平衡在<span class="math inline">\(|\nabla I|\)</span>的“屋脊”上（或者说，<span class="math inline">\(g|\nabla
+I|\)</span>的“谷底”中）。但这种作用只有当<span class="math inline">\(C(t)\)</span>已经相当靠近边界，以致函数<span class="math inline">\(g(|\nabla I|)\)</span>有明显的梯度时。才能产生。
+<img src="/2025/03/03/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E7%9A%84%E5%81%8F%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/1.png" alt="image"></p>
+<p>总结以上分析可知，曲线按照GAC模型（21）演化时，将受两种“力”的支配：其一是来自于曲线自身的几何形变——曲率运动，故称为内力。不过这种“力”的强弱受到由图像<span class="math inline">\(I(x,y)\)</span>的梯度所提供的标量场<span class="math inline">\(g(x,y)\)</span>的控制。在图像边缘附近，这种“力”将变得很小以至“停止”。所以也常将边缘函数<span class="math inline">\(g(|\nabla
+I|)\)</span>称之为边缘停止函数。第二种“力”来自于<span class="math inline">\(g(x,y)\)</span>的梯度<span class="math inline">\(\nabla g\)</span>，由于<span class="math inline">\(g(x,y)=g(|\nabla I(x,y)|)\)</span>，故<span class="math inline">\(\nabla y\)</span>是由图像<span class="math inline">\(I(x,y)\)</span>产生的，所以第二项的力称为外力。它能使<span class="math inline">\(C\)</span>向着图像中对象的边缘靠近，并稳定在边缘上。</p>
+<p>GAC模型存在一个严重局限性，即当图像中对象由较深的凹陷边界时，GAC模型可能使<span class="math inline">\(C(t)\)</span>停止在某一<span class="math inline">\(E(C)\)</span>局部极小值状态，它并不与对象的边界相一致。图4.15是一个简单的实例，图（a）表示初始曲线，图（b）表示演化达到稳态的结果。我们看到，在对象凹陷部分，曲率<span class="math inline">\(\kappa &lt;0\)</span>。若<span class="math inline">\(C(t)\)</span>靠近这一部分，<span class="math inline">\(C(t)\)</span>的这一局部的曲率也必将是负的。式（21）前一项的“力”将是使曲线向外<span class="math inline">\((-N)\)</span>运动；另一方面，这时<span class="math inline">\(C(t)\)</span>的实际位置距离物体的边界还较远，故式（21）的后一项几乎为零。于是<span class="math inline">\(C(t)\)</span>的这部分就将停止演化，形成一段接近于直线的线段。
+<img src="/2025/03/03/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E7%9A%84%E5%81%8F%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/2.png" alt="image"></p>
+<h2 id="无边缘活动轮廓模型">无边缘活动轮廓模型</h2>
+<h3 id="模型的建立">模型的建立</h3>
+<p>在图像中，对象与背景的区别也可能表现为平均灰度值的明显不同。图4.23是这类图像的一个例子。由于这类图像既没有明显的边缘，也缺乏明显的纹理特征，以上讨论的GAC模型将难以实现成功的分割。
+<img src="/2025/03/03/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E7%9A%84%E5%81%8F%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/3.png" alt="image"></p>
+<p>对图4.23所示的这类图形，如果我们能找到闭合曲线<span class="math inline">\(C\)</span>，它将全部图像划分为内部区和外部区两个分部<span class="math inline">\(\Omega_1\)</span>和<span class="math inline">\(\Omega_2\)</span>，使在<span class="math inline">\(\Omega_1\)</span>内的图像部分与在<span class="math inline">\(\Omega_2\)</span>的图像的平均灰度恰好反映出对象与背景之间的灰度平均值的差别，那么这一闭合曲线就可看成是对象的轮廓。基于这一思路，T.Chan和L.Vese提出了如下“能量”泛函：
+<span class="math display">\[
+E\left(c_1, c_2, C\right)=\mu \oint_C \mathrm{~d} s+\lambda_1
+\iint_{\Omega_1}\left(I-c_1\right)^2 \mathrm{~d} x \mathrm{~d}
+y+\lambda_2 \iint_{\Omega_2}\left(I-c_2\right)^2 \mathrm{~d} x
+\mathrm{~d} y \qquad(22)
+\]</span></p>
+<p>它有三个宗量：标量<span class="math inline">\(c_1\)</span>和<span class="math inline">\(c_2\)</span>，以及曲线<span class="math inline">\(C\)</span>。其中第一项是<span class="math inline">\(C\)</span>的全弧长，第二和第三项分别是内部区和外部区的灰度值与标量<span class="math inline">\(c_1\)</span>和<span class="math inline">\(c_2\)</span>的平方误差，也就是实际图像与假定的“分片常数”图像之间的偏离。图4.24给出了同一图像，当<span class="math inline">\(C\)</span>处在四个不同状态时，式（22）中第二项(<span class="math inline">\(F_1\)</span>)和第三项(<span class="math inline">\(F_2\)</span>)的变化情况。只有当<span class="math inline">\(C\)</span>达到“正确”位置（图4.24(d)）时，这两项才能同时达到最小值。
+<img src="/2025/03/03/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E7%9A%84%E5%81%8F%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/4.png" alt="image"></p>
+<p>式（22）称为无边缘活动轮廓模型。也可按提出者姓名称之为C-V模型。实际上，其基本思想与传统的基于区域的图像分割方法是一致的。故也可称为测地线活动区域（geodesic
+active region,GAR）模型。</p>
+<p>采用变分水平集方法，先在式（22）引入Heaviside函数，将它修改为关于嵌入函数<span class="math inline">\(u\)</span>的泛函，即 <span class="math display">\[
+\begin{aligned}
+E\left(c_1, c_2, u\right)= &amp; \mu \iint_{\Omega} \delta(u)|\nabla u|
+\mathrm{d} x \mathrm{~d} y \\
+&amp; +\lambda_1 \iint_{\Omega}\left(I-c_1\right)^2 H(u) \mathrm{d} x
+\mathrm{~d} y+\lambda_2 \iint_{\Omega}\left(I-c_2\right)^2[1-H(u)]
+\mathrm{d} x \mathrm{~d} y
+\end{aligned} \qquad(23)
+\]</span></p>
+<p>这样，在函数<span class="math inline">\(u\)</span>固定的条件下，相对<span class="math inline">\(c_1，c_2\)</span>最小化式（23），可得 <span class="math display">\[
+c_i=\frac{\iint_{\Omega_i} I \mathrm{~d} x \mathrm{~d}
+y}{\iint_{\Omega_i} \mathrm{~d} x \mathrm{~d} y}, i=1,2 \qquad(24)
+\]</span></p>
+<p>即<span class="math inline">\(c_1\)</span>和<span class="math inline">\(c_2\)</span>分别是输入图像<span class="math inline">\(I(x,y)\)</span>在<span class="math inline">\(\Omega_1\)</span>（当前曲线的内部）和<span class="math inline">\(\Omega_2\)</span>（当前曲线的外部）的平均值。</p>
+<p>在<span class="math inline">\(c_1\)</span>和<span class="math inline">\(c_2\)</span>固定的条件下，相对于<span class="math inline">\(u\)</span>最小化式（23），则可得 <span class="math display">\[
+\frac{\partial u}{\partial t}=\delta_{\varepsilon}\left[\mu
+\operatorname{div}\left(\frac{\nabla u}{|\nabla
+u|}\right)-\lambda_1\left(I-c_1\right)^2+\lambda_2\left(I-c_2\right)^2\right]  \qquad(25)
+\]</span></p>
+<p>于是根据C-V模型，通过方程式（24），（25）的联立，求稳态解，便得到分割结果。</p>
 
     </div>
 
@@ -491,7 +604,10 @@ u_y^2-2 u_x u_y u_{x y}+u_{y y} u_x^2\right)^{1 / 3}
     <a href="/2025/03/03/Active-Contours-Without-Edges/" rel="prev" title="Active_Contours_Without_Edges">
       <i class="fa fa-chevron-left"></i> Active_Contours_Without_Edges
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2025/03/04/Numerical-Solution-of-Inverse-Problems-by-Weak-Adversarial-Networks/" rel="next" title="Numerical Solution of Inverse Problems by Weak Adversarial  Networks">
+      Numerical Solution of Inverse Problems by Weak Adversarial  Networks <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -550,7 +666,7 @@ u_y^2-2 u_x u_y u_{x y}+u_{y y} u_x^2\right)^{1 / 3}
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%98%E5%88%86%E6%B3%95%E5%92%8C%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B5%81"><span class="nav-text">变分法和梯度下降流</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%98%E5%88%86%E5%8E%9F%E7%90%86"><span class="nav-text">变分原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B5%81"><span class="nav-text">梯度下降流</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%B2%E7%BA%BF%E6%BC%94%E5%8C%96%E9%97%AE%E9%A2%98"><span class="nav-text">曲线演化问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9B%B2%E7%BA%BF%E5%87%A0%E4%BD%95%E6%BC%94%E5%8C%96%E7%9A%84%E4%B8%80%E8%88%AC%E6%96%B9%E7%A8%8B%E5%BC%8F"><span class="nav-text">曲线几何演化的一般方程式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B0%B4%E5%B9%B3%E9%9B%86%E6%96%B9%E6%B3%95"><span class="nav-text">水平集方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B0%B4%E5%B9%B3%E9%9B%86%E6%96%B9%E6%B3%95%E7%9A%84%E4%BC%98%E7%82%B9"><span class="nav-text">水平集方法的优点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%98%E5%88%86%E6%B0%B4%E5%B9%B3%E9%9B%86%E6%96%B9%E6%B3%95"><span class="nav-text">变分水平集方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5-1"><span class="nav-text">基本概念</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%B2%E7%BA%BF%E6%BC%94%E5%8C%96%E7%9A%84%E7%BA%BF%E6%80%A7%E7%83%AD%E6%B5%81"><span class="nav-text">曲线演化的线性热流</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E5%87%A0%E4%BD%95%E7%83%AD%E6%B5%81"><span class="nav-text">线性几何热流</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%87%A0%E4%BD%95%E4%B8%8D%E5%8F%98%E6%B5%81"><span class="nav-text">非线性几何不变流</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#euclidean%E4%B8%8D%E5%8F%98%E6%B5%81"><span class="nav-text">Euclidean不变流</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BF%E5%B0%84%E4%B8%8D%E5%8F%98%E5%87%A0%E4%BD%95%E6%B5%81"><span class="nav-text">仿射不变几何流</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E5%9C%B0%E7%BA%BF%E6%B4%BB%E5%8A%A8%E8%BD%AE%E5%BB%93%E6%A8%A1%E5%9E%8B"><span class="nav-text">测地线活动轮廓模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B4%BB%E5%8A%A8%E8%BD%AE%E5%BB%93%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-text">活动轮廓模型的基本概念</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%98%E5%88%86%E6%B3%95%E5%92%8C%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B5%81"><span class="nav-text">变分法和梯度下降流</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%98%E5%88%86%E5%8E%9F%E7%90%86"><span class="nav-text">变分原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B5%81"><span class="nav-text">梯度下降流</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%B2%E7%BA%BF%E6%BC%94%E5%8C%96%E9%97%AE%E9%A2%98"><span class="nav-text">曲线演化问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9B%B2%E7%BA%BF%E5%87%A0%E4%BD%95%E6%BC%94%E5%8C%96%E7%9A%84%E4%B8%80%E8%88%AC%E6%96%B9%E7%A8%8B%E5%BC%8F"><span class="nav-text">曲线几何演化的一般方程式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B0%B4%E5%B9%B3%E9%9B%86%E6%96%B9%E6%B3%95"><span class="nav-text">水平集方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B0%B4%E5%B9%B3%E9%9B%86%E6%96%B9%E6%B3%95%E7%9A%84%E4%BC%98%E7%82%B9"><span class="nav-text">水平集方法的优点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%98%E5%88%86%E6%B0%B4%E5%B9%B3%E9%9B%86%E6%96%B9%E6%B3%95"><span class="nav-text">变分水平集方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5-1"><span class="nav-text">基本概念</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%B2%E7%BA%BF%E6%BC%94%E5%8C%96%E7%9A%84%E7%BA%BF%E6%80%A7%E7%83%AD%E6%B5%81"><span class="nav-text">曲线演化的线性热流</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E5%87%A0%E4%BD%95%E7%83%AD%E6%B5%81"><span class="nav-text">线性几何热流</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%87%A0%E4%BD%95%E4%B8%8D%E5%8F%98%E6%B5%81"><span class="nav-text">非线性几何不变流</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#euclidean%E4%B8%8D%E5%8F%98%E6%B5%81"><span class="nav-text">Euclidean不变流</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BF%E5%B0%84%E4%B8%8D%E5%8F%98%E5%87%A0%E4%BD%95%E6%B5%81"><span class="nav-text">仿射不变几何流</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E5%9C%B0%E7%BA%BF%E6%B4%BB%E5%8A%A8%E8%BD%AE%E5%BB%93%E6%A8%A1%E5%9E%8B"><span class="nav-text">测地线活动轮廓模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B4%BB%E5%8A%A8%E8%BD%AE%E5%BB%93%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-text">活动轮廓模型的基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gac%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%BB%BA%E7%AB%8B"><span class="nav-text">GAC模型的建立</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gac%E6%A8%A1%E5%9E%8B%E7%9A%84%E8%A1%8C%E4%B8%BA%E5%88%86%E6%9E%90"><span class="nav-text">GAC模型的行为分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A0%E8%BE%B9%E7%BC%98%E6%B4%BB%E5%8A%A8%E8%BD%AE%E5%BB%93%E6%A8%A1%E5%9E%8B"><span class="nav-text">无边缘活动轮廓模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%BB%BA%E7%AB%8B"><span class="nav-text">模型的建立</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -566,7 +682,7 @@ u_y^2-2 u_x u_y u_{x y}+u_{y y} u_x^2\right)^{1 / 3}
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-count">12</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -579,7 +695,7 @@ u_y^2-2 u_x u_y u_{x y}+u_{y y} u_x^2\right)^{1 / 3}
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -616,13 +732,13 @@ u_y^2-2 u_x u_y u_{x y}+u_{y y} u_x^2\right)^{1 / 3}
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">62k</span>
+    <span title="站点总字数">106k</span>
 </div>
 
 <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共62k字</span>
+  <span class="post-count">博客全站共106k字</span>
   <span class="post-meta-divider">|</span>
   本站总访问量<span id="busuanzi_value_site_pv"></span>次
   <span class="post-meta-divider">|</span>
@@ -633,7 +749,7 @@ u_y^2-2 u_x u_y u_{x y}+u_{y y} u_x^2\right)^{1 / 3}
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共62k字</span>
+  <span class="post-count">博客全站共106k字</span>
 </div>
 
 

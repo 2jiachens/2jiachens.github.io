@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Numerical Solution of Inverse Problems by Weak Adversarial Networks（弱对抗网络对反问题的数值求解） 期刊：Inverse Problems 时间：2020 摘要 本文发展了一种弱对抗网络方法来数值求解一类反问题，包括电阻抗层析成像和动态电阻抗层析成像问题。利用给定反问题的PDE的弱形式，其中解和测试函数被参数化为深度神">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Numerical Solution of Inverse Problems by Weak Adversarial  Networks">
+<meta property="og:url" content="http://example.com/2025/03/04/Numerical-Solution-of-Inverse-Problems-by-Weak-Adversarial-Networks/index.html">
+<meta property="og:site_name" content="我的博客">
+<meta property="og:description" content="Numerical Solution of Inverse Problems by Weak Adversarial Networks（弱对抗网络对反问题的数值求解） 期刊：Inverse Problems 时间：2020 摘要 本文发展了一种弱对抗网络方法来数值求解一类反问题，包括电阻抗层析成像和动态电阻抗层析成像问题。利用给定反问题的PDE的弱形式，其中解和测试函数被参数化为深度神">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-03-04T09:19:32.000Z">
+<meta property="article:modified_time" content="2025-03-06T03:53:57.516Z">
+<meta property="article:author" content="宋嘉晨">
+<meta property="article:tag" content="EIT">
+<meta property="article:tag" content="弱对抗网络">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2025/03/04/Numerical-Solution-of-Inverse-Problems-by-Weak-Adversarial-Networks/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Numerical Solution of Inverse Problems by Weak Adversarial  Networks | 我的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">我的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-guestbook">
+
+    <a href="/guestbook/" rel="section"><i class="fa fa-book fa-fw"></i>留言板</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/03/04/Numerical-Solution-of-Inverse-Problems-by-Weak-Adversarial-Networks/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="宋嘉晨">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Numerical Solution of Inverse Problems by Weak Adversarial  Networks
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-03-04 17:19:32" itemprop="dateCreated datePublished" datetime="2025-03-04T17:19:32+08:00">2025-03-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-06 11:53:57" itemprop="dateModified" datetime="2025-03-06T11:53:57+08:00">2025-03-06</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%BA%E6%96%87%E7%B2%BE%E8%AF%BB/" itemprop="url" rel="index"><span itemprop="name">论文精读</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2025/03/04/Numerical-Solution-of-Inverse-Problems-by-Weak-Adversarial-Networks/" class="post-meta-item leancloud_visitors" data-flag-title="Numerical Solution of Inverse Problems by Weak Adversarial  Networks" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2025/03/04/Numerical-Solution-of-Inverse-Problems-by-Weak-Adversarial-Networks/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2025/03/04/Numerical-Solution-of-Inverse-Problems-by-Weak-Adversarial-Networks/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>12k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="numerical-solution-of-inverse-problems-by-weak-adversarial-networks弱对抗网络对反问题的数值求解">Numerical
+Solution of Inverse Problems by Weak Adversarial
+Networks（弱对抗网络对反问题的数值求解）</h1>
+<p>期刊：Inverse Problems</p>
+<p>时间：2020</p>
+<h2 id="摘要">摘要</h2>
+<p>本文发展了一种弱对抗网络方法来数值求解一类反问题，包括电阻抗层析成像和动态电阻抗层析成像问题。<strong>利用给定反问题的PDE的弱形式，其中解和测试函数被参数化为深度神经网络。然后，弱形式和边界条件诱导出一个关于网络参数的鞍点函数的极小极大问题</strong>。随着参数的交替更新，网络逐渐逼近反问题的解。对所提算法的收敛性给出了理论证明。
+所提出的方法是完全无网格的，无需任何空间离散，特别适用于高维数和解的低正则性问题。对各种测试反问题的数值实验表明了该方法具有较高的精度和效率。</p>
+<h2 id="介绍">介绍</h2>
+<p>反问题( Inverse Problems，IP
+)普遍存在于大量的科学学科中，包括地球物理[73]、信号处理与成像[9]、计算机视觉[61]、遥感与控制[87]、统计学[53]和机器学习[38]等。设<span class="math inline">\(\Omega\)</span>是<span class="math inline">\(\mathbb{R}^d\)</span>中的开集和有界集，则定义在<span class="math inline">\(\Omega\)</span>上的IP可表示为一般形式： <span class="math display">\[
+\begin{aligned}
+\mathcal{A}[u, \gamma]=0, &amp; &amp; \text { in } \Omega  \qquad(1a)\\
+\mathcal{B}[u, \gamma]=0, &amp; &amp; \text { on } \partial \Omega
+\qquad(1b)
+\end{aligned}
+\]</span> 其中<span class="math inline">\(\mathcal{A}[u,
+\gamma]\)</span>指定一个微分方程，其中<span class="math inline">\(u\)</span>是反介质问题中的解，<span class="math inline">\(\gamma\)</span>是反源问题中的源函数。方程<span class="math inline">\(\mathcal{A}\)</span>可以是常微分方程(ODE)，也可以是偏微分方程(PDE)，还可以是积分微分方程(IDE)，<span class="math inline">\((u, \gamma)\)</span>在区域<span class="math inline">\(\Omega\)</span>内需要满足(几乎)处处成立。边界值(以及如果适用的初始值)由<span class="math inline">\(\mathcal{B}[u, \gamma]\)</span>在<span class="math inline">\(\partial
+\Omega\)</span>上给出。根据具体的应用，<span class="math inline">\(u\)</span>和/或<span class="math inline">\(\gamma\)</span>的部分信息可以在<span class="math inline">\(\Omega\)</span>的内部获得.那么IP
+(1)就是找到同时满足(1a)和(1b)的<span class="math inline">\((u,
+\gamma)\)</span>。</p>
+<p>为了实例化我们的方法，我们主要以电阻抗成像(Electrical Impedance
+Tomography，EIT)中经典的电导率逆问题[19、55]为例，介绍了本文的主要思想和推导过程。然而，我们的方法可以很容易地通过修改应用于其他类型的IP。一个动态EIT问题的例子将在第4节中给出。EIT的目标是根据电势<span class="math inline">\(u\)</span>，电流<span class="math inline">\(-\gamma \partial_{\vec{n}}
+u\)</span>的测量和区域<span class="math inline">\(\Omega\)</span>的边界<span class="math inline">\(\partial \Omega\)</span>上/附近的<span class="math inline">\(\gamma\)</span> (也即<span class="math inline">\(\partial_{\vec{n}}
+u\)</span>)的知识，确定定义在<span class="math inline">\(\Omega\)</span>上的未知介质的电导率分布<span class="math inline">\(\gamma(x)\)</span>：</p>
+<p><span class="math display">\[
+\begin{aligned}
+-\nabla \cdot(\gamma \nabla u)-f=0, &amp; \text { in }
+\Omega  \qquad(2a)\\
+u-u_b=0, \gamma-\gamma_b=0, \partial_{\vec{n}} u-u_n=0, &amp; \text { on
+} \partial \Omega \qquad(2b)
+\end{aligned}
+\]</span></p>
+<p>其中<span class="math inline">\(u_b\)</span>为测量电压，<span class="math inline">\(\gamma_b\)</span>为物体表面附近的电导率，<span class="math inline">\(u_n \triangleq \nabla u \cdot \vec{n}\)</span>
+，其中 <span class="math inline">\(\vec{n}\)</span>为<span class="math inline">\(\partial
+\Omega\)</span>的外法线.值得注意的是，<strong>我们的方法并不像EIT问题[23、36、59]的经典方法那样估计与电导率函数相关的Dirichlet
+- to - Neumann
+(DtN)映射。相反，我们的目标是直接利用给定的数据数值求解一般的一类IPs(1)</strong>，以EIT问题(2)为原型例子，而不利用其特殊结构(例如,
+DtN映射)。为了使我们的介绍简洁而有重点，我们只考虑(1a)中具有PDEs特征的<span class="math inline">\(\mathcal{A}[u,
+\gamma]\)</span>的IP，并假设给定的IP是定义良好的且至少有一个(弱)解。</p>
+<p>我们的方法是<strong>训练能够表示给定IP的解<span class="math inline">\((u,
+\gamma)\)</span>的深度神经网络</strong>，与经典的数值方法相比有很大的改进，特别是对于高维问题。更具体地说，<strong>我们利用PDE
+(1a)的弱形式，将IP转化为<span class="math inline">\(u\)</span>和<span class="math inline">\(\gamma\)</span>的算子范数最小化问题。然后将<span class="math inline">\(u\)</span>、未知系数<span class="math inline">\(\gamma\)</span>和测试函数<span class="math inline">\(\varphi\)</span>分别参数化为深度神经网络<span class="math inline">\(u_\theta, \gamma_\theta\)</span>, 和 <span class="math inline">\(\varphi_\eta\)</span>，网络参数为<span class="math inline">\((\theta, \eta)\)</span>，并形成参数为<span class="math inline">\((\theta,
+\eta)\)</span>的鞍函数的极小极大问题。最后，我们应用随机梯度下降法交替更新网络参数，使得(<span class="math inline">\(u_\theta,
+\gamma_\theta\)</span>)逐步逼近IP的解</strong>。利用深度神经网络对<span class="math inline">\((u,
+\gamma)\)</span>进行参数化，不需要对空间域和时间域进行离散化，因此是完全无网格的。与经典的有限差分方法(FDM)和有限元法(FEM)相比，这是一种很有前途的替代方法，它们首先在[8]中使用了"维数灾难"这一术语。此外，我们的方法结合了弱解(原始网络)<span class="math inline">\((u, \gamma)\)</span>和测试函数(对抗网络) <span class="math inline">\(\varphi\)</span>的训练，由PDE的弱形式控制，这对解<span class="math inline">\((u,
+\gamma)\)</span>的正则性要求较低，当解具有奇异性时，在许多实际应用中可能更有优势。</p>
+<p>本论文的其余部分组织如下。我们首先在第2节中回顾了基于深度学习的正问题和反问题解决方案的近期工作。在第三节中，我们给出了我们方法的详细推导和一系列理论结果来支持所提出方法的有效性。在第4节中，我们讨论了几种可以提高实际性能的实现技术，并进行了一系列的数值实验来证明所提出方法的有效性。第五部分对本文进行了总结，并给出了一些一般性的注记。</p>
+<h2 id="相关工作">相关工作</h2>
+<p>在过去的几年中，使用基于深度学习的方法来解决正问题和反问题已经成为一种新的趋势。这些方法大致可以分为两类。第一类包括基于监督学习方法来近似求解给定问题的方法。这些方法通过数值模拟和实验需要大量的输入-输出对来训练所需的网络。在这一类中，深度神经网络用于从测量数据中生成近似的中间结果，用于进一步精化[34、66、69、77、81、88]，应用于改进经典数值方法在后处理阶段的求解[6、41、42、45、51、56、67、84]，或者用于近似从反问题的给定参数到其解的映射，但需要空间离散，无法应用于高维问题[2、50、63]。</p>
+<p>第二类是基于问题表述直接求解正问题或反问题的无监督学习方法，而不是额外的训练数据，在实际应用中可能比第一类更有优势。例如，在[24]中，前馈神经网络用于参数化系数函数，并通过最小化性能函数进行训练。在[58]中，提出了一种名为SwitchNet的神经网络架构，通过散射体和散射场之间的映射来解决逆散射问题。文献[32]提出了一种针对2D和3D
+EIT问题的深度学习方法，通过紧凑的神经网络架构来表示DtN图。前向问题中PDE对应的倒向随机微分方程(BSDE)是通过神经网络部分参数化，使得对域[13、30、43]中目标点的BSDE积分得到PDE的解。在[31]中，一个正问题的解被参数化为一个深度神经网络，它通过最小化与PDE相关的能量泛函和边值条件上的惩罚项组成的损失函数来训练。在[74]中提出了另一种无网格框架，称为物理引导神经网络(PINN)，用于使用基于PDEs的强大公式的深度神经网络来解决正问题和反问题，其中反问题部分考虑常系数函数。具体来说，PINN使用深度神经网络对给定的PDE的未知量进行参数化，这些网络通过最小化在域和边界条件采样点处违反PDE的最小二乘法形成的损失函数进行训练。PINN的一些实证研究也在[26]中进行。在[52]中也考虑了在问题域中给定数据的基于PINN的IPs的解决方案，并且在[5]中提出了使用自适应采样的配置点来精化解决方案。
+在[89]中，PDE的弱形式被用作目标函数，其中PDE的解和测试函数都被参数化为深度神经网络，分别试图最小化和最大化目标函数。在[54]中，使用了类似的变分形式，其中测试函数是固定基，而不是要学习的神经网络。在[68]中，我们使用了三个神经网络，其中一个用于低保真度数据，另外两个用于高保真度数据的线性和非线性函数。具有多保真网络结构的PINN也被提出用于随机PDE情形，其中多项式混沌展开式用于表示解，即作为随机基与待学习系数函数的线性组合[18]。
+在[12]中，IP的解被深度神经网络参数化，并通过最小化一个代价函数来学习，该代价函数执行IP和额外的正则化条件，其中PDE的解在训练过程中被要求。</p>
+<p>最近，基于元学习的前向问题求解方法也被考虑[18、33、64]。在[33]中，我们利用小波变换的压缩形式来学习从微分算子的系数到伪微分算子(e.g.
+,格林函数)的映射。在[64]中，我们引入了一个由分支网络和主干网络组成的深度算子网络。该网络将有限个位置上的输入函数(branch-net)和输出函数的位置(dry-net)进行编码，输出函数由两者的内积加上一个偏置给出。学习网络的宽度和深度参数也在[18]中使用贝叶斯优化来考虑。</p>
+<p>我们的IP方法沿用了我们先前针对正问题的工作[89]，这与前面提到的现有方法在使用偏微分方程的弱形式上有所不同。弱形式是求解偏微分方程的一种强有力的方法，因为它要求更少的正则性，并允许解的必要奇异性，这在成像和异常检测等许多实际应用中都是一个重要的特征。
+从理论的角度来看，我们的方法使用解(作为原始网络)和测试函数(作为对抗网络)的神经网络参数化，并以一种对抗训练的方式执行，即测试函数在PDE被违反的地方对解网络进行批评性训练，解网络在这些地方进行自我修正，直到PDE在域中(几乎)处处被满足。然而，由于反问题往往是不适定的，且一般情况下比正问题更难求解，因此本文主要关注EIT中的反问题(2)。类似问题的一些实验结果也在第4节中给出。</p>
+<p>本工作中的对抗训练与生成对抗网络[39]中使用的对抗训练相似，其中生成器网络旨在将通用的随机样本(如来自给定的多变量Gaussian的)映射到与训练样本具有相同分布的样本，而判别器网络则是将生成器网络产生的样本与真实样本区分开来。生成器和对抗网络作为零和博弈中的两个参与者，分别通过梯度下降和上升对目标函数进行交替更新，以达到均衡。
+特别地，GAN的一个显著变体，称为Wasserstein生成式对抗网络[4]，也具有原始网络(生成器)和对抗网络(由生成分布和样本分布的Wasserstein距离决定的最优运输的对偶函数)的min-max结构作为我们的提法。然而，WGAN要求其在max问题中的对偶函数是1-Lipschitz的，这在数值上是很难实现的，并产生了一系列的后续工作来克服问题[40、70]，谱归一化生成对抗网络。相比之下，我们工作中的弱解与测试函数的结构自然地产生于PDE理论中的弱公式，它在不对对抗网络(测试函数)施加限制性约束的情况下，为PDE的IP求解提供了大量的理论证明和计算益处。</p>
+<p>与许多现有的深度学习方法需要大量的演示数据(例如,系数/边界值和解对)进行训练不同，我们的方法遵循无监督的学习策略，只需要在给定的IP中制定PDE和边界条件。在[83]中，一项无监督学习研究表明，一般的卷积神经网络(CNN)自动偏向于平滑信号，并且可以在没有任何训练数据的情况下产生类似于图像去噪中一些复杂重建的结果。这种现象被称为深度图像先验(Deep
+Image Prior，DIP)，在[29、46]中被进一步利用。
+DIP与现有工作最显著的区别在于，我们的方法是完全无网格的，不需要任何空间离散，适用于高维问题。另一方面，在DIP及其后续工作中，重建网络被应用于离散化的2D或3D图像。此外，我们的目标是利用深度网络的表征能力来参数化连续空间中IP的解，而DIP的主要兴趣在于其有趣的自动正则化特性。</p>
+<h2 id="针对反问题的弱对抗网络">针对反问题的弱对抗网络</h2>
+<p>所提出的IPs弱对抗网络方法受到PDEs弱形式的启发。为了得到(1a)中偏微分方程的弱形式，我们将(1a)两边同时乘以一个任意的测试函数<span class="math inline">\(\varphi \in H_0^1(\Omega)\)</span>(在<span class="math inline">\(\Omega\)</span>中具有有界一阶弱导数和紧支撑的函数的Hilbert空间)，并在<span class="math inline">\(\Omega\)</span>上积分： <span class="math display">\[
+\langle\mathcal{A}[u, \gamma], \varphi\rangle:=\int_{\Omega}
+\mathcal{A}[u, \gamma](x) \varphi(x) \mathrm{d} x=0 \qquad(3)
+\]</span></p>
+<p>弱形式(3)的主要优点之一是我们可以通过分部积分将<span class="math inline">\(\mathcal{A}[u,
+\gamma]\)</span>中的某些梯度算子转移到<span class="math inline">\(\varphi\)</span>中，从而降低对<span class="math inline">\(u\)</span>(和<span class="math inline">\(\gamma\)</span>，若适用)正则性的要求。例如，在电导率逆问题(2)中，分部积分和<span class="math inline">\(\partial \Omega\)</span>上<span class="math inline">\(\varphi=0\)</span>的事实一起导致 <span class="math display">\[
+\langle\mathcal{A}[u, \gamma], \varphi\rangle=\int_{\Omega}(\gamma
+\nabla u \cdot \nabla \varphi-f \varphi) \mathrm{d} x=0 \qquad(4)
+\]</span></p>
+<p>其中<span class="math inline">\(\gamma \nabla
+u\)</span>在经典意义下不一定像式(2)那样可微(在这篇文章中,我们用<span class="math inline">\(\nabla\)</span>表示关于<span class="math inline">\(x\)</span>的梯度算子,<span class="math inline">\(\nabla_\theta\)</span>表示关于<span class="math inline">\(\theta\)</span>的梯度等)。若对所有的<span class="math inline">\(\varphi \in H_0^1(\Omega)\)</span>，<span class="math inline">\((u,
+\gamma)\)</span>满足边界条件(1b)和(3)，则称<span class="math inline">\((u, \gamma) \in H^1(\Omega) \times
+L^2(\Omega)\)</span>为反问题(1)的弱解(或广义解)。这里<span class="math inline">\(L^2(\Omega)\)</span>是<span class="math inline">\(\Omega\)</span>上平方可积函数的Lebesgue空间，<span class="math inline">\(H^1(\Omega) \subset
+L^2(\Omega)\)</span>是一阶弱导数有界的函数的Hilbert空间。注意到(1)式的任何经典(强)解也是弱解。
+在这项工作中，我们寻求反问题(1)的弱解，以便我们可能能够提供问题的答案，即使它不存在经典意义上的解。</p>
+<p>在文献[89]的基础上，我们考虑了(1)中PDE <span class="math inline">\(\mathcal{A}[u,
+\gamma]=0\)</span>的弱形式。为了处理反问题中PDE的未知解<span class="math inline">\(u\)</span>和参数<span class="math inline">\(\gamma\)</span>，我们将<span class="math inline">\(u\)</span>和<span class="math inline">\(\gamma\)</span>都参数化为深度神经网络，并将<span class="math inline">\(\mathcal{A}[u, \gamma]: H_0^1(\Omega) \rightarrow
+\mathbb{R}\)</span>看作一个线性泛函，使得<span class="math inline">\(\mathcal{A}[u,
+\gamma](\varphi):=\langle\mathcal{A}[u, \gamma],
+\varphi\rangle\)</span>，如式(3)所定义。我们定义由<span class="math inline">\(H_1\)</span>范数诱导的<span class="math inline">\(\mathcal{A}[u, \gamma]\)</span>范数为 <span class="math display">\[
+\|\mathcal{A}[u, \gamma]\|_{o p}:=\sup _{\varphi \in H_0^1, \varphi \neq
+0} \frac{\langle\mathcal{A}[u, \gamma],
+\varphi\rangle}{\|\varphi\|_{H^1}} \qquad(5)
+\]</span></p>
+<p>其中，<span class="math inline">\(\varphi\)</span>的<span class="math inline">\(H^1\)</span>范数由<span class="math inline">\(\|\varphi\|_{H^
+1(\Omega)}^2=\int_{\Omega}\left(|\varphi(x)|^2+|\nabla
+\varphi(x)|^2\right) \mathrm{d} x\)</span>给出。因此，<span class="math inline">\((u, \gamma)\)</span>是(1)的弱解当且仅当<span class="math inline">\(\partial \Omega\)</span>上<span class="math inline">\(\|\mathcal{A}[u, \gamma]\|_{o p}=0\)</span>，<span class="math inline">\(\mathcal{B}[u, \gamma]=0\)</span>。当<span class="math inline">\(\|\mathcal{A}[u, \gamma]\|_{o p} \geq
+0\)</span>时，我们知道方程(1)的一个弱解<span class="math inline">\((u,
+\gamma)\)</span>，从而解决了方程(5)的如下观测问题： <span class="math display">\[
+\underset{u, \gamma}{\operatorname{minimize}}\|\mathcal{A}[u,
+\gamma]\|_{o p}^2=\underset{u, \gamma}{\operatorname{minimize}} \sup
+_{\varphi \in H_0^1, \varphi \neq 0} \frac{|\langle\mathcal{A}[u,
+\gamma], \varphi\rangle|^2}{\|\varphi\|_{H^1}^2} \qquad(6)
+\]</span></p>
+<p>其中，<span class="math inline">\((u, \gamma) \in H^1(\Omega) \times
+L^2(\Omega)\)</span>，且取得最小值0。这一结果在下面的定理中进行了总结，并在附录A.1中给出了证明。</p>
+<p><strong>定理1</strong> 假设<span class="math inline">\(\left(u^*,
+\gamma^*\right)\)</span>满足边界条件<span class="math inline">\(\mathcal{B}\left[u^*,
+\gamma^*\right]=0\)</span>，则<span class="math inline">\(\left(u^*,
+\gamma^*\right)\)</span>是(1)式的弱解当且仅当<span class="math inline">\(\left\|\mathcal{A}\left[u^*,
+\gamma^*\right]\right\|_{o p}=0\)</span></p>
+<p><strong>定理1意味着，由于算子范数的非负性，为了找到(1)的弱解，我们可以通过求取最小的算子范数值<span class="math inline">\(\left\|\mathcal{A}\left[u^*,
+\gamma^*\right]\right\|_{o p}=0\)</span>来寻找满足<span class="math inline">\(\mathcal{B}\left[u^*,\gamma^*\right]=0\)</span>且同时最小化(6)的最优解<span class="math inline">\(\left(u^*,
+\gamma^*\right)\)</span>。也就是说，<span class="math inline">\(\left(u^*,
+\gamma^*\right)\)</span>是问题(1)的弱解当且仅当<span class="math inline">\(\left\|\mathcal{A}\left[u^*,
+\gamma^*\right]\right\|_{o p}\)</span>和<span class="math inline">\(\left\|\mathcal{B}\left[u^*,
+\gamma^*\right]\right\|_{L^2(\partial
+\Omega)}\)</span>都消失。因此，我们可以从下面的最小化问题中求解<span class="math inline">\(\left(u^*,
+\gamma^*\right)\)</span>，等价于(1)</strong> <span class="math display">\[
+\underset{u, \gamma}{\operatorname{minimize}} I(u,
+\gamma)=\|\mathcal{A}[u, \gamma]\|_{o p}^2+\beta\|\mathcal{B}[u,
+\gamma]\|_{L^2(\partial \Omega)}^2 \qquad(7)
+\]</span></p>
+<p>并且<span class="math inline">\(\beta
+&gt;0\)</span>是平衡目标函数<span class="math inline">\(I(u,\gamma)\)</span>中两项的权重参数。注意到(7)式中目标函数的两项均为非负，且仅在(1)式的一个弱解<span class="math inline">\(\left(u^*,
+\gamma^*\right)\)</span>处同时消失。</p>
+<p>对于高维PDEs的经典数值方法，一个很有前途的替代方法是使用深度神经网络，因为它们不需要区域离散，并且是完全无网格的。深度神经网络是多个简单函数(称为层)的组合，因此它们可以逼近相当复杂的函数。考虑一个简单的多层神经网络<span class="math inline">\(u_\theta\)</span>如下： <span class="math display">\[
+u_\theta(x)=w_K^{\top} l_{K-1} \circ \cdots \circ l_0(x)+b_K \qquad(8)
+\]</span></p>
+<p>其中，第<span class="math inline">\(k\)</span>层<span class="math inline">\(l_k: \mathbb{R}^{d_k} \rightarrow
+\mathbb{R}^{d_{k+1}}\)</span>由<span class="math inline">\(l_k(z)=\sigma_k\left(W_k
+z+b_k\right)\)</span>给出，权重<span class="math inline">\(W_k \in
+\mathbb{R}^{d_{k+1} \times d_k}\)</span>，偏置<span class="math inline">\(b_k \in
+\mathbb{R}^{d_{k+1}}\)</span>，所有层的网络参数用<span class="math inline">\(\theta\)</span>统一表示如下： <span class="math display">\[
+\theta:=\left(w_K, b_K, W_{K-1}, b_{K-1}, \ldots, W_0, b_0\right)
+\qquad(9)
+\]</span></p>
+<p>综上，本文所有向量默认为列向量。在(8)中，<span class="math inline">\(x \in \Omega\)</span>是网络的输入，<span class="math inline">\(d_0=d\)</span>是(1)的问题维数(也称为输入层的大小)，<span class="math inline">\(w_K \in \mathbb{R}^{d_K}\)</span>和<span class="math inline">\(b_K \in \mathbb{R}\)</span>是最后第<span class="math inline">\(K\)</span>层(也称为输出层)中的参数.非线性激活函数<span class="math inline">\(\sigma_k\)</span>的典型选择包括sigmoid函数<span class="math inline">\(\sigma(z)=\left(1+e^{-z}\right)^{-1}\)</span>、双曲正切(tanh)函数<span class="math inline">\(\sigma(z)=\left(e^z-e^{-z}\right)
+/\left(e^z+e^{-z}\right)\)</span>和修正线性单元(ReLU)函数<span class="math inline">\(\sigma(z)=\max (0,
+z)\)</span>，它们分别被应用。深度神经网络的训练是指利用可用的数据或约束优化<span class="math inline">\(\theta\)</span>的过程，使得函数<span class="math inline">\(u_\theta\)</span>可以逼近(未知)目标函数。关于深度神经网络的更多细节可参见文献[38]。</p>
+<p>尽管有如式(8)的简单结构，但深度神经网络能够在紧支撑<span class="math inline">\(\bar{\Omega}\)</span>上均匀地逼近相当复杂的连续函数(以及必要时的导数)。这个重要的结果被称为万能逼近定理[47]
+。由万能逼近定理保证的神经网络的表达能力表明(1)的弱解<span class="math inline">\((u,
+\gamma)\)</span>)的无网格参数化是有希望的。接下来，我们对<span class="math inline">\(u\)</span>和<span class="math inline">\(\gamma\)</span>都选取足够深度的神经网络结构，如式(8)所示。数值实验中使用的具体结构，即层数<span class="math inline">\(K\)</span>和尺寸<span class="math inline">\(\left\{d_1, \ldots,
+d_{K-1}\right\}\)</span>将在第4节中给出。注意到<span class="math inline">\(u\)</span>和<span class="math inline">\(\gamma\)</span>是两个独立的网络，但我们用一个字母<span class="math inline">\(\theta\)</span>来表示它们的网络参数，而不是用<span class="math inline">\(\theta_u\)</span>和<span class="math inline">\(\theta_\gamma\)</span>来简化符号。<strong>也就是说，我们将<span class="math inline">\((u, \gamma)\)</span>参数化为深度神经网络<span class="math inline">\(\left(u_\theta,
+\gamma_\theta\right)\)</span>，并试图找到参数<span class="math inline">\(\theta\)</span>使得<span class="math inline">\(\left(u_\theta,
+\gamma_\theta\right)\)</span>解决(7)</strong>。为此，<strong>弱式(3)中的测试函数<span class="math inline">\(\varphi\)</span>也被参数化为深度神经网络<span class="math inline">\(\varphi_\eta\)</span>，其形式类似于(8)和(9)，参数用<span class="math inline">\(\eta\)</span>表示</strong>。通过参数化的<span class="math inline">\(\left(u_\theta,
+\gamma_\theta\right)\)</span>和<span class="math inline">\(\varphi_\eta\)</span>，我们遵循(3)中的内积记法并定义
+<span class="math display">\[
+E(\theta, \eta):=\left|\left\langle\mathcal{A}\left[u_\theta,
+\gamma_\theta\right], \varphi_\eta\right\rangle\right|^2 \qquad(10)
+\]</span></p>
+<p>不像(平方)算子范数(5)的原始定义那样用<span class="math inline">\(\left\|\varphi_\eta\right\|_{H_1}^2\)</span>对
+<span class="math inline">\(E(\theta,
+\eta)\)</span>进行正规化，而是<strong>将(5)中的平方算子范数近似(上升到一个恒定的标度)为如下<span class="math inline">\(\theta\)</span>的极大值函数</strong>： <span class="math display">\[
+L_{\mathrm{int}}(\theta):=\max _{|\eta|^2 \leq 2 B} E(\theta, \eta)
+\qquad(11)
+\]</span></p>
+<p>其中<span class="math inline">\(B&gt;0\)</span>是一个限定网络参数<span class="math inline">\(\eta\)</span>大小的上界。这里<span class="math inline">\(|\eta|^2=\sum_k\left(\sum_{i j}\left[W_k\right]_{i
+j}^2+\sum_i\left[b_k\right]_i^2\right),[M]_{i j} \in
+\mathbb{R}\)</span>表示矩阵<span class="math inline">\(M\)</span>的<span class="math inline">\((i, j)\)</span>项， <span class="math inline">\([v]_i \in \mathbb{R}\)</span>表示向量<span class="math inline">\(v\)</span>的第<span class="math inline">\(i\)</span>个分量。值得注意的是，式(11)中对<span class="math inline">\(\eta\)</span>的<span class="math inline">\(\ell_2\)</span>-范数的界约束与WGAN
+[4]中使用的权重裁剪(等价于关于<span class="math inline">\(\ell_{\infty}\)</span>-范数的界)方法类似。然而，它们服务于不同的目的：在(11)中引入约束，使得积分(如(4))是有界的(这个界的实际值可以是任意的)。在这种情况下，我们的数值实现中的蒙特卡洛近似得到的随机梯度具有有界方差，这在下面定理4的证明中是需要的。另一方面，WGAN中的权重裁剪是为了保证神经网络实现的对偶函数是1-Lipschitz函数类<span class="math inline">\(\mathcal{F}:=\{f: \Omega \rightarrow
+\mathbb{R}:|f(x)-f(y)| \leq\)</span> <span class="math inline">\(|x-y|,
+\forall x, y \in
+\Omega\}\)</span>。正如文献[4]所指出的那样，权重裁剪是实现1-Lipschitz约束的一种简单但不合适的方法，因此有一系列的后续工作来解决这个问题，如[40、70]。</p>
+<p>进一步，我们定义与边界条件(1b)相关的损失函数为 <span class="math display">\[
+L_{\mathrm{bdry}}(\theta):=\left\|\mathcal{B}\left[u_\theta,
+\gamma_\theta\right]\right\|_{L^2(\partial \Omega)}^2=\int_{\partial
+\Omega}\left|\mathcal{B}\left[u_\theta, \gamma_\theta\right](x)\right|^2
+\mathrm{~d} S(x) \qquad(12)
+\]</span></p>
+<p>例如，如果在(2b)中给出<span class="math inline">\((u,
+\gamma)\)</span>的边界条件，且已知边界值<span class="math inline">\(\left(u_b, \gamma_b, u_n\right)\)</span>，则<span class="math inline">\(L_{\text {bdry }}(\theta)=\int_{\partial
+\Omega}\left|u_\theta(x)-u_b(x)\right|^2+\left|\gamma_\theta(x)-\gamma_b(x)\right|^2+\left|\partial_{\vec{n}(x)}
+u(x)-u_n(x)\right|^2 \mathrm{~d}
+S(x)\)</span>。最后，定义总损失函数<span class="math inline">\(L(\theta)\)</span>，并求解如下关于其最优<span class="math inline">\(\theta^*\)</span>的最小化问题： <span class="math display">\[
+\underset{\theta}{\operatorname{minimize}} L(\theta), \quad \text {
+where } \quad L(\theta):=L_{\mathrm{int}}(\theta)+\beta
+L_{\mathrm{bdry}}(\theta) \qquad(13)
+\]</span></p>
+<p>其中，我们还限制了参数<span class="math inline">\(\theta\)</span>的大小，使得对于同一个<span class="math inline">\(B\)</span>，<span class="math inline">\(|\theta|^2
+\leq 2 B\)</span>，以简化记号。注意到这里<span class="math inline">\(\theta\)</span>和<span class="math inline">\(\eta\)</span>都是有限维向量，且<span class="math inline">\(L_{\text {int }}(\theta), L_{\text {bdry
+}}(\theta), E(\theta, \eta) \in
+\mathbb{R}_{+}\)</span>，因此可以应用数值优化算法来寻找 <span class="math inline">\(L(\theta)\)</span>的最小值。</p>
+<p>求解类似于(13)的极小化问题的标准方法是<strong>投影梯度下降法</strong>，该方法执行如下迭代：
+<span class="math display">\[
+\theta \leftarrow \Pi\left(\theta-\tau \nabla_\theta L(\theta)\right)
+\qquad(14)
+\]</span></p>
+<p>其中<span class="math inline">\(\Pi(\theta)=\min (\sqrt{2
+B},|\theta|) \cdot(\theta /|\theta|)\)</span>是<span class="math inline">\(\theta\)</span>到以原点为圆心，半径为<span class="math inline">\(\sqrt{2 B}\)</span>的球的投影，<span class="math inline">\(\tau&gt;0\)</span>是步长.可以看出，(14)式的主要计算是在梯度<span class="math inline">\(\nabla_\theta L(\theta)=\nabla_\theta
+L_{\mathrm{int}}(\theta)+\beta \nabla_\theta
+L_{\mathrm{bdry}}(\theta)\)</span>上进行的。<span class="math inline">\(\nabla_\theta
+L_{\mathrm{bdry}}(\theta)\)</span>的计算简单明了，如下所示。然而，损失<span class="math inline">\(L_{\text {int
+}}(\theta)\)</span>被定义为一个最大化问题(11)，我们需要先将其梯度写成关于<span class="math inline">\(\theta\)</span>的函数。为此，我们有下面的引理来计算梯度<span class="math inline">\(\nabla_\theta L_{\text {int
+}}(\theta)\)</span>，证明见附录A.2。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/EIT/" rel="tag"># EIT</a>
+              <a href="/tags/%E5%BC%B1%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C/" rel="tag"># 弱对抗网络</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/03/03/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E7%9A%84%E5%81%8F%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/" rel="prev" title="图像处理的偏微分方程方法总结">
+      <i class="fa fa-chevron-left"></i> 图像处理的偏微分方程方法总结
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/03/10/WGAN/" rel="next" title="WGAN">
+      WGAN <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#numerical-solution-of-inverse-problems-by-weak-adversarial-networks%E5%BC%B1%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C%E5%AF%B9%E5%8F%8D%E9%97%AE%E9%A2%98%E7%9A%84%E6%95%B0%E5%80%BC%E6%B1%82%E8%A7%A3"><span class="nav-text">Numerical
+Solution of Inverse Problems by Weak Adversarial
+Networks（弱对抗网络对反问题的数值求解）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%91%98%E8%A6%81"><span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E5%B7%A5%E4%BD%9C"><span class="nav-text">相关工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%92%88%E5%AF%B9%E5%8F%8D%E9%97%AE%E9%A2%98%E7%9A%84%E5%BC%B1%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C"><span class="nav-text">针对反问题的弱对抗网络</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="宋嘉晨"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">宋嘉晨</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">宋嘉晨</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">106k</span>
+</div>
+
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共106k字</span>
+  <span class="post-meta-divider">|</span>
+  本站总访问量<span id="busuanzi_value_site_pv"></span>次
+  <span class="post-meta-divider">|</span>
+  本站访客数<span id="busuanzi_value_site_uv"></span>人次
+  <span class="post-meta-divider">|</span>
+  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+</div>
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共106k字</span>
+</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'x2HNNt4kVm1AzbK4G5OMYocX-gzGzoHsz',
+      appKey     : 'UZukMakW4tBBED8F52h1Hgn4',
+      placeholder: "输入你的评论\n不输入昵称则为匿名",
+      avatar     : '',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : true,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/clicklove.js"></script>
