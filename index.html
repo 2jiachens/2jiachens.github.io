@@ -631,7 +631,7 @@ MLP中模式崩溃的显著程度 ## 结论</p>
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-06 11:53:57" itemprop="dateModified" datetime="2025-03-06T11:53:57+08:00">2025-03-06</time>
+                <time title="修改时间：2025-03-16 10:48:22" itemprop="dateModified" datetime="2025-03-16T10:48:22+08:00">2025-03-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -670,7 +670,7 @@ MLP中模式崩溃的显著程度 ## 结论</p>
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>12k</span>
+              <span>21k</span>
             </span>
 
         </div>
@@ -691,15 +691,15 @@ Networks（弱对抗网络对反问题的数值求解）</h1>
 <p>本文发展了一种弱对抗网络方法来数值求解一类反问题，包括电阻抗层析成像和动态电阻抗层析成像问题。<strong>利用给定反问题的PDE的弱形式，其中解和测试函数被参数化为深度神经网络。然后，弱形式和边界条件诱导出一个关于网络参数的鞍点函数的极小极大问题</strong>。随着参数的交替更新，网络逐渐逼近反问题的解。对所提算法的收敛性给出了理论证明。
 所提出的方法是完全无网格的，无需任何空间离散，特别适用于高维数和解的低正则性问题。对各种测试反问题的数值实验表明了该方法具有较高的精度和效率。</p>
 <h2 id="介绍">介绍</h2>
-<p>反问题( Inverse Problems，IP
-)普遍存在于大量的科学学科中，包括地球物理[73]、信号处理与成像[9]、计算机视觉[61]、遥感与控制[87]、统计学[53]和机器学习[38]等。设<span class="math inline">\(\Omega\)</span>是<span class="math inline">\(\mathbb{R}^d\)</span>中的开集和有界集，则定义在<span class="math inline">\(\Omega\)</span>上的IP可表示为一般形式： <span class="math display">\[
+<p>反问题(Inverse
+Problems，IP)普遍存在于大量的科学学科中，包括地球物理[73]、信号处理与成像[9]、计算机视觉[61]、遥感与控制[87]、统计学[53]和机器学习[38]等。设<span class="math inline">\(\Omega\)</span>是<span class="math inline">\(\mathbb{R}^d\)</span>中的开集和有界集，则定义在<span class="math inline">\(\Omega\)</span>上的IP可表示为一般形式： <span class="math display">\[
 \begin{aligned}
 \mathcal{A}[u, \gamma]=0, &amp; &amp; \text { in } \Omega  \qquad(1a)\\
 \mathcal{B}[u, \gamma]=0, &amp; &amp; \text { on } \partial \Omega
 \qquad(1b)
 \end{aligned}
 \]</span> 其中<span class="math inline">\(\mathcal{A}[u,
-\gamma]\)</span>指定一个微分方程，其中<span class="math inline">\(u\)</span>是反介质问题中的解，<span class="math inline">\(\gamma\)</span>是反源问题中的源函数。方程<span class="math inline">\(\mathcal{A}\)</span>可以是常微分方程(ODE)，也可以是偏微分方程(PDE)，还可以是积分微分方程(IDE)，<span class="math inline">\((u, \gamma)\)</span>在区域<span class="math inline">\(\Omega\)</span>内需要满足(几乎)处处成立。边界值(以及如果适用的初始值)由<span class="math inline">\(\mathcal{B}[u, \gamma]\)</span>在<span class="math inline">\(\partial
+\gamma]\)</span>指定一个微分方程，<strong><span class="math inline">\(u\)</span>是反介质问题中的解，<span class="math inline">\(\gamma\)</span>是反源问题中的源函数</strong>。方程<span class="math inline">\(\mathcal{A}\)</span>可以是常微分方程(ODE)，也可以是偏微分方程(PDE)，还可以是积分微分方程(IDE)，<span class="math inline">\((u, \gamma)\)</span>在区域<span class="math inline">\(\Omega\)</span>内需要满足(几乎)处处成立。边界值(以及如果适用的初始值)由<span class="math inline">\(\mathcal{B}[u, \gamma]\)</span>在<span class="math inline">\(\partial
 \Omega\)</span>上给出。根据具体的应用，<span class="math inline">\(u\)</span>和/或<span class="math inline">\(\gamma\)</span>的部分信息可以在<span class="math inline">\(\Omega\)</span>的内部获得.那么IP
 (1)就是找到同时满足(1a)和(1b)的<span class="math inline">\((u,
 \gamma)\)</span>。</p>
@@ -727,21 +727,21 @@ DtN映射)。为了使我们的介绍简洁而有重点，我们只考虑(1a)中
 (1a)的弱形式，将IP转化为<span class="math inline">\(u\)</span>和<span class="math inline">\(\gamma\)</span>的算子范数最小化问题。然后将<span class="math inline">\(u\)</span>、未知系数<span class="math inline">\(\gamma\)</span>和测试函数<span class="math inline">\(\varphi\)</span>分别参数化为深度神经网络<span class="math inline">\(u_\theta, \gamma_\theta\)</span>, 和 <span class="math inline">\(\varphi_\eta\)</span>，网络参数为<span class="math inline">\((\theta, \eta)\)</span>，并形成参数为<span class="math inline">\((\theta,
 \eta)\)</span>的鞍函数的极小极大问题。最后，我们应用随机梯度下降法交替更新网络参数，使得(<span class="math inline">\(u_\theta,
 \gamma_\theta\)</span>)逐步逼近IP的解</strong>。利用深度神经网络对<span class="math inline">\((u,
-\gamma)\)</span>进行参数化，不需要对空间域和时间域进行离散化，因此是完全无网格的。与经典的有限差分方法(FDM)和有限元法(FEM)相比，这是一种很有前途的替代方法，它们首先在[8]中使用了"维数灾难"这一术语。此外，我们的方法结合了弱解(原始网络)<span class="math inline">\((u, \gamma)\)</span>和测试函数(对抗网络) <span class="math inline">\(\varphi\)</span>的训练，由PDE的弱形式控制，这对解<span class="math inline">\((u,
-\gamma)\)</span>的正则性要求较低，当解具有奇异性时，在许多实际应用中可能更有优势。</p>
+\gamma)\)</span>进行参数化，不需要对空间域和时间域进行离散化，因此是完全无网格的。与经典的有限差分方法(FDM)和有限元法(FEM)相比，这是一种很有前途的替代方法，它们首先在[8]中使用了"维数灾难"这一术语。此外，<strong>我们的方法结合了弱解(原始网络)<span class="math inline">\((u, \gamma)\)</span>和测试函数(对抗网络) <span class="math inline">\(\varphi\)</span>的训练，由PDE的弱形式控制，这对解<span class="math inline">\((u,
+\gamma)\)</span>的正则性要求较低，当解具有奇异性时，在许多实际应用中可能更有优势</strong>。</p>
 <p>本论文的其余部分组织如下。我们首先在第2节中回顾了基于深度学习的正问题和反问题解决方案的近期工作。在第三节中，我们给出了我们方法的详细推导和一系列理论结果来支持所提出方法的有效性。在第4节中，我们讨论了几种可以提高实际性能的实现技术，并进行了一系列的数值实验来证明所提出方法的有效性。第五部分对本文进行了总结，并给出了一些一般性的注记。</p>
 <h2 id="相关工作">相关工作</h2>
 <p>在过去的几年中，使用基于深度学习的方法来解决正问题和反问题已经成为一种新的趋势。这些方法大致可以分为两类。第一类包括基于监督学习方法来近似求解给定问题的方法。这些方法通过数值模拟和实验需要大量的输入-输出对来训练所需的网络。在这一类中，深度神经网络用于从测量数据中生成近似的中间结果，用于进一步精化[34、66、69、77、81、88]，应用于改进经典数值方法在后处理阶段的求解[6、41、42、45、51、56、67、84]，或者用于近似从反问题的给定参数到其解的映射，但需要空间离散，无法应用于高维问题[2、50、63]。</p>
 <p>第二类是基于问题表述直接求解正问题或反问题的无监督学习方法，而不是额外的训练数据，在实际应用中可能比第一类更有优势。例如，在[24]中，前馈神经网络用于参数化系数函数，并通过最小化性能函数进行训练。在[58]中，提出了一种名为SwitchNet的神经网络架构，通过散射体和散射场之间的映射来解决逆散射问题。文献[32]提出了一种针对2D和3D
-EIT问题的深度学习方法，通过紧凑的神经网络架构来表示DtN图。前向问题中PDE对应的倒向随机微分方程(BSDE)是通过神经网络部分参数化，使得对域[13、30、43]中目标点的BSDE积分得到PDE的解。在[31]中，一个正问题的解被参数化为一个深度神经网络，它通过最小化与PDE相关的能量泛函和边值条件上的惩罚项组成的损失函数来训练。在[74]中提出了另一种无网格框架，称为物理引导神经网络(PINN)，用于使用基于PDEs的强大公式的深度神经网络来解决正问题和反问题，其中反问题部分考虑常系数函数。具体来说，PINN使用深度神经网络对给定的PDE的未知量进行参数化，这些网络通过最小化在域和边界条件采样点处违反PDE的最小二乘法形成的损失函数进行训练。PINN的一些实证研究也在[26]中进行。在[52]中也考虑了在问题域中给定数据的基于PINN的IPs的解决方案，并且在[5]中提出了使用自适应采样的配置点来精化解决方案。
+EIT问题的深度学习方法，通过紧凑的神经网络架构来表示DtN图。前向问题中PDE对应的倒向随机微分方程(BSDE)是通过神经网络部分参数化，使得对域[13、30、43]中目标点的BSDE积分得到PDE的解。在[31]中，一个正问题的解被参数化为一个深度神经网络，它通过最小化与PDE相关的能量泛函和边值条件上的惩罚项组成的损失函数来训练。在[74]中提出了另一种无网格框架，称为物理信息神经网络(PINN)，用于使用基于PDEs的强大公式的深度神经网络来解决正问题和反问题，其中反问题部分考虑常系数函数。具体来说，PINN使用深度神经网络对给定的PDE的未知量进行参数化，这些网络通过最小化在域和边界条件采样点处违反PDE的最小二乘法形成的损失函数进行训练。PINN的一些实证研究也在[26]中进行。在[52]中也考虑了在问题域中给定数据的基于PINN的IPs的解决方案，并且在[5]中提出了使用自适应采样的配置点来精化解决方案。
 在[89]中，PDE的弱形式被用作目标函数，其中PDE的解和测试函数都被参数化为深度神经网络，分别试图最小化和最大化目标函数。在[54]中，使用了类似的变分形式，其中测试函数是固定基，而不是要学习的神经网络。在[68]中，我们使用了三个神经网络，其中一个用于低保真度数据，另外两个用于高保真度数据的线性和非线性函数。具有多保真网络结构的PINN也被提出用于随机PDE情形，其中多项式混沌展开式用于表示解，即作为随机基与待学习系数函数的线性组合[18]。
 在[12]中，IP的解被深度神经网络参数化，并通过最小化一个代价函数来学习，该代价函数执行IP和额外的正则化条件，其中PDE的解在训练过程中被要求。</p>
 <p>最近，基于元学习的前向问题求解方法也被考虑[18、33、64]。在[33]中，我们利用小波变换的压缩形式来学习从微分算子的系数到伪微分算子(e.g.
 ,格林函数)的映射。在[64]中，我们引入了一个由分支网络和主干网络组成的深度算子网络。该网络将有限个位置上的输入函数(branch-net)和输出函数的位置(dry-net)进行编码，输出函数由两者的内积加上一个偏置给出。学习网络的宽度和深度参数也在[18]中使用贝叶斯优化来考虑。</p>
-<p>我们的IP方法沿用了我们先前针对正问题的工作[89]，这与前面提到的现有方法在使用偏微分方程的弱形式上有所不同。弱形式是求解偏微分方程的一种强有力的方法，因为它要求更少的正则性，并允许解的必要奇异性，这在成像和异常检测等许多实际应用中都是一个重要的特征。
-从理论的角度来看，我们的方法使用解(作为原始网络)和测试函数(作为对抗网络)的神经网络参数化，并以一种对抗训练的方式执行，即测试函数在PDE被违反的地方对解网络进行批评性训练，解网络在这些地方进行自我修正，直到PDE在域中(几乎)处处被满足。然而，由于反问题往往是不适定的，且一般情况下比正问题更难求解，因此本文主要关注EIT中的反问题(2)。类似问题的一些实验结果也在第4节中给出。</p>
-<p>本工作中的对抗训练与生成对抗网络[39]中使用的对抗训练相似，其中生成器网络旨在将通用的随机样本(如来自给定的多变量Gaussian的)映射到与训练样本具有相同分布的样本，而判别器网络则是将生成器网络产生的样本与真实样本区分开来。生成器和对抗网络作为零和博弈中的两个参与者，分别通过梯度下降和上升对目标函数进行交替更新，以达到均衡。
-特别地，GAN的一个显著变体，称为Wasserstein生成式对抗网络[4]，也具有原始网络(生成器)和对抗网络(由生成分布和样本分布的Wasserstein距离决定的最优运输的对偶函数)的min-max结构作为我们的提法。然而，WGAN要求其在max问题中的对偶函数是1-Lipschitz的，这在数值上是很难实现的，并产生了一系列的后续工作来克服问题[40、70]，谱归一化生成对抗网络。相比之下，我们工作中的弱解与测试函数的结构自然地产生于PDE理论中的弱公式，它在不对对抗网络(测试函数)施加限制性约束的情况下，为PDE的IP求解提供了大量的理论证明和计算益处。</p>
+<p>我们的IP方法沿用了我们先前针对正问题的工作[89]，这与前面提到的现有方法在使用偏微分方程的弱形式上有所不同。<strong>弱形式是求解偏微分方程的一种强有力的方法，因为它要求更少的正则性，并允许解的必要奇异性，这在成像和异常检测等许多实际应用中都是一个重要的特征</strong>。
+从理论的角度来看，<strong>我们的方法对解(作为原始网络)和测试函数(作为对抗网络)进行神经网络参数化，并以一种对抗训练的方式执行，即测试函数在不满足PDE的地方对解网络进行批判训练，解网络在这些地方进行自我修正，直到PDE在域中(几乎)处处被满足</strong>。然而，由于反问题往往是不适定的，且一般情况下比正问题更难求解，因此本文主要关注EIT中的反问题(2)。类似问题的一些实验结果也在第4节中给出。</p>
+<p>本工作中的对抗训练与生成对抗网络[39]中使用的对抗训练相似，其中<strong>生成器网络旨在将通用的随机样本(如来自给定的多变量Gaussian的)映射到与训练样本具有相同分布的样本</strong>，而<strong>判别器网络则是将生成器网络产生的样本与真实样本区分开来</strong>。生成器和对抗网络作为零和博弈中的两个参与者，分别通过梯度下降和上升对目标函数进行交替更新，以达到均衡。
+特别地，GAN的一个显著变体，称为Wasserstein生成式对抗网络[4]，也具有原始网络(生成器)和对抗网络(由生成分布和样本分布的Wasserstein距离决定的最优运输的对偶函数)的min-max结构作为我们的提法。然而，WGAN要求其在max问题中的对偶函数是1-Lipschitz的，这在数值上是很难实现的，并产生了一系列的后续工作来克服问题[40、70]，谱归一化生成对抗网络。相比之下，<strong>我们工作中的弱解与测试函数的结构自然地产生于PDE理论中的弱公式，它在不对对抗网络(测试函数)施加限制性约束的情况下，为PDE的IP求解提供了大量的理论证明和计算益处</strong>。</p>
 <p>与许多现有的深度学习方法需要大量的演示数据(例如,系数/边界值和解对)进行训练不同，我们的方法遵循无监督的学习策略，只需要在给定的IP中制定PDE和边界条件。在[83]中，一项无监督学习研究表明，一般的卷积神经网络(CNN)自动偏向于平滑信号，并且可以在没有任何训练数据的情况下产生类似于图像去噪中一些复杂重建的结果。这种现象被称为深度图像先验(Deep
 Image Prior，DIP)，在[29、46]中被进一步利用。
 DIP与现有工作最显著的区别在于，我们的方法是完全无网格的，不需要任何空间离散，适用于高维问题。另一方面，在DIP及其后续工作中，重建网络被应用于离散化的2D或3D图像。此外，我们的目标是利用深度网络的表征能力来参数化连续空间中IP的解，而DIP的主要兴趣在于其有趣的自动正则化特性。</p>
@@ -750,8 +750,8 @@ DIP与现有工作最显著的区别在于，我们的方法是完全无网格�
 \langle\mathcal{A}[u, \gamma], \varphi\rangle:=\int_{\Omega}
 \mathcal{A}[u, \gamma](x) \varphi(x) \mathrm{d} x=0 \qquad(3)
 \]</span></p>
-<p>弱形式(3)的主要优点之一是我们可以通过分部积分将<span class="math inline">\(\mathcal{A}[u,
-\gamma]\)</span>中的某些梯度算子转移到<span class="math inline">\(\varphi\)</span>中，从而降低对<span class="math inline">\(u\)</span>(和<span class="math inline">\(\gamma\)</span>，若适用)正则性的要求。例如，在电导率逆问题(2)中，分部积分和<span class="math inline">\(\partial \Omega\)</span>上<span class="math inline">\(\varphi=0\)</span>的事实一起导致 <span class="math display">\[
+<p><strong>弱形式(3)的主要优点之一是我们可以通过分部积分将<span class="math inline">\(\mathcal{A}[u,
+\gamma]\)</span>中的某些梯度算子转移到<span class="math inline">\(\varphi\)</span>中，从而降低对<span class="math inline">\(u\)</span>(和<span class="math inline">\(\gamma\)</span>，若适用)正则性的要求</strong>。例如，在电导率逆问题(2)中，分部积分和<span class="math inline">\(\partial \Omega\)</span>上<span class="math inline">\(\varphi=0\)</span>的事实一起导致 <span class="math display">\[
 \langle\mathcal{A}[u, \gamma], \varphi\rangle=\int_{\Omega}(\gamma
 \nabla u \cdot \nabla \varphi-f \varphi) \mathrm{d} x=0 \qquad(4)
 \]</span></p>
@@ -871,6 +871,179 @@ L_{\mathrm{bdry}}(\theta)\)</span>上进行的。<span class="math inline">\(\na
 L_{\mathrm{bdry}}(\theta)\)</span>的计算简单明了，如下所示。然而，损失<span class="math inline">\(L_{\text {int
 }}(\theta)\)</span>被定义为一个最大化问题(11)，我们需要先将其梯度写成关于<span class="math inline">\(\theta\)</span>的函数。为此，我们有下面的引理来计算梯度<span class="math inline">\(\nabla_\theta L_{\text {int
 }}(\theta)\)</span>，证明见附录A.2。</p>
+<p><strong>引理2.</strong> 假设<span class="math inline">\(L_{i n
+t}(\theta)\)</span>在(11)式中定义。则任意<span class="math inline">\(\theta\)</span>处的梯度<span class="math inline">\(\nabla_\theta L_{i n t}(\theta)\)</span>由<span class="math inline">\(\nabla_\theta L_{\text {int
+}}(\theta)=\partial_\theta E(\theta,
+\eta(\theta))\)</span>给出，其中<span class="math inline">\(\eta(\theta)\)</span>为对指定的<span class="math inline">\(\theta\)</span>求<span class="math inline">\(\max
+_{|\eta|^2 \leq 2 B} E(\theta, \eta)\)</span>的解。</p>
+<p><strong>注释</strong> 引理2表明，对任意给定的<span class="math inline">\(\theta\)</span>，若要得到<span class="math inline">\(\nabla_\theta L_{\text {int
+}}(\theta)\)</span>，我们可以先对<span class="math inline">\(\eta\)</span>取<span class="math inline">\(E\)</span>关于<span class="math inline">\(\theta\)</span>的偏导数，然后利用<span class="math inline">\(\theta\)</span>和最大化问题(11)的解<span class="math inline">\(\eta(\theta)\)</span>求偏导数</p>
+<p><span class="math inline">\(L_{\mathrm{int}}(\theta)\)</span>和<span class="math inline">\(L_{\mathrm{bdry}}(\theta)\)</span>的精确梯度需要在连续空间<span class="math inline">\(\Omega\)</span>和<span class="math inline">\(\partial
+\Omega\)</span>上对深度神经网络参数化的函数进行积分，这在实际中是计算难以解决的。因此，我们采用这些积分的蒙特卡罗分析(MC)近似。为此，我们需要下面关于利用样本逼近积分的结果，其证明见附录A.3.</p>
+<p><strong>引理3</strong> 假设<span class="math inline">\(\Omega \subset
+\mathbb{R}^d\)</span>是有界的，<span class="math inline">\(\rho\)</span>是定义在<span class="math inline">\(\Omega\)</span>上的概率密度，使得对所有<span class="math inline">\(x \in \Omega\)</span>，<span class="math inline">\(\rho(x)&gt;0\)</span>。给定函数<span class="math inline">\(\psi \in L^2(\Omega)\)</span>，记<span class="math inline">\(\Psi=\int_{\Omega} \psi(x) \mathrm{d}
+x\)</span>。设<span class="math inline">\(x^{(1)}, \ldots,
+x^{(N)}\)</span>是从<span class="math inline">\(\rho\)</span>中抽取的<span class="math inline">\(N\)</span>个独立样本。考虑<span class="math inline">\(\Psi\)</span>的如下估计量<span class="math inline">\(\hat{\Psi}\)</span>：</p>
+<p><span class="math display">\[
+\hat{\Psi}=\frac{1}{N} \sum_{i=1}^N
+\frac{\psi\left(x^{(i)}\right)}{\rho\left(x^{(i)}\right)} \qquad(15)
+\]</span></p>
+<p>则<span class="math inline">\(\hat{\Psi}\)</span>的一阶矩和二阶矩由下式给出.</p>
+<p><span class="math display">\[
+\mathbb{E}[\hat{\Psi}]=\Psi \quad \text { and } \quad
+\mathbb{E}\left[\hat{\Psi}^2\right]=\frac{N-1}{N} \Psi^2+\frac{1}{N}
+\int_{\Omega} \frac{\psi(x)^2}{\rho(x)} \mathrm{d} x \qquad(16)
+\]</span></p>
+<p>因此，<span class="math inline">\(\hat{\Psi}\)</span>的方差为<span class="math inline">\(N^{-1} \cdot\left(\int_{\Omega}\left(\psi^2 /
+\rho\right) \mathrm{d} x-\left(\int_{\Omega} \psi \mathrm{d}
+x\right)^2\right)\)</span>。特别地，当均匀分布<span class="math inline">\(\rho(x)=1 /|\Omega|\)</span>时，<span class="math inline">\(\hat{\Psi}=(|\Omega| / N) \cdot \sum_i
+\psi\left(x^{(i)}\right)\)</span>的方差为<span class="math inline">\(N^{-1} \cdot\left(|\Omega| \int_{\Omega} \psi^2
+\mathrm{~d} x-\left(\int_{\Omega} \psi \mathrm{d}
+x\right)^2\right)\)</span>。</p>
+<p><strong>注释</strong> 关于引理3，有几点注记：</p>
+<ul>
+<li><p>积分<span class="math inline">\(\Psi\)</span>的估计量<span class="math inline">\(\hat{\Psi}\)</span>是无偏的</p></li>
+<li><p>上述<span class="math inline">\(\hat{\Psi}\)</span>的方差在样本配点数<span class="math inline">\(N\)</span>中以<span class="math inline">\(O(1 /
+N)\)</span>的速率递减。由Hölder不等式和<span class="math inline">\(\rho\)</span>是一个概率密度，我们知道.</p></li>
+</ul>
+<p><span class="math display">\[
+\left|\int_{\Omega} \psi \mathrm{d} x\right| \leq \int_{\Omega}|\psi|
+\mathrm{d} x=\int_{\Omega} \frac{|\psi|}{\sqrt{\rho}} \sqrt{\rho}
+\mathrm{d} x \leq\left(\int_{\Omega} \frac{|\psi|^2}{\rho} \mathrm{~d}
+x\right)^{1 / 2}\left(\int_{\Omega} \rho \mathrm{d} x\right)^{1 /
+2}=\left(\int_{\Omega} \frac{|\psi|^2}{\rho} \mathrm{~d} x\right)^{1 /
+2}
+\]</span></p>
+<p>这也验证了<span class="math inline">\(\mathrm{V}(\hat{\Psi}) \geq
+0\)</span>。更重要的是，当<span class="math inline">\(\psi\)</span>不变号且<span class="math inline">\(\rho
+\propto|\psi|\)</span>时，等式成立。因此，我们可以设置<span class="math inline">\(\rho\)</span>尽可能地接近<span class="math inline">\(|\psi|\)</span>
+(直到一个归一化常数)，以减小方差，但同时保证<span class="math inline">\(\rho\)</span>易于从(15)中采样和评估。这与重要性抽样的概念密切相关。</p>
+<ul>
+<li>引理3中的结果(15)和(16)可以很容易地推广到无界区域<span class="math inline">\(\Omega\)</span>的情形，只要<span class="math inline">\(\psi / \sqrt{\rho} \in L^2(\Omega)\)</span></li>
+</ul>
+<p><strong>引理3为式(14)提供了一种可行的逼近<span class="math inline">\(L(\theta)\)</span>梯度的方法</strong>。例如，要计算<span class="math inline">\(\nabla_\theta L_{\text {bdry
+}}(\theta)\)</span>，可以取式(12)关于<span class="math inline">\(\theta\)</span>的梯度，在边界<span class="math inline">\(\partial \Omega\)</span>上采样<span class="math inline">\(N_b\)</span>个配置点<span class="math inline">\(\left\{x_b^{(i)}: 1 \leq i \leq
+N_b\right\}\)</span> ，通过对采样点处的函数值求和近似<span class="math inline">\(\nabla_\theta
+L_{\mathrm{bdry}}(\theta)\)</span>。如果我们取<span class="math inline">\(\mathcal{B}[u, \gamma]=\left(u-u_b,
+\gamma-\gamma_b, \partial_{\vec{n}} u-u_n\right)\)</span>，且<span class="math inline">\(x_b^{(i)}\)</span>是一致样本，则估计变为</p>
+<p><span class="math display">\[
+\begin{gathered}
+\nabla_\theta L_{\mathrm{bdry}}(\theta)=2 \int_{\partial
+\Omega}\left(\left(u_\theta-u_b\right) \nabla_\theta
+u_\theta+\left(\gamma_\theta-\gamma_b\right) \nabla_\theta
+\gamma_\theta+\left(\partial_{\vec{n}} u_\theta-u_n\right) \nabla_\theta
+\nabla u \cdot \vec{n}\right) \mathrm{d} S(x) \\
+\approx \frac{2|\partial \Omega|}{N_b}
+\sum_{i=1}^{N_b}\left(\left(u_\theta\left(x_b^{(i)}\right)-u_b\left(x_b^{(i)}\right)\right)
+\nabla_\theta
+u_\theta\left(x_b^{(i)}\right)+\left(\gamma_\theta\left(x_b^{(i)}\right)-\gamma_b\left(x_b^{(i)}\right)\right)
+\nabla_\theta \gamma_\theta\left(x_b^{(i)}\right)\right. \\
+\left.+\left(\partial_{\vec{n}}
+u_\theta\left(x_b^{(i)}\right)-u_b\left(x_b^{(i)}\right)\right)
+\nabla_\theta \nabla u_\theta x_b^{(i)} \cdot \vec{n} x_b^{(i)}\right)
+\end{gathered} \qquad(17)
+\]</span></p>
+<p>类似地，我们也可以计算出<span class="math inline">\(\nabla_\theta
+L_{\text {int }}(\theta)\)</span>的随机梯度。若给定<span class="math inline">\(f\)</span>，在区域<span class="math inline">\(\Omega\)</span>上取<span class="math inline">\(\mathcal{A}[u, \gamma]=\nabla \cdot(\gamma \nabla
+u)-f\)</span>，且在区域<span class="math inline">\(\Omega\)</span>内均匀采样<span class="math inline">\(N_r\)</span>个配点<span class="math inline">\(\left\{x_r^{(i)}: 1 \leq i \leq
+N_r\right\}\)</span> 在区域<span class="math inline">\(\Omega\)</span>内，则<span class="math inline">\(\nabla_\theta L_{\text {int
+}}(\theta)\)</span>可由下式估计</p>
+<p><span class="math display">\[
+\begin{aligned}
+\nabla_\theta L_{\mathrm{int}}(\theta) &amp; =2 I(\theta)
+\int_{\Omega}\left(\nabla_\theta \gamma_\theta\left(\nabla u_\theta
+\cdot \nabla
+\varphi_{\eta(\theta)}\right)+\gamma_\theta\left(\nabla_\theta \nabla
+u_\theta \cdot \nabla \varphi_{\eta(\theta)}\right)\right) \mathrm{d}
+S(x) \\
+&amp; \approx \frac{2|\Omega| \hat{I}(\theta)}{N_r}
+\sum_{i=1}^{N_r}\left(\nabla_\theta
+\gamma_\theta\left(x_r^{(i)}\right)\left(\nabla
+u_\theta\left(x_r^{(i)}\right) \nabla
+\varphi_{\eta(\theta)}\left(x_r^{(i)}\right)\right)+\gamma_\theta\left(x_r^{(i)}\right)\left(\nabla_\theta
+\nabla u_\theta\left(x_r^{(i)}\right) \nabla
+\varphi_{\eta(\theta)}\left(x_r^{(i)}\right)\right)\right)
+\end{aligned}  \qquad(18)
+\]</span></p>
+<p>其中<span class="math inline">\(I(\theta)\)</span>及其估计量<span class="math inline">\(\hat{I}(\theta)\)</span>由下式给出</p>
+<p><span class="math display">\[
+I(\theta)=\int_{\Omega} \gamma_\theta\left(\nabla u_\theta \cdot \nabla
+\varphi_{\eta(\theta)}\right) \mathrm{d} x, \quad
+\hat{I}(\theta)=\frac{|\Omega|}{2} \sum_{i=1}^{N_r}
+\gamma_\theta\left(x_r^{(i)}\right)\left(\nabla
+u_\theta\left(x_r^{(i)}\right) \cdot \nabla
+\varphi_{\eta(\theta)}\left(x_r^{(i)}\right)\right)
+\]</span></p>
+<p>并且根据引理2，<span class="math inline">\(\eta(\theta)\)</span>是最大化问题(11)的一个解。梯度中的所有积分都可以用类似的方式进行近似。这些近似梯度实际上是随机梯度，它是无偏的，并且由于网络参数的有界性而具有有界的方差。通过这些近似，式(14)退化为随机投影梯度下降法，通过选择合适的步长，可以保证收敛到式(13)的局部稳定点。由于(13)是有约束的，梯度映射<span class="math inline">\(\mathcal{G}(\theta):=\tau^{-1}\left[\theta-\Pi\left(\theta-\tau
+\nabla_\theta L(\theta)\right)\right]\)</span>被用作<span class="math inline">\(\theta\)</span>的收敛准则[37,62,75]。值得注意的是，梯度映射的定义考虑了步长<span class="math inline">\(\tau\)</span>的归一化。 此外，在没有投影<span class="math inline">\(\Pi\)</span>的情况下，梯度映射退化为<span class="math inline">\(\mathcal{G}(\theta)=\nabla_\theta
+L(\theta)\)</span>，其大小是无约束情况下局部稳定点(即, <span class="math inline">\(\left|\nabla_\theta
+L(\theta)\right|=0\)</span>)的评价标准.这一结果在下面的定理中给出，并在附录A.4.中给出证明。</p>
+<p><span class="math display">\[
+\begin{array}{l}
+   \hline \
+   \textbf{算法1} \quad \text{Inverse Problem Solver by Weak Adversarial
+Network(IWAN)} \\
+   \hline
+   \qquad \textbf{输入：}反问题(1)的区域\Omega和数据 \\
+   \qquad \textbf{初始化：}\left(u_\theta, \gamma_\theta\right),
+\varphi_\eta \\
+   \qquad \textbf{for} \, j=1, \ldots, J \,\textbf{do} \\
+   \qquad \quad \text { Sample } X_r=\left\{x_r^{(i)}: 1 \leq i \leq
+N_r\right\} \subset \Omega \text { and } X_b=\left\{x_b^{(i)}: 1 \leq i
+\leq N_b\right\} \subset \partial \Omega \text {. }\\
+   \qquad \quad \eta \leftarrow \operatorname{SGD}\left(-\nabla_\eta
+E(\theta, \eta), X_r, \eta, \tau_\eta, J_\eta\right) \text {. }\\
+   \qquad \quad \theta \leftarrow
+\operatorname{SGD}\left(\partial_\theta E(\theta, \eta)+\beta
+\nabla_\theta L_{\mathrm{bdry}}(\theta),\left(X_r, X_b\right), \theta,
+\tau_\theta, 1\right)\\
+   \qquad \textbf{end for} \\
+   \qquad \textbf{输出：}\left(u_\theta, \gamma_\theta\right) \\
+   \hline
+\end{array}
+\]</span></p>
+<p><strong>定理4</strong> 对于任意的<span class="math inline">\(\varepsilon&gt;0\)</span>，令<span class="math inline">\(\left\{\theta_j\right\}\)</span>是由梯度下降算法(14)生成的<span class="math inline">\(\left(u_\theta,
+\gamma_\theta\right)\)</span>中的网络参数序列，在每次迭代中用样本复杂度为<span class="math inline">\(N_r,
+N_b=O\left(\varepsilon^{-1}\right)\)</span>的样本均值逼近<span class="math inline">\(\nabla_\theta L(\theta)\)</span>中的积分，则<span class="math inline">\(J=O\left(\varepsilon^{-1}\right)\)</span>次迭代后<span class="math inline">\(\min _{1 \leq j \leq J}
+\mathbb{E}\left[\left|\mathcal{G}\left(\theta_j\right)\right|^2\right]
+\leq \varepsilon\)</span></p>
+<p><strong>注释</strong> 定理4建立了(14)到问题的所谓<span class="math inline">\(\varepsilon\)</span>-解的收敛性和迭代复杂性.该结果是基于梯度映射的期望大小，这是非凸约束随机优化中的一个标准收敛准则。然而，这只能保证在期望意义下逼近一个稳定点(不一定是局部的或全局的极小点)。在理论上，我们可以将额外的全局优化技术应用到(7)中，以便找到一个具有较高计算成本的全局最优解(最好只有高概率才有可能)。然而，我们在本工作中不会对这一问题做进一步的探讨。</p>
+<p>现在我们总结了我们的算法使用弱对抗网络求解IPs的步骤。为了简化表述，我们引入如下符号来表示寻找损失函数<span class="math inline">\(L(\theta)\)</span>的极小点的随机梯度下降(SGD)过程：</p>
+<p><span class="math display">\[
+\theta^* \leftarrow \operatorname{SGD}\left(G(\theta), X, \theta_0,
+\tau, J\right) \qquad(19)
+\]</span></p>
+<p>也就是说，意味着输出<span class="math inline">\(\theta^*\)</span>是对<span class="math inline">\(j=0, \ldots, J-1\)</span>执行步长为<span class="math inline">\(\tau\)</span>的(投影) SGD方案，有初始<span class="math inline">\(\theta_0\)</span>之后的结果<span class="math inline">\(\theta_J\)</span>:</p>
+<p><span class="math display">\[
+\theta_{j+1} \leftarrow \Pi\left(\theta_j-\tau \hat{G}\left(\theta_j ;
+X\right)\right) \qquad(20)
+\]</span></p>
+<p>这里<span class="math inline">\(X=\left\{x^{(i)}: 1 \leq i \leq
+N\right\}\)</span>是<span class="math inline">\(N\)</span>个采样配置点的集合，<span class="math inline">\(G(\theta):=\nabla_\theta
+L(\theta)\)</span>是损失函数<span class="math inline">\(L(\theta)\)</span>的梯度，<span class="math inline">\(\hat{G}(\theta ; X)\)</span>表示<span class="math inline">\(G(\theta)\)</span>在任意给定的<span class="math inline">\(\theta\)</span>下的随机逼近，其中积分的估计如(15)中利用采样配置点<span class="math inline">\(X\)</span>。在第一步中，我们固定<span class="math inline">\(\theta\)</span>，通过对<span class="math inline">\(J_\eta\)</span>步施加随机梯度上升来求解目标函数<span class="math inline">\(E(\theta,
+\eta)\)</span>在(11)中定义的最大化问题，从而得到一个近似的最大化子<span class="math inline">\(\eta\)</span>；在第二步中，我们固定这个<span class="math inline">\(\eta\)</span>，利用梯度<span class="math inline">\(\nabla_\theta L(\theta)=\partial_\theta E(\theta,
+\eta)+\beta \nabla_\theta
+L_{\mathrm{bdry}}(\theta)\)</span>通过一个随机梯度下降步来更新<span class="math inline">\(\theta\)</span>
+。然后进入步骤1，开始下一次迭代。因此，我们的目标函数为<span class="math inline">\(E(\theta, \eta)+\beta
+L_{\mathrm{bdry}}(\theta)\)</span>，我们通过<span class="math inline">\(\min _\theta \max _\eta E(\theta, \eta)+\beta
+L_{\mathrm{bdry}}(\theta)\)</span>的min-max优化来寻找最优点<span class="math inline">\(\left(\theta^*,
+\eta^*\right)\)</span>。这个过程被称为使用弱对抗网络(IWAN)的反问题求解器，并在算法1中总结。数值实现中的参数值在第4节中给出</p>
+<h2 id="数值实验">数值实验</h2>
+<h3 id="实施细则">实施细则</h3>
+<p>在这一部分中，我们讨论了关于算法1的一些实现细节和修改。首先，为了避免在固定<span class="math inline">\(\theta\)</span>的情况下求解式(11)中的内部最大化问题<span class="math inline">\(\max _\eta E(\theta,
+\eta)\)</span>花费过多的时间，我们只使用少量的迭代次数<span class="math inline">\(J_\eta\)</span>来计算 <span class="math inline">\(\eta\)</span>。然后我们切换到更新<span class="math inline">\(\theta\)</span>进行一次迭代。见算法1中的两个SGD步骤。这样可以提高整体效率，避免在<span class="math inline">\(\eta\)</span>的内部最大化问题上花费过多的时间，特别是当<span class="math inline">\(\theta\)</span>还远未达到最优时。事实上，我们可以采用两个单独的测试函数<span class="math inline">\(\varphi_\eta\)</span>和<span class="math inline">\(\bar{\varphi}_\eta\)</span>
+(为了记号的简洁性,我们又用同样的<span class="math inline">\(\eta\)</span>)。在每次迭代<span class="math inline">\(j\)</span>中，我们按顺序交替更新<span class="math inline">\(\left(u_\theta, \varphi_\eta, \gamma_\theta,
+\bar{\varphi}_\eta\right)\)</span>，每个<span class="math inline">\(\left(u_\theta, \varphi_\eta, \gamma_\theta,
+\bar{\varphi}_\eta\right)\)</span>都有一个或几个SGD步(20)。我们将为下面的实验指定这些网络的步数。</p>
+<p>在第3节的推导过程中，我们要求有界的网络参数<span class="math inline">\(\theta\)</span>和<span class="math inline">\(\eta\)</span>，其中界<span class="math inline">\(B\)</span>可以任意大，以确保使用样本的积分估计量的有限方差，从而保证SGD收敛。另一种处理有界性约束的方法是在(7)的目标函数中添加<span class="math inline">\(|\theta|^2\)</span>和<span class="math inline">\(|\eta|^2\)</span>作为正则项。我们也可以使用分母为<span class="math inline">\(\|\varphi\|_2^2:=\int_{\Omega}|\varphi|^2
+\mathrm{~d}
+x\)</span>(用MC近似,类似于式(15))的算子范数(5)，这在我们的实现中也被采用。这种替换不会引起数值实现上的问题，因为测试函数<span class="math inline">\(\varphi_\eta\)</span>是由一个具有固定宽度/深度和有界参数的网络实现的，因此可以保证在<span class="math inline">\(H^1\)</span>中。</p>
+<p>弱式(3)要求一个检验函数<span class="math inline">\(\varphi_\eta\)</span>在<span class="math inline">\(\partial
+\Omega\)</span>上消失。保证这一点的一个简单技巧是，预先计算一个函数<span class="math inline">\(\varphi_0 \in C(\Omega)\)</span>，使得当<span class="math inline">\(x \in \partial \Omega\)</span>时，<span class="math inline">\(\varphi_0(x)=0\)</span>且当<span class="math inline">\(x \in \Omega\)</span>时，<span class="math inline">\(\varphi_0(x)&gt;0\)</span>(e.g.,一个到<span class="math inline">\(\partial
+\Omega\)</span>的距离函数)。然后寻找一个对其任意边界无约束的参数化网络<span class="math inline">\(\varphi_\eta^{\prime}\)</span>，将测试函数<span class="math inline">\(\varphi_\eta\)</span>设置为<span class="math inline">\(\varphi_0 \varphi_\eta^{\prime}\)</span>，且在∂
+<span class="math inline">\(\partial \Omega\)</span>上仍取零值。</p>
+<p>我们使用TensorFlow [1]
+(Python版本3.7)实现了我们的算法，这是一个先进的深度学习包，可以有效地利用GPU进行并行计算。通过TensorFlow内置的自动微分模块计算关于网络参数(<span class="math inline">\(\theta\)</span>和<span class="math inline">\(\eta\)</span>)和输入(<span class="math inline">\(x\)</span>)的梯度。在训练过程中，我们还可以用它的许多变体来代替标准的SGD优化器，如AdaGrad，RMSprop算法，Adam，Nadam等。在我们的实验中，我们使用了TensorFlow包提供的AdaGrad，在我们的大部分测试中，AdaGrad似乎提供了比其他优化器更好的性能。其他所有参数，如网络结构(层数和神经元数)、步长(也称为学习率)、迭代次数等将在第4节中指定</p>
 
       
     </div>
@@ -2200,13 +2373,13 @@ PINN的能力。总结了求解不同PDE的有效神经网络结构的特点，�
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">106k</span>
+    <span title="站点总字数">116k</span>
 </div>
 
 <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共106k字</span>
+  <span class="post-count">博客全站共116k字</span>
   <span class="post-meta-divider">|</span>
   本站总访问量<span id="busuanzi_value_site_pv"></span>次
   <span class="post-meta-divider">|</span>
@@ -2217,7 +2390,7 @@ PINN的能力。总结了求解不同PDE的有效神经网络结构的特点，�
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共106k字</span>
+  <span class="post-count">博客全站共116k字</span>
 </div>
 
 
