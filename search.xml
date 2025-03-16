@@ -1918,7 +1918,7 @@ p=\int_0^1|\kappa|^2\left(\frac{\mathrm{~d} p}{\mathrm{~d} s}\right)^2
 I|\)</span>，在对象的边界将达到局部极大值。注意到第三项的符号为负，最小化<span class="math inline">\(E(C)\)</span>对应于最大化第三项，这就要求曲线<span class="math inline">\(C\)</span>尽可能落在<span class="math inline">\(|\nabla
 I|\)</span>达到极大值的位置上。由此可见，“蛇”模型的基本出发点也是“基于边缘的”。由于这一模型的前提是<span class="math inline">\(C(p)\)</span>为封闭曲线，因而利用“蛇”模型分割时。将不会产生边缘断裂问题。</p>
 <p>为了避免出现第三项的负号，可引入一个新的函数<span class="math inline">\(g(r),r \in
-\R^+\)</span>。原则上，它可以时任何具有单调递减的非负函数，以保证<span class="math inline">\(|\nabla I|\)</span>的局部极大值对应于<span class="math inline">\(g(|\nabla
+\mathbb{R}^+\)</span>。原则上，它可以时任何具有单调递减的非负函数，以保证<span class="math inline">\(|\nabla I|\)</span>的局部极大值对应于<span class="math inline">\(g(|\nabla
 I|)\)</span>的局部极小值，从而使最大化<span class="math inline">\(\int^1_0 |\nabla I[C(p)]| \,
 dp\)</span>等价于最小化<span class="math inline">\(\int g(\nabla
 I[C(p)])\,
@@ -2336,7 +2336,8 @@ Networks（弱对抗网络对反问题的数值求解）</h1>
 <p>时间：2020</p>
 <h2 id="摘要">摘要</h2>
 <p>本文发展了一种弱对抗网络方法来数值求解一类反问题，包括电阻抗层析成像和动态电阻抗层析成像问题。<strong>利用给定反问题的PDE的弱形式，其中解和测试函数被参数化为深度神经网络。然后，弱形式和边界条件诱导出一个关于网络参数的鞍点函数的极小极大问题</strong>。随着参数的交替更新，网络逐渐逼近反问题的解。对所提算法的收敛性给出了理论证明。
-所提出的方法是完全无网格的，无需任何空间离散，特别适用于高维数和解的低正则性问题。对各种测试反问题的数值实验表明了该方法具有较高的精度和效率。</p>
+所提出的方法是完全无网格的，无需任何空间离散，特别适用于高维数和解的低正则性问题。对各种测试反问题的数值实验表明了该方法具有较高的精度和效率。
+<span id="more"></span></p>
 <h2 id="介绍">介绍</h2>
 <p>反问题(Inverse
 Problems，IP)普遍存在于大量的科学学科中，包括地球物理[73]、信号处理与成像[9]、计算机视觉[61]、遥感与控制[87]、统计学[53]和机器学习[38]等。设<span class="math inline">\(\Omega\)</span>是<span class="math inline">\(\mathbb{R}^d\)</span>中的开集和有界集，则定义在<span class="math inline">\(\Omega\)</span>上的IP可表示为一般形式： <span class="math display">\[
