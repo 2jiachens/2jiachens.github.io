@@ -2006,6 +2006,7 @@ u|}\right)-\lambda_1\left(I-c_1\right)^2+\lambda_2\left(I-c_2\right)^2\right]  \
     <title>WGAN</title>
     <url>/2025/03/10/WGAN/</url>
     <content><![CDATA[<h1 id="wasserstein-gan">Wasserstein GAN</h1>
+<span id="more"></span>
 <h2 id="介绍">介绍</h2>
 <p>本文关心的问题是无监督学习问题。主要是，学习一个概率分布意味着什么？对此，经典的答案是学习一个概率密度。这通常是通过定义一个参数密度族<span class="math inline">\(\left(P_\theta\right)_{\theta \in
 \mathbb{R}^d}\)</span>，并在数据上找到使似然函数最大化的密度族：如果有真实的数据样本<span class="math inline">\(\left\{x^{(i)}\right\}_{i-1}^m\)</span>，我们就可以解决这个问题。</p>
