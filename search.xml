@@ -488,600 +488,6 @@ KKT 条件。</p>
       </tags>
   </entry>
   <entry>
-    <title>Numerical Solution of Inverse Problems by Weak Adversarial  Networks</title>
-    <url>/2025/03/04/Numerical-Solution-of-Inverse-Problems-by-Weak-Adversarial-Networks/</url>
-    <content><![CDATA[<h1 id="numerical-solution-of-inverse-problems-by-weak-adversarial-networks弱对抗网络对反问题的数值求解">Numerical
-Solution of Inverse Problems by Weak Adversarial
-Networks（弱对抗网络对反问题的数值求解）</h1>
-<p>期刊：Inverse Problems</p>
-<p>时间：2020</p>
-<h2 id="摘要">摘要</h2>
-<p>本文发展了一种弱对抗网络方法来数值求解一类反问题，包括电阻抗层析成像和动态电阻抗层析成像问题。<strong>利用给定反问题的PDE的弱形式，其中解和测试函数被参数化为深度神经网络。然后，弱形式和边界条件诱导出一个关于网络参数的鞍点函数的极小极大问题</strong>。随着参数的交替更新，网络逐渐逼近反问题的解。对所提算法的收敛性给出了理论证明。
-所提出的方法是完全无网格的，无需任何空间离散，特别适用于高维数和解的低正则性问题。对各种测试反问题的数值实验表明了该方法具有较高的精度和效率。
-<span id="more"></span></p>
-<h2 id="介绍">介绍</h2>
-<p>反问题(Inverse
-Problems，IP)普遍存在于大量的科学学科中，包括地球物理[73]、信号处理与成像[9]、计算机视觉[61]、遥感与控制[87]、统计学[53]和机器学习[38]等。设<span class="math inline">\(\Omega\)</span>是<span class="math inline">\(\mathbb{R}^d\)</span>中的开集和有界集，则定义在<span class="math inline">\(\Omega\)</span>上的IP可表示为一般形式： <span class="math display">\[
-\begin{aligned}
-\mathcal{A}[u, \gamma]=0, &amp; &amp; \text { in } \Omega  \qquad(1a)\\
-\mathcal{B}[u, \gamma]=0, &amp; &amp; \text { on } \partial \Omega
-\qquad(1b)
-\end{aligned}
-\]</span> 其中<span class="math inline">\(\mathcal{A}[u,
-\gamma]\)</span>指定一个微分方程，<strong><span class="math inline">\(u\)</span>是反介质问题中的解，<span class="math inline">\(\gamma\)</span>是反源问题中的源函数</strong>。方程<span class="math inline">\(\mathcal{A}\)</span>可以是常微分方程(ODE)，也可以是偏微分方程(PDE)，还可以是积分微分方程(IDE)，<span class="math inline">\((u, \gamma)\)</span>在区域<span class="math inline">\(\Omega\)</span>内需要满足(几乎)处处成立。边界值(以及如果适用的初始值)由<span class="math inline">\(\mathcal{B}[u, \gamma]\)</span>在<span class="math inline">\(\partial
-\Omega\)</span>上给出。根据具体的应用，<span class="math inline">\(u\)</span>和/或<span class="math inline">\(\gamma\)</span>的部分信息可以在<span class="math inline">\(\Omega\)</span>的内部获得.那么IP
-(1)就是找到同时满足(1a)和(1b)的<span class="math inline">\((u,
-\gamma)\)</span>。</p>
-<p>为了实例化我们的方法，我们主要以电阻抗成像(Electrical Impedance
-Tomography，EIT)中经典的电导率逆问题[19、55]为例，介绍了本文的主要思想和推导过程。然而，我们的方法可以很容易地通过修改应用于其他类型的IP。一个动态EIT问题的例子将在第4节中给出。EIT的目标是根据电势<span class="math inline">\(u\)</span>，电流<span class="math inline">\(-\gamma \partial_{\vec{n}}
-u\)</span>的测量和区域<span class="math inline">\(\Omega\)</span>的边界<span class="math inline">\(\partial \Omega\)</span>上/附近的<span class="math inline">\(\gamma\)</span> (也即<span class="math inline">\(\partial_{\vec{n}}
-u\)</span>)的知识，确定定义在<span class="math inline">\(\Omega\)</span>上的未知介质的电导率分布<span class="math inline">\(\gamma(x)\)</span>：</p>
-<p><span class="math display">\[
-\begin{aligned}
--\nabla \cdot(\gamma \nabla u)-f=0, &amp; \text { in }
-\Omega  \qquad(2a)\\
-u-u_b=0, \gamma-\gamma_b=0, \partial_{\vec{n}} u-u_n=0, &amp; \text { on
-} \partial \Omega \qquad(2b)
-\end{aligned}
-\]</span></p>
-<p>其中<span class="math inline">\(u_b\)</span>为测量电压，<span class="math inline">\(\gamma_b\)</span>为物体表面附近的电导率，<span class="math inline">\(u_n \triangleq \nabla u \cdot \vec{n}\)</span>
-，其中 <span class="math inline">\(\vec{n}\)</span>为<span class="math inline">\(\partial
-\Omega\)</span>的外法线.值得注意的是，<strong>我们的方法并不像EIT问题[23、36、59]的经典方法那样估计与电导率函数相关的Dirichlet
-- to - Neumann
-(DtN)映射。相反，我们的目标是直接利用给定的数据数值求解一般的一类IPs(1)</strong>，以EIT问题(2)为原型例子，而不利用其特殊结构(例如,
-DtN映射)。为了使我们的介绍简洁而有重点，我们只考虑(1a)中具有PDEs特征的<span class="math inline">\(\mathcal{A}[u,
-\gamma]\)</span>的IP，并假设给定的IP是定义良好的且至少有一个(弱)解。</p>
-<p>我们的方法是<strong>训练能够表示给定IP的解<span class="math inline">\((u,
-\gamma)\)</span>的深度神经网络</strong>，与经典的数值方法相比有很大的改进，特别是对于高维问题。更具体地说，<strong>我们利用PDE
-(1a)的弱形式，将IP转化为<span class="math inline">\(u\)</span>和<span class="math inline">\(\gamma\)</span>的算子范数最小化问题。然后将<span class="math inline">\(u\)</span>、未知系数<span class="math inline">\(\gamma\)</span>和测试函数<span class="math inline">\(\varphi\)</span>分别参数化为深度神经网络<span class="math inline">\(u_\theta, \gamma_\theta\)</span>, 和 <span class="math inline">\(\varphi_\eta\)</span>，网络参数为<span class="math inline">\((\theta, \eta)\)</span>，并形成参数为<span class="math inline">\((\theta,
-\eta)\)</span>的鞍函数的极小极大问题。最后，我们应用随机梯度下降法交替更新网络参数，使得(<span class="math inline">\(u_\theta,
-\gamma_\theta\)</span>)逐步逼近IP的解</strong>。利用深度神经网络对<span class="math inline">\((u,
-\gamma)\)</span>进行参数化，不需要对空间域和时间域进行离散化，因此是完全无网格的。与经典的有限差分方法(FDM)和有限元法(FEM)相比，这是一种很有前途的替代方法，它们首先在[8]中使用了"维数灾难"这一术语。此外，<strong>我们的方法结合了弱解(原始网络)<span class="math inline">\((u, \gamma)\)</span>和测试函数(对抗网络) <span class="math inline">\(\varphi\)</span>的训练，由PDE的弱形式控制，这对解<span class="math inline">\((u,
-\gamma)\)</span>的正则性要求较低，当解具有奇异性时，在许多实际应用中可能更有优势</strong>。</p>
-<p>本论文的其余部分组织如下。我们首先在第2节中回顾了基于深度学习的正问题和反问题解决方案的近期工作。在第三节中，我们给出了我们方法的详细推导和一系列理论结果来支持所提出方法的有效性。在第4节中，我们讨论了几种可以提高实际性能的实现技术，并进行了一系列的数值实验来证明所提出方法的有效性。第五部分对本文进行了总结，并给出了一些一般性的注记。</p>
-<h2 id="相关工作">相关工作</h2>
-<p>在过去的几年中，使用基于深度学习的方法来解决正问题和反问题已经成为一种新的趋势。这些方法大致可以分为两类。第一类包括基于监督学习方法来近似求解给定问题的方法。这些方法通过数值模拟和实验需要大量的输入-输出对来训练所需的网络。在这一类中，深度神经网络用于从测量数据中生成近似的中间结果，用于进一步精化[34、66、69、77、81、88]，应用于改进经典数值方法在后处理阶段的求解[6、41、42、45、51、56、67、84]，或者用于近似从反问题的给定参数到其解的映射，但需要空间离散，无法应用于高维问题[2、50、63]。</p>
-<p>第二类是基于问题表述直接求解正问题或反问题的无监督学习方法，而不是额外的训练数据，在实际应用中可能比第一类更有优势。例如，在[24]中，前馈神经网络用于参数化系数函数，并通过最小化性能函数进行训练。在[58]中，提出了一种名为SwitchNet的神经网络架构，通过散射体和散射场之间的映射来解决逆散射问题。文献[32]提出了一种针对2D和3D
-EIT问题的深度学习方法，通过紧凑的神经网络架构来表示DtN图。前向问题中PDE对应的倒向随机微分方程(BSDE)是通过神经网络部分参数化，使得对域[13、30、43]中目标点的BSDE积分得到PDE的解。在[31]中，一个正问题的解被参数化为一个深度神经网络，它通过最小化与PDE相关的能量泛函和边值条件上的惩罚项组成的损失函数来训练。在[74]中提出了另一种无网格框架，称为物理信息神经网络(PINN)，用于使用基于PDEs的强大公式的深度神经网络来解决正问题和反问题，其中反问题部分考虑常系数函数。具体来说，PINN使用深度神经网络对给定的PDE的未知量进行参数化，这些网络通过最小化在域和边界条件采样点处违反PDE的最小二乘法形成的损失函数进行训练。PINN的一些实证研究也在[26]中进行。在[52]中也考虑了在问题域中给定数据的基于PINN的IPs的解决方案，并且在[5]中提出了使用自适应采样的配置点来精化解决方案。
-在[89]中，PDE的弱形式被用作目标函数，其中PDE的解和测试函数都被参数化为深度神经网络，分别试图最小化和最大化目标函数。在[54]中，使用了类似的变分形式，其中测试函数是固定基，而不是要学习的神经网络。在[68]中，我们使用了三个神经网络，其中一个用于低保真度数据，另外两个用于高保真度数据的线性和非线性函数。具有多保真网络结构的PINN也被提出用于随机PDE情形，其中多项式混沌展开式用于表示解，即作为随机基与待学习系数函数的线性组合[18]。
-在[12]中，IP的解被深度神经网络参数化，并通过最小化一个代价函数来学习，该代价函数执行IP和额外的正则化条件，其中PDE的解在训练过程中被要求。</p>
-<p>最近，基于元学习的前向问题求解方法也被考虑[18、33、64]。在[33]中，我们利用小波变换的压缩形式来学习从微分算子的系数到伪微分算子(e.g.
-,格林函数)的映射。在[64]中，我们引入了一个由分支网络和主干网络组成的深度算子网络。该网络将有限个位置上的输入函数(branch-net)和输出函数的位置(dry-net)进行编码，输出函数由两者的内积加上一个偏置给出。学习网络的宽度和深度参数也在[18]中使用贝叶斯优化来考虑。</p>
-<p>我们的IP方法沿用了我们先前针对正问题的工作[89]，这与前面提到的现有方法在使用偏微分方程的弱形式上有所不同。<strong>弱形式是求解偏微分方程的一种强有力的方法，因为它要求更少的正则性，并允许解的必要奇异性，这在成像和异常检测等许多实际应用中都是一个重要的特征</strong>。
-从理论的角度来看，<strong>我们的方法对解(作为原始网络)和测试函数(作为对抗网络)进行神经网络参数化，并以一种对抗训练的方式执行，即测试函数在不满足PDE的地方对解网络进行批判训练，解网络在这些地方进行自我修正，直到PDE在域中(几乎)处处被满足</strong>。然而，由于反问题往往是不适定的，且一般情况下比正问题更难求解，因此本文主要关注EIT中的反问题(2)。类似问题的一些实验结果也在第4节中给出。</p>
-<p>本工作中的对抗训练与生成对抗网络[39]中使用的对抗训练相似，其中<strong>生成器网络旨在将通用的随机样本(如来自给定的多变量Gaussian的)映射到与训练样本具有相同分布的样本</strong>，而<strong>判别器网络则是将生成器网络产生的样本与真实样本区分开来</strong>。生成器和对抗网络作为零和博弈中的两个参与者，分别通过梯度下降和上升对目标函数进行交替更新，以达到均衡。
-特别地，GAN的一个显著变体，称为Wasserstein生成式对抗网络[4]，也具有原始网络(生成器)和对抗网络(由生成分布和样本分布的Wasserstein距离决定的最优运输的对偶函数)的min-max结构作为我们的提法。然而，WGAN要求其在max问题中的对偶函数是1-Lipschitz的，这在数值上是很难实现的，并产生了一系列的后续工作来克服问题[40、70]，谱归一化生成对抗网络。相比之下，<strong>我们工作中的弱解与测试函数的结构自然地产生于PDE理论中的弱公式，它在不对对抗网络(测试函数)施加限制性约束的情况下，为PDE的IP求解提供了大量的理论证明和计算益处</strong>。</p>
-<p>与许多现有的深度学习方法需要大量的演示数据(例如,系数/边界值和解对)进行训练不同，我们的方法遵循无监督的学习策略，只需要在给定的IP中制定PDE和边界条件。在[83]中，一项无监督学习研究表明，一般的卷积神经网络(CNN)自动偏向于平滑信号，并且可以在没有任何训练数据的情况下产生类似于图像去噪中一些复杂重建的结果。这种现象被称为深度图像先验(Deep
-Image Prior，DIP)，在[29、46]中被进一步利用。
-DIP与现有工作最显著的区别在于，我们的方法是完全无网格的，不需要任何空间离散，适用于高维问题。另一方面，在DIP及其后续工作中，重建网络被应用于离散化的2D或3D图像。此外，我们的目标是利用深度网络的表征能力来参数化连续空间中IP的解，而DIP的主要兴趣在于其有趣的自动正则化特性。</p>
-<h2 id="针对反问题的弱对抗网络">针对反问题的弱对抗网络</h2>
-<p>所提出的IPs弱对抗网络方法受到PDEs弱形式的启发。为了得到(1a)中偏微分方程的弱形式，我们将(1a)两边同时乘以一个任意的测试函数<span class="math inline">\(\varphi \in H_0^1(\Omega)\)</span>(在<span class="math inline">\(\Omega\)</span>中具有有界一阶弱导数和紧支撑的函数的Hilbert空间)，并在<span class="math inline">\(\Omega\)</span>上积分： <span class="math display">\[
-\langle\mathcal{A}[u, \gamma], \varphi\rangle:=\int_{\Omega}
-\mathcal{A}[u, \gamma](x) \varphi(x) \mathrm{d} x=0 \qquad(3)
-\]</span></p>
-<p><strong>弱形式(3)的主要优点之一是我们可以通过分部积分将<span class="math inline">\(\mathcal{A}[u,
-\gamma]\)</span>中的某些梯度算子转移到<span class="math inline">\(\varphi\)</span>中，从而降低对<span class="math inline">\(u\)</span>(和<span class="math inline">\(\gamma\)</span>，若适用)正则性的要求</strong>。例如，在电导率逆问题(2)中，分部积分和<span class="math inline">\(\partial \Omega\)</span>上<span class="math inline">\(\varphi=0\)</span>的事实一起导致 <span class="math display">\[
-\langle\mathcal{A}[u, \gamma], \varphi\rangle=\int_{\Omega}(\gamma
-\nabla u \cdot \nabla \varphi-f \varphi) \mathrm{d} x=0 \qquad(4)
-\]</span></p>
-<p>其中<span class="math inline">\(\gamma \nabla
-u\)</span>在经典意义下不一定像式(2)那样可微(在这篇文章中,我们用<span class="math inline">\(\nabla\)</span>表示关于<span class="math inline">\(x\)</span>的梯度算子,<span class="math inline">\(\nabla_\theta\)</span>表示关于<span class="math inline">\(\theta\)</span>的梯度等)。若对所有的<span class="math inline">\(\varphi \in H_0^1(\Omega)\)</span>，<span class="math inline">\((u,
-\gamma)\)</span>满足边界条件(1b)和(3)，则称<span class="math inline">\((u, \gamma) \in H^1(\Omega) \times
-L^2(\Omega)\)</span>为反问题(1)的弱解(或广义解)。这里<span class="math inline">\(L^2(\Omega)\)</span>是<span class="math inline">\(\Omega\)</span>上平方可积函数的Lebesgue空间，<span class="math inline">\(H^1(\Omega) \subset
-L^2(\Omega)\)</span>是一阶弱导数有界的函数的Hilbert空间。注意到(1)式的任何经典(强)解也是弱解。
-在这项工作中，我们寻求反问题(1)的弱解，以便我们可能能够提供问题的答案，即使它不存在经典意义上的解。</p>
-<p>在文献[89]的基础上，我们考虑了(1)中PDE <span class="math inline">\(\mathcal{A}[u,
-\gamma]=0\)</span>的弱形式。为了处理反问题中PDE的未知解<span class="math inline">\(u\)</span>和参数<span class="math inline">\(\gamma\)</span>，我们将<span class="math inline">\(u\)</span>和<span class="math inline">\(\gamma\)</span>都参数化为深度神经网络，并将<span class="math inline">\(\mathcal{A}[u, \gamma]: H_0^1(\Omega) \rightarrow
-\mathbb{R}\)</span>看作一个线性泛函，使得<span class="math inline">\(\mathcal{A}[u,
-\gamma](\varphi):=\langle\mathcal{A}[u, \gamma],
-\varphi\rangle\)</span>，如式(3)所定义。我们定义由<span class="math inline">\(H_1\)</span>范数诱导的<span class="math inline">\(\mathcal{A}[u, \gamma]\)</span>范数为 <span class="math display">\[
-\|\mathcal{A}[u, \gamma]\|_{o p}:=\sup _{\varphi \in H_0^1, \varphi \neq
-0} \frac{\langle\mathcal{A}[u, \gamma],
-\varphi\rangle}{\|\varphi\|_{H^1}} \qquad(5)
-\]</span></p>
-<p>其中，<span class="math inline">\(\varphi\)</span>的<span class="math inline">\(H^1\)</span>范数由<span class="math inline">\(\|\varphi\|_{H^
-1(\Omega)}^2=\int_{\Omega}\left(|\varphi(x)|^2+|\nabla
-\varphi(x)|^2\right) \mathrm{d} x\)</span>给出。因此，<span class="math inline">\((u, \gamma)\)</span>是(1)的弱解当且仅当<span class="math inline">\(\partial \Omega\)</span>上<span class="math inline">\(\|\mathcal{A}[u, \gamma]\|_{o p}=0\)</span>，<span class="math inline">\(\mathcal{B}[u, \gamma]=0\)</span>。当<span class="math inline">\(\|\mathcal{A}[u, \gamma]\|_{o p} \geq
-0\)</span>时，我们知道方程(1)的一个弱解<span class="math inline">\((u,
-\gamma)\)</span>，从而解决了方程(5)的如下观测问题： <span class="math display">\[
-\underset{u, \gamma}{\operatorname{minimize}}\|\mathcal{A}[u,
-\gamma]\|_{o p}^2=\underset{u, \gamma}{\operatorname{minimize}} \sup
-_{\varphi \in H_0^1, \varphi \neq 0} \frac{|\langle\mathcal{A}[u,
-\gamma], \varphi\rangle|^2}{\|\varphi\|_{H^1}^2} \qquad(6)
-\]</span></p>
-<p>其中，<span class="math inline">\((u, \gamma) \in H^1(\Omega) \times
-L^2(\Omega)\)</span>，且取得最小值0。这一结果在下面的定理中进行了总结，并在附录A.1中给出了证明。</p>
-<p><strong>定理1</strong> 假设<span class="math inline">\(\left(u^*,
-\gamma^*\right)\)</span>满足边界条件<span class="math inline">\(\mathcal{B}\left[u^*,
-\gamma^*\right]=0\)</span>，则<span class="math inline">\(\left(u^*,
-\gamma^*\right)\)</span>是(1)式的弱解当且仅当<span class="math inline">\(\left\|\mathcal{A}\left[u^*,
-\gamma^*\right]\right\|_{o p}=0\)</span></p>
-<p><strong>定理1意味着，由于算子范数的非负性，为了找到(1)的弱解，我们可以通过求取最小的算子范数值<span class="math inline">\(\left\|\mathcal{A}\left[u^*,
-\gamma^*\right]\right\|_{o p}=0\)</span>来寻找满足<span class="math inline">\(\mathcal{B}\left[u^*,\gamma^*\right]=0\)</span>且同时最小化(6)的最优解<span class="math inline">\(\left(u^*,
-\gamma^*\right)\)</span>。也就是说，<span class="math inline">\(\left(u^*,
-\gamma^*\right)\)</span>是问题(1)的弱解当且仅当<span class="math inline">\(\left\|\mathcal{A}\left[u^*,
-\gamma^*\right]\right\|_{o p}\)</span>和<span class="math inline">\(\left\|\mathcal{B}\left[u^*,
-\gamma^*\right]\right\|_{L^2(\partial
-\Omega)}\)</span>都消失。因此，我们可以从下面的最小化问题中求解<span class="math inline">\(\left(u^*,
-\gamma^*\right)\)</span>，等价于(1)</strong> <span class="math display">\[
-\underset{u, \gamma}{\operatorname{minimize}} I(u,
-\gamma)=\|\mathcal{A}[u, \gamma]\|_{o p}^2+\beta\|\mathcal{B}[u,
-\gamma]\|_{L^2(\partial \Omega)}^2 \qquad(7)
-\]</span></p>
-<p>并且<span class="math inline">\(\beta
-&gt;0\)</span>是平衡目标函数<span class="math inline">\(I(u,\gamma)\)</span>中两项的权重参数。注意到(7)式中目标函数的两项均为非负，且仅在(1)式的一个弱解<span class="math inline">\(\left(u^*,
-\gamma^*\right)\)</span>处同时消失。</p>
-<p>对于高维PDEs的经典数值方法，一个很有前途的替代方法是使用深度神经网络，因为它们不需要区域离散，并且是完全无网格的。深度神经网络是多个简单函数(称为层)的组合，因此它们可以逼近相当复杂的函数。考虑一个简单的多层神经网络<span class="math inline">\(u_\theta\)</span>如下： <span class="math display">\[
-u_\theta(x)=w_K^{\top} l_{K-1} \circ \cdots \circ l_0(x)+b_K \qquad(8)
-\]</span></p>
-<p>其中，第<span class="math inline">\(k\)</span>层<span class="math inline">\(l_k: \mathbb{R}^{d_k} \rightarrow
-\mathbb{R}^{d_{k+1}}\)</span>由<span class="math inline">\(l_k(z)=\sigma_k\left(W_k
-z+b_k\right)\)</span>给出，权重<span class="math inline">\(W_k \in
-\mathbb{R}^{d_{k+1} \times d_k}\)</span>，偏置<span class="math inline">\(b_k \in
-\mathbb{R}^{d_{k+1}}\)</span>，所有层的网络参数用<span class="math inline">\(\theta\)</span>统一表示如下： <span class="math display">\[
-\theta:=\left(w_K, b_K, W_{K-1}, b_{K-1}, \ldots, W_0, b_0\right)
-\qquad(9)
-\]</span></p>
-<p>综上，本文所有向量默认为列向量。在(8)中，<span class="math inline">\(x \in \Omega\)</span>是网络的输入，<span class="math inline">\(d_0=d\)</span>是(1)的问题维数(也称为输入层的大小)，<span class="math inline">\(w_K \in \mathbb{R}^{d_K}\)</span>和<span class="math inline">\(b_K \in \mathbb{R}\)</span>是最后第<span class="math inline">\(K\)</span>层(也称为输出层)中的参数.非线性激活函数<span class="math inline">\(\sigma_k\)</span>的典型选择包括sigmoid函数<span class="math inline">\(\sigma(z)=\left(1+e^{-z}\right)^{-1}\)</span>、双曲正切(tanh)函数<span class="math inline">\(\sigma(z)=\left(e^z-e^{-z}\right)
-/\left(e^z+e^{-z}\right)\)</span>和修正线性单元(ReLU)函数<span class="math inline">\(\sigma(z)=\max (0,
-z)\)</span>，它们分别被应用。深度神经网络的训练是指利用可用的数据或约束优化<span class="math inline">\(\theta\)</span>的过程，使得函数<span class="math inline">\(u_\theta\)</span>可以逼近(未知)目标函数。关于深度神经网络的更多细节可参见文献[38]。</p>
-<p>尽管有如式(8)的简单结构，但深度神经网络能够在紧支撑<span class="math inline">\(\bar{\Omega}\)</span>上均匀地逼近相当复杂的连续函数(以及必要时的导数)。这个重要的结果被称为万能逼近定理[47]
-。由万能逼近定理保证的神经网络的表达能力表明(1)的弱解<span class="math inline">\((u,
-\gamma)\)</span>)的无网格参数化是有希望的。接下来，我们对<span class="math inline">\(u\)</span>和<span class="math inline">\(\gamma\)</span>都选取足够深度的神经网络结构，如式(8)所示。数值实验中使用的具体结构，即层数<span class="math inline">\(K\)</span>和尺寸<span class="math inline">\(\left\{d_1, \ldots,
-d_{K-1}\right\}\)</span>将在第4节中给出。注意到<span class="math inline">\(u\)</span>和<span class="math inline">\(\gamma\)</span>是两个独立的网络，但我们用一个字母<span class="math inline">\(\theta\)</span>来表示它们的网络参数，而不是用<span class="math inline">\(\theta_u\)</span>和<span class="math inline">\(\theta_\gamma\)</span>来简化符号。<strong>也就是说，我们将<span class="math inline">\((u, \gamma)\)</span>参数化为深度神经网络<span class="math inline">\(\left(u_\theta,
-\gamma_\theta\right)\)</span>，并试图找到参数<span class="math inline">\(\theta\)</span>使得<span class="math inline">\(\left(u_\theta,
-\gamma_\theta\right)\)</span>解决(7)</strong>。为此，<strong>弱式(3)中的测试函数<span class="math inline">\(\varphi\)</span>也被参数化为深度神经网络<span class="math inline">\(\varphi_\eta\)</span>，其形式类似于(8)和(9)，参数用<span class="math inline">\(\eta\)</span>表示</strong>。通过参数化的<span class="math inline">\(\left(u_\theta,
-\gamma_\theta\right)\)</span>和<span class="math inline">\(\varphi_\eta\)</span>，我们遵循(3)中的内积记法并定义
-<span class="math display">\[
-E(\theta, \eta):=\left|\left\langle\mathcal{A}\left[u_\theta,
-\gamma_\theta\right], \varphi_\eta\right\rangle\right|^2 \qquad(10)
-\]</span></p>
-<p>不像(平方)算子范数(5)的原始定义那样用<span class="math inline">\(\left\|\varphi_\eta\right\|_{H_1}^2\)</span>对
-<span class="math inline">\(E(\theta,
-\eta)\)</span>进行正规化，而是<strong>将(5)中的平方算子范数近似(上升到一个恒定的标度)为如下<span class="math inline">\(\theta\)</span>的极大值函数</strong>： <span class="math display">\[
-L_{\mathrm{int}}(\theta):=\max _{|\eta|^2 \leq 2 B} E(\theta, \eta)
-\qquad(11)
-\]</span></p>
-<p>其中<span class="math inline">\(B&gt;0\)</span>是一个限定网络参数<span class="math inline">\(\eta\)</span>大小的上界。这里<span class="math inline">\(|\eta|^2=\sum_k\left(\sum_{i j}\left[W_k\right]_{i
-j}^2+\sum_i\left[b_k\right]_i^2\right),[M]_{i j} \in
-\mathbb{R}\)</span>表示矩阵<span class="math inline">\(M\)</span>的<span class="math inline">\((i, j)\)</span>项， <span class="math inline">\([v]_i \in \mathbb{R}\)</span>表示向量<span class="math inline">\(v\)</span>的第<span class="math inline">\(i\)</span>个分量。值得注意的是，式(11)中对<span class="math inline">\(\eta\)</span>的<span class="math inline">\(\ell_2\)</span>-范数的界约束与WGAN
-[4]中使用的权重裁剪(等价于关于<span class="math inline">\(\ell_{\infty}\)</span>-范数的界)方法类似。然而，它们服务于不同的目的：在(11)中引入约束，使得积分(如(4))是有界的(这个界的实际值可以是任意的)。在这种情况下，我们的数值实现中的蒙特卡洛近似得到的随机梯度具有有界方差，这在下面定理4的证明中是需要的。另一方面，WGAN中的权重裁剪是为了保证神经网络实现的对偶函数是1-Lipschitz函数类<span class="math inline">\(\mathcal{F}:=\{f: \Omega \rightarrow
-\mathbb{R}:|f(x)-f(y)| \leq\)</span> <span class="math inline">\(|x-y|,
-\forall x, y \in
-\Omega\}\)</span>。正如文献[4]所指出的那样，权重裁剪是实现1-Lipschitz约束的一种简单但不合适的方法，因此有一系列的后续工作来解决这个问题，如[40、70]。</p>
-<p>进一步，我们定义与边界条件(1b)相关的损失函数为 <span class="math display">\[
-L_{\mathrm{bdry}}(\theta):=\left\|\mathcal{B}\left[u_\theta,
-\gamma_\theta\right]\right\|_{L^2(\partial \Omega)}^2=\int_{\partial
-\Omega}\left|\mathcal{B}\left[u_\theta, \gamma_\theta\right](x)\right|^2
-\mathrm{~d} S(x) \qquad(12)
-\]</span></p>
-<p>例如，如果在(2b)中给出<span class="math inline">\((u,
-\gamma)\)</span>的边界条件，且已知边界值<span class="math inline">\(\left(u_b, \gamma_b, u_n\right)\)</span>，则<span class="math inline">\(L_{\text {bdry }}(\theta)=\int_{\partial
-\Omega}\left|u_\theta(x)-u_b(x)\right|^2+\left|\gamma_\theta(x)-\gamma_b(x)\right|^2+\left|\partial_{\vec{n}(x)}
-u(x)-u_n(x)\right|^2 \mathrm{~d}
-S(x)\)</span>。最后，定义总损失函数<span class="math inline">\(L(\theta)\)</span>，并求解如下关于其最优<span class="math inline">\(\theta^*\)</span>的最小化问题： <span class="math display">\[
-\underset{\theta}{\operatorname{minimize}} L(\theta), \quad \text {
-where } \quad L(\theta):=L_{\mathrm{int}}(\theta)+\beta
-L_{\mathrm{bdry}}(\theta) \qquad(13)
-\]</span></p>
-<p>其中，我们还限制了参数<span class="math inline">\(\theta\)</span>的大小，使得对于同一个<span class="math inline">\(B\)</span>，<span class="math inline">\(|\theta|^2
-\leq 2 B\)</span>，以简化记号。注意到这里<span class="math inline">\(\theta\)</span>和<span class="math inline">\(\eta\)</span>都是有限维向量，且<span class="math inline">\(L_{\text {int }}(\theta), L_{\text {bdry
-}}(\theta), E(\theta, \eta) \in
-\mathbb{R}_{+}\)</span>，因此可以应用数值优化算法来寻找 <span class="math inline">\(L(\theta)\)</span>的最小值。</p>
-<p>求解类似于(13)的极小化问题的标准方法是<strong>投影梯度下降法</strong>，该方法执行如下迭代：
-<span class="math display">\[
-\theta \leftarrow \Pi\left(\theta-\tau \nabla_\theta L(\theta)\right)
-\qquad(14)
-\]</span></p>
-<p>其中<span class="math inline">\(\Pi(\theta)=\min (\sqrt{2
-B},|\theta|) \cdot(\theta /|\theta|)\)</span>是<span class="math inline">\(\theta\)</span>到以原点为圆心，半径为<span class="math inline">\(\sqrt{2 B}\)</span>的球的投影，<span class="math inline">\(\tau&gt;0\)</span>是步长.可以看出，(14)式的主要计算是在梯度<span class="math inline">\(\nabla_\theta L(\theta)=\nabla_\theta
-L_{\mathrm{int}}(\theta)+\beta \nabla_\theta
-L_{\mathrm{bdry}}(\theta)\)</span>上进行的。<span class="math inline">\(\nabla_\theta
-L_{\mathrm{bdry}}(\theta)\)</span>的计算简单明了，如下所示。然而，损失<span class="math inline">\(L_{\text {int
-}}(\theta)\)</span>被定义为一个最大化问题(11)，我们需要先将其梯度写成关于<span class="math inline">\(\theta\)</span>的函数。为此，我们有下面的引理来计算梯度<span class="math inline">\(\nabla_\theta L_{\text {int
-}}(\theta)\)</span>，证明见附录A.2。</p>
-<p><strong>引理2.</strong> 假设<span class="math inline">\(L_{i n
-t}(\theta)\)</span>在(11)式中定义。则任意<span class="math inline">\(\theta\)</span>处的梯度<span class="math inline">\(\nabla_\theta L_{i n t}(\theta)\)</span>由<span class="math inline">\(\nabla_\theta L_{\text {int
-}}(\theta)=\partial_\theta E(\theta,
-\eta(\theta))\)</span>给出，其中<span class="math inline">\(\eta(\theta)\)</span>为对指定的<span class="math inline">\(\theta\)</span>求<span class="math inline">\(\max
-_{|\eta|^2 \leq 2 B} E(\theta, \eta)\)</span>的解。</p>
-<p><strong>注释</strong> 引理2表明，对任意给定的<span class="math inline">\(\theta\)</span>，若要得到<span class="math inline">\(\nabla_\theta L_{\text {int
-}}(\theta)\)</span>，我们可以先对<span class="math inline">\(\eta\)</span>取<span class="math inline">\(E\)</span>关于<span class="math inline">\(\theta\)</span>的偏导数，然后利用<span class="math inline">\(\theta\)</span>和最大化问题(11)的解<span class="math inline">\(\eta(\theta)\)</span>求偏导数</p>
-<p><span class="math inline">\(L_{\mathrm{int}}(\theta)\)</span>和<span class="math inline">\(L_{\mathrm{bdry}}(\theta)\)</span>的精确梯度需要在连续空间<span class="math inline">\(\Omega\)</span>和<span class="math inline">\(\partial
-\Omega\)</span>上对深度神经网络参数化的函数进行积分，这在实际中是计算难以解决的。因此，我们采用这些积分的蒙特卡罗分析(MC)近似。为此，我们需要下面关于利用样本逼近积分的结果，其证明见附录A.3.</p>
-<p><strong>引理3</strong> 假设<span class="math inline">\(\Omega \subset
-\mathbb{R}^d\)</span>是有界的，<span class="math inline">\(\rho\)</span>是定义在<span class="math inline">\(\Omega\)</span>上的概率密度，使得对所有<span class="math inline">\(x \in \Omega\)</span>，<span class="math inline">\(\rho(x)&gt;0\)</span>。给定函数<span class="math inline">\(\psi \in L^2(\Omega)\)</span>，记<span class="math inline">\(\Psi=\int_{\Omega} \psi(x) \mathrm{d}
-x\)</span>。设<span class="math inline">\(x^{(1)}, \ldots,
-x^{(N)}\)</span>是从<span class="math inline">\(\rho\)</span>中抽取的<span class="math inline">\(N\)</span>个独立样本。考虑<span class="math inline">\(\Psi\)</span>的如下估计量<span class="math inline">\(\hat{\Psi}\)</span>：</p>
-<p><span class="math display">\[
-\hat{\Psi}=\frac{1}{N} \sum_{i=1}^N
-\frac{\psi\left(x^{(i)}\right)}{\rho\left(x^{(i)}\right)} \qquad(15)
-\]</span></p>
-<p>则<span class="math inline">\(\hat{\Psi}\)</span>的一阶矩和二阶矩由下式给出.</p>
-<p><span class="math display">\[
-\mathbb{E}[\hat{\Psi}]=\Psi \quad \text { and } \quad
-\mathbb{E}\left[\hat{\Psi}^2\right]=\frac{N-1}{N} \Psi^2+\frac{1}{N}
-\int_{\Omega} \frac{\psi(x)^2}{\rho(x)} \mathrm{d} x \qquad(16)
-\]</span></p>
-<p>因此，<span class="math inline">\(\hat{\Psi}\)</span>的方差为<span class="math inline">\(N^{-1} \cdot\left(\int_{\Omega}\left(\psi^2 /
-\rho\right) \mathrm{d} x-\left(\int_{\Omega} \psi \mathrm{d}
-x\right)^2\right)\)</span>。特别地，当均匀分布<span class="math inline">\(\rho(x)=1 /|\Omega|\)</span>时，<span class="math inline">\(\hat{\Psi}=(|\Omega| / N) \cdot \sum_i
-\psi\left(x^{(i)}\right)\)</span>的方差为<span class="math inline">\(N^{-1} \cdot\left(|\Omega| \int_{\Omega} \psi^2
-\mathrm{~d} x-\left(\int_{\Omega} \psi \mathrm{d}
-x\right)^2\right)\)</span>。</p>
-<p><strong>注释</strong> 关于引理3，有几点注记：</p>
-<ul>
-<li><p>积分<span class="math inline">\(\Psi\)</span>的估计量<span class="math inline">\(\hat{\Psi}\)</span>是无偏的</p></li>
-<li><p>上述<span class="math inline">\(\hat{\Psi}\)</span>的方差在样本配点数<span class="math inline">\(N\)</span>中以<span class="math inline">\(O(1 /
-N)\)</span>的速率递减。由Hölder不等式和<span class="math inline">\(\rho\)</span>是一个概率密度，我们知道.</p></li>
-</ul>
-<p><span class="math display">\[
-\left|\int_{\Omega} \psi \mathrm{d} x\right| \leq \int_{\Omega}|\psi|
-\mathrm{d} x=\int_{\Omega} \frac{|\psi|}{\sqrt{\rho}} \sqrt{\rho}
-\mathrm{d} x \leq\left(\int_{\Omega} \frac{|\psi|^2}{\rho} \mathrm{~d}
-x\right)^{1 / 2}\left(\int_{\Omega} \rho \mathrm{d} x\right)^{1 /
-2}=\left(\int_{\Omega} \frac{|\psi|^2}{\rho} \mathrm{~d} x\right)^{1 /
-2}
-\]</span></p>
-<p>这也验证了<span class="math inline">\(\mathrm{V}(\hat{\Psi}) \geq
-0\)</span>。更重要的是，当<span class="math inline">\(\psi\)</span>不变号且<span class="math inline">\(\rho
-\propto|\psi|\)</span>时，等式成立。因此，我们可以设置<span class="math inline">\(\rho\)</span>尽可能地接近<span class="math inline">\(|\psi|\)</span>
-(直到一个归一化常数)，以减小方差，但同时保证<span class="math inline">\(\rho\)</span>易于从(15)中采样和评估。这与重要性抽样的概念密切相关。</p>
-<ul>
-<li>引理3中的结果(15)和(16)可以很容易地推广到无界区域<span class="math inline">\(\Omega\)</span>的情形，只要<span class="math inline">\(\psi / \sqrt{\rho} \in L^2(\Omega)\)</span></li>
-</ul>
-<p><strong>引理3为式(14)提供了一种可行的逼近<span class="math inline">\(L(\theta)\)</span>梯度的方法</strong>。例如，要计算<span class="math inline">\(\nabla_\theta L_{\text {bdry
-}}(\theta)\)</span>，可以取式(12)关于<span class="math inline">\(\theta\)</span>的梯度，在边界<span class="math inline">\(\partial \Omega\)</span>上采样<span class="math inline">\(N_b\)</span>个配置点<span class="math inline">\(\left\{x_b^{(i)}: 1 \leq i \leq
-N_b\right\}\)</span> ，通过对采样点处的函数值求和近似<span class="math inline">\(\nabla_\theta
-L_{\mathrm{bdry}}(\theta)\)</span>。如果我们取<span class="math inline">\(\mathcal{B}[u, \gamma]=\left(u-u_b,
-\gamma-\gamma_b, \partial_{\vec{n}} u-u_n\right)\)</span>，且<span class="math inline">\(x_b^{(i)}\)</span>是一致样本，则估计变为</p>
-<p><span class="math display">\[
-\begin{gathered}
-\nabla_\theta L_{\mathrm{bdry}}(\theta)=2 \int_{\partial
-\Omega}\left(\left(u_\theta-u_b\right) \nabla_\theta
-u_\theta+\left(\gamma_\theta-\gamma_b\right) \nabla_\theta
-\gamma_\theta+\left(\partial_{\vec{n}} u_\theta-u_n\right) \nabla_\theta
-\nabla u \cdot \vec{n}\right) \mathrm{d} S(x) \\
-\approx \frac{2|\partial \Omega|}{N_b}
-\sum_{i=1}^{N_b}\left(\left(u_\theta\left(x_b^{(i)}\right)-u_b\left(x_b^{(i)}\right)\right)
-\nabla_\theta
-u_\theta\left(x_b^{(i)}\right)+\left(\gamma_\theta\left(x_b^{(i)}\right)-\gamma_b\left(x_b^{(i)}\right)\right)
-\nabla_\theta \gamma_\theta\left(x_b^{(i)}\right)\right. \\
-\left.+\left(\partial_{\vec{n}}
-u_\theta\left(x_b^{(i)}\right)-u_b\left(x_b^{(i)}\right)\right)
-\nabla_\theta \nabla u_\theta x_b^{(i)} \cdot \vec{n} x_b^{(i)}\right)
-\end{gathered} \qquad(17)
-\]</span></p>
-<p>类似地，我们也可以计算出<span class="math inline">\(\nabla_\theta
-L_{\text {int }}(\theta)\)</span>的随机梯度。若给定<span class="math inline">\(f\)</span>，在区域<span class="math inline">\(\Omega\)</span>上取<span class="math inline">\(\mathcal{A}[u, \gamma]=\nabla \cdot(\gamma \nabla
-u)-f\)</span>，且在区域<span class="math inline">\(\Omega\)</span>内均匀采样<span class="math inline">\(N_r\)</span>个配点<span class="math inline">\(\left\{x_r^{(i)}: 1 \leq i \leq
-N_r\right\}\)</span> 在区域<span class="math inline">\(\Omega\)</span>内，则<span class="math inline">\(\nabla_\theta L_{\text {int
-}}(\theta)\)</span>可由下式估计</p>
-<p><span class="math display">\[
-\begin{aligned}
-\nabla_\theta L_{\mathrm{int}}(\theta) &amp; =2 I(\theta)
-\int_{\Omega}\left(\nabla_\theta \gamma_\theta\left(\nabla u_\theta
-\cdot \nabla
-\varphi_{\eta(\theta)}\right)+\gamma_\theta\left(\nabla_\theta \nabla
-u_\theta \cdot \nabla \varphi_{\eta(\theta)}\right)\right) \mathrm{d}
-S(x) \\
-&amp; \approx \frac{2|\Omega| \hat{I}(\theta)}{N_r}
-\sum_{i=1}^{N_r}\left(\nabla_\theta
-\gamma_\theta\left(x_r^{(i)}\right)\left(\nabla
-u_\theta\left(x_r^{(i)}\right) \nabla
-\varphi_{\eta(\theta)}\left(x_r^{(i)}\right)\right)+\gamma_\theta\left(x_r^{(i)}\right)\left(\nabla_\theta
-\nabla u_\theta\left(x_r^{(i)}\right) \nabla
-\varphi_{\eta(\theta)}\left(x_r^{(i)}\right)\right)\right)
-\end{aligned}  \qquad(18)
-\]</span></p>
-<p>其中<span class="math inline">\(I(\theta)\)</span>及其估计量<span class="math inline">\(\hat{I}(\theta)\)</span>由下式给出</p>
-<p><span class="math display">\[
-I(\theta)=\int_{\Omega} \gamma_\theta\left(\nabla u_\theta \cdot \nabla
-\varphi_{\eta(\theta)}\right) \mathrm{d} x, \quad
-\hat{I}(\theta)=\frac{|\Omega|}{2} \sum_{i=1}^{N_r}
-\gamma_\theta\left(x_r^{(i)}\right)\left(\nabla
-u_\theta\left(x_r^{(i)}\right) \cdot \nabla
-\varphi_{\eta(\theta)}\left(x_r^{(i)}\right)\right)
-\]</span></p>
-<p>并且根据引理2，<span class="math inline">\(\eta(\theta)\)</span>是最大化问题(11)的一个解。梯度中的所有积分都可以用类似的方式进行近似。这些近似梯度实际上是随机梯度，它是无偏的，并且由于网络参数的有界性而具有有界的方差。通过这些近似，式(14)退化为随机投影梯度下降法，通过选择合适的步长，可以保证收敛到式(13)的局部稳定点。由于(13)是有约束的，梯度映射<span class="math inline">\(\mathcal{G}(\theta):=\tau^{-1}\left[\theta-\Pi\left(\theta-\tau
-\nabla_\theta L(\theta)\right)\right]\)</span>被用作<span class="math inline">\(\theta\)</span>的收敛准则[37,62,75]。值得注意的是，梯度映射的定义考虑了步长<span class="math inline">\(\tau\)</span>的归一化。 此外，在没有投影<span class="math inline">\(\Pi\)</span>的情况下，梯度映射退化为<span class="math inline">\(\mathcal{G}(\theta)=\nabla_\theta
-L(\theta)\)</span>，其大小是无约束情况下局部稳定点(即, <span class="math inline">\(\left|\nabla_\theta
-L(\theta)\right|=0\)</span>)的评价标准.这一结果在下面的定理中给出，并在附录A.4.中给出证明。</p>
-<p><span class="math display">\[
-\begin{array}{l}
-   \hline \
-   \textbf{算法1} \quad \text{Inverse Problem Solver by Weak Adversarial
-Network(IWAN)} \\
-   \hline
-   \qquad \textbf{输入：}反问题(1)的区域\Omega和数据 \\
-   \qquad \textbf{初始化：}\left(u_\theta, \gamma_\theta\right),
-\varphi_\eta \\
-   \qquad \textbf{for} \, j=1, \ldots, J \,\textbf{do} \\
-   \qquad \quad \text { Sample } X_r=\left\{x_r^{(i)}: 1 \leq i \leq
-N_r\right\} \subset \Omega \text { and } X_b=\left\{x_b^{(i)}: 1 \leq i
-\leq N_b\right\} \subset \partial \Omega \text {. }\\
-   \qquad \quad \eta \leftarrow \operatorname{SGD}\left(-\nabla_\eta
-E(\theta, \eta), X_r, \eta, \tau_\eta, J_\eta\right) \text {. }\\
-   \qquad \quad \theta \leftarrow
-\operatorname{SGD}\left(\partial_\theta E(\theta, \eta)+\beta
-\nabla_\theta L_{\mathrm{bdry}}(\theta),\left(X_r, X_b\right), \theta,
-\tau_\theta, 1\right)\\
-   \qquad \textbf{end for} \\
-   \qquad \textbf{输出：}\left(u_\theta, \gamma_\theta\right) \\
-   \hline
-\end{array}
-\]</span></p>
-<p><strong>定理4</strong> 对于任意的<span class="math inline">\(\varepsilon&gt;0\)</span>，令<span class="math inline">\(\left\{\theta_j\right\}\)</span>是由梯度下降算法(14)生成的<span class="math inline">\(\left(u_\theta,
-\gamma_\theta\right)\)</span>中的网络参数序列，在每次迭代中用样本复杂度为<span class="math inline">\(N_r,
-N_b=O\left(\varepsilon^{-1}\right)\)</span>的样本均值逼近<span class="math inline">\(\nabla_\theta L(\theta)\)</span>中的积分，则<span class="math inline">\(J=O\left(\varepsilon^{-1}\right)\)</span>次迭代后<span class="math inline">\(\min _{1 \leq j \leq J}
-\mathbb{E}\left[\left|\mathcal{G}\left(\theta_j\right)\right|^2\right]
-\leq \varepsilon\)</span></p>
-<p><strong>注释</strong> 定理4建立了(14)到问题的所谓<span class="math inline">\(\varepsilon\)</span>-解的收敛性和迭代复杂性.该结果是基于梯度映射的期望大小，这是非凸约束随机优化中的一个标准收敛准则。然而，这只能保证在期望意义下逼近一个稳定点(不一定是局部的或全局的极小点)。在理论上，我们可以将额外的全局优化技术应用到(7)中，以便找到一个具有较高计算成本的全局最优解(最好只有高概率才有可能)。然而，我们在本工作中不会对这一问题做进一步的探讨。</p>
-<p>现在我们总结了我们的算法使用弱对抗网络求解IPs的步骤。为了简化表述，我们引入如下符号来表示寻找损失函数<span class="math inline">\(L(\theta)\)</span>的极小点的随机梯度下降(SGD)过程：</p>
-<p><span class="math display">\[
-\theta^* \leftarrow \operatorname{SGD}\left(G(\theta), X, \theta_0,
-\tau, J\right) \qquad(19)
-\]</span></p>
-<p>也就是说，意味着输出<span class="math inline">\(\theta^*\)</span>是对<span class="math inline">\(j=0, \ldots, J-1\)</span>执行步长为<span class="math inline">\(\tau\)</span>的(投影) SGD方案，有初始<span class="math inline">\(\theta_0\)</span>之后的结果<span class="math inline">\(\theta_J\)</span>:</p>
-<p><span class="math display">\[
-\theta_{j+1} \leftarrow \Pi\left(\theta_j-\tau \hat{G}\left(\theta_j ;
-X\right)\right) \qquad(20)
-\]</span></p>
-<p>这里<span class="math inline">\(X=\left\{x^{(i)}: 1 \leq i \leq
-N\right\}\)</span>是<span class="math inline">\(N\)</span>个采样配置点的集合，<span class="math inline">\(G(\theta):=\nabla_\theta
-L(\theta)\)</span>是损失函数<span class="math inline">\(L(\theta)\)</span>的梯度，<span class="math inline">\(\hat{G}(\theta ; X)\)</span>表示<span class="math inline">\(G(\theta)\)</span>在任意给定的<span class="math inline">\(\theta\)</span>下的随机逼近，其中积分的估计如(15)中利用采样配置点<span class="math inline">\(X\)</span>。在第一步中，我们固定<span class="math inline">\(\theta\)</span>，通过对<span class="math inline">\(J_\eta\)</span>步施加随机梯度上升来求解目标函数<span class="math inline">\(E(\theta,
-\eta)\)</span>在(11)中定义的最大化问题，从而得到一个近似的最大化子<span class="math inline">\(\eta\)</span>；在第二步中，我们固定这个<span class="math inline">\(\eta\)</span>，利用梯度<span class="math inline">\(\nabla_\theta L(\theta)=\partial_\theta E(\theta,
-\eta)+\beta \nabla_\theta
-L_{\mathrm{bdry}}(\theta)\)</span>通过一个随机梯度下降步来更新<span class="math inline">\(\theta\)</span>
-。然后进入步骤1，开始下一次迭代。因此，我们的目标函数为<span class="math inline">\(E(\theta, \eta)+\beta
-L_{\mathrm{bdry}}(\theta)\)</span>，我们通过<span class="math inline">\(\min _\theta \max _\eta E(\theta, \eta)+\beta
-L_{\mathrm{bdry}}(\theta)\)</span>的min-max优化来寻找最优点<span class="math inline">\(\left(\theta^*,
-\eta^*\right)\)</span>。这个过程被称为使用弱对抗网络(IWAN)的反问题求解器，并在算法1中总结。数值实现中的参数值在第4节中给出</p>
-<h2 id="数值实验">数值实验</h2>
-<h3 id="实施细则">实施细则</h3>
-<p>在这一部分中，我们讨论了关于算法1的一些实现细节和修改。首先，为了避免在固定<span class="math inline">\(\theta\)</span>的情况下求解式(11)中的内部最大化问题<span class="math inline">\(\max _\eta E(\theta,
-\eta)\)</span>花费过多的时间，我们只使用少量的迭代次数<span class="math inline">\(J_\eta\)</span>来计算 <span class="math inline">\(\eta\)</span>。然后我们切换到更新<span class="math inline">\(\theta\)</span>进行一次迭代。见算法1中的两个SGD步骤。这样可以提高整体效率，避免在<span class="math inline">\(\eta\)</span>的内部最大化问题上花费过多的时间，特别是当<span class="math inline">\(\theta\)</span>还远未达到最优时。事实上，我们可以采用两个单独的测试函数<span class="math inline">\(\varphi_\eta\)</span>和<span class="math inline">\(\bar{\varphi}_\eta\)</span>
-(为了记号的简洁性,我们又用同样的<span class="math inline">\(\eta\)</span>)。在每次迭代<span class="math inline">\(j\)</span>中，我们按顺序交替更新<span class="math inline">\(\left(u_\theta, \varphi_\eta, \gamma_\theta,
-\bar{\varphi}_\eta\right)\)</span>，每个<span class="math inline">\(\left(u_\theta, \varphi_\eta, \gamma_\theta,
-\bar{\varphi}_\eta\right)\)</span>都有一个或几个SGD步(20)。我们将为下面的实验指定这些网络的步数。</p>
-<p>在第3节的推导过程中，我们要求有界的网络参数<span class="math inline">\(\theta\)</span>和<span class="math inline">\(\eta\)</span>，其中界<span class="math inline">\(B\)</span>可以任意大，以确保使用样本的积分估计量的有限方差，从而保证SGD收敛。另一种处理有界性约束的方法是在(7)的目标函数中添加<span class="math inline">\(|\theta|^2\)</span>和<span class="math inline">\(|\eta|^2\)</span>作为正则项。我们也可以使用分母为<span class="math inline">\(\|\varphi\|_2^2:=\int_{\Omega}|\varphi|^2
-\mathrm{~d}
-x\)</span>(用MC近似,类似于式(15))的算子范数(5)，这在我们的实现中也被采用。这种替换不会引起数值实现上的问题，因为测试函数<span class="math inline">\(\varphi_\eta\)</span>是由一个具有固定宽度/深度和有界参数的网络实现的，因此可以保证在<span class="math inline">\(H^1\)</span>中。</p>
-<p>弱式(3)要求一个检验函数<span class="math inline">\(\varphi_\eta\)</span>在<span class="math inline">\(\partial
-\Omega\)</span>上消失。保证这一点的一个简单技巧是，预先计算一个函数<span class="math inline">\(\varphi_0 \in C(\Omega)\)</span>，使得当<span class="math inline">\(x \in \partial \Omega\)</span>时，<span class="math inline">\(\varphi_0(x)=0\)</span>且当<span class="math inline">\(x \in \Omega\)</span>时，<span class="math inline">\(\varphi_0(x)&gt;0\)</span>(e.g.,一个到<span class="math inline">\(\partial
-\Omega\)</span>的距离函数)。然后寻找一个对其任意边界无约束的参数化网络<span class="math inline">\(\varphi_\eta^{\prime}\)</span>，将测试函数<span class="math inline">\(\varphi_\eta\)</span>设置为<span class="math inline">\(\varphi_0 \varphi_\eta^{\prime}\)</span>，且在∂
-<span class="math inline">\(\partial \Omega\)</span>上仍取零值。</p>
-<p>我们使用TensorFlow [1]
-(Python版本3.7)实现了我们的算法，这是一个先进的深度学习包，可以有效地利用GPU进行并行计算。通过TensorFlow内置的自动微分模块计算关于网络参数(<span class="math inline">\(\theta\)</span>和<span class="math inline">\(\eta\)</span>)和输入(<span class="math inline">\(x\)</span>)的梯度。在训练过程中，我们还可以用它的许多变体来代替标准的SGD优化器，如AdaGrad，RMSprop算法，Adam，Nadam等。在我们的实验中，我们使用了TensorFlow包提供的AdaGrad，在我们的大部分测试中，AdaGrad似乎提供了比其他优化器更好的性能。其他所有参数，如网络结构(层数和神经元数)、步长(也称为学习率)、迭代次数等将在第4节中指定</p>
-]]></content>
-      <categories>
-        <category>论文精读</category>
-      </categories>
-      <tags>
-        <tag>EIT</tag>
-        <tag>弱对抗网络</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>最优传输(Optimal Transportation)</title>
-    <url>/2025/02/09/OT1/</url>
-    <content><![CDATA[<h2 id="什么是最优传输">什么是最优传输？</h2>
-<p>最优传输最开始由Monge于1781年提出。一个典型的Monge问题是考虑将一堆具有一定形状的沙子搬运到指定的另外一个形状所需要的具有最小代价的搬运方法。
-如下图所示，我们想将左边红色区域的沙堆搬运到右边，形成右边绿色的沙堆的形状。我们想要找到消耗最少的搬运方式。
-<img src="/2025/02/09/OT1/1.jpg" alt="image">
-一句话来概括，就是<strong>如何用最少的代价将一个质量分布转为另一个质量分布。</strong>
-<span id="more"></span></p>
-<h2 id="质量分布">质量分布</h2>
-<p>质量分布其实就是两个测度空间<span class="math inline">\((X,\mu),(Y,\nu)\)</span>。一般情况下，质量不会凭空产生，所以我们会要求这两个分布的“总质量”是一样的，即<span class="math inline">\(\int_x d\mu=\int_Yd\nu\)</span>。
-问题有了考虑的对象，我们还可以定义成本函数<span class="math inline">\(c(x,y):X \times Y \to \mathbb
-R^+\)</span>，一般是有界的，来衡量将质量从点<span class="math inline">\(x\)</span>运到点<span class="math inline">\(y\)</span>的成本。那么如何去进行移动？主要有两个角度去考虑，分别是Monge问题和Kantorovich问题。</p>
-<h2 id="monge问题">Monge问题</h2>
-<p>Monge问题就是寻找一个保测度的映射<span class="math inline">\(T:X \to
-Y\)</span> <span class="math display">\[
-\underset{T} {\min} \int_X c(x,T(x))d \mu(x),T_{ \# } \mu= \nu
-\]</span> <span class="math inline">\(T_{
-\#  }\)</span>是前推算子（<span class="math inline">\(T_{ \#
-}\)</span>的作用对象是<span class="math inline">\(\mu\)</span>，表示把测度<span class="math inline">\(\mu\)</span>推到<span class="math inline">\(\nu\)</span>），这个“推”的过程就是一个保测度的过程，即
-<span class="math display">\[
-T_{ \#  }\mu = \nu \iff \forall B \subset Y,\nu (B)=\mu (T^{-1}(B))
-\]</span> <img src="/2025/02/09/OT1/2.jpg" alt="Monge Map">
-但是映射的定义就限制了我们不能实现“一对多”的操作，这就导致了一个很严重的问题，Monge问题不一定有解。比如一个狄拉克分布（在包含某个点的集合测度是1，其余是0）就不可能保测度地映射到高斯分布。
-我们可以让质量“可分”，即以概率的形式去进行“移动”。这就是Kantorovich问题。</p>
-<h2 id="kantorovich问题">Kantorovich问题</h2>
-<p>在Kantorovich问题中，Kantorovich问题中，我们对Monge问题进行松弛，不再寻找一个映射，而是寻找一个联合分布（耦合coupling），其中它的边界分布分别是<span class="math inline">\(\mu,\nu\)</span>。从而最小化总成本 <span class="math display">\[
-\underset{\pi}{\min}\int_{X \times Y}c(x,y)d\pi(x,y),P_{x
-\#  }\pi=\mu,P_{y \# }\pi=\nu
-\]</span> <img src="/2025/02/09/OT1/3.jpg" alt="Kantorovich Relaxation"> <span class="math inline">\(\pi(x,y)\)</span>就是从<span class="math inline">\(x\)</span>移动到<span class="math inline">\(y\)</span>的概率，上式是总成本的期望。
-这样的松弛之后，Kantorovich本质上变成了一个无限维的线性规划问题（如果分布是离散的，比如一堆点，我们要做的就是在两个点云之间做matching，那么<span class="math inline">\(\pi\)</span>就变成了一个矩阵，就变成了有限维的线性规划问题）
-线性规划理论告诉我们，如果耦合集合非空且紧，目标函数是下半连续的，那么线性规划一定可以取到最小值。也就保证了Kantorovich一定有解。</p>
-<h2 id="分布之间的度量-wasserstein距离">分布之间的度量-Wasserstein距离</h2>
-<p>比较两种分布的一些方法：</p>
-<p><strong>交叉熵</strong>：对应分布为<span class="math inline">\(p(x)\)</span>的随机变量，熵<span class="math inline">\(H(p)\)</span>表示其最优编码长度。交叉熵是按照概率分布<span class="math inline">\(q\)</span>的最优编码对真实分布为<span class="math inline">\(p\)</span>的信息进行编码的长度 交叉熵定义为 <span class="math display">\[
-H(p,q)=E_q[-logq(x)]=-\displaystyle\sum_{x}p(x)logq(x)
-\]</span> 在给定<span class="math inline">\(p\)</span>的情况下，如果<span class="math inline">\(q\)</span>和<span class="math inline">\(p\)</span>越接近，交叉熵越小；如果<span class="math inline">\(q\)</span>和<span class="math inline">\(p\)</span>越远，交叉熵越大</p>
-<p><strong>KL散度</strong>:是用概率分布<span class="math inline">\(q\)</span>来近似<span class="math inline">\(p\)</span>时所造成的信息损失量。KL散度是按照概率分布<span class="math inline">\(q\)</span>的最优编码对真实分布为<span class="math inline">\(p\)</span>的信息进行编码，其平均编码长度<span class="math inline">\(H(p,q)\)</span>和<span class="math inline">\(p\)</span>的最优平均编码长度<span class="math inline">\(H(p)\)</span>之间的差异。对于离散概率分布<span class="math inline">\(p\)</span>和<span class="math inline">\(q\)</span>，从<span class="math inline">\(q\)</span>到<span class="math inline">\(p\)</span>的KL散度定义为: <span class="math display">\[
-D_{KL}(p\parallel q)=H(p,q)-H(p)=\sum_x p(x)log{\frac {p(x)} {q(x)} }
-\]</span>
-KL散度可以是衡量两个概率分布之间的距离。KL散度总是非负的，只有当<span class="math inline">\(p=q\)</span>时，<span class="math inline">\(D_{KL}(p\parallel
-q)=0\)</span>。两个分布越接近，KL散度越小；两个分布越远，KL散度越大。但KL散度并不是一个真正的度量或距离，一是KL散度不满足距离的对称性，二是KL散度不满足距离的三角不等式性质。</p>
-<p><strong>JS散度</strong>：
-JS散度是一种对称的衡量两个分布相似度的度量方式，定义为 <span class="math display">\[
-D_{JS}(p\parallel q)={\frac 1 2}D_{KL}(p \parallel m)+{\frac 1
-2}D_{KL}(q \parallel m)
-\]</span> 其中，<span class="math inline">\(m={\frac 1 2}(p+q)\)</span>
-JS 散度是KL散度一种改进。但两种散度都存在一个问题，即如果两个分布p, q
-没有重叠或者重叠非常少时，KL散度和JS 散度都很难衡量两个分布的距离</p>
-<p><strong>Wasserstein距离</strong>： Wasserstein 距离（Wasserstein
-Distance）也用于衡量两个分布之间的距离。对于两个分布<span class="math inline">\(q_1,q_2,p-Wasserstein\)</span>距离定义为 <span class="math display">\[
-W_p(q_1,q_2)=(\underset{\pi(x,y) \in U(x,y)} {\inf}E_{(x,y)\sim \pi
-(x,y)}[d(x,y)^p]) ^{1/p}
-\]</span> 其中，<span class="math inline">\(U(x,y)\)</span>是边际分布为<span class="math inline">\(q_1\)</span>和<span class="math inline">\(q_2\)</span>的所有可能的联合分布集合，<span class="math inline">\(d(x,y)\)</span>为<span class="math inline">\(x\)</span>和<span class="math inline">\(y\)</span>的距离 Wasserstein距离相比KL散度和JS
-散度的优势在于：即使两个分布没有重叠或者重叠非常少，Wasserstein
-距离仍然能反映两个分布的远近。</p>
-<p>我们可以发现，如果令<span class="math inline">\(d(x,y)^p=c(x,y)\)</span>，Wasserstein距离实际上就是从一个分布转换为另一个分布所要付出的代价。</p>
-<p>Wasserstein
-GAN就是将W-1距离作为损失函数，解决了GAN的许多问题，比如训练不稳定，判别器不能训练的“太好”等。究其原因主要是因为W-1度量比KL度量更“弱”：也就是说在K-L散度下收敛的序列在W-1距离下也一定收敛。这样的性质就保证了W-1可以捕捉到序列更多的几何信息（比如不重叠的分布的KL散度永远是0，但W-1距离不然。），训练会更鲁棒。</p>
-]]></content>
-      <categories>
-        <category>学习笔记</category>
-      </categories>
-      <tags>
-        <tag>最优化</tag>
-        <tag>最优运输</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>最优传输（二）</title>
-    <url>/2025/02/10/OT2/</url>
-    <content><![CDATA[<h1 id="kantorovich问题的对偶问题">Kantorovich问题的对偶问题</h1>
-<p>这篇文章我们讲讲对偶理论，并且探究对偶问题和Kantorovich问题之间的关系
-<span id="more"></span></p>
-<h2 id="离散版本的kantorovich问题对偶">离散版本的Kantorovich问题对偶</h2>
-<p>有两个离散分布<span class="math inline">\(a=\sum_i
-a_i\delta_{x_i},b=\sum_j b_i\delta_{y_i}\)</span>，分别包含离散点<span class="math inline">\(\lbrace {x_i} \rbrace_{i=1}^n, \lbrace {y_j}
-\rbrace_{j=1}^m\)</span></p>
-<p>有一个成本矩阵<span class="math inline">\(C \in \mathbb R^{n\times
-m}\)</span>,<span class="math inline">\(C_{ij}\)</span>就是从<span class="math inline">\(x_i\)</span>运到<span class="math inline">\(y_j\)</span>的成本</p>
-<p>我们寻找一个联合分布的矩阵<span class="math inline">\(P\in \mathbb
-R^{n \times m}\)</span>使得总成本最小化 <span class="math display">\[
-\underset{p\in U(a,b)}{\min}\langle C,P \rangle = \underset{p\in
-U(a,b)}{\min} \sum_{i,j}C_{ij}P_{ij}
-\]</span> 其中，<span class="math inline">\(U(a,b)=\{\pi \in \mathbb
-R^{n\times m}_+|\pi1_m=a\in\mathbb R^n,\pi^T1_m=b\in\mathbb
-R^m\}\)</span></p>
-<p>拉格朗日对偶形式： <span class="math display">\[
-\underset{P\ge 0}{\min}\underset{(f,g)\in \mathbb R^n \times \mathbb
-R^m}{\max}\langle C,P \rangle + \langle a-P1_m,f \rangle + \langle
-b-P^T1_n,g \rangle
-\]</span></p>
-<p>交换min，max，有</p>
-<p><span class="math display">\[
-\underset{(f,g)\in \mathbb R^n\times \mathbb R^m}{\max}\langle a,f
-\rangle + \langle b,g \rangle + \underset{P\ge 0}{\min}\langle
-C-f1^T_m-1_ng^T,P \rangle
-\]</span></p>
-<p>可以将后面min的变为约束</p>
-<p><span class="math display">\[
-C-f1^T_m-1_ng^T=C-f \oplus g \ge 0
-\]</span></p>
-<p>综上，我们得到了对偶问题：</p>
-<p><span class="math display">\[
-\underset{(f,g)\in R(a,b)}{max}\langle f,a \rangle + \langle g,b \rangle
-\]</span></p>
-<p>其中，<span class="math inline">\(R(a,b)=\{(f,g)\in \mathbb R^n\times
-R^m:f_i+g_i \le C_{ij}\}\)</span></p>
-<h2 id="连续版本的kantorovich问题对偶">连续版本的Kantorovich问题对偶</h2>
-<p>现在两个分布变为连续的<span class="math inline">\(\alpha(x),x\in
-X,\beta(y),y\in Y\)</span>，成本函数连续化<span class="math inline">\(c(x_i,y_j)=C_{ij}\)</span>，我们将上面的乘子向量<span class="math inline">\(f,g\)</span>推广成<span class="math inline">\(f(x_i)=f_i,g(y_j)=g_j\)</span>。得到对偶形式为
-<span class="math display">\[
-\underset{(f,g)\in R(c)}{\sup}\int_X f(x) \, d\alpha(x)+\int_Y g(y) \,
-d\beta(y)
-\]</span> 其中<span class="math inline">\(R(c)=\{(f,g):\forall
-(x,y),f(x_i)+g(y_j) \le c(x_i,y_j)\}\)</span></p>
-<h3 id="通俗理解原问题和对偶问题">通俗理解原问题和对偶问题</h3>
-<p>假设有一个运营商运营着<span class="math inline">\(n\)</span>个仓库和<span class="math inline">\(m\)</span>个工厂，每个仓库有<span class="math inline">\(a_i\)</span>质量的商品，每个工厂需要<span class="math inline">\(b_j\)</span>质量的商品，从<span class="math inline">\(i\)</span>仓库到<span class="math inline">\(j\)</span>工厂运输单位质量的商品需要成本<span class="math inline">\(C_{ij}\)</span>。</p>
-<p><strong>原问题就是站在运营商的角度考虑</strong>：找出最优的传输方案<span class="math inline">\(P^*\)</span>使得传输总成本<span class="math inline">\(\sum_{i,j}C_{ij}P_{ij}\)</span>最小。</p>
-<p>假设这个运营商外包给了一个供应商，供应商只需要给每个仓库和工厂定价：单位质量的商品第<span class="math inline">\(i\)</span>个仓库收取<span class="math inline">\(f_i\)</span>的费用，第<span class="math inline">\(j\)</span>个工厂收取<span class="math inline">\(g_j\)</span>的费用。</p>
-<p>供应商不能随便定价，供应商在定价过程中需要保证所有<span class="math inline">\(f_i+g_j \le
-C_{ij}\)</span>，一旦超过这个价格，那在某些路径上运营商就要付出额外的价格，还不如自己运呢。</p>
-<p>所以对偶问题就是站在供应商的角度来考虑：在<span class="math inline">\(f_i+g_j \le C_{ij}\)</span>的情况下希望收费<span class="math inline">\(\langle f,a \rangle + \langle g,b
-\rangle\)</span>最大。</p>
-<h2 id="互补松弛条件">互补松弛条件</h2>
-<p>考虑原问题的最优解<span class="math inline">\(P^*\)</span>和对偶问题最优对<span class="math inline">\((f^*,g^*)\)</span>的关系，并且证明他们满足互补松弛条件</p>
-<p>设<span class="math inline">\(\bar z\)</span>为原问题的最优解，<span class="math inline">\(\underline
-z\)</span>为对偶问题的最优解，先证明<strong>弱对偶性</strong>满足，即<span class="math inline">\(\bar z \ge \underline z\)</span></p>
-<p>首先对原始问题进行一下改写，把决策变量<span class="math inline">\(P\)</span>“拉直”为<span class="math inline">\(p\)</span>： <span class="math display">\[
-P\in \mathbb R^{n \times m}\in U(a,b) \iff p \in \mathbb R^{nm}_+,Ap=
-\begin{bmatrix}
-   a  \\
-   b
-\end{bmatrix}
-\]</span> 其中 <span class="math display">\[
-A=
-\begin{bmatrix}
-   1^T_n \otimes I_m  \\
-   I_n \otimes1^T_m
-\end{bmatrix},A \in \mathbb R^{(n+m)\times nm}
-\]</span> 定义<span class="math inline">\(c\)</span>也为成本矩阵对应的展平形式，则原始问题的拉格朗日函数：
-<span class="math display">\[
-H(h)=\underset{p\in \mathbb R^{nm}_+}{\min}(c^Tp-h^T(Ap-q))
-\]</span> 其中<span class="math inline">\(q=\begin{bmatrix}
-   a  \\
-   b
-\end{bmatrix}\)</span>。这是一个松弛问题，因为约束<span class="math inline">\(Ap=q\)</span>被软化为罚函数形式。对于原问题的最优解<span class="math inline">\(p^*\)</span>，对于任何<span class="math inline">\(h\)</span>，有： <span class="math display">\[
-H(h)\le c^T p^*-h^T(Ap^*-q)=c^T p^*=\bar z
-\]</span> 当<span class="math inline">\(h\)</span>满足对偶可行性(<span class="math inline">\(A^Th\le c\)</span>)时，对偶问题的目标值<span class="math inline">\(h^Tq\)</span>是拉格朗日函数的下界。</p>
-<p>因此结合上式： <span class="math display">\[
-\underline z=\underset{h,A^Th \le c}{\max}h^Tq\le
-\underset{h}{\max}h^Tq+\underset{p\in \mathbb
-R^{mn}_+}{\min}(c^T-h^TA)p=\underset{h\in \mathbb R^{n+m}}{\max}H(h)\le
-c^T p^*=\bar z
-\]</span>
-这表明对偶问题的最优值不超过原始问题的最优值，从而证明了弱对偶性。</p>
-<p>可以证明强对偶性也是满足的，证明过程需要slater条件。</p>
-<p>对于连续型，也是有如下定理保证了强对偶性：</p>
-<blockquote>
-<p>设<span class="math inline">\(\mu\)</span>和<span class="math inline">\(\nu\)</span>是定义在完备可分度量空间<span class="math inline">\(X\)</span>和<span class="math inline">\(Y\)</span>上的概率测度，<span class="math inline">\(c:X\times Y \to \mathbb
-R_+\)</span>是一个可测函数，那么： <span class="math display">\[
-\underset{\pi\in\Pi(\mu,\nu)}{\inf}\int_{X\times Y}c \, d\pi =
-\underset{(\varphi,\psi)}{\sup}\lbrack \int_X \varphi \, d\mu + \int_Y
-\psi \, d\nu \rbrack
-\]</span></p>
-</blockquote>
-<p>最优化理论告诉我们，如果强对偶性满足，那么我们可以使用KKT中的经典的互补松弛条件得到：
-<span class="math display">\[
-P^*(x,y)(f^*(x)+g^*(y)-c(x,y))=0
-\]</span></p>
-<p>这就是原问题的最优解<span class="math inline">\(P^*\)</span>和对偶问题最优对<span class="math inline">\((f^*,g^*)\)</span>的关系。即在支撑集上<span class="math inline">\(P^*&gt;0\)</span>，对偶问题的最优函数永远满足<span class="math inline">\(f^*(x)+g^*(y)=c(x,y)\)</span></p>
-<h2 id="c-变换">c-变换</h2>
-<p>现在我们知道对偶问题两个函数的一个很重要的性质，就是在<span class="math inline">\(P^*\)</span>支撑集上有<span class="math inline">\(f^*(x)+g^*(y)=c(x,y)\)</span></p>
-<p>下面假设这个函数对不是最优的，如果我们固定了<span class="math inline">\(f(x)\)</span>，能否得到一个“最好”的<span class="math inline">\(g(y)\)</span>使得对偶问题的目标函数尽可能大？c-变换就回答了这个问题</p>
-<p>因为 <span class="math display">\[
-f(x)+g(y)\le c(x,y)\\
-\iff g(y)\le c(x,y)-f(x)\\
-\iff g(y)\le \underset{x}{\inf} \{c(x,y)-f(x)\}
-\]</span> 而<span class="math inline">\(f(x)\)</span>已经固定，我们希望<span class="math inline">\(\int g(y) \, d\beta(y)\)</span>越大越好，所以<span class="math inline">\(g(y)\)</span>越大越好，自然就得到了一个“最好的”函数：
-<span class="math display">\[
-\bar f(y)=\underset{x}{\inf}\{c(x,y)-f(x)\}
-\]</span> 这个<span class="math inline">\(\bar f(y)\)</span>就叫做<span class="math inline">\(f\)</span>的c-变换</p>
-<p>如果一个函数<span class="math inline">\(f\)</span>可以写成某个<span class="math inline">\(g\)</span>的c-变换，那么就称<span class="math inline">\(f\)</span>是c-凹的</p>
-<p><strong>注</strong>：对偶问题的最优解<span class="math inline">\((f^*,g^*)\)</span>一定是c-凹的。否则令另一个是其c-变换，目标函数变大，矛盾。</p>
-<p>下面定理还保证了最优对的存在性： &gt;设<span class="math inline">\(\mu\)</span>和<span class="math inline">\(\nu\)</span>是<span class="math inline">\(X\)</span>和<span class="math inline">\(Y\)</span>上的概率测度使得 <span class="math display">\[
-\int_{X\times Y}c(x,y) \, d\mu(x) \, d\nu(y)&lt;\infty
-\]</span> 则对偶 Kantorovich 问题存在一个最优对<span class="math inline">\((\varphi,\psi)\)</span>且<span class="math inline">\(\bar \varphi = \psi\)</span>，<span class="math inline">\(\bar \psi=\varphi\)</span>几乎处处成立。</p>
-<h2 id="kantorovichrubinstein定理">Kantorovich–Rubinstein定理</h2>
-<p>虽然对偶问题要求两个函数<span class="math inline">\(f,g\)</span>
-，但通过c-transform可以将这两个函数“联系”起来，对偶问题从 <span class="math display">\[
-\underset{(f,g)\in R(c)}{\sup}\int_X f \, d\mu + \int_Y g \, d\nu
-\]</span> 变为 <span class="math display">\[
-\underset{f}{\sup}\int_X f \, d\mu + \int_Y \bar f \, d\nu
-\]</span> 我们可以证明，如果在度量空间<span class="math inline">\(X=Y\)</span>上，<span class="math inline">\(d(x,y)\)</span>是度量，且<span class="math inline">\(c(x,y)=d(x,y)\)</span>。如果<span class="math inline">\(f=\bar g\)</span>是一组c-变换，那么<span class="math inline">\(f\)</span>是d-Lipschitz的。</p>
-<p>证明如下： <span class="math display">\[
-f(z)=\underset{y}{\inf} \lbrace d(z,y)-g(y) \rbrace \le
-\underset{y}{\inf} \lbrace d(z,x)+d(x,y)-g(y) \rbrace=f(x)+d(z,x)
-\]</span> 互换<span class="math inline">\(z,x\)</span>即得到<span class="math inline">\(|f(x)-g(z)|\le d(x,z)\)</span></p>
-<p>然后我们可以继续证明，如果<span class="math inline">\(f\)</span>是d-Lipschitz的，那么其c-变换<span class="math inline">\(\bar f = -f\)</span>： &gt;令<span class="math inline">\(x=y\)</span>，有<span class="math inline">\(\bar
-f(x)=\underset{x}{\inf}\{d(x,x)-f(x)\}\le -f(x)\)</span>，又因为<span class="math inline">\(f\)</span>是d-Lipschitz的。所以<span class="math inline">\(\bar f(y)=\underset{x}{\inf}\{d(x,y)-f(x)\}\ge
--f(y)\)</span>。所以<span class="math inline">\(\bar f=-f\)</span></p>
-<p>综上，结合强对偶性，我们有 <span class="math display">\[
-\underset{\pi\in U(a,b)}{\inf}\int_{X^2}d(x,y)\,
-d\pi=\underset{f}{\sup}\int_X f \, d\mu + \int_X \bar f \, d\nu =
-\underset{\lVert f \rVert_{\text{Lip}}\le 1}{\sup}\int_X f \, d\mu -
-\int_X  f \, d\nu
-\]</span> 其中，<span class="math inline">\(\lVert f
-\rVert_{\text{Lip}}=\underset{x \not = y}{\sup}\frac {\lVert
-f(x)-f(y)\rVert}{d(x,y)}\)</span></p>
-<p>我们现在得到了一个非常好非常好的结论：当成本函数是一个度量的时候，对偶问题可以变成上面的形式，我们只需要求解一个d-Lipschitz函数就可以了。</p>
-]]></content>
-      <categories>
-        <category>学习笔记</category>
-      </categories>
-      <tags>
-        <tag>最优化</tag>
-        <tag>最优运输</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>OPTIMAL TRANSPORTATION FOR ELECTRICAL IMPEDANCE  TOMOGRAPHY</title>
     <url>/2025/02/13/OPTIMAL-TRANSPORTATION-FOR-ELECTRICAL-IMPEDANCE-TOMOGRAPHY/</url>
     <content><![CDATA[<h1 id="optimal-transportation-for-electrical-impedance-tomography电阻抗断层成像的最优传输">OPTIMAL
@@ -1681,7 +1087,601 @@ B_k(\eta) &amp;
       </categories>
       <tags>
         <tag>最优化</tag>
+        <tag>最优运输</tag>
         <tag>EIT</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>最优传输(Optimal Transportation)</title>
+    <url>/2025/02/09/OT1/</url>
+    <content><![CDATA[<h2 id="什么是最优传输">什么是最优传输？</h2>
+<p>最优传输最开始由Monge于1781年提出。一个典型的Monge问题是考虑将一堆具有一定形状的沙子搬运到指定的另外一个形状所需要的具有最小代价的搬运方法。
+如下图所示，我们想将左边红色区域的沙堆搬运到右边，形成右边绿色的沙堆的形状。我们想要找到消耗最少的搬运方式。
+<img src="/2025/02/09/OT1/1.jpg" alt="image">
+一句话来概括，就是<strong>如何用最少的代价将一个质量分布转为另一个质量分布。</strong>
+<span id="more"></span></p>
+<h2 id="质量分布">质量分布</h2>
+<p>质量分布其实就是两个测度空间<span class="math inline">\((X,\mu),(Y,\nu)\)</span>。一般情况下，质量不会凭空产生，所以我们会要求这两个分布的“总质量”是一样的，即<span class="math inline">\(\int_x d\mu=\int_Yd\nu\)</span>。
+问题有了考虑的对象，我们还可以定义成本函数<span class="math inline">\(c(x,y):X \times Y \to \mathbb
+R^+\)</span>，一般是有界的，来衡量将质量从点<span class="math inline">\(x\)</span>运到点<span class="math inline">\(y\)</span>的成本。那么如何去进行移动？主要有两个角度去考虑，分别是Monge问题和Kantorovich问题。</p>
+<h2 id="monge问题">Monge问题</h2>
+<p>Monge问题就是寻找一个保测度的映射<span class="math inline">\(T:X \to
+Y\)</span> <span class="math display">\[
+\underset{T} {\min} \int_X c(x,T(x))d \mu(x),T_{ \# } \mu= \nu
+\]</span> <span class="math inline">\(T_{
+\#  }\)</span>是前推算子（<span class="math inline">\(T_{ \#
+}\)</span>的作用对象是<span class="math inline">\(\mu\)</span>，表示把测度<span class="math inline">\(\mu\)</span>推到<span class="math inline">\(\nu\)</span>），这个“推”的过程就是一个保测度的过程，即
+<span class="math display">\[
+T_{ \#  }\mu = \nu \iff \forall B \subset Y,\nu (B)=\mu (T^{-1}(B))
+\]</span> <img src="/2025/02/09/OT1/2.jpg" alt="Monge Map">
+但是映射的定义就限制了我们不能实现“一对多”的操作，这就导致了一个很严重的问题，Monge问题不一定有解。比如一个狄拉克分布（在包含某个点的集合测度是1，其余是0）就不可能保测度地映射到高斯分布。
+我们可以让质量“可分”，即以概率的形式去进行“移动”。这就是Kantorovich问题。</p>
+<h2 id="kantorovich问题">Kantorovich问题</h2>
+<p>在Kantorovich问题中，Kantorovich问题中，我们对Monge问题进行松弛，不再寻找一个映射，而是寻找一个联合分布（耦合coupling），其中它的边界分布分别是<span class="math inline">\(\mu,\nu\)</span>。从而最小化总成本 <span class="math display">\[
+\underset{\pi}{\min}\int_{X \times Y}c(x,y)d\pi(x,y),P_{x
+\#  }\pi=\mu,P_{y \# }\pi=\nu
+\]</span> <img src="/2025/02/09/OT1/3.jpg" alt="Kantorovich Relaxation"> <span class="math inline">\(\pi(x,y)\)</span>就是从<span class="math inline">\(x\)</span>移动到<span class="math inline">\(y\)</span>的概率，上式是总成本的期望。
+这样的松弛之后，Kantorovich本质上变成了一个无限维的线性规划问题（如果分布是离散的，比如一堆点，我们要做的就是在两个点云之间做matching，那么<span class="math inline">\(\pi\)</span>就变成了一个矩阵，就变成了有限维的线性规划问题）
+线性规划理论告诉我们，如果耦合集合非空且紧，目标函数是下半连续的，那么线性规划一定可以取到最小值。也就保证了Kantorovich一定有解。</p>
+<h2 id="分布之间的度量-wasserstein距离">分布之间的度量-Wasserstein距离</h2>
+<p>比较两种分布的一些方法：</p>
+<p><strong>交叉熵</strong>：对应分布为<span class="math inline">\(p(x)\)</span>的随机变量，熵<span class="math inline">\(H(p)\)</span>表示其最优编码长度。交叉熵是按照概率分布<span class="math inline">\(q\)</span>的最优编码对真实分布为<span class="math inline">\(p\)</span>的信息进行编码的长度 交叉熵定义为 <span class="math display">\[
+H(p,q)=E_q[-logq(x)]=-\displaystyle\sum_{x}p(x)logq(x)
+\]</span> 在给定<span class="math inline">\(p\)</span>的情况下，如果<span class="math inline">\(q\)</span>和<span class="math inline">\(p\)</span>越接近，交叉熵越小；如果<span class="math inline">\(q\)</span>和<span class="math inline">\(p\)</span>越远，交叉熵越大</p>
+<p><strong>KL散度</strong>:是用概率分布<span class="math inline">\(q\)</span>来近似<span class="math inline">\(p\)</span>时所造成的信息损失量。KL散度是按照概率分布<span class="math inline">\(q\)</span>的最优编码对真实分布为<span class="math inline">\(p\)</span>的信息进行编码，其平均编码长度<span class="math inline">\(H(p,q)\)</span>和<span class="math inline">\(p\)</span>的最优平均编码长度<span class="math inline">\(H(p)\)</span>之间的差异。对于离散概率分布<span class="math inline">\(p\)</span>和<span class="math inline">\(q\)</span>，从<span class="math inline">\(q\)</span>到<span class="math inline">\(p\)</span>的KL散度定义为: <span class="math display">\[
+D_{KL}(p\parallel q)=H(p,q)-H(p)=\sum_x p(x)log{\frac {p(x)} {q(x)} }
+\]</span>
+KL散度可以是衡量两个概率分布之间的距离。KL散度总是非负的，只有当<span class="math inline">\(p=q\)</span>时，<span class="math inline">\(D_{KL}(p\parallel
+q)=0\)</span>。两个分布越接近，KL散度越小；两个分布越远，KL散度越大。但KL散度并不是一个真正的度量或距离，一是KL散度不满足距离的对称性，二是KL散度不满足距离的三角不等式性质。</p>
+<p><strong>JS散度</strong>：
+JS散度是一种对称的衡量两个分布相似度的度量方式，定义为 <span class="math display">\[
+D_{JS}(p\parallel q)={\frac 1 2}D_{KL}(p \parallel m)+{\frac 1
+2}D_{KL}(q \parallel m)
+\]</span> 其中，<span class="math inline">\(m={\frac 1 2}(p+q)\)</span>
+JS 散度是KL散度一种改进。但两种散度都存在一个问题，即如果两个分布p, q
+没有重叠或者重叠非常少时，KL散度和JS 散度都很难衡量两个分布的距离</p>
+<p><strong>Wasserstein距离</strong>： Wasserstein 距离（Wasserstein
+Distance）也用于衡量两个分布之间的距离。对于两个分布<span class="math inline">\(q_1,q_2,p-Wasserstein\)</span>距离定义为 <span class="math display">\[
+W_p(q_1,q_2)=(\underset{\pi(x,y) \in U(x,y)} {\inf}E_{(x,y)\sim \pi
+(x,y)}[d(x,y)^p]) ^{1/p}
+\]</span> 其中，<span class="math inline">\(U(x,y)\)</span>是边际分布为<span class="math inline">\(q_1\)</span>和<span class="math inline">\(q_2\)</span>的所有可能的联合分布集合，<span class="math inline">\(d(x,y)\)</span>为<span class="math inline">\(x\)</span>和<span class="math inline">\(y\)</span>的距离 Wasserstein距离相比KL散度和JS
+散度的优势在于：即使两个分布没有重叠或者重叠非常少，Wasserstein
+距离仍然能反映两个分布的远近。</p>
+<p>我们可以发现，如果令<span class="math inline">\(d(x,y)^p=c(x,y)\)</span>，Wasserstein距离实际上就是从一个分布转换为另一个分布所要付出的代价。</p>
+<p>Wasserstein
+GAN就是将W-1距离作为损失函数，解决了GAN的许多问题，比如训练不稳定，判别器不能训练的“太好”等。究其原因主要是因为W-1度量比KL度量更“弱”：也就是说在K-L散度下收敛的序列在W-1距离下也一定收敛。这样的性质就保证了W-1可以捕捉到序列更多的几何信息（比如不重叠的分布的KL散度永远是0，但W-1距离不然。），训练会更鲁棒。</p>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>最优化</tag>
+        <tag>最优运输</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Numerical Solution of Inverse Problems by Weak Adversarial  Networks</title>
+    <url>/2025/03/04/Numerical-Solution-of-Inverse-Problems-by-Weak-Adversarial-Networks/</url>
+    <content><![CDATA[<h1 id="numerical-solution-of-inverse-problems-by-weak-adversarial-networks弱对抗网络对反问题的数值求解">Numerical
+Solution of Inverse Problems by Weak Adversarial
+Networks（弱对抗网络对反问题的数值求解）</h1>
+<p>期刊：Inverse Problems</p>
+<p>时间：2020</p>
+<h2 id="摘要">摘要</h2>
+<p>本文发展了一种弱对抗网络方法来数值求解一类反问题，包括电阻抗层析成像和动态电阻抗层析成像问题。<strong>利用给定反问题的PDE的弱形式，其中解和测试函数被参数化为深度神经网络。然后，弱形式和边界条件诱导出一个关于网络参数的鞍点函数的极小极大问题</strong>。随着参数的交替更新，网络逐渐逼近反问题的解。对所提算法的收敛性给出了理论证明。
+所提出的方法是完全无网格的，无需任何空间离散，特别适用于高维数和解的低正则性问题。对各种测试反问题的数值实验表明了该方法具有较高的精度和效率。
+<span id="more"></span></p>
+<h2 id="介绍">介绍</h2>
+<p>反问题(Inverse
+Problems，IP)普遍存在于大量的科学学科中，包括地球物理[73]、信号处理与成像[9]、计算机视觉[61]、遥感与控制[87]、统计学[53]和机器学习[38]等。设<span class="math inline">\(\Omega\)</span>是<span class="math inline">\(\mathbb{R}^d\)</span>中的开集和有界集，则定义在<span class="math inline">\(\Omega\)</span>上的IP可表示为一般形式： <span class="math display">\[
+\begin{aligned}
+\mathcal{A}[u, \gamma]=0, &amp; &amp; \text { in } \Omega  \qquad(1a)\\
+\mathcal{B}[u, \gamma]=0, &amp; &amp; \text { on } \partial \Omega
+\qquad(1b)
+\end{aligned}
+\]</span> 其中<span class="math inline">\(\mathcal{A}[u,
+\gamma]\)</span>指定一个微分方程，<strong><span class="math inline">\(u\)</span>是反介质问题中的解，<span class="math inline">\(\gamma\)</span>是反源问题中的源函数</strong>。方程<span class="math inline">\(\mathcal{A}\)</span>可以是常微分方程(ODE)，也可以是偏微分方程(PDE)，还可以是积分微分方程(IDE)，<span class="math inline">\((u, \gamma)\)</span>在区域<span class="math inline">\(\Omega\)</span>内需要满足(几乎)处处成立。边界值(以及如果适用的初始值)由<span class="math inline">\(\mathcal{B}[u, \gamma]\)</span>在<span class="math inline">\(\partial
+\Omega\)</span>上给出。根据具体的应用，<span class="math inline">\(u\)</span>和/或<span class="math inline">\(\gamma\)</span>的部分信息可以在<span class="math inline">\(\Omega\)</span>的内部获得.那么IP
+(1)就是找到同时满足(1a)和(1b)的<span class="math inline">\((u,
+\gamma)\)</span>。</p>
+<p>为了实例化我们的方法，我们主要以电阻抗成像(Electrical Impedance
+Tomography，EIT)中经典的电导率逆问题[19、55]为例，介绍了本文的主要思想和推导过程。然而，我们的方法可以很容易地通过修改应用于其他类型的IP。一个动态EIT问题的例子将在第4节中给出。EIT的目标是根据电势<span class="math inline">\(u\)</span>，电流<span class="math inline">\(-\gamma \partial_{\vec{n}}
+u\)</span>的测量和区域<span class="math inline">\(\Omega\)</span>的边界<span class="math inline">\(\partial \Omega\)</span>上/附近的<span class="math inline">\(\gamma\)</span> (也即<span class="math inline">\(\partial_{\vec{n}}
+u\)</span>)的知识，确定定义在<span class="math inline">\(\Omega\)</span>上的未知介质的电导率分布<span class="math inline">\(\gamma(x)\)</span>：</p>
+<p><span class="math display">\[
+\begin{aligned}
+-\nabla \cdot(\gamma \nabla u)-f=0, &amp; \text { in }
+\Omega  \qquad(2a)\\
+u-u_b=0, \gamma-\gamma_b=0, \partial_{\vec{n}} u-u_n=0, &amp; \text { on
+} \partial \Omega \qquad(2b)
+\end{aligned}
+\]</span></p>
+<p>其中<span class="math inline">\(u_b\)</span>为测量电压，<span class="math inline">\(\gamma_b\)</span>为物体表面附近的电导率，<span class="math inline">\(u_n \triangleq \nabla u \cdot \vec{n}\)</span>
+，其中 <span class="math inline">\(\vec{n}\)</span>为<span class="math inline">\(\partial
+\Omega\)</span>的外法线.值得注意的是，<strong>我们的方法并不像EIT问题[23、36、59]的经典方法那样估计与电导率函数相关的Dirichlet
+- to - Neumann
+(DtN)映射。相反，我们的目标是直接利用给定的数据数值求解一般的一类IPs(1)</strong>，以EIT问题(2)为原型例子，而不利用其特殊结构(例如,
+DtN映射)。为了使我们的介绍简洁而有重点，我们只考虑(1a)中具有PDEs特征的<span class="math inline">\(\mathcal{A}[u,
+\gamma]\)</span>的IP，并假设给定的IP是定义良好的且至少有一个(弱)解。</p>
+<p>我们的方法是<strong>训练能够表示给定IP的解<span class="math inline">\((u,
+\gamma)\)</span>的深度神经网络</strong>，与经典的数值方法相比有很大的改进，特别是对于高维问题。更具体地说，<strong>我们利用PDE
+(1a)的弱形式，将IP转化为<span class="math inline">\(u\)</span>和<span class="math inline">\(\gamma\)</span>的算子范数最小化问题。然后将<span class="math inline">\(u\)</span>、未知系数<span class="math inline">\(\gamma\)</span>和测试函数<span class="math inline">\(\varphi\)</span>分别参数化为深度神经网络<span class="math inline">\(u_\theta, \gamma_\theta\)</span>, 和 <span class="math inline">\(\varphi_\eta\)</span>，网络参数为<span class="math inline">\((\theta, \eta)\)</span>，并形成参数为<span class="math inline">\((\theta,
+\eta)\)</span>的鞍函数的极小极大问题。最后，我们应用随机梯度下降法交替更新网络参数，使得(<span class="math inline">\(u_\theta,
+\gamma_\theta\)</span>)逐步逼近IP的解</strong>。利用深度神经网络对<span class="math inline">\((u,
+\gamma)\)</span>进行参数化，不需要对空间域和时间域进行离散化，因此是完全无网格的。与经典的有限差分方法(FDM)和有限元法(FEM)相比，这是一种很有前途的替代方法，它们首先在[8]中使用了"维数灾难"这一术语。此外，<strong>我们的方法结合了弱解(原始网络)<span class="math inline">\((u, \gamma)\)</span>和测试函数(对抗网络) <span class="math inline">\(\varphi\)</span>的训练，由PDE的弱形式控制，这对解<span class="math inline">\((u,
+\gamma)\)</span>的正则性要求较低，当解具有奇异性时，在许多实际应用中可能更有优势</strong>。</p>
+<p>本论文的其余部分组织如下。我们首先在第2节中回顾了基于深度学习的正问题和反问题解决方案的近期工作。在第三节中，我们给出了我们方法的详细推导和一系列理论结果来支持所提出方法的有效性。在第4节中，我们讨论了几种可以提高实际性能的实现技术，并进行了一系列的数值实验来证明所提出方法的有效性。第五部分对本文进行了总结，并给出了一些一般性的注记。</p>
+<h2 id="相关工作">相关工作</h2>
+<p>在过去的几年中，使用基于深度学习的方法来解决正问题和反问题已经成为一种新的趋势。这些方法大致可以分为两类。第一类包括基于监督学习方法来近似求解给定问题的方法。这些方法通过数值模拟和实验需要大量的输入-输出对来训练所需的网络。在这一类中，深度神经网络用于从测量数据中生成近似的中间结果，用于进一步精化[34、66、69、77、81、88]，应用于改进经典数值方法在后处理阶段的求解[6、41、42、45、51、56、67、84]，或者用于近似从反问题的给定参数到其解的映射，但需要空间离散，无法应用于高维问题[2、50、63]。</p>
+<p>第二类是基于问题表述直接求解正问题或反问题的无监督学习方法，而不是额外的训练数据，在实际应用中可能比第一类更有优势。例如，在[24]中，前馈神经网络用于参数化系数函数，并通过最小化性能函数进行训练。在[58]中，提出了一种名为SwitchNet的神经网络架构，通过散射体和散射场之间的映射来解决逆散射问题。文献[32]提出了一种针对2D和3D
+EIT问题的深度学习方法，通过紧凑的神经网络架构来表示DtN图。前向问题中PDE对应的倒向随机微分方程(BSDE)是通过神经网络部分参数化，使得对域[13、30、43]中目标点的BSDE积分得到PDE的解。在[31]中，一个正问题的解被参数化为一个深度神经网络，它通过最小化与PDE相关的能量泛函和边值条件上的惩罚项组成的损失函数来训练。在[74]中提出了另一种无网格框架，称为物理信息神经网络(PINN)，用于使用基于PDEs的强大公式的深度神经网络来解决正问题和反问题，其中反问题部分考虑常系数函数。具体来说，PINN使用深度神经网络对给定的PDE的未知量进行参数化，这些网络通过最小化在域和边界条件采样点处违反PDE的最小二乘法形成的损失函数进行训练。PINN的一些实证研究也在[26]中进行。在[52]中也考虑了在问题域中给定数据的基于PINN的IPs的解决方案，并且在[5]中提出了使用自适应采样的配置点来精化解决方案。
+在[89]中，PDE的弱形式被用作目标函数，其中PDE的解和测试函数都被参数化为深度神经网络，分别试图最小化和最大化目标函数。在[54]中，使用了类似的变分形式，其中测试函数是固定基，而不是要学习的神经网络。在[68]中，我们使用了三个神经网络，其中一个用于低保真度数据，另外两个用于高保真度数据的线性和非线性函数。具有多保真网络结构的PINN也被提出用于随机PDE情形，其中多项式混沌展开式用于表示解，即作为随机基与待学习系数函数的线性组合[18]。
+在[12]中，IP的解被深度神经网络参数化，并通过最小化一个代价函数来学习，该代价函数执行IP和额外的正则化条件，其中PDE的解在训练过程中被要求。</p>
+<p>最近，基于元学习的前向问题求解方法也被考虑[18、33、64]。在[33]中，我们利用小波变换的压缩形式来学习从微分算子的系数到伪微分算子(e.g.
+,格林函数)的映射。在[64]中，我们引入了一个由分支网络和主干网络组成的深度算子网络。该网络将有限个位置上的输入函数(branch-net)和输出函数的位置(dry-net)进行编码，输出函数由两者的内积加上一个偏置给出。学习网络的宽度和深度参数也在[18]中使用贝叶斯优化来考虑。</p>
+<p>我们的IP方法沿用了我们先前针对正问题的工作[89]，这与前面提到的现有方法在使用偏微分方程的弱形式上有所不同。<strong>弱形式是求解偏微分方程的一种强有力的方法，因为它要求更少的正则性，并允许解的必要奇异性，这在成像和异常检测等许多实际应用中都是一个重要的特征</strong>。
+从理论的角度来看，<strong>我们的方法对解(作为原始网络)和测试函数(作为对抗网络)进行神经网络参数化，并以一种对抗训练的方式执行，即测试函数在不满足PDE的地方对解网络进行批判训练，解网络在这些地方进行自我修正，直到PDE在域中(几乎)处处被满足</strong>。然而，由于反问题往往是不适定的，且一般情况下比正问题更难求解，因此本文主要关注EIT中的反问题(2)。类似问题的一些实验结果也在第4节中给出。</p>
+<p>本工作中的对抗训练与生成对抗网络[39]中使用的对抗训练相似，其中<strong>生成器网络旨在将通用的随机样本(如来自给定的多变量Gaussian的)映射到与训练样本具有相同分布的样本</strong>，而<strong>判别器网络则是将生成器网络产生的样本与真实样本区分开来</strong>。生成器和对抗网络作为零和博弈中的两个参与者，分别通过梯度下降和上升对目标函数进行交替更新，以达到均衡。
+特别地，GAN的一个显著变体，称为Wasserstein生成式对抗网络[4]，也具有原始网络(生成器)和对抗网络(由生成分布和样本分布的Wasserstein距离决定的最优运输的对偶函数)的min-max结构作为我们的提法。然而，WGAN要求其在max问题中的对偶函数是1-Lipschitz的，这在数值上是很难实现的，并产生了一系列的后续工作来克服问题[40、70]，谱归一化生成对抗网络。相比之下，<strong>我们工作中的弱解与测试函数的结构自然地产生于PDE理论中的弱公式，它在不对对抗网络(测试函数)施加限制性约束的情况下，为PDE的IP求解提供了大量的理论证明和计算益处</strong>。</p>
+<p>与许多现有的深度学习方法需要大量的演示数据(例如,系数/边界值和解对)进行训练不同，我们的方法遵循无监督的学习策略，只需要在给定的IP中制定PDE和边界条件。在[83]中，一项无监督学习研究表明，一般的卷积神经网络(CNN)自动偏向于平滑信号，并且可以在没有任何训练数据的情况下产生类似于图像去噪中一些复杂重建的结果。这种现象被称为深度图像先验(Deep
+Image Prior，DIP)，在[29、46]中被进一步利用。
+DIP与现有工作最显著的区别在于，我们的方法是完全无网格的，不需要任何空间离散，适用于高维问题。另一方面，在DIP及其后续工作中，重建网络被应用于离散化的2D或3D图像。此外，我们的目标是利用深度网络的表征能力来参数化连续空间中IP的解，而DIP的主要兴趣在于其有趣的自动正则化特性。</p>
+<h2 id="针对反问题的弱对抗网络">针对反问题的弱对抗网络</h2>
+<p>所提出的IPs弱对抗网络方法受到PDEs弱形式的启发。为了得到(1a)中偏微分方程的弱形式，我们将(1a)两边同时乘以一个任意的测试函数<span class="math inline">\(\varphi \in H_0^1(\Omega)\)</span>(在<span class="math inline">\(\Omega\)</span>中具有有界一阶弱导数和紧支撑的函数的Hilbert空间)，并在<span class="math inline">\(\Omega\)</span>上积分： <span class="math display">\[
+\langle\mathcal{A}[u, \gamma], \varphi\rangle:=\int_{\Omega}
+\mathcal{A}[u, \gamma](x) \varphi(x) \mathrm{d} x=0 \qquad(3)
+\]</span></p>
+<p><strong>弱形式(3)的主要优点之一是我们可以通过分部积分将<span class="math inline">\(\mathcal{A}[u,
+\gamma]\)</span>中的某些梯度算子转移到<span class="math inline">\(\varphi\)</span>中，从而降低对<span class="math inline">\(u\)</span>(和<span class="math inline">\(\gamma\)</span>，若适用)正则性的要求</strong>。例如，在电导率逆问题(2)中，分部积分和<span class="math inline">\(\partial \Omega\)</span>上<span class="math inline">\(\varphi=0\)</span>的事实一起导致 <span class="math display">\[
+\langle\mathcal{A}[u, \gamma], \varphi\rangle=\int_{\Omega}(\gamma
+\nabla u \cdot \nabla \varphi-f \varphi) \mathrm{d} x=0 \qquad(4)
+\]</span></p>
+<p>其中<span class="math inline">\(\gamma \nabla
+u\)</span>在经典意义下不一定像式(2)那样可微(在这篇文章中,我们用<span class="math inline">\(\nabla\)</span>表示关于<span class="math inline">\(x\)</span>的梯度算子,<span class="math inline">\(\nabla_\theta\)</span>表示关于<span class="math inline">\(\theta\)</span>的梯度等)。若对所有的<span class="math inline">\(\varphi \in H_0^1(\Omega)\)</span>，<span class="math inline">\((u,
+\gamma)\)</span>满足边界条件(1b)和(3)，则称<span class="math inline">\((u, \gamma) \in H^1(\Omega) \times
+L^2(\Omega)\)</span>为反问题(1)的弱解(或广义解)。这里<span class="math inline">\(L^2(\Omega)\)</span>是<span class="math inline">\(\Omega\)</span>上平方可积函数的Lebesgue空间，<span class="math inline">\(H^1(\Omega) \subset
+L^2(\Omega)\)</span>是一阶弱导数有界的函数的Hilbert空间。注意到(1)式的任何经典(强)解也是弱解。
+在这项工作中，我们寻求反问题(1)的弱解，以便我们可能能够提供问题的答案，即使它不存在经典意义上的解。</p>
+<p>在文献[89]的基础上，我们考虑了(1)中PDE <span class="math inline">\(\mathcal{A}[u,
+\gamma]=0\)</span>的弱形式。为了处理反问题中PDE的未知解<span class="math inline">\(u\)</span>和参数<span class="math inline">\(\gamma\)</span>，我们将<span class="math inline">\(u\)</span>和<span class="math inline">\(\gamma\)</span>都参数化为深度神经网络，并将<span class="math inline">\(\mathcal{A}[u, \gamma]: H_0^1(\Omega) \rightarrow
+\mathbb{R}\)</span>看作一个线性泛函，使得<span class="math inline">\(\mathcal{A}[u,
+\gamma](\varphi):=\langle\mathcal{A}[u, \gamma],
+\varphi\rangle\)</span>，如式(3)所定义。我们定义由<span class="math inline">\(H_1\)</span>范数诱导的<span class="math inline">\(\mathcal{A}[u, \gamma]\)</span>范数为 <span class="math display">\[
+\|\mathcal{A}[u, \gamma]\|_{o p}:=\sup _{\varphi \in H_0^1, \varphi \neq
+0} \frac{\langle\mathcal{A}[u, \gamma],
+\varphi\rangle}{\|\varphi\|_{H^1}} \qquad(5)
+\]</span></p>
+<p>其中，<span class="math inline">\(\varphi\)</span>的<span class="math inline">\(H^1\)</span>范数由<span class="math inline">\(\|\varphi\|_{H^
+1(\Omega)}^2=\int_{\Omega}\left(|\varphi(x)|^2+|\nabla
+\varphi(x)|^2\right) \mathrm{d} x\)</span>给出。因此，<span class="math inline">\((u, \gamma)\)</span>是(1)的弱解当且仅当<span class="math inline">\(\partial \Omega\)</span>上<span class="math inline">\(\|\mathcal{A}[u, \gamma]\|_{o p}=0\)</span>，<span class="math inline">\(\mathcal{B}[u, \gamma]=0\)</span>。当<span class="math inline">\(\|\mathcal{A}[u, \gamma]\|_{o p} \geq
+0\)</span>时，我们知道方程(1)的一个弱解<span class="math inline">\((u,
+\gamma)\)</span>，从而解决了方程(5)的如下观测问题： <span class="math display">\[
+\underset{u, \gamma}{\operatorname{minimize}}\|\mathcal{A}[u,
+\gamma]\|_{o p}^2=\underset{u, \gamma}{\operatorname{minimize}} \sup
+_{\varphi \in H_0^1, \varphi \neq 0} \frac{|\langle\mathcal{A}[u,
+\gamma], \varphi\rangle|^2}{\|\varphi\|_{H^1}^2} \qquad(6)
+\]</span></p>
+<p>其中，<span class="math inline">\((u, \gamma) \in H^1(\Omega) \times
+L^2(\Omega)\)</span>，且取得最小值0。这一结果在下面的定理中进行了总结，并在附录A.1中给出了证明。</p>
+<p><strong>定理1</strong> 假设<span class="math inline">\(\left(u^*,
+\gamma^*\right)\)</span>满足边界条件<span class="math inline">\(\mathcal{B}\left[u^*,
+\gamma^*\right]=0\)</span>，则<span class="math inline">\(\left(u^*,
+\gamma^*\right)\)</span>是(1)式的弱解当且仅当<span class="math inline">\(\left\|\mathcal{A}\left[u^*,
+\gamma^*\right]\right\|_{o p}=0\)</span></p>
+<p><strong>定理1意味着，由于算子范数的非负性，为了找到(1)的弱解，我们可以通过求取最小的算子范数值<span class="math inline">\(\left\|\mathcal{A}\left[u^*,
+\gamma^*\right]\right\|_{o p}=0\)</span>来寻找满足<span class="math inline">\(\mathcal{B}\left[u^*,\gamma^*\right]=0\)</span>且同时最小化(6)的最优解<span class="math inline">\(\left(u^*,
+\gamma^*\right)\)</span>。也就是说，<span class="math inline">\(\left(u^*,
+\gamma^*\right)\)</span>是问题(1)的弱解当且仅当<span class="math inline">\(\left\|\mathcal{A}\left[u^*,
+\gamma^*\right]\right\|_{o p}\)</span>和<span class="math inline">\(\left\|\mathcal{B}\left[u^*,
+\gamma^*\right]\right\|_{L^2(\partial
+\Omega)}\)</span>都消失。因此，我们可以从下面的最小化问题中求解<span class="math inline">\(\left(u^*,
+\gamma^*\right)\)</span>，等价于(1)</strong> <span class="math display">\[
+\underset{u, \gamma}{\operatorname{minimize}} I(u,
+\gamma)=\|\mathcal{A}[u, \gamma]\|_{o p}^2+\beta\|\mathcal{B}[u,
+\gamma]\|_{L^2(\partial \Omega)}^2 \qquad(7)
+\]</span></p>
+<p>并且<span class="math inline">\(\beta
+&gt;0\)</span>是平衡目标函数<span class="math inline">\(I(u,\gamma)\)</span>中两项的权重参数。注意到(7)式中目标函数的两项均为非负，且仅在(1)式的一个弱解<span class="math inline">\(\left(u^*,
+\gamma^*\right)\)</span>处同时消失。</p>
+<p>对于高维PDEs的经典数值方法，一个很有前途的替代方法是使用深度神经网络，因为它们不需要区域离散，并且是完全无网格的。深度神经网络是多个简单函数(称为层)的组合，因此它们可以逼近相当复杂的函数。考虑一个简单的多层神经网络<span class="math inline">\(u_\theta\)</span>如下： <span class="math display">\[
+u_\theta(x)=w_K^{\top} l_{K-1} \circ \cdots \circ l_0(x)+b_K \qquad(8)
+\]</span></p>
+<p>其中，第<span class="math inline">\(k\)</span>层<span class="math inline">\(l_k: \mathbb{R}^{d_k} \rightarrow
+\mathbb{R}^{d_{k+1}}\)</span>由<span class="math inline">\(l_k(z)=\sigma_k\left(W_k
+z+b_k\right)\)</span>给出，权重<span class="math inline">\(W_k \in
+\mathbb{R}^{d_{k+1} \times d_k}\)</span>，偏置<span class="math inline">\(b_k \in
+\mathbb{R}^{d_{k+1}}\)</span>，所有层的网络参数用<span class="math inline">\(\theta\)</span>统一表示如下： <span class="math display">\[
+\theta:=\left(w_K, b_K, W_{K-1}, b_{K-1}, \ldots, W_0, b_0\right)
+\qquad(9)
+\]</span></p>
+<p>综上，本文所有向量默认为列向量。在(8)中，<span class="math inline">\(x \in \Omega\)</span>是网络的输入，<span class="math inline">\(d_0=d\)</span>是(1)的问题维数(也称为输入层的大小)，<span class="math inline">\(w_K \in \mathbb{R}^{d_K}\)</span>和<span class="math inline">\(b_K \in \mathbb{R}\)</span>是最后第<span class="math inline">\(K\)</span>层(也称为输出层)中的参数.非线性激活函数<span class="math inline">\(\sigma_k\)</span>的典型选择包括sigmoid函数<span class="math inline">\(\sigma(z)=\left(1+e^{-z}\right)^{-1}\)</span>、双曲正切(tanh)函数<span class="math inline">\(\sigma(z)=\left(e^z-e^{-z}\right)
+/\left(e^z+e^{-z}\right)\)</span>和修正线性单元(ReLU)函数<span class="math inline">\(\sigma(z)=\max (0,
+z)\)</span>，它们分别被应用。深度神经网络的训练是指利用可用的数据或约束优化<span class="math inline">\(\theta\)</span>的过程，使得函数<span class="math inline">\(u_\theta\)</span>可以逼近(未知)目标函数。关于深度神经网络的更多细节可参见文献[38]。</p>
+<p>尽管有如式(8)的简单结构，但深度神经网络能够在紧支撑<span class="math inline">\(\bar{\Omega}\)</span>上均匀地逼近相当复杂的连续函数(以及必要时的导数)。这个重要的结果被称为万能逼近定理[47]
+。由万能逼近定理保证的神经网络的表达能力表明(1)的弱解<span class="math inline">\((u,
+\gamma)\)</span>)的无网格参数化是有希望的。接下来，我们对<span class="math inline">\(u\)</span>和<span class="math inline">\(\gamma\)</span>都选取足够深度的神经网络结构，如式(8)所示。数值实验中使用的具体结构，即层数<span class="math inline">\(K\)</span>和尺寸<span class="math inline">\(\left\{d_1, \ldots,
+d_{K-1}\right\}\)</span>将在第4节中给出。注意到<span class="math inline">\(u\)</span>和<span class="math inline">\(\gamma\)</span>是两个独立的网络，但我们用一个字母<span class="math inline">\(\theta\)</span>来表示它们的网络参数，而不是用<span class="math inline">\(\theta_u\)</span>和<span class="math inline">\(\theta_\gamma\)</span>来简化符号。<strong>也就是说，我们将<span class="math inline">\((u, \gamma)\)</span>参数化为深度神经网络<span class="math inline">\(\left(u_\theta,
+\gamma_\theta\right)\)</span>，并试图找到参数<span class="math inline">\(\theta\)</span>使得<span class="math inline">\(\left(u_\theta,
+\gamma_\theta\right)\)</span>解决(7)</strong>。为此，<strong>弱式(3)中的测试函数<span class="math inline">\(\varphi\)</span>也被参数化为深度神经网络<span class="math inline">\(\varphi_\eta\)</span>，其形式类似于(8)和(9)，参数用<span class="math inline">\(\eta\)</span>表示</strong>。通过参数化的<span class="math inline">\(\left(u_\theta,
+\gamma_\theta\right)\)</span>和<span class="math inline">\(\varphi_\eta\)</span>，我们遵循(3)中的内积记法并定义
+<span class="math display">\[
+E(\theta, \eta):=\left|\left\langle\mathcal{A}\left[u_\theta,
+\gamma_\theta\right], \varphi_\eta\right\rangle\right|^2 \qquad(10)
+\]</span></p>
+<p>不像(平方)算子范数(5)的原始定义那样用<span class="math inline">\(\left\|\varphi_\eta\right\|_{H_1}^2\)</span>对
+<span class="math inline">\(E(\theta,
+\eta)\)</span>进行正规化，而是<strong>将(5)中的平方算子范数近似(上升到一个恒定的标度)为如下<span class="math inline">\(\theta\)</span>的极大值函数</strong>： <span class="math display">\[
+L_{\mathrm{int}}(\theta):=\max _{|\eta|^2 \leq 2 B} E(\theta, \eta)
+\qquad(11)
+\]</span></p>
+<p>其中<span class="math inline">\(B&gt;0\)</span>是一个限定网络参数<span class="math inline">\(\eta\)</span>大小的上界。这里<span class="math inline">\(|\eta|^2=\sum_k\left(\sum_{i j}\left[W_k\right]_{i
+j}^2+\sum_i\left[b_k\right]_i^2\right),[M]_{i j} \in
+\mathbb{R}\)</span>表示矩阵<span class="math inline">\(M\)</span>的<span class="math inline">\((i, j)\)</span>项， <span class="math inline">\([v]_i \in \mathbb{R}\)</span>表示向量<span class="math inline">\(v\)</span>的第<span class="math inline">\(i\)</span>个分量。值得注意的是，式(11)中对<span class="math inline">\(\eta\)</span>的<span class="math inline">\(\ell_2\)</span>-范数的界约束与WGAN
+[4]中使用的权重裁剪(等价于关于<span class="math inline">\(\ell_{\infty}\)</span>-范数的界)方法类似。然而，它们服务于不同的目的：在(11)中引入约束，使得积分(如(4))是有界的(这个界的实际值可以是任意的)。在这种情况下，我们的数值实现中的蒙特卡洛近似得到的随机梯度具有有界方差，这在下面定理4的证明中是需要的。另一方面，WGAN中的权重裁剪是为了保证神经网络实现的对偶函数是1-Lipschitz函数类<span class="math inline">\(\mathcal{F}:=\{f: \Omega \rightarrow
+\mathbb{R}:|f(x)-f(y)| \leq\)</span> <span class="math inline">\(|x-y|,
+\forall x, y \in
+\Omega\}\)</span>。正如文献[4]所指出的那样，权重裁剪是实现1-Lipschitz约束的一种简单但不合适的方法，因此有一系列的后续工作来解决这个问题，如[40、70]。</p>
+<p>进一步，我们定义与边界条件(1b)相关的损失函数为 <span class="math display">\[
+L_{\mathrm{bdry}}(\theta):=\left\|\mathcal{B}\left[u_\theta,
+\gamma_\theta\right]\right\|_{L^2(\partial \Omega)}^2=\int_{\partial
+\Omega}\left|\mathcal{B}\left[u_\theta, \gamma_\theta\right](x)\right|^2
+\mathrm{~d} S(x) \qquad(12)
+\]</span></p>
+<p>例如，如果在(2b)中给出<span class="math inline">\((u,
+\gamma)\)</span>的边界条件，且已知边界值<span class="math inline">\(\left(u_b, \gamma_b, u_n\right)\)</span>，则<span class="math inline">\(L_{\text {bdry }}(\theta)=\int_{\partial
+\Omega}\left|u_\theta(x)-u_b(x)\right|^2+\left|\gamma_\theta(x)-\gamma_b(x)\right|^2+\left|\partial_{\vec{n}(x)}
+u(x)-u_n(x)\right|^2 \mathrm{~d}
+S(x)\)</span>。最后，定义总损失函数<span class="math inline">\(L(\theta)\)</span>，并求解如下关于其最优<span class="math inline">\(\theta^*\)</span>的最小化问题： <span class="math display">\[
+\underset{\theta}{\operatorname{minimize}} L(\theta), \quad \text {
+where } \quad L(\theta):=L_{\mathrm{int}}(\theta)+\beta
+L_{\mathrm{bdry}}(\theta) \qquad(13)
+\]</span></p>
+<p>其中，我们还限制了参数<span class="math inline">\(\theta\)</span>的大小，使得对于同一个<span class="math inline">\(B\)</span>，<span class="math inline">\(|\theta|^2
+\leq 2 B\)</span>，以简化记号。注意到这里<span class="math inline">\(\theta\)</span>和<span class="math inline">\(\eta\)</span>都是有限维向量，且<span class="math inline">\(L_{\text {int }}(\theta), L_{\text {bdry
+}}(\theta), E(\theta, \eta) \in
+\mathbb{R}_{+}\)</span>，因此可以应用数值优化算法来寻找 <span class="math inline">\(L(\theta)\)</span>的最小值。</p>
+<p>求解类似于(13)的极小化问题的标准方法是<strong>投影梯度下降法</strong>，该方法执行如下迭代：
+<span class="math display">\[
+\theta \leftarrow \Pi\left(\theta-\tau \nabla_\theta L(\theta)\right)
+\qquad(14)
+\]</span></p>
+<p>其中<span class="math inline">\(\Pi(\theta)=\min (\sqrt{2
+B},|\theta|) \cdot(\theta /|\theta|)\)</span>是<span class="math inline">\(\theta\)</span>到以原点为圆心，半径为<span class="math inline">\(\sqrt{2 B}\)</span>的球的投影，<span class="math inline">\(\tau&gt;0\)</span>是步长.可以看出，(14)式的主要计算是在梯度<span class="math inline">\(\nabla_\theta L(\theta)=\nabla_\theta
+L_{\mathrm{int}}(\theta)+\beta \nabla_\theta
+L_{\mathrm{bdry}}(\theta)\)</span>上进行的。<span class="math inline">\(\nabla_\theta
+L_{\mathrm{bdry}}(\theta)\)</span>的计算简单明了，如下所示。然而，损失<span class="math inline">\(L_{\text {int
+}}(\theta)\)</span>被定义为一个最大化问题(11)，我们需要先将其梯度写成关于<span class="math inline">\(\theta\)</span>的函数。为此，我们有下面的引理来计算梯度<span class="math inline">\(\nabla_\theta L_{\text {int
+}}(\theta)\)</span>，证明见附录A.2。</p>
+<p><strong>引理2.</strong> 假设<span class="math inline">\(L_{i n
+t}(\theta)\)</span>在(11)式中定义。则任意<span class="math inline">\(\theta\)</span>处的梯度<span class="math inline">\(\nabla_\theta L_{i n t}(\theta)\)</span>由<span class="math inline">\(\nabla_\theta L_{\text {int
+}}(\theta)=\partial_\theta E(\theta,
+\eta(\theta))\)</span>给出，其中<span class="math inline">\(\eta(\theta)\)</span>为对指定的<span class="math inline">\(\theta\)</span>求<span class="math inline">\(\max
+_{|\eta|^2 \leq 2 B} E(\theta, \eta)\)</span>的解。</p>
+<p><strong>注释</strong> 引理2表明，对任意给定的<span class="math inline">\(\theta\)</span>，若要得到<span class="math inline">\(\nabla_\theta L_{\text {int
+}}(\theta)\)</span>，我们可以先对<span class="math inline">\(\eta\)</span>取<span class="math inline">\(E\)</span>关于<span class="math inline">\(\theta\)</span>的偏导数，然后利用<span class="math inline">\(\theta\)</span>和最大化问题(11)的解<span class="math inline">\(\eta(\theta)\)</span>求偏导数</p>
+<p><span class="math inline">\(L_{\mathrm{int}}(\theta)\)</span>和<span class="math inline">\(L_{\mathrm{bdry}}(\theta)\)</span>的精确梯度需要在连续空间<span class="math inline">\(\Omega\)</span>和<span class="math inline">\(\partial
+\Omega\)</span>上对深度神经网络参数化的函数进行积分，这在实际中是计算难以解决的。因此，我们采用这些积分的蒙特卡罗分析(MC)近似。为此，我们需要下面关于利用样本逼近积分的结果，其证明见附录A.3.</p>
+<p><strong>引理3</strong> 假设<span class="math inline">\(\Omega \subset
+\mathbb{R}^d\)</span>是有界的，<span class="math inline">\(\rho\)</span>是定义在<span class="math inline">\(\Omega\)</span>上的概率密度，使得对所有<span class="math inline">\(x \in \Omega\)</span>，<span class="math inline">\(\rho(x)&gt;0\)</span>。给定函数<span class="math inline">\(\psi \in L^2(\Omega)\)</span>，记<span class="math inline">\(\Psi=\int_{\Omega} \psi(x) \mathrm{d}
+x\)</span>。设<span class="math inline">\(x^{(1)}, \ldots,
+x^{(N)}\)</span>是从<span class="math inline">\(\rho\)</span>中抽取的<span class="math inline">\(N\)</span>个独立样本。考虑<span class="math inline">\(\Psi\)</span>的如下估计量<span class="math inline">\(\hat{\Psi}\)</span>：</p>
+<p><span class="math display">\[
+\hat{\Psi}=\frac{1}{N} \sum_{i=1}^N
+\frac{\psi\left(x^{(i)}\right)}{\rho\left(x^{(i)}\right)} \qquad(15)
+\]</span></p>
+<p>则<span class="math inline">\(\hat{\Psi}\)</span>的一阶矩和二阶矩由下式给出.</p>
+<p><span class="math display">\[
+\mathbb{E}[\hat{\Psi}]=\Psi \quad \text { and } \quad
+\mathbb{E}\left[\hat{\Psi}^2\right]=\frac{N-1}{N} \Psi^2+\frac{1}{N}
+\int_{\Omega} \frac{\psi(x)^2}{\rho(x)} \mathrm{d} x \qquad(16)
+\]</span></p>
+<p>因此，<span class="math inline">\(\hat{\Psi}\)</span>的方差为<span class="math inline">\(N^{-1} \cdot\left(\int_{\Omega}\left(\psi^2 /
+\rho\right) \mathrm{d} x-\left(\int_{\Omega} \psi \mathrm{d}
+x\right)^2\right)\)</span>。特别地，当均匀分布<span class="math inline">\(\rho(x)=1 /|\Omega|\)</span>时，<span class="math inline">\(\hat{\Psi}=(|\Omega| / N) \cdot \sum_i
+\psi\left(x^{(i)}\right)\)</span>的方差为<span class="math inline">\(N^{-1} \cdot\left(|\Omega| \int_{\Omega} \psi^2
+\mathrm{~d} x-\left(\int_{\Omega} \psi \mathrm{d}
+x\right)^2\right)\)</span>。</p>
+<p><strong>注释</strong> 关于引理3，有几点注记：</p>
+<ul>
+<li><p>积分<span class="math inline">\(\Psi\)</span>的估计量<span class="math inline">\(\hat{\Psi}\)</span>是无偏的</p></li>
+<li><p>上述<span class="math inline">\(\hat{\Psi}\)</span>的方差在样本配点数<span class="math inline">\(N\)</span>中以<span class="math inline">\(O(1 /
+N)\)</span>的速率递减。由Hölder不等式和<span class="math inline">\(\rho\)</span>是一个概率密度，我们知道.</p></li>
+</ul>
+<p><span class="math display">\[
+\left|\int_{\Omega} \psi \mathrm{d} x\right| \leq \int_{\Omega}|\psi|
+\mathrm{d} x=\int_{\Omega} \frac{|\psi|}{\sqrt{\rho}} \sqrt{\rho}
+\mathrm{d} x \leq\left(\int_{\Omega} \frac{|\psi|^2}{\rho} \mathrm{~d}
+x\right)^{1 / 2}\left(\int_{\Omega} \rho \mathrm{d} x\right)^{1 /
+2}=\left(\int_{\Omega} \frac{|\psi|^2}{\rho} \mathrm{~d} x\right)^{1 /
+2}
+\]</span></p>
+<p>这也验证了<span class="math inline">\(\mathrm{V}(\hat{\Psi}) \geq
+0\)</span>。更重要的是，当<span class="math inline">\(\psi\)</span>不变号且<span class="math inline">\(\rho
+\propto|\psi|\)</span>时，等式成立。因此，我们可以设置<span class="math inline">\(\rho\)</span>尽可能地接近<span class="math inline">\(|\psi|\)</span>
+(直到一个归一化常数)，以减小方差，但同时保证<span class="math inline">\(\rho\)</span>易于从(15)中采样和评估。这与重要性抽样的概念密切相关。</p>
+<ul>
+<li>引理3中的结果(15)和(16)可以很容易地推广到无界区域<span class="math inline">\(\Omega\)</span>的情形，只要<span class="math inline">\(\psi / \sqrt{\rho} \in L^2(\Omega)\)</span></li>
+</ul>
+<p><strong>引理3为式(14)提供了一种可行的逼近<span class="math inline">\(L(\theta)\)</span>梯度的方法</strong>。例如，要计算<span class="math inline">\(\nabla_\theta L_{\text {bdry
+}}(\theta)\)</span>，可以取式(12)关于<span class="math inline">\(\theta\)</span>的梯度，在边界<span class="math inline">\(\partial \Omega\)</span>上采样<span class="math inline">\(N_b\)</span>个配置点<span class="math inline">\(\left\{x_b^{(i)}: 1 \leq i \leq
+N_b\right\}\)</span> ，通过对采样点处的函数值求和近似<span class="math inline">\(\nabla_\theta
+L_{\mathrm{bdry}}(\theta)\)</span>。如果我们取<span class="math inline">\(\mathcal{B}[u, \gamma]=\left(u-u_b,
+\gamma-\gamma_b, \partial_{\vec{n}} u-u_n\right)\)</span>，且<span class="math inline">\(x_b^{(i)}\)</span>是一致样本，则估计变为</p>
+<p><span class="math display">\[
+\begin{gathered}
+\nabla_\theta L_{\mathrm{bdry}}(\theta)=2 \int_{\partial
+\Omega}\left(\left(u_\theta-u_b\right) \nabla_\theta
+u_\theta+\left(\gamma_\theta-\gamma_b\right) \nabla_\theta
+\gamma_\theta+\left(\partial_{\vec{n}} u_\theta-u_n\right) \nabla_\theta
+\nabla u \cdot \vec{n}\right) \mathrm{d} S(x) \\
+\approx \frac{2|\partial \Omega|}{N_b}
+\sum_{i=1}^{N_b}\left(\left(u_\theta\left(x_b^{(i)}\right)-u_b\left(x_b^{(i)}\right)\right)
+\nabla_\theta
+u_\theta\left(x_b^{(i)}\right)+\left(\gamma_\theta\left(x_b^{(i)}\right)-\gamma_b\left(x_b^{(i)}\right)\right)
+\nabla_\theta \gamma_\theta\left(x_b^{(i)}\right)\right. \\
+\left.+\left(\partial_{\vec{n}}
+u_\theta\left(x_b^{(i)}\right)-u_b\left(x_b^{(i)}\right)\right)
+\nabla_\theta \nabla u_\theta x_b^{(i)} \cdot \vec{n} x_b^{(i)}\right)
+\end{gathered} \qquad(17)
+\]</span></p>
+<p>类似地，我们也可以计算出<span class="math inline">\(\nabla_\theta
+L_{\text {int }}(\theta)\)</span>的随机梯度。若给定<span class="math inline">\(f\)</span>，在区域<span class="math inline">\(\Omega\)</span>上取<span class="math inline">\(\mathcal{A}[u, \gamma]=\nabla \cdot(\gamma \nabla
+u)-f\)</span>，且在区域<span class="math inline">\(\Omega\)</span>内均匀采样<span class="math inline">\(N_r\)</span>个配点<span class="math inline">\(\left\{x_r^{(i)}: 1 \leq i \leq
+N_r\right\}\)</span> 在区域<span class="math inline">\(\Omega\)</span>内，则<span class="math inline">\(\nabla_\theta L_{\text {int
+}}(\theta)\)</span>可由下式估计</p>
+<p><span class="math display">\[
+\begin{aligned}
+\nabla_\theta L_{\mathrm{int}}(\theta) &amp; =2 I(\theta)
+\int_{\Omega}\left(\nabla_\theta \gamma_\theta\left(\nabla u_\theta
+\cdot \nabla
+\varphi_{\eta(\theta)}\right)+\gamma_\theta\left(\nabla_\theta \nabla
+u_\theta \cdot \nabla \varphi_{\eta(\theta)}\right)\right) \mathrm{d}
+S(x) \\
+&amp; \approx \frac{2|\Omega| \hat{I}(\theta)}{N_r}
+\sum_{i=1}^{N_r}\left(\nabla_\theta
+\gamma_\theta\left(x_r^{(i)}\right)\left(\nabla
+u_\theta\left(x_r^{(i)}\right) \nabla
+\varphi_{\eta(\theta)}\left(x_r^{(i)}\right)\right)+\gamma_\theta\left(x_r^{(i)}\right)\left(\nabla_\theta
+\nabla u_\theta\left(x_r^{(i)}\right) \nabla
+\varphi_{\eta(\theta)}\left(x_r^{(i)}\right)\right)\right)
+\end{aligned}  \qquad(18)
+\]</span></p>
+<p>其中<span class="math inline">\(I(\theta)\)</span>及其估计量<span class="math inline">\(\hat{I}(\theta)\)</span>由下式给出</p>
+<p><span class="math display">\[
+I(\theta)=\int_{\Omega} \gamma_\theta\left(\nabla u_\theta \cdot \nabla
+\varphi_{\eta(\theta)}\right) \mathrm{d} x, \quad
+\hat{I}(\theta)=\frac{|\Omega|}{2} \sum_{i=1}^{N_r}
+\gamma_\theta\left(x_r^{(i)}\right)\left(\nabla
+u_\theta\left(x_r^{(i)}\right) \cdot \nabla
+\varphi_{\eta(\theta)}\left(x_r^{(i)}\right)\right)
+\]</span></p>
+<p>并且根据引理2，<span class="math inline">\(\eta(\theta)\)</span>是最大化问题(11)的一个解。梯度中的所有积分都可以用类似的方式进行近似。这些近似梯度实际上是随机梯度，它是无偏的，并且由于网络参数的有界性而具有有界的方差。通过这些近似，式(14)退化为随机投影梯度下降法，通过选择合适的步长，可以保证收敛到式(13)的局部稳定点。由于(13)是有约束的，梯度映射<span class="math inline">\(\mathcal{G}(\theta):=\tau^{-1}\left[\theta-\Pi\left(\theta-\tau
+\nabla_\theta L(\theta)\right)\right]\)</span>被用作<span class="math inline">\(\theta\)</span>的收敛准则[37,62,75]。值得注意的是，梯度映射的定义考虑了步长<span class="math inline">\(\tau\)</span>的归一化。 此外，在没有投影<span class="math inline">\(\Pi\)</span>的情况下，梯度映射退化为<span class="math inline">\(\mathcal{G}(\theta)=\nabla_\theta
+L(\theta)\)</span>，其大小是无约束情况下局部稳定点(即, <span class="math inline">\(\left|\nabla_\theta
+L(\theta)\right|=0\)</span>)的评价标准.这一结果在下面的定理中给出，并在附录A.4.中给出证明。</p>
+<p><span class="math display">\[
+\begin{array}{l}
+   \hline \
+   \textbf{算法1} \quad \text{Inverse Problem Solver by Weak Adversarial
+Network(IWAN)} \\
+   \hline
+   \qquad \textbf{输入：}反问题(1)的区域\Omega和数据 \\
+   \qquad \textbf{初始化：}\left(u_\theta, \gamma_\theta\right),
+\varphi_\eta \\
+   \qquad \textbf{for} \, j=1, \ldots, J \,\textbf{do} \\
+   \qquad \quad \text { Sample } X_r=\left\{x_r^{(i)}: 1 \leq i \leq
+N_r\right\} \subset \Omega \text { and } X_b=\left\{x_b^{(i)}: 1 \leq i
+\leq N_b\right\} \subset \partial \Omega \text {. }\\
+   \qquad \quad \eta \leftarrow \operatorname{SGD}\left(-\nabla_\eta
+E(\theta, \eta), X_r, \eta, \tau_\eta, J_\eta\right) \text {. }\\
+   \qquad \quad \theta \leftarrow
+\operatorname{SGD}\left(\partial_\theta E(\theta, \eta)+\beta
+\nabla_\theta L_{\mathrm{bdry}}(\theta),\left(X_r, X_b\right), \theta,
+\tau_\theta, 1\right)\\
+   \qquad \textbf{end for} \\
+   \qquad \textbf{输出：}\left(u_\theta, \gamma_\theta\right) \\
+   \hline
+\end{array}
+\]</span></p>
+<p><strong>定理4</strong> 对于任意的<span class="math inline">\(\varepsilon&gt;0\)</span>，令<span class="math inline">\(\left\{\theta_j\right\}\)</span>是由梯度下降算法(14)生成的<span class="math inline">\(\left(u_\theta,
+\gamma_\theta\right)\)</span>中的网络参数序列，在每次迭代中用样本复杂度为<span class="math inline">\(N_r,
+N_b=O\left(\varepsilon^{-1}\right)\)</span>的样本均值逼近<span class="math inline">\(\nabla_\theta L(\theta)\)</span>中的积分，则<span class="math inline">\(J=O\left(\varepsilon^{-1}\right)\)</span>次迭代后<span class="math inline">\(\min _{1 \leq j \leq J}
+\mathbb{E}\left[\left|\mathcal{G}\left(\theta_j\right)\right|^2\right]
+\leq \varepsilon\)</span></p>
+<p><strong>注释</strong> 定理4建立了(14)到问题的所谓<span class="math inline">\(\varepsilon\)</span>-解的收敛性和迭代复杂性.该结果是基于梯度映射的期望大小，这是非凸约束随机优化中的一个标准收敛准则。然而，这只能保证在期望意义下逼近一个稳定点(不一定是局部的或全局的极小点)。在理论上，我们可以将额外的全局优化技术应用到(7)中，以便找到一个具有较高计算成本的全局最优解(最好只有高概率才有可能)。然而，我们在本工作中不会对这一问题做进一步的探讨。</p>
+<p>现在我们总结了我们的算法使用弱对抗网络求解IPs的步骤。为了简化表述，我们引入如下符号来表示寻找损失函数<span class="math inline">\(L(\theta)\)</span>的极小点的随机梯度下降(SGD)过程：</p>
+<p><span class="math display">\[
+\theta^* \leftarrow \operatorname{SGD}\left(G(\theta), X, \theta_0,
+\tau, J\right) \qquad(19)
+\]</span></p>
+<p>也就是说，意味着输出<span class="math inline">\(\theta^*\)</span>是对<span class="math inline">\(j=0, \ldots, J-1\)</span>执行步长为<span class="math inline">\(\tau\)</span>的(投影) SGD方案，有初始<span class="math inline">\(\theta_0\)</span>之后的结果<span class="math inline">\(\theta_J\)</span>:</p>
+<p><span class="math display">\[
+\theta_{j+1} \leftarrow \Pi\left(\theta_j-\tau \hat{G}\left(\theta_j ;
+X\right)\right) \qquad(20)
+\]</span></p>
+<p>这里<span class="math inline">\(X=\left\{x^{(i)}: 1 \leq i \leq
+N\right\}\)</span>是<span class="math inline">\(N\)</span>个采样配置点的集合，<span class="math inline">\(G(\theta):=\nabla_\theta
+L(\theta)\)</span>是损失函数<span class="math inline">\(L(\theta)\)</span>的梯度，<span class="math inline">\(\hat{G}(\theta ; X)\)</span>表示<span class="math inline">\(G(\theta)\)</span>在任意给定的<span class="math inline">\(\theta\)</span>下的随机逼近，其中积分的估计如(15)中利用采样配置点<span class="math inline">\(X\)</span>。在第一步中，我们固定<span class="math inline">\(\theta\)</span>，通过对<span class="math inline">\(J_\eta\)</span>步施加随机梯度上升来求解目标函数<span class="math inline">\(E(\theta,
+\eta)\)</span>在(11)中定义的最大化问题，从而得到一个近似的最大化子<span class="math inline">\(\eta\)</span>；在第二步中，我们固定这个<span class="math inline">\(\eta\)</span>，利用梯度<span class="math inline">\(\nabla_\theta L(\theta)=\partial_\theta E(\theta,
+\eta)+\beta \nabla_\theta
+L_{\mathrm{bdry}}(\theta)\)</span>通过一个随机梯度下降步来更新<span class="math inline">\(\theta\)</span>
+。然后进入步骤1，开始下一次迭代。因此，我们的目标函数为<span class="math inline">\(E(\theta, \eta)+\beta
+L_{\mathrm{bdry}}(\theta)\)</span>，我们通过<span class="math inline">\(\min _\theta \max _\eta E(\theta, \eta)+\beta
+L_{\mathrm{bdry}}(\theta)\)</span>的min-max优化来寻找最优点<span class="math inline">\(\left(\theta^*,
+\eta^*\right)\)</span>。这个过程被称为使用弱对抗网络(IWAN)的反问题求解器，并在算法1中总结。数值实现中的参数值在第4节中给出</p>
+<h2 id="数值实验">数值实验</h2>
+<h3 id="实施细则">实施细则</h3>
+<p>在这一部分中，我们讨论了关于算法1的一些实现细节和修改。首先，为了避免在固定<span class="math inline">\(\theta\)</span>的情况下求解式(11)中的内部最大化问题<span class="math inline">\(\max _\eta E(\theta,
+\eta)\)</span>花费过多的时间，我们只使用少量的迭代次数<span class="math inline">\(J_\eta\)</span>来计算 <span class="math inline">\(\eta\)</span>。然后我们切换到更新<span class="math inline">\(\theta\)</span>进行一次迭代。见算法1中的两个SGD步骤。这样可以提高整体效率，避免在<span class="math inline">\(\eta\)</span>的内部最大化问题上花费过多的时间，特别是当<span class="math inline">\(\theta\)</span>还远未达到最优时。事实上，我们可以采用两个单独的测试函数<span class="math inline">\(\varphi_\eta\)</span>和<span class="math inline">\(\bar{\varphi}_\eta\)</span>
+(为了记号的简洁性,我们又用同样的<span class="math inline">\(\eta\)</span>)。在每次迭代<span class="math inline">\(j\)</span>中，我们按顺序交替更新<span class="math inline">\(\left(u_\theta, \varphi_\eta, \gamma_\theta,
+\bar{\varphi}_\eta\right)\)</span>，每个<span class="math inline">\(\left(u_\theta, \varphi_\eta, \gamma_\theta,
+\bar{\varphi}_\eta\right)\)</span>都有一个或几个SGD步(20)。我们将为下面的实验指定这些网络的步数。</p>
+<p>在第3节的推导过程中，我们要求有界的网络参数<span class="math inline">\(\theta\)</span>和<span class="math inline">\(\eta\)</span>，其中界<span class="math inline">\(B\)</span>可以任意大，以确保使用样本的积分估计量的有限方差，从而保证SGD收敛。另一种处理有界性约束的方法是在(7)的目标函数中添加<span class="math inline">\(|\theta|^2\)</span>和<span class="math inline">\(|\eta|^2\)</span>作为正则项。我们也可以使用分母为<span class="math inline">\(\|\varphi\|_2^2:=\int_{\Omega}|\varphi|^2
+\mathrm{~d}
+x\)</span>(用MC近似,类似于式(15))的算子范数(5)，这在我们的实现中也被采用。这种替换不会引起数值实现上的问题，因为测试函数<span class="math inline">\(\varphi_\eta\)</span>是由一个具有固定宽度/深度和有界参数的网络实现的，因此可以保证在<span class="math inline">\(H^1\)</span>中。</p>
+<p>弱式(3)要求一个检验函数<span class="math inline">\(\varphi_\eta\)</span>在<span class="math inline">\(\partial
+\Omega\)</span>上消失。保证这一点的一个简单技巧是，预先计算一个函数<span class="math inline">\(\varphi_0 \in C(\Omega)\)</span>，使得当<span class="math inline">\(x \in \partial \Omega\)</span>时，<span class="math inline">\(\varphi_0(x)=0\)</span>且当<span class="math inline">\(x \in \Omega\)</span>时，<span class="math inline">\(\varphi_0(x)&gt;0\)</span>(e.g.,一个到<span class="math inline">\(\partial
+\Omega\)</span>的距离函数)。然后寻找一个对其任意边界无约束的参数化网络<span class="math inline">\(\varphi_\eta^{\prime}\)</span>，将测试函数<span class="math inline">\(\varphi_\eta\)</span>设置为<span class="math inline">\(\varphi_0 \varphi_\eta^{\prime}\)</span>，且在∂
+<span class="math inline">\(\partial \Omega\)</span>上仍取零值。</p>
+<p>我们使用TensorFlow [1]
+(Python版本3.7)实现了我们的算法，这是一个先进的深度学习包，可以有效地利用GPU进行并行计算。通过TensorFlow内置的自动微分模块计算关于网络参数(<span class="math inline">\(\theta\)</span>和<span class="math inline">\(\eta\)</span>)和输入(<span class="math inline">\(x\)</span>)的梯度。在训练过程中，我们还可以用它的许多变体来代替标准的SGD优化器，如AdaGrad，RMSprop算法，Adam，Nadam等。在我们的实验中，我们使用了TensorFlow包提供的AdaGrad，在我们的大部分测试中，AdaGrad似乎提供了比其他优化器更好的性能。其他所有参数，如网络结构(层数和神经元数)、步长(也称为学习率)、迭代次数等将在第4节中指定</p>
+]]></content>
+      <categories>
+        <category>论文精读</category>
+      </categories>
+      <tags>
+        <tag>EIT</tag>
+        <tag>弱对抗网络</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>最优传输（二）</title>
+    <url>/2025/02/10/OT2/</url>
+    <content><![CDATA[<h1 id="kantorovich问题的对偶问题">Kantorovich问题的对偶问题</h1>
+<p>这篇文章我们讲讲对偶理论，并且探究对偶问题和Kantorovich问题之间的关系
+<span id="more"></span></p>
+<h2 id="离散版本的kantorovich问题对偶">离散版本的Kantorovich问题对偶</h2>
+<p>有两个离散分布<span class="math inline">\(a=\sum_i
+a_i\delta_{x_i},b=\sum_j b_i\delta_{y_i}\)</span>，分别包含离散点<span class="math inline">\(\lbrace {x_i} \rbrace_{i=1}^n, \lbrace {y_j}
+\rbrace_{j=1}^m\)</span></p>
+<p>有一个成本矩阵<span class="math inline">\(C \in \mathbb R^{n\times
+m}\)</span>,<span class="math inline">\(C_{ij}\)</span>就是从<span class="math inline">\(x_i\)</span>运到<span class="math inline">\(y_j\)</span>的成本</p>
+<p>我们寻找一个联合分布的矩阵<span class="math inline">\(P\in \mathbb
+R^{n \times m}\)</span>使得总成本最小化 <span class="math display">\[
+\underset{p\in U(a,b)}{\min}\langle C,P \rangle = \underset{p\in
+U(a,b)}{\min} \sum_{i,j}C_{ij}P_{ij}
+\]</span> 其中，<span class="math inline">\(U(a,b)=\{\pi \in \mathbb
+R^{n\times m}_+|\pi1_m=a\in\mathbb R^n,\pi^T1_m=b\in\mathbb
+R^m\}\)</span></p>
+<p>拉格朗日对偶形式： <span class="math display">\[
+\underset{P\ge 0}{\min}\underset{(f,g)\in \mathbb R^n \times \mathbb
+R^m}{\max}\langle C,P \rangle + \langle a-P1_m,f \rangle + \langle
+b-P^T1_n,g \rangle
+\]</span></p>
+<p>交换min，max，有</p>
+<p><span class="math display">\[
+\underset{(f,g)\in \mathbb R^n\times \mathbb R^m}{\max}\langle a,f
+\rangle + \langle b,g \rangle + \underset{P\ge 0}{\min}\langle
+C-f1^T_m-1_ng^T,P \rangle
+\]</span></p>
+<p>可以将后面min的变为约束</p>
+<p><span class="math display">\[
+C-f1^T_m-1_ng^T=C-f \oplus g \ge 0
+\]</span></p>
+<p>综上，我们得到了对偶问题：</p>
+<p><span class="math display">\[
+\underset{(f,g)\in R(a,b)}{max}\langle f,a \rangle + \langle g,b \rangle
+\]</span></p>
+<p>其中，<span class="math inline">\(R(a,b)=\{(f,g)\in \mathbb R^n\times
+R^m:f_i+g_i \le C_{ij}\}\)</span></p>
+<h2 id="连续版本的kantorovich问题对偶">连续版本的Kantorovich问题对偶</h2>
+<p>现在两个分布变为连续的<span class="math inline">\(\alpha(x),x\in
+X,\beta(y),y\in Y\)</span>，成本函数连续化<span class="math inline">\(c(x_i,y_j)=C_{ij}\)</span>，我们将上面的乘子向量<span class="math inline">\(f,g\)</span>推广成<span class="math inline">\(f(x_i)=f_i,g(y_j)=g_j\)</span>。得到对偶形式为
+<span class="math display">\[
+\underset{(f,g)\in R(c)}{\sup}\int_X f(x) \, d\alpha(x)+\int_Y g(y) \,
+d\beta(y)
+\]</span> 其中<span class="math inline">\(R(c)=\{(f,g):\forall
+(x,y),f(x_i)+g(y_j) \le c(x_i,y_j)\}\)</span></p>
+<h3 id="通俗理解原问题和对偶问题">通俗理解原问题和对偶问题</h3>
+<p>假设有一个运营商运营着<span class="math inline">\(n\)</span>个仓库和<span class="math inline">\(m\)</span>个工厂，每个仓库有<span class="math inline">\(a_i\)</span>质量的商品，每个工厂需要<span class="math inline">\(b_j\)</span>质量的商品，从<span class="math inline">\(i\)</span>仓库到<span class="math inline">\(j\)</span>工厂运输单位质量的商品需要成本<span class="math inline">\(C_{ij}\)</span>。</p>
+<p><strong>原问题就是站在运营商的角度考虑</strong>：找出最优的传输方案<span class="math inline">\(P^*\)</span>使得传输总成本<span class="math inline">\(\sum_{i,j}C_{ij}P_{ij}\)</span>最小。</p>
+<p>假设这个运营商外包给了一个供应商，供应商只需要给每个仓库和工厂定价：单位质量的商品第<span class="math inline">\(i\)</span>个仓库收取<span class="math inline">\(f_i\)</span>的费用，第<span class="math inline">\(j\)</span>个工厂收取<span class="math inline">\(g_j\)</span>的费用。</p>
+<p>供应商不能随便定价，供应商在定价过程中需要保证所有<span class="math inline">\(f_i+g_j \le
+C_{ij}\)</span>，一旦超过这个价格，那在某些路径上运营商就要付出额外的价格，还不如自己运呢。</p>
+<p>所以对偶问题就是站在供应商的角度来考虑：在<span class="math inline">\(f_i+g_j \le C_{ij}\)</span>的情况下希望收费<span class="math inline">\(\langle f,a \rangle + \langle g,b
+\rangle\)</span>最大。</p>
+<h2 id="互补松弛条件">互补松弛条件</h2>
+<p>考虑原问题的最优解<span class="math inline">\(P^*\)</span>和对偶问题最优对<span class="math inline">\((f^*,g^*)\)</span>的关系，并且证明他们满足互补松弛条件</p>
+<p>设<span class="math inline">\(\bar z\)</span>为原问题的最优解，<span class="math inline">\(\underline
+z\)</span>为对偶问题的最优解，先证明<strong>弱对偶性</strong>满足，即<span class="math inline">\(\bar z \ge \underline z\)</span></p>
+<p>首先对原始问题进行一下改写，把决策变量<span class="math inline">\(P\)</span>“拉直”为<span class="math inline">\(p\)</span>： <span class="math display">\[
+P\in \mathbb R^{n \times m}\in U(a,b) \iff p \in \mathbb R^{nm}_+,Ap=
+\begin{bmatrix}
+   a  \\
+   b
+\end{bmatrix}
+\]</span> 其中 <span class="math display">\[
+A=
+\begin{bmatrix}
+   1^T_n \otimes I_m  \\
+   I_n \otimes1^T_m
+\end{bmatrix},A \in \mathbb R^{(n+m)\times nm}
+\]</span> 定义<span class="math inline">\(c\)</span>也为成本矩阵对应的展平形式，则原始问题的拉格朗日函数：
+<span class="math display">\[
+H(h)=\underset{p\in \mathbb R^{nm}_+}{\min}(c^Tp-h^T(Ap-q))
+\]</span> 其中<span class="math inline">\(q=\begin{bmatrix}
+   a  \\
+   b
+\end{bmatrix}\)</span>。这是一个松弛问题，因为约束<span class="math inline">\(Ap=q\)</span>被软化为罚函数形式。对于原问题的最优解<span class="math inline">\(p^*\)</span>，对于任何<span class="math inline">\(h\)</span>，有： <span class="math display">\[
+H(h)\le c^T p^*-h^T(Ap^*-q)=c^T p^*=\bar z
+\]</span> 当<span class="math inline">\(h\)</span>满足对偶可行性(<span class="math inline">\(A^Th\le c\)</span>)时，对偶问题的目标值<span class="math inline">\(h^Tq\)</span>是拉格朗日函数的下界。</p>
+<p>因此结合上式： <span class="math display">\[
+\underline z=\underset{h,A^Th \le c}{\max}h^Tq\le
+\underset{h}{\max}h^Tq+\underset{p\in \mathbb
+R^{mn}_+}{\min}(c^T-h^TA)p=\underset{h\in \mathbb R^{n+m}}{\max}H(h)\le
+c^T p^*=\bar z
+\]</span>
+这表明对偶问题的最优值不超过原始问题的最优值，从而证明了弱对偶性。</p>
+<p>可以证明强对偶性也是满足的，证明过程需要slater条件。</p>
+<p>对于连续型，也是有如下定理保证了强对偶性：</p>
+<blockquote>
+<p>设<span class="math inline">\(\mu\)</span>和<span class="math inline">\(\nu\)</span>是定义在完备可分度量空间<span class="math inline">\(X\)</span>和<span class="math inline">\(Y\)</span>上的概率测度，<span class="math inline">\(c:X\times Y \to \mathbb
+R_+\)</span>是一个可测函数，那么： <span class="math display">\[
+\underset{\pi\in\Pi(\mu,\nu)}{\inf}\int_{X\times Y}c \, d\pi =
+\underset{(\varphi,\psi)}{\sup}\lbrack \int_X \varphi \, d\mu + \int_Y
+\psi \, d\nu \rbrack
+\]</span></p>
+</blockquote>
+<p>最优化理论告诉我们，如果强对偶性满足，那么我们可以使用KKT中的经典的互补松弛条件得到：
+<span class="math display">\[
+P^*(x,y)(f^*(x)+g^*(y)-c(x,y))=0
+\]</span></p>
+<p>这就是原问题的最优解<span class="math inline">\(P^*\)</span>和对偶问题最优对<span class="math inline">\((f^*,g^*)\)</span>的关系。即在支撑集上<span class="math inline">\(P^*&gt;0\)</span>，对偶问题的最优函数永远满足<span class="math inline">\(f^*(x)+g^*(y)=c(x,y)\)</span></p>
+<h2 id="c-变换">c-变换</h2>
+<p>现在我们知道对偶问题两个函数的一个很重要的性质，就是在<span class="math inline">\(P^*\)</span>支撑集上有<span class="math inline">\(f^*(x)+g^*(y)=c(x,y)\)</span></p>
+<p>下面假设这个函数对不是最优的，如果我们固定了<span class="math inline">\(f(x)\)</span>，能否得到一个“最好”的<span class="math inline">\(g(y)\)</span>使得对偶问题的目标函数尽可能大？c-变换就回答了这个问题</p>
+<p>因为 <span class="math display">\[
+f(x)+g(y)\le c(x,y)\\
+\iff g(y)\le c(x,y)-f(x)\\
+\iff g(y)\le \underset{x}{\inf} \{c(x,y)-f(x)\}
+\]</span> 而<span class="math inline">\(f(x)\)</span>已经固定，我们希望<span class="math inline">\(\int g(y) \, d\beta(y)\)</span>越大越好，所以<span class="math inline">\(g(y)\)</span>越大越好，自然就得到了一个“最好的”函数：
+<span class="math display">\[
+\bar f(y)=\underset{x}{\inf}\{c(x,y)-f(x)\}
+\]</span> 这个<span class="math inline">\(\bar f(y)\)</span>就叫做<span class="math inline">\(f\)</span>的c-变换</p>
+<p>如果一个函数<span class="math inline">\(f\)</span>可以写成某个<span class="math inline">\(g\)</span>的c-变换，那么就称<span class="math inline">\(f\)</span>是c-凹的</p>
+<p><strong>注</strong>：对偶问题的最优解<span class="math inline">\((f^*,g^*)\)</span>一定是c-凹的。否则令另一个是其c-变换，目标函数变大，矛盾。</p>
+<p>下面定理还保证了最优对的存在性： &gt;设<span class="math inline">\(\mu\)</span>和<span class="math inline">\(\nu\)</span>是<span class="math inline">\(X\)</span>和<span class="math inline">\(Y\)</span>上的概率测度使得 <span class="math display">\[
+\int_{X\times Y}c(x,y) \, d\mu(x) \, d\nu(y)&lt;\infty
+\]</span> 则对偶 Kantorovich 问题存在一个最优对<span class="math inline">\((\varphi,\psi)\)</span>且<span class="math inline">\(\bar \varphi = \psi\)</span>，<span class="math inline">\(\bar \psi=\varphi\)</span>几乎处处成立。</p>
+<h2 id="kantorovichrubinstein定理">Kantorovich–Rubinstein定理</h2>
+<p>虽然对偶问题要求两个函数<span class="math inline">\(f,g\)</span>
+，但通过c-transform可以将这两个函数“联系”起来，对偶问题从 <span class="math display">\[
+\underset{(f,g)\in R(c)}{\sup}\int_X f \, d\mu + \int_Y g \, d\nu
+\]</span> 变为 <span class="math display">\[
+\underset{f}{\sup}\int_X f \, d\mu + \int_Y \bar f \, d\nu
+\]</span> 我们可以证明，如果在度量空间<span class="math inline">\(X=Y\)</span>上，<span class="math inline">\(d(x,y)\)</span>是度量，且<span class="math inline">\(c(x,y)=d(x,y)\)</span>。如果<span class="math inline">\(f=\bar g\)</span>是一组c-变换，那么<span class="math inline">\(f\)</span>是d-Lipschitz的。</p>
+<p>证明如下： <span class="math display">\[
+f(z)=\underset{y}{\inf} \lbrace d(z,y)-g(y) \rbrace \le
+\underset{y}{\inf} \lbrace d(z,x)+d(x,y)-g(y) \rbrace=f(x)+d(z,x)
+\]</span> 互换<span class="math inline">\(z,x\)</span>即得到<span class="math inline">\(|f(x)-g(z)|\le d(x,z)\)</span></p>
+<p>然后我们可以继续证明，如果<span class="math inline">\(f\)</span>是d-Lipschitz的，那么其c-变换<span class="math inline">\(\bar f = -f\)</span>： &gt;令<span class="math inline">\(x=y\)</span>，有<span class="math inline">\(\bar
+f(x)=\underset{x}{\inf}\{d(x,x)-f(x)\}\le -f(x)\)</span>，又因为<span class="math inline">\(f\)</span>是d-Lipschitz的。所以<span class="math inline">\(\bar f(y)=\underset{x}{\inf}\{d(x,y)-f(x)\}\ge
+-f(y)\)</span>。所以<span class="math inline">\(\bar f=-f\)</span></p>
+<p>综上，结合强对偶性，我们有 <span class="math display">\[
+\underset{\pi\in U(a,b)}{\inf}\int_{X^2}d(x,y)\,
+d\pi=\underset{f}{\sup}\int_X f \, d\mu + \int_X \bar f \, d\nu =
+\underset{\lVert f \rVert_{\text{Lip}}\le 1}{\sup}\int_X f \, d\mu -
+\int_X  f \, d\nu
+\]</span> 其中，<span class="math inline">\(\lVert f
+\rVert_{\text{Lip}}=\underset{x \not = y}{\sup}\frac {\lVert
+f(x)-f(y)\rVert}{d(x,y)}\)</span></p>
+<p>我们现在得到了一个非常好非常好的结论：当成本函数是一个度量的时候，对偶问题可以变成上面的形式，我们只需要求解一个d-Lipschitz函数就可以了。</p>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>最优化</tag>
         <tag>最优运输</tag>
       </tags>
   </entry>
@@ -1980,87 +1980,6 @@ h\left(f\left(\mathbf{x}_i^t\right)\right)\)</span>，其中<span class="math in
         <tag>最优化</tag>
         <tag>最优运输</tag>
         <tag>SE（语音增强）</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>两个曲线之间的距离</title>
-    <url>/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/</url>
-    <content><![CDATA[<h2 id="两个曲线之间的距离">两个曲线之间的距离</h2>
-<p>搜Fréchet怎么打的时候看到了Fréchet距离，感觉这两天接触的距离比较多，做下整理（说不定以后换个距离就是个创新点）</p>
-<p>本篇主要介绍两个距离：<strong>Fréchet距离</strong>和<strong>Hausdorff距离</strong>。以后看到了比较两个曲线的方法再做补充（之前介绍过的两个分布之间的距离也会写篇博客整理出来）
-<span id="more"></span></p>
-<h2 id="fréchet距离">Fréchet距离</h2>
-<p>Fréchet distance(弗雷歇距离)是法国数学家Maurice René
-Fréchet在1906年提出的一种路径空间相似形描述，这种描述同时还考虑进路径空间距离的因素，对于空间路径的相似性比较适用。</p>
-<p><strong>直观的理解，Fréchet distance就是最短的狗绳长度</strong>： ·
-主人走路径A，狗走路径B，他们有不同的配速方案。 ·
-主人和狗各自走完这两条路径过程中所需要的最短狗绳长度。（在某一种配速下需要的狗绳长度，但其他配速下需要的狗绳长度更长）
-<img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/1.jpg" alt="image"></p>
-<p><strong>严格的数学定义：</strong> 设<span class="math inline">\((\mathbb S ,d)\)</span>是一个度量空间，<span class="math inline">\(d\)</span>是<span class="math inline">\(\mathbb{S}\)</span>上的度量。 1. <span class="math inline">\(A\)</span>是<span class="math inline">\(\mathbb{S}\)</span>上的一个将单位区间映射到<span class="math inline">\(\mathbb{S}\)</span>的连续映射，例如：<span class="math inline">\(A:[0,1] \to \mathbb S\)</span>. 2.
-从单位区间到其自身的重参数化映射<span class="math inline">\(\alpha
-:[0,1]\to [0,1]\)</span>满足如下三个条件：1）<span class="math inline">\(\alpha\)</span>是连续的。 2）<span class="math inline">\(\alpha\)</span>是非降的，即对于任意的<span class="math inline">\(x,y \in [0,1],x\le y\)</span>，都有<span class="math inline">\(\alpha(x) \le \alpha(y)\)</span>。 3）<span class="math inline">\(\alpha\)</span>是满射。此时有<span class="math inline">\(\alpha(0)=0,\alpha(1)=1\)</span> 3. 设<span class="math inline">\(A\)</span>和<span class="math inline">\(B\)</span>是<span class="math inline">\(\mathbb{S}\)</span>上的两条曲线，即<span class="math inline">\(A:[0,1]\to \mathbb{S},B:[0,1]\to
-\mathbb{S}\)</span>。又<span class="math inline">\(\alpha\)</span>和<span class="math inline">\(\beta\)</span>是单位区间的两个重参数化映射，则曲线<span class="math inline">\(A\)</span>和<span class="math inline">\(B\)</span>之间的Fréchet距离定义为： <span class="math display">\[
-F(A,B)=\underset{\alpha ,\beta}{\inf}\underset{t \in [0,1]}{\max}\lbrace
-d(A(\alpha(t)),B(\beta(t)))
-\]</span></p>
-<p>解释：</p>
-<ul>
-<li>两条曲线<span class="math inline">\(A(\alpha(t))\)</span>和<span class="math inline">\(B(\beta(t))\)</span>之间距离最大值的下确界
-<ul>
-<li>t理解为时间</li>
-<li><span class="math inline">\(\alpha(t)\)</span>和<span class="math inline">\(\beta(t)\)</span>理解为人和狗随时间变化的速度</li>
-<li><span class="math inline">\(A(\alpha(t))\)</span>和<span class="math inline">\(B(\beta(t))\)</span>代表t时刻人和狗的位置</li>
-<li>最大值的下确界意思为,每一种人狗速度方案下，都有对应的距离最大值；那么对于所有的速度方案，这些距离最大值中最小的是哪个？</li>
-</ul></li>
-</ul>
-<p><strong>离散化</strong></p>
-<p>设定<span class="math inline">\(t\)</span>是时间点，该时刻，曲线<span class="math inline">\(A\)</span> 上的采样点为<span class="math inline">\(A(\alpha(t))\)</span>, 曲线<span class="math inline">\(B\)</span>上采样点为<span class="math inline">\(B(\alpha(t))\)</span>.
-如果使用欧氏距离，则容易定义<span class="math inline">\(d(A(\alpha(t)),B(\beta(t)))\)</span>.
-在每次采样中<span class="math inline">\(t\)</span>离散的遍历区间<span class="math inline">\([0,1]\)</span>, 得到该种采样下的最大距离<span class="math inline">\(\underset{t\in [0,1]}{\max} \lbrace
-d(A(\alpha(t)),B(\beta(t))) \rbrace\)</span>.
-Fréchet距离就是使该最大距离最小化的采样方式下的值。
-易于理解的，在离散方式下，我们不可能得到真实的Fréchet距离，而可以无限的趋近。但是越精确的值需要越大的计算量。</p>
-<p><img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/2.jpg"></p>
-<h2 id="hausdorff距离">Hausdorff距离</h2>
-<p>衡量两个集合之间的距离</p>
-<p><strong>定义</strong>: 给定欧氏空间中的两点集<span class="math inline">\(A=\lbrace a_1,a_2,... \rbrace , B=\lbrace
-b_1,b_2,...
-\rbrace\)</span>，豪斯多夫（Hausdorff）距离就是用来衡量这两个点集间的距离。定义公式如下:
-<span class="math display">\[
-H(A,B)=\max[h(A,B),h(B,A)]
-\]</span> 其中， <span class="math display">\[
-h(A,B)=\underset{a \in A}{\max}\underset{b\in B}{\min} \lVert a-b \rVert
-\\
-h(B,A)=\underset{b \in B}{\max}\underset{a\in A}{\min} \lVert b-a \rVert
-\]</span> <span class="math inline">\(H(A,B)\)</span>称为双向Hausdorff
-距离，<span class="math inline">\(h(A,B)\)</span>称为从点集A到点集B的单向 Hausdorff
-距离。相应地<span class="math inline">\(h(B,A)\)</span>称为从点集B到点集A的单向Hausdorff距离</p>
-<p><strong>一些图例</strong></p>
-<p><img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/3.jpg"> <img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/4.jpg"></p>
-<p><strong>性质</strong></p>
-<ul>
-<li><p>双向Hausdorff距离 <span class="math inline">\(H(A,B)\)</span>是单向 Hausdorff 距离<span class="math inline">\(h(A,B)\)</span>和<span class="math inline">\(h(B,A)\)</span>两者中较大者，显然它度量了两个点集间的最大不匹配程度。</p></li>
-<li><p>当<span class="math inline">\(A\)</span>和<span class="math inline">\(B\)</span>都是闭集的时候,Hausdorff距离满足度量的三个定理：</p></li>
-</ul>
-<ol type="1">
-<li><span class="math inline">\(H(A,B)\ge 0\)</span>，当且仅当<span class="math inline">\(A=B\)</span>时，<span class="math inline">\(H(A,B)= 0\)</span></li>
-<li><span class="math inline">\(H(A,B)=H(B,A)\)</span></li>
-<li><span class="math inline">\(H(A,B)+H(B,C)\ge H(A,C)\)</span></li>
-</ol>
-<ul>
-<li><p>若凸集<span class="math inline">\(A,B\)</span>满足<span class="math inline">\(A \nsubseteq B,B \nsubseteq A\)</span>并记<span class="math inline">\(\partial A,\partial B\)</span>分别为<span class="math inline">\(A,B\)</span>边界的集合，则<span class="math inline">\(A,B\)</span>的Hausdorff距离等于<span class="math inline">\(\partial A,\partial
-B\)</span>的Hausdorff距离</p></li>
-<li><p>Hausdorff距离易受到突发噪声的影响。</p></li>
-</ul>
-<p><img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/5.jpg"></p>
-<p>当图像受到噪声污染或存在遮挡等情况时，原始的Haudorff距离容易造成误匹配。所以，在1933年，Huttenlocher提出了部分
-Hausdorff距离的概念。</p>
-]]></content>
-      <categories>
-        <category>学习笔记</category>
-      </categories>
-      <tags>
-        <tag>各种距离</tag>
       </tags>
   </entry>
   <entry>
@@ -2385,6 +2304,87 @@ MLP中模式崩溃的显著程度 ## 结论</p>
       </categories>
       <tags>
         <tag>GAN</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>两个曲线之间的距离</title>
+    <url>/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/</url>
+    <content><![CDATA[<h2 id="两个曲线之间的距离">两个曲线之间的距离</h2>
+<p>搜Fréchet怎么打的时候看到了Fréchet距离，感觉这两天接触的距离比较多，做下整理（说不定以后换个距离就是个创新点）</p>
+<p>本篇主要介绍两个距离：<strong>Fréchet距离</strong>和<strong>Hausdorff距离</strong>。以后看到了比较两个曲线的方法再做补充（之前介绍过的两个分布之间的距离也会写篇博客整理出来）
+<span id="more"></span></p>
+<h2 id="fréchet距离">Fréchet距离</h2>
+<p>Fréchet distance(弗雷歇距离)是法国数学家Maurice René
+Fréchet在1906年提出的一种路径空间相似形描述，这种描述同时还考虑进路径空间距离的因素，对于空间路径的相似性比较适用。</p>
+<p><strong>直观的理解，Fréchet distance就是最短的狗绳长度</strong>： ·
+主人走路径A，狗走路径B，他们有不同的配速方案。 ·
+主人和狗各自走完这两条路径过程中所需要的最短狗绳长度。（在某一种配速下需要的狗绳长度，但其他配速下需要的狗绳长度更长）
+<img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/1.jpg" alt="image"></p>
+<p><strong>严格的数学定义：</strong> 设<span class="math inline">\((\mathbb S ,d)\)</span>是一个度量空间，<span class="math inline">\(d\)</span>是<span class="math inline">\(\mathbb{S}\)</span>上的度量。 1. <span class="math inline">\(A\)</span>是<span class="math inline">\(\mathbb{S}\)</span>上的一个将单位区间映射到<span class="math inline">\(\mathbb{S}\)</span>的连续映射，例如：<span class="math inline">\(A:[0,1] \to \mathbb S\)</span>. 2.
+从单位区间到其自身的重参数化映射<span class="math inline">\(\alpha
+:[0,1]\to [0,1]\)</span>满足如下三个条件：1）<span class="math inline">\(\alpha\)</span>是连续的。 2）<span class="math inline">\(\alpha\)</span>是非降的，即对于任意的<span class="math inline">\(x,y \in [0,1],x\le y\)</span>，都有<span class="math inline">\(\alpha(x) \le \alpha(y)\)</span>。 3）<span class="math inline">\(\alpha\)</span>是满射。此时有<span class="math inline">\(\alpha(0)=0,\alpha(1)=1\)</span> 3. 设<span class="math inline">\(A\)</span>和<span class="math inline">\(B\)</span>是<span class="math inline">\(\mathbb{S}\)</span>上的两条曲线，即<span class="math inline">\(A:[0,1]\to \mathbb{S},B:[0,1]\to
+\mathbb{S}\)</span>。又<span class="math inline">\(\alpha\)</span>和<span class="math inline">\(\beta\)</span>是单位区间的两个重参数化映射，则曲线<span class="math inline">\(A\)</span>和<span class="math inline">\(B\)</span>之间的Fréchet距离定义为： <span class="math display">\[
+F(A,B)=\underset{\alpha ,\beta}{\inf}\underset{t \in [0,1]}{\max}\lbrace
+d(A(\alpha(t)),B(\beta(t)))
+\]</span></p>
+<p>解释：</p>
+<ul>
+<li>两条曲线<span class="math inline">\(A(\alpha(t))\)</span>和<span class="math inline">\(B(\beta(t))\)</span>之间距离最大值的下确界
+<ul>
+<li>t理解为时间</li>
+<li><span class="math inline">\(\alpha(t)\)</span>和<span class="math inline">\(\beta(t)\)</span>理解为人和狗随时间变化的速度</li>
+<li><span class="math inline">\(A(\alpha(t))\)</span>和<span class="math inline">\(B(\beta(t))\)</span>代表t时刻人和狗的位置</li>
+<li>最大值的下确界意思为,每一种人狗速度方案下，都有对应的距离最大值；那么对于所有的速度方案，这些距离最大值中最小的是哪个？</li>
+</ul></li>
+</ul>
+<p><strong>离散化</strong></p>
+<p>设定<span class="math inline">\(t\)</span>是时间点，该时刻，曲线<span class="math inline">\(A\)</span> 上的采样点为<span class="math inline">\(A(\alpha(t))\)</span>, 曲线<span class="math inline">\(B\)</span>上采样点为<span class="math inline">\(B(\alpha(t))\)</span>.
+如果使用欧氏距离，则容易定义<span class="math inline">\(d(A(\alpha(t)),B(\beta(t)))\)</span>.
+在每次采样中<span class="math inline">\(t\)</span>离散的遍历区间<span class="math inline">\([0,1]\)</span>, 得到该种采样下的最大距离<span class="math inline">\(\underset{t\in [0,1]}{\max} \lbrace
+d(A(\alpha(t)),B(\beta(t))) \rbrace\)</span>.
+Fréchet距离就是使该最大距离最小化的采样方式下的值。
+易于理解的，在离散方式下，我们不可能得到真实的Fréchet距离，而可以无限的趋近。但是越精确的值需要越大的计算量。</p>
+<p><img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/2.jpg"></p>
+<h2 id="hausdorff距离">Hausdorff距离</h2>
+<p>衡量两个集合之间的距离</p>
+<p><strong>定义</strong>: 给定欧氏空间中的两点集<span class="math inline">\(A=\lbrace a_1,a_2,... \rbrace , B=\lbrace
+b_1,b_2,...
+\rbrace\)</span>，豪斯多夫（Hausdorff）距离就是用来衡量这两个点集间的距离。定义公式如下:
+<span class="math display">\[
+H(A,B)=\max[h(A,B),h(B,A)]
+\]</span> 其中， <span class="math display">\[
+h(A,B)=\underset{a \in A}{\max}\underset{b\in B}{\min} \lVert a-b \rVert
+\\
+h(B,A)=\underset{b \in B}{\max}\underset{a\in A}{\min} \lVert b-a \rVert
+\]</span> <span class="math inline">\(H(A,B)\)</span>称为双向Hausdorff
+距离，<span class="math inline">\(h(A,B)\)</span>称为从点集A到点集B的单向 Hausdorff
+距离。相应地<span class="math inline">\(h(B,A)\)</span>称为从点集B到点集A的单向Hausdorff距离</p>
+<p><strong>一些图例</strong></p>
+<p><img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/3.jpg"> <img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/4.jpg"></p>
+<p><strong>性质</strong></p>
+<ul>
+<li><p>双向Hausdorff距离 <span class="math inline">\(H(A,B)\)</span>是单向 Hausdorff 距离<span class="math inline">\(h(A,B)\)</span>和<span class="math inline">\(h(B,A)\)</span>两者中较大者，显然它度量了两个点集间的最大不匹配程度。</p></li>
+<li><p>当<span class="math inline">\(A\)</span>和<span class="math inline">\(B\)</span>都是闭集的时候,Hausdorff距离满足度量的三个定理：</p></li>
+</ul>
+<ol type="1">
+<li><span class="math inline">\(H(A,B)\ge 0\)</span>，当且仅当<span class="math inline">\(A=B\)</span>时，<span class="math inline">\(H(A,B)= 0\)</span></li>
+<li><span class="math inline">\(H(A,B)=H(B,A)\)</span></li>
+<li><span class="math inline">\(H(A,B)+H(B,C)\ge H(A,C)\)</span></li>
+</ol>
+<ul>
+<li><p>若凸集<span class="math inline">\(A,B\)</span>满足<span class="math inline">\(A \nsubseteq B,B \nsubseteq A\)</span>并记<span class="math inline">\(\partial A,\partial B\)</span>分别为<span class="math inline">\(A,B\)</span>边界的集合，则<span class="math inline">\(A,B\)</span>的Hausdorff距离等于<span class="math inline">\(\partial A,\partial
+B\)</span>的Hausdorff距离</p></li>
+<li><p>Hausdorff距离易受到突发噪声的影响。</p></li>
+</ul>
+<p><img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/5.jpg"></p>
+<p>当图像受到噪声污染或存在遮挡等情况时，原始的Haudorff距离容易造成误匹配。所以，在1933年，Huttenlocher提出了部分
+Hausdorff距离的概念。</p>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>各种距离</tag>
       </tags>
   </entry>
   <entry>
