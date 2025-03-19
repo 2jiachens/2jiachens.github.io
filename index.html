@@ -188,6 +188,731 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/03/17/Solving-electrical-impedance-tomography-with-deep-learning/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="宋嘉晨">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我的博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/03/17/Solving-electrical-impedance-tomography-with-deep-learning/" class="post-title-link" itemprop="url">Solving electrical impedance tomography with deep learning  Networks</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-03-17 15:34:45" itemprop="dateCreated datePublished" datetime="2025-03-17T15:34:45+08:00">2025-03-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-19 16:02:12" itemprop="dateModified" datetime="2025-03-19T16:02:12+08:00">2025-03-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%BA%E6%96%87%E6%B3%9B%E8%AF%BB/" itemprop="url" rel="index"><span itemprop="name">论文泛读</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2025/03/17/Solving-electrical-impedance-tomography-with-deep-learning/" class="post-meta-item leancloud_visitors" data-flag-title="Solving electrical impedance tomography with deep learning  Networks" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2025/03/17/Solving-electrical-impedance-tomography-with-deep-learning/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2025/03/17/Solving-electrical-impedance-tomography-with-deep-learning/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>15k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="solving-electrical-impedance-tomography-with-deep-learning-networks">Solving
+electrical impedance tomography with deep learning Networks</h1>
+<p>期刊：Journal of Computational Physics</p>
+<p>时间：November 2019</p>
+<h2 id="摘要">摘要</h2>
+<p>本文介绍了一种利用深度神经网络解决电阻抗层析成像(EIT)问题的新方法。EIT的数学问题是从Dirichlet-to-Neumann(DtN)映射反演电导率。电导率到DtN映射的正向映射和反向映射都是高维非线性的。受正向映射的线性扰动分析的启发，基于数值低秩特性，我们提出了2D和3D问题的正向和反向映射的紧致神经网络结构。数值结果表明了所提出的神经网络的有效性。</p>
+<h2 id="介绍">介绍</h2>
+<p>电阻抗层析成像(Electrical Impedance
+Tomography，EIT)是通过在物体边界处进行电压和电流测量来确定未知介质电导率分布的问题。作为一种无辐射成像技术，EIT可以重复、非侵入地测量物体的区域变化；因此，它已被用作重症医学中多种应用的监测工具，如监测通气分布[52]、评估肺过度扩张[41]和检测气胸[18]，以及许多工业应用[53]。</p>
+<h3 id="背景">背景</h3>
+<p>EIT数学公式的核心是Dirichlet-to-Neumann（DtN）映射，它是椭圆偏微分方程分析中的关键对象，在经典
+Calderón 问题中起着重要作用 [14,50,8]</p>
+<p>EIT的控制方程，或等效的逆电导率问题，是 <span class="math display">\[
+\begin{array}{cl}
+-\operatorname{div}(\gamma(x) \nabla \phi(x))=0, &amp; \text { in }
+\Omega \subset \mathbb{R}^d, \\
+\phi(x)=\psi(x), &amp; \text { on } \partial \Omega,  \qquad(1.1)
+\end{array}
+\]</span></p>
+<p>其中 是<span class="math inline">\(\Omega\)</span>有界Lipschitz域，<span class="math inline">\(\phi(x)\)</span>是电压，<span class="math inline">\(\gamma(x)&gt;0\)</span>是电导率分布，<span class="math inline">\(\psi(x)\)</span>是施加在边界上的电压。相应的DtN映射由
+<span class="math display">\[
+\Lambda_\gamma: H^{\frac{1}{2}}(\partial \Omega) \rightarrow
+H^{-\frac{1}{2}}(\partial \Omega),\left.\left.\quad
+\psi(x)\right|_{\partial \Omega} \rightarrow \gamma(x) \frac{\partial
+\phi(x)}{\partial n(x)}\right|_{\partial \Omega}
+\]</span></p>
+<p>其中<span class="math inline">\(n(x)\)</span>是外法向量。这里<span class="math inline">\(H^{\frac{1}{2}}(\partial \Omega)\)</span>是<span class="math inline">\(L^2(\partial \Omega)\)</span>函数的空间，它是<span class="math inline">\(H^1(\Omega)\)</span>中函数的轨迹，<span class="math inline">\(H^{-\frac{1}{2}}(\partial
+\Omega)\)</span>是它的对偶。我们建议读者阅读 [48]
+以了解有关DtN映射的更多详细信息</p>
+<p>一个密切相关的逆电导率问题涉及零能量时Schrödinger方程的DtN映射
+[48]，其形式如下 <span class="math display">\[
+\begin{aligned}
+(-\Delta+\eta(x)) u(x)=0, &amp; \text { in } \Omega \\
+u(x)=f(x), &amp; \text { on } \partial \Omega
+\end{aligned}    \qquad(1.2)
+\]</span></p>
+<p>然后，Schrödinger方程的DtN映射由下式定义</p>
+<p><span class="math display">\[
+\Lambda_\eta: H^{\frac{1}{2}}(\partial \Omega) \rightarrow
+H^{-\frac{1}{2}}(\partial \Omega),\left.\left.\quad
+f(x)\right|_{\partial \Omega} \rightarrow \frac{\partial u(x)}{\partial
+n(x)}\right|_{\partial \Omega} \qquad(1.3)
+\]</span></p>
+<p><span class="math inline">\(\Lambda_\eta\)</span>和<span class="math inline">\(\Lambda_\gamma\)</span>这两个DtN映射密切相关。如果<span class="math inline">\(\phi\)</span>是(1.1)的解，那么<span class="math inline">\(u=\sqrt{\gamma} \phi\)</span>是(1.2)
+的解，其中<span class="math inline">\(\eta=\frac{\Delta
+\sqrt{\gamma}}{\sqrt{\gamma}}\)</span>且 <span class="math inline">\(f=\sqrt{\gamma} \psi\)</span>。此外，<span class="math inline">\(\Lambda_\eta=\gamma^{-1 / 2} \Lambda_\gamma
+\gamma^{-1 / 2}+\frac{1}{2 \gamma} \frac{\partial \gamma}{\partial
+n}\)</span>。实际上，<span class="math inline">\(\Lambda_\eta\)</span>和<span class="math inline">\(\Lambda_\gamma\)</span>这两个映射携带相同的信息，并且可以相互确定[48]。本文将重点介绍Schrödinger方程的DtN映射<span class="math inline">\(\Lambda_\eta\)</span>。所有结果都可以毫无困难地扩展到
+DtN 映射<span class="math inline">\(\Lambda_\gamma\)</span>。</p>
+<p>由于DtN映射<span class="math inline">\(\Lambda_\eta\)</span>对于固定<span class="math inline">\(\eta\)</span>是线性的 [8]，因此对 <span class="math inline">\(r, s \in \partial
+\Omega\)</span>，存在一个分布核<span class="math inline">\(\lambda_\eta(r, s)\)</span>使得 <span class="math display">\[
+\left(\Lambda_\eta f\right)(r)=\frac{\partial u}{\partial
+n}(r)=\int_{\partial \Omega} \lambda_\eta(r, s) f(s) \mathrm{d} S(s)
+\qquad(1.4)
+\]</span></p>
+<p>DtN 映射的正向问题是，给定<span class="math inline">\(\eta(x)\)</span>，求解核<span class="math inline">\(\lambda_\eta(r, s)\)</span>，即<span class="math inline">\(\eta \rightarrow \lambda_\eta\)</span>。</p>
+<p>逆问题的任务是在<span class="math inline">\(\Omega\)</span>中根据观测数据恢复<span class="math inline">\(\eta(x)\)</span>，观测数据通常是Dirichlet边界条件<span class="math inline">\(f\)</span> 的对<span class="math inline">\(\left(f, \Lambda_\eta
+f\right)\)</span>和相应的Neumann数据<span class="math inline">\(\Lambda_\eta
+f\)</span>的集合。在假设Dirichlet边界条件被充分采样的情况下，可以假设核<span class="math inline">\(\lambda_\eta\)</span>是已知的，因此，逆问题是从<span class="math inline">\(\lambda_\eta\)</span>恢复<span class="math inline">\(\eta\)</span>，即<span class="math inline">\(\lambda_\eta \rightarrow \eta\)</span>。由于 <span class="math inline">\(\left.\lambda_\eta(r, s)\right|_{r, s \in \partial
+\Omega}\)</span>是<span class="math inline">\(2(d-1)\)</span>个变量的函数，而<span class="math inline">\(\eta(x)\)</span>是<span class="math inline">\(d\)</span>个变量的函数，因此如果<span class="math inline">\(d=1\)</span>，则由于简单的维度计数，逆问题无法解决。对于
+<span class="math inline">\(d \geq
+2\)</span>，原则上，逆问题的解存在并且在某些条件下是唯一的
+[51]。然而，由于EIT的椭圆性质，即使对于<span class="math inline">\(d
+\geq 2\)</span>，逆问题也是严重的病态[2-4,12]</p>
+<p>正向和逆向问题的数值解可能具有挑战性。前向问题是从<span class="math inline">\(d\)</span>维函数到<span class="math inline">\(2(d-1)\)</span>维函数的映射。对于3D问题，计算和表示固定<span class="math inline">\(\eta\)</span>的整个DtN映射<span class="math inline">\(\Lambda_\eta\)</span>可能非常昂贵。对于逆问题，由于条件不良，逆映射<span class="math inline">\(\Lambda_\eta \rightarrow
+\eta\)</span>在数值上不稳定[2-4,12]。为了避免不稳定，通常需要一个依赖于正则化项来稳定逆问题，例如，参见
+[30,16,33]。从算法上讲，逆问题通常使用迭代方法 [30,27,11,12]
+来解决，这通常需要大量的迭代。</p>
+<p>在过去的几年里，深度神经网络（DNN）在计算机视觉、图像处理、语音识别和许多其他人工智能应用中取得了巨大成功
+[31,37,26,43,39,47,38,46]。最近，基于DNN的方法也被应用于求解偏微分方程
+[34,9,28,23,22,6,44,21,36]。这些尝试可分为两类。第一类[45,15,28,35,20]旨在表示具有DNN的高维偏微分方程的解（而不是有限元和有限差分法等经典方法）。第二类[42,29,34,23,22,21,36,40,7]处理参数化的PDE问题，并使用DNN来表示从PDE的高维参数到PDE解的映射。</p>
+<h3 id="贡献">贡献</h3>
+<p>深度神经网络在用于解决正向和逆向问题时具有多个优势。对于前向问题，由于新颖的软件和硬件架构可以快速将神经网络应用于输入数据，因此当用
+DNN
+表示前向映射时，可以显著加速前向问题。对于逆问题，解算法和正则化项的选择是两个关键问题。幸运的是，深度神经网络可以在这两个方面提供帮助。首先，关于求解算法，由于其在表示高维函数方面的灵活性，DNN
+可能用于近似完整的逆映射，从而避免迭代求解过程。其次，关于正则化术语，机器学习的最新研究表明，DNN
+通常可以自动从数据中提取特征，并提供数据驱动的正则化。</p>
+<p>本文通过使用一种新颖的神经网络架构表示从<span class="math inline">\(\Lambda_\eta\)</span>到<span class="math inline">\(\eta\)</span>的逆映射，将深度学习方法应用于EIT问题。<strong>新架构的动机来自对EIT问题的正向映射和逆映射的线性近似的扰动分析</strong>。分析表明，在重参数化DtN映射<span class="math inline">\(\Lambda_\eta\)</span>后，<span class="math inline">\(\eta\)</span>和<span class="math inline">\(\Lambda_\eta\)</span>之间的映射在局部数值上是低秩的。这个观察使我们能够将<span class="math inline">\(d\)</span>维<span class="math inline">\(\eta\)</span>和<span class="math inline">\(2（d −
+1）\)</span>维<span class="math inline">\(\Lambda_\eta\)</span>之间的映射简化为两个（准）<span class="math inline">\(（d −
+1）\)</span>维函数之间的映射。作为平移不变性和全局性的，这个新映射用最近提出的
+BCR-Net[10]表示，它是一个基于小波分解的非标准形式的多尺度神经网络。这种神经网络架构用于近似正向映射和反向映射。对于正在考虑的测试问题，由于BCR-Net的降维和紧凑的结构，最后的神经网络在2D情况下只有<span class="math inline">\(10^4 ∼ 10^5\)</span>个参数，在3D情况下只有<span class="math inline">\(10^5 ∼
+10^6\)</span>个参数。相当少量的参数允许在相当有限的数据集上进行训练，这通常是
+EIT 问题的情况。</p>
+<h3 id="文章架构">文章架构</h3>
+<p>本文的其余部分概述如下。第2节研究了DtN映射的数学背景。第 3
+节讨论了2D情况下正向映射和逆向映射的DNN的设计和架构，以及数值测试。结果扩展到第4节中的3D情况。</p>
+<h2 id="dtn映射的数学分析">DtN映射的数学分析</h2>
+<p>本节总结了DtN映射的必要数学背景。让我们用<span class="math inline">\(\mathcal{G} f(x)=\int_{\Omega} G(x, y) f(y)
+\mathrm{d} y\)</span>表示 <span class="math inline">\(\mathcal{L}=-\Delta+\eta\)</span>和<span class="math inline">\(\mathcal{G}=\mathcal{L}^{-1}\)</span>，其中<span class="math inline">\(G\)</span>是运算符<span class="math inline">\(\mathcal{L}\)</span>的Green函数，具有Dirichlet边界条件。散度定理的应用表明</p>
+<p><span class="math display">\[
+0=\int_{\partial \Omega} \frac{\partial u}{\partial n(y)}(y) G(x, y)
+\mathrm{d} S(y)=\int_{\Omega} \operatorname{div}_y\left(\nabla_y u(y)
+\cdot G(x, y)\right) \mathrm{d} y=\int_{\Omega}\left(\Delta_y u \cdot
+G+\nabla_y G \nabla_y u\right) \mathrm{d} y \qquad(2.1)
+\]</span></p>
+<p>类似地，将散度定理第二次应用于上述结果会导致</p>
+<p><span class="math display">\[
+\begin{aligned}
+\int_{\partial \Omega} \frac{\partial G}{\partial n(y)}(x, y) f(y)
+\mathrm{d} S(y) &amp; =\int_{\Omega} \operatorname{div}_y\left(\nabla_y
+G(x, y) \cdot u(y)\right) \mathrm{d} y \\
+&amp; =\int_{\Omega}\left(\Delta_y G(x, y) \cdot u(y)+\nabla_y G(x, y)
+\nabla_y u(y)\right) \mathrm{d} y \\
+&amp; =\int_{\Omega}\left(\Delta_y G(x, y) \cdot u(y)-\Delta_y u(y)
+\cdot G(x, y)\right) \mathrm{d} y \\
+&amp; =\int_{\Omega}\left(-\left(-\Delta_y+\eta(y)\right) G(x, y) \cdot
+u(y)+\left(-\Delta_y+\eta(y)\right) u(y) \cdot G(x, y)\right) \mathrm{d}
+y \\
+&amp; =-u(x)
+\end{aligned} \qquad(2.2)
+\]</span></p>
+<p>这里最后一个相等利用的事实是<span class="math inline">\(G\)</span>是<span class="math inline">\(\mathcal{L}=-\Delta+\eta\)</span>的Green函数，<span class="math inline">\(u\)</span>是(1.2)的解。对 <span class="math inline">\(x \in \partial \Omega\)</span>取(2.2)的两条边关于
+<span class="math inline">\(n(x)\)</span>的法向导数，得到 <span class="math display">\[
+\frac{\partial u}{\partial n}(x)=-\int_{\partial \Omega}
+\frac{\partial^2 G}{\partial n(x) n(y)}(x, y) f(y) \mathrm{d} S(y),
+\quad x \in \partial \Omega \qquad(2.3)
+\]</span> 它用格林函数G描述了DtN映射<span class="math inline">\(\Lambda_\eta(\psi)\)</span>的核:</p>
+<p><span class="math display">\[
+\lambda_\eta(r, s)=-\frac{\partial^2 G}{\partial n(r) n(s)}(r, s), \quad
+r, s \in \partial \Omega  \qquad(2.4)
+\]</span></p>
+<p>为避免混淆，我们用<span class="math inline">\(r,
+s\)</span>来表示边界上的点，用<span class="math inline">\(p,
+q\)</span>来表示域中的点。</p>
+<p>为了理解 DtN 映射如何取决于电位<span class="math inline">\(\eta\)</span>，我们对<span class="math inline">\(\eta&gt;0\)</span>接近固定<span class="math inline">\(\eta_0\)</span>的<span class="math inline">\(\eta\)</span>到<span class="math inline">\(\lambda_\eta\)</span>的映射进行了扰动分析。为简单起见，假设<span class="math inline">\(\eta_0=0\)</span>。让我们引入<span class="math inline">\(\mathcal{E}=-\eta \mathcal{I}\)</span>，其中<span class="math inline">\(\mathcal{I}\)</span>是恒等运算符，<span class="math inline">\(\mathcal{L}_0=-\Delta\)</span>，<span class="math inline">\(\mathcal{G}_0=\mathcal{L}_0^{-1}\)</span>（核用<span class="math inline">\(G_0\)</span>表示）作为<span class="math inline">\(\mathcal{L}_0\)</span>的格林函数，具有Dirichlet边界条件。当<span class="math inline">\(\eta&gt;0\)</span>足够小时，<span class="math inline">\(\mathcal{G}\)</span>可以通过Neumann级数展开</p>
+<p><span class="math display">\[
+\mathcal{G}=\left(\mathcal{L}_0-\mathcal{E}\right)^{-1}=\mathcal{G}_0+\mathcal{G}_0
+\mathcal{E} \mathcal{G}_0+\mathcal{G}_0 \mathcal{E} \mathcal{G}_0
+\mathcal{E} \mathcal{G}_0+\ldots \qquad(2.5)
+\]</span></p>
+<p>通过引入<span class="math inline">\(\lambda_0(r,
+s)=\left.\lambda_\eta(r,
+s)\right|_{\eta=\eta_0}\)</span>，可以通过了解背景情况<span class="math inline">\(\eta=\eta_0\)</span>来计算，相当于关注差值<span class="math inline">\(\lambda_\eta-\lambda_0\)</span>（通常称为差值成像，详见
+[13]），这也是<span class="math inline">\(\mathcal{G}-\mathcal{G}_0\)</span>的核。对于足够小的<span class="math inline">\(\eta\)</span>，运算符<span class="math inline">\(\mathcal{G}-\mathcal{G}_0\)</span>可以用它的第一项<span class="math inline">\(\mathcal{G}_0 \mathcal{E}
+\mathcal{G}_0\)</span>来近似，它在<span class="math inline">\(\mathcal{E}\)</span>中是线性的。利用<span class="math inline">\(\mathcal{E}=-\eta
+\mathcal{I}\)</span>的事实，得出以下差值 DtN 映射的近似值<span class="math inline">\(\mu\)</span>，</p>
+<p><span class="math display">\[
+\mu(r, s):=\left(\lambda_\eta-\lambda_0\right)(r,
+s)=-\frac{\partial^2\left(G-G_0\right)}{\partial n(r) \partial n(s)}(r,
+s) \approx \int_{\Omega}\left(\frac{\partial G_0}{\partial n(r)}(r, p)
+\frac{\partial G_0}{\partial n(s)}(p, s)\right) \eta(p) \mathrm{d} p
+\qquad(2.6)
+\]</span> <strong>它是NN体系结构设计的动机</strong>。</p>
+<h2 id="用于2d情况的神经网络">用于2D情况的神经网络</h2>
+<p>考虑域<span class="math inline">\(\Omega=[0,1] \times[-Z,
+Z]\)</span>，其中<span class="math inline">\(Z\)</span>是一个固定常数。为简单起见，在左边界和右边界处指定了周期性边界条件。如图1.所示，电极只能放置在顶部边界（单侧检测）或顶部和底部边界（双面检测）上。对于单边检测，为简单起见，假设底部为零Dirichlet边界条件，但其他边界条件也相关。在下文中，我们将首先考虑用于单边检测的正向映射和反向映射。然后，该架构扩展到双边检测案例。</p>
+<p>在大多数EIT问题中，电导率在域边界附近是已知的。这意味着存在一个常数<span class="math inline">\(\delta&gt;0\)</span>，使得 <span class="math inline">\(\eta(p)\)</span>支撑在<span class="math inline">\([0,1] \times[-(Z-\delta), Z-\delta]\)</span>。</p>
+<figure>
+<img src="/2025/03/17/Solving-electrical-impedance-tomography-with-deep-learning/1.jpg" alt="image">
+<figcaption aria-hidden="true">image</figcaption>
+</figure>
+<h3 id="单边检测的前向映射">单边检测的前向映射</h3>
+<p>对于单边检测，DtN映射限制在顶部边界。设<span class="math inline">\(r=\left(r_1, Z\right), s=\left(s_1,
+Z\right)\)</span>和<span class="math inline">\(p=(x,
+z)\)</span>，其中<span class="math inline">\(x\)</span>是水平坐标，<span class="math inline">\(z\)</span>是深度坐标。映射（2.6）可以重写为 <span class="math display">\[
+\mu\left(\left(r_1, Z\right),\left(s_1, Z\right)\right) \approx
+\int_{\Omega} \frac{\partial G_0}{\partial n(r)}\left(\left(r_1,
+Z\right),(x, z)\right) \frac{\partial G_0}{\partial
+n(s)}\left(\left(s_1, Z\right),(x, z)\right) \eta(x, z) \mathrm{d} x
+\mathrm{~d} z \qquad(3.1)
+\]</span></p>
+<p>注意到<span class="math inline">\(p\)</span>和<span class="math inline">\(q\)</span>用于域<span class="math inline">\(\Omega\)</span>中的点，<span class="math inline">\(r\)</span>和<span class="math inline">\(s\)</span>用于边界上的点，<span class="math inline">\(x\)</span>和<span class="math inline">\(z\)</span>用于水平和深度坐标。</p>
+<p>分析和架构设计的一个关键步骤是引入新的水平变量<span class="math inline">\(m\)</span>和<span class="math inline">\(h\)</span>，使<span class="math inline">\(r_1=m+h\)</span>和<span class="math inline">\(s_1=m-h\)</span>。用新的变量得到重参数化差值DtN映射<span class="math inline">\(\mu\)</span> <span class="math display">\[
+\mu(m, h):=\mu((m+h, Z),(m-h, Z)) \approx \int_{\Omega} K(m, h, x, z)
+\eta(x, z) \mathrm{d} x \mathrm{~d} z \qquad(3.2)
+\]</span></p>
+<p>核<span class="math inline">\(k\)</span>如下给出 <span class="math display">\[
+K(m, h, x, z):=\frac{\partial G_0}{\partial n}((m+h, Z),(x, z))
+\frac{\partial G_0}{\partial n}((m-h, Z),(x, z))  \qquad(3.3)
+\]</span></p>
+<p>其中，<span class="math inline">\(n=(0,1)\)</span> 且 <span class="math inline">\(\frac{\partial G_0}{\partial n}(\cdot,
+\cdot)\)</span>为<span class="math inline">\(G_0\)</span>在第1个变量上的方向导数。注意到<span class="math inline">\(G_0\)</span>是左边和右边带有周期边界条件，上边和下边带有Dirichlet边界条件的区域上算子<span class="math inline">\(-\Delta\)</span>的Green函数，我们可以将<span class="math inline">\(G_0\)</span>显式地写成[25] <span class="math display">\[
+G_0(p, q)=\sum_{\ell \in
+\mathbb{Z}^2}\left(\Gamma\left(p-q+\left(\ell_1, 2 \ell_2
+Z\right)\right)-\Gamma\left(p-q^*+\left(\ell_1, 2 \ell_2
+Z\right)\right)\right) \qquad(3.4)
+\]</span></p>
+<p>式中 <span class="math inline">\(q^*=\left(q_1, 2
+Z+q_2\right)\)</span>为算子<span class="math inline">\(-\Delta\)</span>在整个空间<span class="math inline">\(\mathbb{R}^2\)</span>上的格林函数。由于当<span class="math inline">\(\eta=\eta_0\)</span>时，Green函数<span class="math inline">\(G_0\)</span>在水平方向上是平移不变的， <span class="math display">\[
+\frac{\partial G_0}{\partial n}((m \pm h, Z),(x, z))=\frac{\partial
+G_0}{\partial n}(( \pm h, Z),(x-m, z)) \qquad(3.5)
+\]</span></p>
+<p>对于其余的讨论，可以方便地将<span class="math inline">\(h\)</span>和<span class="math inline">\(z\)</span>作为参数进行处理和引入 <span class="math display">\[
+\begin{array}{ll}
+\frac{\partial G_{0, \pm h, z}}{\partial n}(x-m):=\frac{\partial
+G_0}{\partial n}(( \pm h, Z),(x-m, z), &amp; \eta_z(x):=\eta(x, z) \\
+k_{h, z}(m):=\frac{\partial G_{0,+h, z}}{\partial n}(m) \frac{\partial
+G_{0,-h, z}}{\partial n}(m), &amp; \mu_h(m):=\mu(m, h)
+\end{array}
+\]</span></p>
+<p>利用新的记号，(3.2)可重新表述为 <span class="math display">\[
+\mu_h(m) \approx \int_{-Z}^Z\left(k_{h, z} * \eta_z\right)(m) \mathrm{d}
+z=\int_{-(Z-\delta)}^{Z-\delta}\left(k_{h, z} * \eta_z\right)(m)
+\mathrm{d} z \qquad(3.6)
+\]</span></p>
+<p>式中卷积作用在<span class="math inline">\(m\)</span>。最后一个等式成立的原因是考虑到<span class="math inline">\(\eta\)</span>在深度方向上被支撑于<span class="math inline">\(-(Z-\delta)\)</span>和<span class="math inline">\(Z-\delta\)</span>之间</p>
+<p><em>低秩逼近和降维</em> : 一个关键的观察是这样</p>
+<p><span class="math display">\[
+\text{the kernel} \, k_{h, z}(m) \, \text{is smooth in} \, h \,
+\text{for} \, h \in[0,1] \, \text{and} \, z \in(-(Z-\delta), Z-\delta).
+\]</span></p>
+<p>考察式(3.3)中<span class="math inline">\(K\)</span>的定义可知，<span class="math inline">\(k_{h, z}(m)\)</span>仅在<span class="math inline">\(z=Z\)</span>时奇异，因此，对于<span class="math inline">\(h \in[0,1], m \in[0,1]\)</span>，和z<span class="math inline">\(z \in(-(Z-\delta), Z-\delta)\)</span>，核<span class="math inline">\(k_{h, z}(m)\)</span>是一致光滑的。<span class="math inline">\(h\)</span>和<span class="math inline">\(z\)</span>变量中的光滑性表明，<span class="math inline">\(k_{h, z}(m)\)</span>在<span class="math inline">\(h\)</span>和<span class="math inline">\(z\)</span>中可以通过少量项的近似方案得到很好的近似。为简化讨论，不失一般性地假设采用稳定的插值方案(如切比雪夫插值)。通过将<span class="math inline">\(h\)</span>变量和<span class="math inline">\(z\)</span>变量的插值点集分别记为<span class="math inline">\(\{\hat{h}\}\)</span>和<span class="math inline">\(\{\hat{z}\}\)</span>，这样的插值为 <span class="math display">\[
+k_{h, z}(m) \approx \sum_{\hat{h}} \sum_{\hat{z}} R_{h, \hat{h}}
+k_{\hat{h}, \hat{z}}(m) R_{z, \hat{z}} \qquad(3.7)
+\]</span></p>
+<p>其中<span class="math inline">\(R_{h, \hat{h}}\)</span>和<span class="math inline">\(R_{z, \hat{z}}\)</span>分别是<span class="math inline">\(h\)</span>和<span class="math inline">\(z\)</span>变量的插值算子.</p>
+<p>这种对<span class="math inline">\(k_{h,
+z}\)</span>的近似自然隐含了对(3.6)式的近似。</p>
+<p><span class="math display">\[
+\mu_h(m) \approx \sum_{\hat{h}} R_{h, \hat{h}}\left(\sum_{\hat{z}}
+k_{\hat{h}, \hat{z}} *\left(\int_{-(Z-\delta)}^{Z-\delta} R_{z, \hat{z}}
+\eta_z \mathrm{~d} z\right)\right)(m) \qquad(3.8)
+\]</span></p>
+<p>从算法上讲，<strong>这种近似允许将前向映射分解为三个步骤</strong>：
+1. 将二维函数<span class="math inline">\(\eta_z=\eta(x,
+z)\)</span>压缩为一维函数的集合</p>
+<p><span class="math display">\[
+\tilde{\eta}_{\hat{z}}(x):=\int_{-(z-\delta)}^{z-\delta} R_{z, \hat{z}}
+\eta_z(x) \mathrm{d} z
+\]</span></p>
+<ol start="2" type="1">
+<li>与k<span class="math inline">\(k_{\hat{h},
+z}\)</span>在一维空间中卷积得到</li>
+</ol>
+<p><span class="math display">\[
+\tilde{\mu}_{\hat{h}}(m):=\left(\sum_{\hat{z}} k_{\hat{h}, \hat{z}} *
+\tilde{\eta}_{\hat{z}}\right)(m)
+\]</span></p>
+<ol start="3" type="1">
+<li>将一维函数集合<span class="math inline">\(\tilde{\mu}_{\hat{h}}(m)\)</span>插值为二维函数</li>
+</ol>
+<p><span class="math display">\[
+\mu_h(m)=\sum_{\hat{h}} R_{h, \hat{h}} \tilde{\mu}_{\hat{h}}(m)
+\]</span></p>
+<p>这有效地将前向映射减少到若干个1D卷积。在(3.8)中的这种降维是神经网络构造的基础。</p>
+<p><strong>备注1.</strong> 可以去掉<span class="math inline">\(\eta(p)\)</span>支撑在在<span class="math inline">\([0,1] \times[-(Z-\delta),
+Z-\delta]\)</span>的假设.实际上，我们可以用<span class="math inline">\(\delta \ll Z\)</span>将<span class="math inline">\([-Z, Z]\)</span>分成三个区间<span class="math inline">\([-Z,-(Z-\delta)],[-(Z-\delta),
+Z-\delta]\)</span>和<span class="math inline">\([Z-\delta,
+Z]\)</span>，然后逐个研究限制在每个区间上的核<span class="math inline">\(k_{h, z}(m)\)</span>的性质.由于<span class="math inline">\(\delta \ll Z\)</span>，低秩逼近(3.8)仍然有效</p>
+<p><em>离散化</em>
+：到目前为止的分析都是在连续设定下进行的。一个简单的数值方法是用均匀的笛卡尔网格对区域<span class="math inline">\(\Omega\)</span>进行离散，拉普拉斯算子用5点中心差分格式逼近，边界上的方向导数用单边一阶差分代替。数值格林函数定义为零边界条件离散拉普拉斯算子的逆。令<span class="math inline">\(N_r\)</span>为电极的个数。通过求解(1.2) <span class="math inline">\(N_r\)</span>次来评估DtN图，每次将<span class="math inline">\(f ( x
+)\)</span>设置为一个电极处的delta函数。在稍微滥用表示法的情况下，用相同的字母表示连续核及其离散化。(3.8)的离散版本:
+<span class="math display">\[
+\mu_h(m) \approx \sum_{\hat{h}} R_{h, \hat{h}}\left(\sum_{\hat{z}}
+k_{\hat{h}, \hat{z}} *\left(\sum_z R_{z, \hat{z}}
+\eta_z\right)\right)(m) \qquad(3.9)
+\]</span></p>
+<p>神经网络架构。微扰分析表明，当<span class="math inline">\(\eta&gt;0\)</span>充分小时，前向映射<span class="math inline">\(\eta \rightarrow
+\mu\)</span>可以用(3.9)式近似。具体来说，计算(3.9)的三个步骤可以自然地表示为一个具有三个模块的神经网络：
+- 编码模块将二维数据<span class="math inline">\(\eta\)</span>压缩为一组一维数据<span class="math inline">\(\tilde{\eta}_{\hat{z}}\)</span> - 将<span class="math inline">\(k_{\hat{h}, \hat{z}}\)</span>与一维数据<span class="math inline">\(\tilde{\eta}_{\hat{z}}\)</span>卷积得到<span class="math inline">\(\tilde{\mu}_{\hat{h}}\)</span>的中间模块 -
+一个将一维数据集合<span class="math inline">\(\tilde{\mu}_{\hat{h}}\)</span>扩展到二维数据<span class="math inline">\(\mu\)</span>的解码模块</p>
+<p>当<span class="math inline">\(\eta\)</span>不能充分小时，前向映射<span class="math inline">\(\eta \rightarrow
+\mu\)</span>的线性近似是不准确的。为了将式(3.9)的神经网络扩展到非线性情况，一个直接的解决方法是包含非线性激活函数并增加层数，例如在[23、21]中。为了简单起见，我们假设集合
+<span class="math inline">\(\{\hat{z}\}\)</span>的大小<span class="math inline">\(N_{\hat{z}}\)</span>和<span class="math inline">\(\{\hat{h}\}\)</span>的大小<span class="math inline">\(N_{\hat{h}}\)</span>都等于一个常数参数<span class="math inline">\(c\)</span></p>
+<p><span class="math display">\[
+    \begin{array}{l}
+   \hline \
+   \textbf{算法1} \quad 单边检测前向映射\eta \rightarrow \mu 的神经网络
+\\
+   \hline
+   \qquad \textbf{需要：}c=N_{\hat{z}}=N_{\hat{h}}, n_{\text {cnn }} \in
+\mathbb{N}, \eta \in \mathbb{R}^{N_x \times N_z} \\
+   \qquad \textbf{确保：}\mu \in \mathbb{R}^{N_m \times N_h}\\
+   \qquad 1: \tilde{\eta} \leftarrow \text{Encoding} [c](\eta) \\
+   \qquad 2: \tilde{\mu} \leftarrow \text{BCR-Net1d} \left[c, n_{\text
+{cnn }}\right](\tilde{\eta})\\
+   \qquad 3: \mu \leftarrow
+\text{Decoding}\left[N_h\right](\tilde{\mu})\\
+   \qquad 4: \text{return} \, \mu \\
+   \hline
+\end{array}
+\]</span></p>
+<p><img src="/2025/03/17/Solving-electrical-impedance-tomography-with-deep-learning/2.png" alt="image">
+在算法1中总结了用于单边检测的前向映射的神经网络结构，并在图2中进行了说明。让我们对神经网络的这三个组成部分一一进行解释</p>
+<ul>
+<li><p>编码模块：<span class="math inline">\(\tilde{\eta}=\)</span>
+Encoding <span class="math inline">\([c](\eta)\)</span>仅在<span class="math inline">\(z\)</span>维压缩<span class="math inline">\(\eta
+\in \mathbb{R}^{N_x \times N_z}\)</span>到<span class="math inline">\(\tilde{\eta} \in \mathbb{R}^{N_x \times
+c}\)</span>。它可以用一维卷积层Conv1d实现，窗口大小为1，通道数为<span class="math inline">\(c\)</span>，取<span class="math inline">\(\eta\)</span>的第二个维度作为通道。线性激活函数对于这里使用的Conv1d层是足够的</p></li>
+<li><p>中间模块：由于(3.9)中的线性情况下的核<span class="math inline">\(k_{\hat{h},
+\mathcal{z}}\)</span>是一个卷积，它可以由一个一维卷积层Conv1d实现，其中窗口大小<span class="math inline">\(N_x\)</span>，通道数<span class="math inline">\(c\)</span>和线性激活函数。对于非线性情况，一个自然的扩展是使用多个卷积层，并在每一层后添加非线性激活函数，如整流线性单元(ReLU)函数。对于精细离散化的问题，一个窗口大小为<span class="math inline">\(N_x\)</span>的卷积层可能有很多参数。最近，一些具有更少参数的多尺度神经网络被提出作为全宽卷积层的有效替代者。实例包括[23、22]中基于层次矩阵的方法和BCR-Net
+[21]中基于层次矩阵的方法。这里，使用BCR-Net来表示中间模块。BCR-Net是基于拟微分算子的数据稀疏非标准小波表示[10]提出的。它将不同尺度下的信息分开处理，每个尺度可以理解为一个局部卷积神经网络。一维<span class="math inline">\(\tilde{\mu}=\text{ BCR-Net1d}\left[c, n_{\text
+{cnn }}\right](\tilde{\eta})\)</span>将<span class="math inline">\(\tilde{\eta} \in \mathbb{R}^{N_x \times
+c}\)</span>映射到<span class="math inline">\(\tilde{\mu} \in
+\mathbb{R}^{N_x \times
+c}\)</span>，其中每个尺度下局部卷积神经网络的通道数和层数分别为<span class="math inline">\(c\)</span>和<span class="math inline">\(n_{\mathrm{cnn}}\)</span>。读者可参见[21]，以了解BCR-Net的更多细节。</p></li>
+<li><p>解码模块：<span class="math inline">\(\mu=
+\text{Decoding}\left[N_h\right](\tilde{\mu})\)</span>将一维数据集<span class="math inline">\(\tilde{\mu} \in \mathbb{R}^{N_m \times
+c}\)</span>解码为二维数据集<span class="math inline">\(\mu \in
+\mathbb{R}^{N_m \times
+N_h}\)</span>。在实现中，该解码模块由窗口大小为1、通道数为<span class="math inline">\(N_h\)</span>、线性激活函数的一维卷积层Conv1d实现。</p></li>
+</ul>
+<h3 id="用于单边检测的逆映射">用于单边检测的逆映射</h3>
+<p>扰动分析表明，如果<span class="math inline">\(\eta\)</span>充分小，前向映射可以被很好地逼近</p>
+<p><span class="math display">\[
+\mu \approx K \eta \qquad(3.10)
+\]</span></p>
+<p>这是离散化（3.2）的运算符表示法。这里，<span class="math inline">\(\eta\)</span>是由( <span class="math inline">\(x,
+z\)</span> )索引的向量，<span class="math inline">\(\mu\)</span>是由(
+<span class="math inline">\(m, h\)</span> )索引的向量，<span class="math inline">\(K\)</span>是由( <span class="math inline">\(m,
+h\)</span> )索引的行和( <span class="math inline">\(x, z\)</span>
+)索引的列组成的矩阵.通常的滤波反投影算法[32]采用这种形式</p>
+<p><span class="math display">\[
+\eta \approx\left(K^{\top} K+\varepsilon I\right)^{-1} K^{\top} \mu
+\]</span> 其中<span class="math inline">\(\varepsilon\)</span>是一个正则化参数。</p>
+<p>在上述讨论之后，应用于<span class="math inline">\(K\)</span>的降维近似对<span class="math inline">\(K^{\top}\)</span>也是有效的 <span class="math display">\[
+\left(K^{\top} \mu\right)_z(x) \approx \sum_{\hat{z}} R_{z,
+\hat{z}}\left(\sum_{\hat{z}} k_{\hat{h}, \hat{z}} *\left(\sum_h R_{h,
+\hat{h}} \mu_h\right)\right)(x)
+\]</span></p>
+<p>因此，我们得到了一个类似的将<span class="math inline">\(K^{\top}\)</span>应用于<span class="math inline">\(\mu\)</span>的三步算法，该算法也可以表述为一个具有三个模块的神经网络：
+- 从<span class="math inline">\(\mu\)</span>编码到<span class="math inline">\(\tilde{\mu}_{\hat{h}}=\sum_h R_{h, \hat{h}}
+\mu_h\)</span></p>
+<ul>
+<li><p>卷积形成<span class="math inline">\(\tilde{\eta}_{\hat{z}}=\sum_{\hat{h}} k_{\hat{h},
+2} * \tilde{\mu}_{\hat{h}}\)</span></p></li>
+<li><p>从<span class="math inline">\(\tilde{\eta}_{\hat{z}}\)</span>解码到<span class="math inline">\(\left(K^{\top} \mu\right)_z=\sum_{\hat{z}} R_{z,
+\hat{z}} \tilde{\eta}_{\hat{z}}\)</span></p></li>
+</ul>
+<p><span class="math inline">\(\left(K^{\top} K+\varepsilon
+I\right)^{-1}\)</span>部分可以看作是对<span class="math inline">\(K^{\top} \mu\)</span>的后处理。<span class="math inline">\(K\)</span>(3.3)的定义意味着算子( <span class="math inline">\(K^{\top} K+\varepsilon I\)</span>
+)是卷积算子。作为反卷积算子，<span class="math inline">\(\left(K^{\top}
+K+\varepsilon I\right)^{-1}\)</span>也可以用卷积神经网络来实现。</p>
+<p>结合这两个组件表明，对于逆映射，合适的架构是前向映射的NN架构，然后是2d卷积神经网络。逆映射的神经网络架构在算法2中进行了概述，如图3所示。算法2中的层与算法1中的层共享相同的定义，除了CNN2d层，其定义如下。</p>
+<ul>
+<li>后处理模块：<span class="math inline">\(\eta=\mathrm{CNN} 2
+\mathrm{~d}\left[w, n_{\mathrm{cnn2}}\right](\bar{\eta})\)</span>将<span class="math inline">\(\bar{\eta} \in \mathbb{R}^{N_x \times
+N_z}\)</span>映射为<span class="math inline">\(\eta \in \mathbb{R}^{N_x
+\times N_z}\)</span>，是一个具有<span class="math inline">\(n_{\text
+{cnn2 }}\)</span>个卷积层的二维卷积神经网络，<span class="math inline">\(w\)</span>为窗口大小。ReLU被用作所有中间层的激活函数。然而，由于<span class="math inline">\(\eta\)</span>可以取任意实数，最后一层采用线性激活函数。</li>
+</ul>
+<p><span class="math display">\[
+    \begin{array}{l}
+   \hline \
+   \textbf{算法2} \quad 单边检测逆映射\eta \rightarrow \mu 的神经网络 \\
+   \hline
+   \qquad \textbf{需要：}c, w, n_{\mathrm{cnn}}, n_{\mathrm{cnn} 2} \in
+\mathbb{N}, \mu \in \mathbb{R}^{N_m \times N_h}\\
+   \qquad \textbf{确保：}\eta \in \mathbb{R}^{N_x \times N_z}\\
+   \qquad 1: \tilde{\mu} \leftarrow \text { Encoding }[c](\mu) \\
+   \qquad 2: \tilde{\eta} \leftarrow \text { BCR-Net1d }\left[c,
+n_{\text {cnn }}\right](\tilde{\mu})\\
+   \qquad 3: \bar{\eta} \leftarrow
+\operatorname{Decoding}\left[N_z\right](\tilde{\eta})\\
+   \qquad 4: \eta \leftarrow \operatorname{CNN} 2 \mathrm{~d}\left[w,
+n_{\text {cnn2 }}\right](\bar{\eta}) \\
+   \qquad 5: \text{return} \,\eta \\
+   \hline
+\end{array}
+\]</span></p>
+<figure>
+<img src="/2025/03/17/Solving-electrical-impedance-tomography-with-deep-learning/3.png" alt="image">
+<figcaption aria-hidden="true">image</figcaption>
+</figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/03/16/Electrical%20impedance%20tomography%20and%20Calderon%E2%80%99s%20problem/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="宋嘉晨">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我的博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/03/16/Electrical%20impedance%20tomography%20and%20Calderon%E2%80%99s%20problem/" class="post-title-link" itemprop="url">Electrical impedance tomography and Calderón’s problem</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-03-16 14:14:54" itemprop="dateCreated datePublished" datetime="2025-03-16T14:14:54+08:00">2025-03-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-17 10:11:00" itemprop="dateModified" datetime="2025-03-17T10:11:00+08:00">2025-03-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%BA%E6%96%87%E6%B3%9B%E8%AF%BB/" itemprop="url" rel="index"><span itemprop="name">论文泛读</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2025/03/16/Electrical%20impedance%20tomography%20and%20Calderon%E2%80%99s%20problem/" class="post-meta-item leancloud_visitors" data-flag-title="Electrical impedance tomography and Calderón’s problem" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2025/03/16/Electrical%20impedance%20tomography%20and%20Calderon%E2%80%99s%20problem/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2025/03/16/Electrical%20impedance%20tomography%20and%20Calderon%E2%80%99s%20problem/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>6.2k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="electrical-impedance-tomography-and-calderóns-problem">Electrical
+impedance tomography and Calderón’s problem</h1>
+<h2 id="摘要">摘要</h2>
+<p>我们回顾了电阻抗断层成像逆方法的数学发展，该方法通过在介质边界测量电压和电流来确定介质的电特性。在数学文献中，这个问题也被称为Calderón问题，来源于Calderón的开创性贡献[23]
+.我们将这篇文章集中在复杂几何光学解决方案的主题上，这些解决方案已经导致了该领域的许多进展。在最后一节中，我们回顾了一些Calderón问题的反例，这些反例由于与隐匿性和不可见性的联系而引起了人们的兴趣。</p>
+<h2 id="介绍">介绍</h2>
+<p>考虑到人体器官和组织具有截然不同的电导率，EIT也出现在医学成像中[71]。一个令人兴奋的潜在应用是乳腺癌的早期诊断[149]。乳腺恶性肿瘤的电导率通常为0.2
+mho，明显高于正常组织的0.03mho。另一个应用是监测肺功能[62]。关于EIT的其他医学成像应用，参见该书[52]和《生理学测量》[53]。这种反演方法也被用于检测埋地管道的泄漏[70]。</p>
+<p>我们现在更精确地描述这个数学问题。</p>
+<p>设<span class="math inline">\(\Omega \subseteq
+\mathbb{R}^n\)</span>是一个边界光滑的有界区域(我们将描述的许多结果对于具有Lipschitz边界的区域是有效的)。<span class="math inline">\(\Omega\)</span>的电导率用一个有界的正函数<span class="math inline">\(\gamma(x)\)</span>表示.在没有电流汇或电流源的情况下，给出了电势的方程
+<span class="math display">\[
+\nabla \cdot(\gamma \nabla u)=0 \text { in } \Omega \qquad(1)
+\]</span></p>
+<p>根据欧姆定律，<span class="math inline">\(\gamma \nabla
+u\)</span>表示当前的电流通量。</p>
+<p>给定边界上的一个势函数<span class="math inline">\(f \in
+H^{\frac{1}{2}}(\partial \Omega)\)</span>，诱导势<span class="math inline">\(u \in
+H^1(\Omega)\)</span>是下面Dirichlet问题的解</p>
+<p><span class="math display">\[
+\begin{aligned}
+\nabla \cdot(\gamma \nabla u) &amp; =0 \text { in } \Omega \\
+\left.u\right|_{\partial \Omega} &amp; =f .
+\end{aligned} \qquad(2)
+\]</span></p>
+<p>Dirichlet to Neumann映射，或电压到电流映射，由</p>
+<p><span class="math display">\[
+\Lambda_\gamma(f)=\left.\left(\gamma \frac{\partial u}{\partial
+\nu}\right)\right|_{\partial \Omega} \qquad(3)
+\]</span></p>
+<p>给出，其中<span class="math inline">\(\nu\)</span>表示<span class="math inline">\(\partial \Omega\)</span>的单位外法线。</p>
+<p>反问题是已知<span class="math inline">\(\Lambda_\gamma\)</span>确定<span class="math inline">\(\gamma\)</span>。很难找到一种系统的方法来规定边界处的电压测量值，以便能够找到电导率。Calderón转而采取了不同的路线。</p>
+<p>利用散度定理，我们有 <span class="math display">\[
+Q_\gamma(f):=\int_{\Omega} \gamma|\nabla u|^2 d x=\int_{\partial \Omega}
+\Lambda_\gamma(f) f d S \qquad(4)
+\]</span></p>
+<p>式中<span class="math inline">\(d S\)</span>为表面测度，<span class="math inline">\(u\)</span>为式(2)的解。换言之，<span class="math inline">\(Q_\gamma(f)\)</span>是与线性映射<span class="math inline">\(\Lambda_\gamma(f)\)</span>相联系的二次型，且对任意的<span class="math inline">\(f \in H^{\frac{1}{2}}(\partial
+\Omega)\)</span>，知道<span class="math inline">\(\Lambda_\gamma(f)\)</span>或<span class="math inline">\(Q_\gamma(f)\)</span>是等价的。 <span class="math inline">\(Q_\gamma(f)\)</span>衡量了在边界处维持电势<span class="math inline">\(f\)</span>所需的能量。Calderón的观点是，如果人们着眼于<span class="math inline">\(Q_\gamma(f)\)</span>，问题就变成了寻找方程(1)的足够多的解<span class="math inline">\(u \in H^1(\Omega)\)</span>，以便在内部寻找<span class="math inline">\(\gamma\)</span>。我们将在接下来的章节中进一步解释这种方法，其中我们研究了映射的线性化。
+<span class="math display">\[
+\gamma \xrightarrow{Q} Q_\gamma \qquad(5)
+\]</span></p>
+<p>这里我们把<span class="math inline">\(Q_\gamma\)</span>看成是与二次型(4)相联系的双线性形式。</p>
+<p>第2节介绍Calderón的文章，以及他如何利用复指数证明(5)的线性化在恒定电导率下是单射的。他还给出了一个重建电导率的近似公式，这个电导率先验地接近于一个恒定的电导率。在第3节中，我们给出了Calderón方法在确定孔洞和夹杂物中的应用。在第4节中，我们描述了关于电导率及其法向导数的边界值的唯一性，稳定性和重构的结果。</p>
+<p>在第5节中，我们描述了Sylvester和Uhlmann[132]，[131]构造的与有界位势相关的Schrödinger方程的复几何光学解。这些解表现为卡Calderón关于大复频率的复指数解。在第6节中，我们利用这些解证明了在维数<span class="math inline">\(n \geq
+3\)</span>时，反问题的全局可辨识性结果、稳定性估计和重构方法。我们还描述了可辨识性结果对非线性电导率的扩展[124]，并给出了复杂几何光学解的其他应用。</p>
+<p>在第7节中，我们考虑了部分数据问题，即当DN映射在边界的一部分上测量时的情况.我们描述文献[75]对三维及以上非线性问题的结果。这使用了更大类的CGO解，具有使用Carleman估计构造的非线性相函数。对于部分数据的线性化问题，我们也回顾了文献[29]。</p>
+<p>在第8节中，我们考虑二维情况。特别是，我们简要描述了Astala和Päivärinta最近证明有界可测系数唯一性的工作，以及Bukhgeim从与薛定谔方程相关的柯西数据中证明势唯一性的研究。最后，我们描述了Imanuvilov、Uhlmann和Yamamoto在部分数据问题上的工作[59]。</p>
+<p>第2~8节讨论了各向同性电导率的情况。在第九节中，我们考虑了各向异性电导率的情况，即电导率也依赖于方向。在两个维度上，对各向异性问题的理解已经有了实质性的进展，因为人们通常可以通过使用等温坐标将问题简化为各向同性的情况。在维度3中，文献[85]指出的问题具有几何性质。我们回顾了[83]，[31]的结果.</p>
+<p>在第10节中，我们描述了Calderón问题和从边界点之间的旅行时间恢复介质声速问题之间的联系。最后在第11节中讨论了变换光学和不可见性的思想在静电学中的应用。</p>
+<p>我们在引言的最后提到，我们不讨论EIT中的其他一些重要的发展，包括Borcea等人在离散电阻网络上的工作和对连续情况的近似[17]，以及边界未知时的情况[78]。我们主要集中在涉及复杂几何光学解的应用中。关于EIT的其他综述见[16]，[48]，[27]和[140]。</p>
+<h2 id="calderón的论文">Calderón的论文</h2>
+<p>Calderón在文献[23]中证明了映射<span class="math inline">\(Q\)</span>是解析的。<span class="math inline">\(Q\)</span>在<span class="math inline">\(\gamma=\gamma_0\)</span>处沿<span class="math inline">\(h\)</span>方向的Fréchet导数由下式给出</p>
+<p><span class="math display">\[
+\left.d Q\right|_{\gamma=\gamma_0}(h)(f, g)=\int_{\Omega} h \nabla u
+\cdot \nabla v d x \qquad(6)
+\]</span></p>
+<p>其中<span class="math inline">\(u, v \in H^1(\Omega)\)</span>
+是下面的解</p>
+<p><span class="math display">\[
+\left\{\begin{array}{l}
+\nabla \cdot\left(\gamma_0 \nabla u\right)=\nabla \cdot\left(\gamma_0
+\nabla v\right)=0 \text { in } \Omega \\
+\left.u\right|_{\partial \Omega}=f \in H^{\frac{1}{2}}(\partial
+\Omega),\left.\quad v\right|_{\partial \Omega}=g \in
+H^{\frac{1}{2}}(\partial \Omega) .
+\end{array}\right. \qquad(7)
+\]</span></p>
+<p>因此，如果<span class="math inline">\(H^1(\Omega)\)</span>的解<span class="math inline">\(\nabla \cdot\left(\gamma_0 \nabla
+u\right)=0\)</span>的乘积在<span class="math inline">\(L^2(\Omega)\)</span>中稠密，则线性化映射是单射的。</p>
+<p>Calderón证明了线性化映射在<span class="math inline">\(\gamma_0=\)</span>常数的情况下的单射性，为了简单起见，我们假设它是常值函数1。问题归结为调和函数的梯度积在<span class="math inline">\(L^2(\Omega)\)</span>中是否稠密</p>
+<p>Calderón取如下调和函数：</p>
+<p><span class="math display">\[
+u=e^{x \cdot \rho}, \quad v=e^{-x \cdot \bar{\rho}} \qquad(8)
+\]</span></p>
+<p>其中 <span class="math inline">\(\rho \in \mathbb{C}^n\)</span>
+有</p>
+<p><span class="math display">\[
+\rho \cdot \rho=0 \qquad(9)
+\]</span></p>
+<p>我们注意到条件(9)等价于下面</p>
+<p><span class="math display">\[
+\begin{aligned}
+&amp; \rho=\frac{\eta+i k}{2}, \eta, k \in \mathbb{R}^n \\
+&amp; |\eta|=|k|, \eta \cdot k=0
+\end{aligned} \qquad(10)
+\]</span></p>
+<p>然后将(8)的解代入(6)中，我们得到如果<span class="math inline">\(\left.d Q\right|_{\gamma_0=1}(h)=0\)</span></p>
+<p><span class="math display">\[
+|k|^2\left(\chi_{\Omega} h\right)^{\wedge}(k)=0 \quad \forall k \in
+\mathbb{R}^n
+\]</span></p>
+<p>式中<span class="math inline">\(\chi_{\Omega}\)</span>为<span class="math inline">\(\Omega\)</span>的特征函数，<span class="math inline">\({
+}^{\wedge}\)</span>为傅里叶变换。然后由Fourier反演公式得出<span class="math inline">\(h=0\)</span>在<span class="math inline">\(\Omega\)</span>上。然而，由于在<span class="math inline">\(Q\)</span>的取值范围内允许使用隐函数定理的条件要么是错误的，要么是未知的，因此不能应用隐函数定理得出<span class="math inline">\(\gamma\)</span>在常数附近可逆的结论。</p>
+<p>Calderón还观察到，如果使用解(8)，我们可以找到电导率<span class="math inline">\(\gamma\)</span>的一个近似</p>
+<p><span class="math display">\[
+\gamma=1+h \qquad(11)
+\]</span></p>
+<p>并且<span class="math inline">\(h\)</span>在<span class="math inline">\(L^{\infty}\)</span>范数下足够小。</p>
+<p>我们给出 <span class="math display">\[
+G_\gamma=Q_\gamma\left(\left.e^{x \cdot \rho}\right|_{\partial
+\Omega},\left.e^{-x \cdot \bar{\rho}}\right|_{\partial \Omega}\right)
+\]</span></p>
+<p><span class="math inline">\(\rho \in
+\mathbb{C}^n\)</span>如(2.4)所示，现在</p>
+<p><span class="math display">\[
+\begin{aligned}
+G_\gamma &amp; =\int_{\Omega}(1+h) \nabla u \cdot \nabla v d x \\
+&amp; +\int_{\Omega} h(\nabla \delta u \cdot \nabla v+\nabla u \cdot
+\nabla \delta v) d x \\
+&amp; +\int_{\Omega}(1+h) \nabla \delta u \cdot \nabla \delta v d x
+\end{aligned} \qquad(12)
+\]</span></p>
+<p><span class="math inline">\(u, v\)</span>如(8)并且</p>
+<p><span class="math display">\[
+\begin{aligned}
+\nabla \cdot(\gamma \nabla(u+\delta u)) &amp; =\nabla \cdot(\gamma
+\nabla(v+\delta v))=0 \text { in } \Omega \\
+\left.\delta u\right|_{\partial \Omega} &amp; =\left.\delta
+v\right|_{\partial \Omega}=0
+\end{aligned} \qquad(13)
+\]</span></p>
+<p>现在应用于(13)式的标准椭圆估计表明</p>
+<p><span class="math display">\[
+\|\nabla \delta u\|_{L^2(\Omega)}, \quad\|\nabla \delta
+v\|_{L^2(\Omega)} \leq C\|h\|_{L^{\infty}(\Omega)}|k| e^{\frac{1}{2}
+r|k|} \qquad(14)
+\]</span></p>
+<p>对于某个<span class="math inline">\(C&gt;0\)</span>，其中<span class="math inline">\(r\)</span>表示包含<span class="math inline">\(\Omega\)</span>的最小球的半径。</p>
+<p>将<span class="math inline">\(u, v\)</span>代入(2.7)中，我们得到</p>
+<p><span class="math display">\[
+\widehat{\chi \Omega \gamma}(k)=-2
+\frac{G_\gamma}{|k|^2}+R(k)=\widehat{F}(k)+R(k) \qquad(15)
+\]</span></p>
+<p>式中<span class="math inline">\(F\)</span>由<span class="math inline">\(G_\gamma\)</span>决定，因此已知。利用(14)，我们可以证明<span class="math inline">\(R(k)\)</span>满足估计</p>
+<p><span class="math display">\[
+|R(k)| \leq C\|h\|_{L^{\infty}(\Omega)}^2 e^{r|k|} \qquad(16)
+\]</span></p>
+<p>也就是说，我们知道<span class="math inline">\(\widehat{\chi \Omega
+\gamma}(k)\)</span>直到一个对<span class="math inline">\(k\)</span>足够小的项。更确切地说，令<span class="math inline">\(1&lt;\alpha&lt;2\)</span> .则有 <span class="math display">\[
+|k| \leq \frac{2-\alpha}{r} \log \frac{1}{\|h\|_{L^{\infty}}}=: \sigma
+\qquad(17)
+\]</span></p>
+<p>我们有 <span class="math display">\[
+|R(k)| \leq C\|h\|_{L^{\infty}(\Omega)}^\alpha \qquad(18)
+\]</span></p>
+<p>对于某些 <span class="math inline">\(C&gt;0\)</span>.</p>
+<p>我们取<span class="math inline">\(\widehat{\eta}\)</span> 是 <span class="math inline">\(C^{\infty}\)</span>的一个截断使得<span class="math inline">\(\widehat{\eta}(0)=1, \operatorname{supp}
+\widehat{\eta}(k) \subset\left\{k \in \mathbb{R}^n,|k| \leq
+1\right\}\)</span>且<span class="math inline">\(\eta_\sigma(x)=\sigma^n
+\eta(\sigma x)\)</span>。然后我们得到</p>
+<p><span class="math display">\[
+\widehat{\chi \Omega \gamma}(k)
+\widehat{\eta}\left(\frac{k}{\sigma}\right)=\frac{-2 G_\gamma
+\gamma}{|k|^2} \widehat{\eta}\left(\frac{k}{\sigma}\right)+R(k)
+\widehat{\eta}\left(\frac{k}{\sigma}\right) .
+\]</span></p>
+<p>利用这一点我们得到下面的估计</p>
+<p><span class="math display">\[
+|l(x)| \leq C\|h\|_{L^{\infty}(\Omega)}^\alpha\left[\log
+\frac{1}{\|h\|_{L^{\infty}(\Omega)}}\right]^n \qquad(19)
+\]</span></p>
+<p>其中<span class="math inline">\(l(x)=\left(\chi_{\Omega} \gamma *
+\eta_\sigma\right)(x)-\left(F *
+\eta_\sigma\right)(x)\)</span>。式(19)给出了当<span class="math inline">\(h\)</span>足够小时，平滑后的电导率<span class="math inline">\(\chi_{\Omega} \gamma *
+\eta_\sigma\)</span>的近似表达式。</p>
+<p>这个Calderón的近似估计和它的修正已经在数值上进行了尝试[60]。</p>
+<p>使用这些指数解的另一个完全不同的反问题是具有角平均测量的反输运问题[10]。</p>
+<p>这个估计使用了低频的谐波指数。在第四节中，我们考虑电导率方程的高(复)频率解
+<span class="math display">\[
+L_\gamma=\nabla \cdot(\gamma \nabla u)=0
+\]</span></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2025/03/10/WGAN/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1003,7 +1728,7 @@ Transport（判别器约束最优传输的无监督噪声自适应语音增强�
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-02-23 16:15:45" itemprop="dateModified" datetime="2025-02-23T16:15:45+08:00">2025-02-23</time>
+                <time title="修改时间：2025-03-19 12:39:10" itemprop="dateModified" datetime="2025-03-19T12:39:10+08:00">2025-03-19</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1065,229 +1790,6 @@ OT )理论系统推导得到。此外，基于OT在<span class="math inline">\(\
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2025/02/13/OPTIMAL-TRANSPORTATION-FOR-ELECTRICAL-IMPEDANCE-TOMOGRAPHY/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/02/11/NAS-PINN/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="宋嘉晨">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="我的博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/02/11/NAS-PINN/" class="post-title-link" itemprop="url">NAS-PINN</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2025-02-11 09:43:32 / 修改时间：11:45:56" itemprop="dateCreated datePublished" datetime="2025-02-11T09:43:32+08:00">2025-02-11</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E8%AE%BA%E6%96%87%E6%B3%9B%E8%AF%BB/" itemprop="url" rel="index"><span itemprop="name">论文泛读</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2025/02/11/NAS-PINN/" class="post-meta-item leancloud_visitors" data-flag-title="NAS-PINN" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2025/02/11/NAS-PINN/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2025/02/11/NAS-PINN/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>4.9k</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="nas-pinn-neural-architecture-search-guided-physics-informed-neural-network-for-solving-pdesnas-pinn神经网络结构搜索引导的物理信息神经网络用于求解偏微分方程">NAS-PINN:
-Neural architecture search-guided physics-informed neural network for
-solving
-PDEs(NAS-PINN：神经网络结构搜索引导的物理信息神经网络，用于求解偏微分方程)</h1>
-<h2 id="摘要">摘要</h2>
-<p>物理信息神经网络( PINN
-)自提出以来一直是求解偏微分方程的主流框架。通过损失函数将物理信息融入到神经网络中，它可以以无监督的方式预测PDEs的解。然而，神经网络结构的设计基本依赖于先验知识和经验，这造成了很大的麻烦和较高的计算开销。因此，<strong>我们提出了一种神经结构搜索引导的方法，即NAS
-- PINN，用于自动搜索求解某些PDEs的最佳神经结构</strong>。
-通过将搜索空间松弛为连续空间，并利用掩码实现不同形状张量的添加，NAS -
-PINN可以通过双层优化进行训练，其中内层循环优化神经网络的权重和偏置，外层循环优化网络结构参数。我们通过包括Poisson，Burgers和Advection方程在内的几个数值实验来验证NAS
--
-PINN的能力。总结了求解不同PDE的有效神经网络结构的特点，可用于指导PINN中神经网络的设计。研究发现，更多的隐藏层并不一定意味着更好的性能，有时可能是有害的。
-特别是对于Poisson和Advection，在PINNs中更适合采用神经元数目较多的浅层神经网络。研究还表明，对于复杂问题，具有残差连接的神经网络可以提高PINNs的性能。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2025/02/11/NAS-PINN/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/02/10/Lagrange%E5%AF%B9%E5%81%B6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="宋嘉晨">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="我的博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/02/10/Lagrange%E5%AF%B9%E5%81%B6/" class="post-title-link" itemprop="url">Lagrange对偶（Lagrange duality）</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2025-02-10 19:16:52" itemprop="dateCreated datePublished" datetime="2025-02-10T19:16:52+08:00">2025-02-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-02-11 18:59:32" itemprop="dateModified" datetime="2025-02-11T18:59:32+08:00">2025-02-11</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2025/02/10/Lagrange%E5%AF%B9%E5%81%B6/" class="post-meta-item leancloud_visitors" data-flag-title="Lagrange对偶（Lagrange duality）" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2025/02/10/Lagrange%E5%AF%B9%E5%81%B6/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2025/02/10/Lagrange%E5%AF%B9%E5%81%B6/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>1.7k</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="问题背景">问题背景</h2>
-<p>在一个优化问题中，原始问题通常会带有很多约束条件，这样直接求解原始问题往往是很困难的，于是考虑将原始问题转化为它的对偶问题，通过求解它的对偶问题来得到原始问题的解。<strong>对偶性</strong>（Duality）是凸优化问题的核心内容。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2025/02/10/Lagrange%E5%AF%B9%E5%81%B6/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1377,7 +1879,7 @@ PINN的能力。总结了求解不同PDE的有效神经网络结构的特点，�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-count">14</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1427,13 +1929,13 @@ PINN的能力。总结了求解不同PDE的有效神经网络结构的特点，�
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">116k</span>
+    <span title="站点总字数">137k</span>
 </div>
 
 <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共116k字</span>
+  <span class="post-count">博客全站共137k字</span>
   <span class="post-meta-divider">|</span>
   本站总访问量<span id="busuanzi_value_site_pv"></span>次
   <span class="post-meta-divider">|</span>
@@ -1444,7 +1946,7 @@ PINN的能力。总结了求解不同PDE的有效神经网络结构的特点，�
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共116k字</span>
+  <span class="post-count">博客全站共137k字</span>
 </div>
 
 
