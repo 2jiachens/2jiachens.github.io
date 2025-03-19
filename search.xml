@@ -1,6 +1,301 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Electrical impedance tomography and Calderón’s problem</title>
+    <url>/2025/03/16/Electrical%20impedance%20tomography%20and%20Calderon%E2%80%99s%20problem/</url>
+    <content><![CDATA[<h1 id="electrical-impedance-tomography-and-calderóns-problem">Electrical
+impedance tomography and Calderón’s problem</h1>
+<h2 id="摘要">摘要</h2>
+<p>我们回顾了电阻抗断层成像逆方法的数学发展，该方法通过在介质边界测量电压和电流来确定介质的电特性。在数学文献中，这个问题也被称为Calderón问题，来源于Calderón的开创性贡献[23]
+.我们将这篇文章集中在复杂几何光学解决方案的主题上，这些解决方案已经导致了该领域的许多进展。在最后一节中，我们回顾了一些Calderón问题的反例，这些反例由于与隐匿性和不可见性的联系而引起了人们的兴趣。
+<span id="more"></span></p>
+<h2 id="介绍">介绍</h2>
+<p>考虑到人体器官和组织具有截然不同的电导率，EIT也出现在医学成像中[71]。一个令人兴奋的潜在应用是乳腺癌的早期诊断[149]。乳腺恶性肿瘤的电导率通常为0.2
+mho，明显高于正常组织的0.03mho。另一个应用是监测肺功能[62]。关于EIT的其他医学成像应用，参见该书[52]和《生理学测量》[53]。这种反演方法也被用于检测埋地管道的泄漏[70]。</p>
+<p>我们现在更精确地描述这个数学问题。</p>
+<p>设<span class="math inline">\(\Omega \subseteq
+\mathbb{R}^n\)</span>是一个边界光滑的有界区域(我们将描述的许多结果对于具有Lipschitz边界的区域是有效的)。<span class="math inline">\(\Omega\)</span>的电导率用一个有界的正函数<span class="math inline">\(\gamma(x)\)</span>表示.在没有电流汇或电流源的情况下，给出了电势的方程
+<span class="math display">\[
+\nabla \cdot(\gamma \nabla u)=0 \text { in } \Omega \qquad(1)
+\]</span></p>
+<p>根据欧姆定律，<span class="math inline">\(\gamma \nabla
+u\)</span>表示当前的电流通量。</p>
+<p>给定边界上的一个势函数<span class="math inline">\(f \in
+H^{\frac{1}{2}}(\partial \Omega)\)</span>，诱导势<span class="math inline">\(u \in
+H^1(\Omega)\)</span>是下面Dirichlet问题的解</p>
+<p><span class="math display">\[
+\begin{aligned}
+\nabla \cdot(\gamma \nabla u) &amp; =0 \text { in } \Omega \\
+\left.u\right|_{\partial \Omega} &amp; =f .
+\end{aligned} \qquad(2)
+\]</span></p>
+<p>Dirichlet to Neumann映射，或电压到电流映射，由</p>
+<p><span class="math display">\[
+\Lambda_\gamma(f)=\left.\left(\gamma \frac{\partial u}{\partial
+\nu}\right)\right|_{\partial \Omega} \qquad(3)
+\]</span></p>
+<p>给出，其中<span class="math inline">\(\nu\)</span>表示<span class="math inline">\(\partial \Omega\)</span>的单位外法线。</p>
+<p>反问题是已知<span class="math inline">\(\Lambda_\gamma\)</span>确定<span class="math inline">\(\gamma\)</span>。很难找到一种系统的方法来规定边界处的电压测量值，以便能够找到电导率。Calderón转而采取了不同的路线。</p>
+<p>利用散度定理，我们有 <span class="math display">\[
+Q_\gamma(f):=\int_{\Omega} \gamma|\nabla u|^2 d x=\int_{\partial \Omega}
+\Lambda_\gamma(f) f d S \qquad(4)
+\]</span></p>
+<p>式中<span class="math inline">\(d S\)</span>为表面测度，<span class="math inline">\(u\)</span>为式(2)的解。换言之，<span class="math inline">\(Q_\gamma(f)\)</span>是与线性映射<span class="math inline">\(\Lambda_\gamma(f)\)</span>相联系的二次型，且对任意的<span class="math inline">\(f \in H^{\frac{1}{2}}(\partial
+\Omega)\)</span>，知道<span class="math inline">\(\Lambda_\gamma(f)\)</span>或<span class="math inline">\(Q_\gamma(f)\)</span>是等价的。 <span class="math inline">\(Q_\gamma(f)\)</span>衡量了在边界处维持电势<span class="math inline">\(f\)</span>所需的能量。Calderón的观点是，如果人们着眼于<span class="math inline">\(Q_\gamma(f)\)</span>，问题就变成了寻找方程(1)的足够多的解<span class="math inline">\(u \in H^1(\Omega)\)</span>，以便在内部寻找<span class="math inline">\(\gamma\)</span>。我们将在接下来的章节中进一步解释这种方法，其中我们研究了映射的线性化。
+<span class="math display">\[
+\gamma \xrightarrow{Q} Q_\gamma \qquad(5)
+\]</span></p>
+<p>这里我们把<span class="math inline">\(Q_\gamma\)</span>看成是与二次型(4)相联系的双线性形式。</p>
+<p>第2节介绍Calderón的文章，以及他如何利用复指数证明(5)的线性化在恒定电导率下是单射的。他还给出了一个重建电导率的近似公式，这个电导率先验地接近于一个恒定的电导率。在第3节中，我们给出了Calderón方法在确定孔洞和夹杂物中的应用。在第4节中，我们描述了关于电导率及其法向导数的边界值的唯一性，稳定性和重构的结果。</p>
+<p>在第5节中，我们描述了Sylvester和Uhlmann[132]，[131]构造的与有界位势相关的Schrödinger方程的复几何光学解。这些解表现为卡Calderón关于大复频率的复指数解。在第6节中，我们利用这些解证明了在维数<span class="math inline">\(n \geq
+3\)</span>时，反问题的全局可辨识性结果、稳定性估计和重构方法。我们还描述了可辨识性结果对非线性电导率的扩展[124]，并给出了复杂几何光学解的其他应用。</p>
+<p>在第7节中，我们考虑了部分数据问题，即当DN映射在边界的一部分上测量时的情况.我们描述文献[75]对三维及以上非线性问题的结果。这使用了更大类的CGO解，具有使用Carleman估计构造的非线性相函数。对于部分数据的线性化问题，我们也回顾了文献[29]。</p>
+<p>在第8节中，我们考虑二维情况。特别是，我们简要描述了Astala和Päivärinta最近证明有界可测系数唯一性的工作，以及Bukhgeim从与薛定谔方程相关的柯西数据中证明势唯一性的研究。最后，我们描述了Imanuvilov、Uhlmann和Yamamoto在部分数据问题上的工作[59]。</p>
+<p>第2~8节讨论了各向同性电导率的情况。在第九节中，我们考虑了各向异性电导率的情况，即电导率也依赖于方向。在两个维度上，对各向异性问题的理解已经有了实质性的进展，因为人们通常可以通过使用等温坐标将问题简化为各向同性的情况。在维度3中，文献[85]指出的问题具有几何性质。我们回顾了[83]，[31]的结果.</p>
+<p>在第10节中，我们描述了Calderón问题和从边界点之间的旅行时间恢复介质声速问题之间的联系。最后在第11节中讨论了变换光学和不可见性的思想在静电学中的应用。</p>
+<p>我们在引言的最后提到，我们不讨论EIT中的其他一些重要的发展，包括Borcea等人在离散电阻网络上的工作和对连续情况的近似[17]，以及边界未知时的情况[78]。我们主要集中在涉及复杂几何光学解的应用中。关于EIT的其他综述见[16]，[48]，[27]和[140]。</p>
+<h2 id="calderón的论文">Calderón的论文</h2>
+<p>Calderón在文献[23]中证明了映射<span class="math inline">\(Q\)</span>是解析的。<span class="math inline">\(Q\)</span>在<span class="math inline">\(\gamma=\gamma_0\)</span>处沿<span class="math inline">\(h\)</span>方向的Fréchet导数由下式给出</p>
+<p><span class="math display">\[
+\left.d Q\right|_{\gamma=\gamma_0}(h)(f, g)=\int_{\Omega} h \nabla u
+\cdot \nabla v d x \qquad(6)
+\]</span></p>
+<p>其中<span class="math inline">\(u, v \in H^1(\Omega)\)</span>
+是下面的解</p>
+<p><span class="math display">\[
+\left\{\begin{array}{l}
+\nabla \cdot\left(\gamma_0 \nabla u\right)=\nabla \cdot\left(\gamma_0
+\nabla v\right)=0 \text { in } \Omega \\
+\left.u\right|_{\partial \Omega}=f \in H^{\frac{1}{2}}(\partial
+\Omega),\left.\quad v\right|_{\partial \Omega}=g \in
+H^{\frac{1}{2}}(\partial \Omega) .
+\end{array}\right. \qquad(7)
+\]</span></p>
+<p>因此，如果<span class="math inline">\(H^1(\Omega)\)</span>的解<span class="math inline">\(\nabla \cdot\left(\gamma_0 \nabla
+u\right)=0\)</span>的乘积在<span class="math inline">\(L^2(\Omega)\)</span>中稠密，则线性化映射是单射的。</p>
+<p>Calderón证明了线性化映射在<span class="math inline">\(\gamma_0=\)</span>常数的情况下的单射性，为了简单起见，我们假设它是常值函数1。问题归结为调和函数的梯度积在<span class="math inline">\(L^2(\Omega)\)</span>中是否稠密</p>
+<p>Calderón取如下调和函数：</p>
+<p><span class="math display">\[
+u=e^{x \cdot \rho}, \quad v=e^{-x \cdot \bar{\rho}} \qquad(8)
+\]</span></p>
+<p>其中 <span class="math inline">\(\rho \in \mathbb{C}^n\)</span>
+有</p>
+<p><span class="math display">\[
+\rho \cdot \rho=0 \qquad(9)
+\]</span></p>
+<p>我们注意到条件(9)等价于下面</p>
+<p><span class="math display">\[
+\begin{aligned}
+&amp; \rho=\frac{\eta+i k}{2}, \eta, k \in \mathbb{R}^n \\
+&amp; |\eta|=|k|, \eta \cdot k=0
+\end{aligned} \qquad(10)
+\]</span></p>
+<p>然后将(8)的解代入(6)中，我们得到如果<span class="math inline">\(\left.d Q\right|_{\gamma_0=1}(h)=0\)</span></p>
+<p><span class="math display">\[
+|k|^2\left(\chi_{\Omega} h\right)^{\wedge}(k)=0 \quad \forall k \in
+\mathbb{R}^n
+\]</span></p>
+<p>式中<span class="math inline">\(\chi_{\Omega}\)</span>为<span class="math inline">\(\Omega\)</span>的特征函数，<span class="math inline">\({
+}^{\wedge}\)</span>为傅里叶变换。然后由Fourier反演公式得出<span class="math inline">\(h=0\)</span>在<span class="math inline">\(\Omega\)</span>上。然而，由于在<span class="math inline">\(Q\)</span>的取值范围内允许使用隐函数定理的条件要么是错误的，要么是未知的，因此不能应用隐函数定理得出<span class="math inline">\(\gamma\)</span>在常数附近可逆的结论。</p>
+<p>Calderón还观察到，如果使用解(8)，我们可以找到电导率<span class="math inline">\(\gamma\)</span>的一个近似</p>
+<p><span class="math display">\[
+\gamma=1+h \qquad(11)
+\]</span></p>
+<p>并且<span class="math inline">\(h\)</span>在<span class="math inline">\(L^{\infty}\)</span>范数下足够小。</p>
+<p>我们给出 <span class="math display">\[
+G_\gamma=Q_\gamma\left(\left.e^{x \cdot \rho}\right|_{\partial
+\Omega},\left.e^{-x \cdot \bar{\rho}}\right|_{\partial \Omega}\right)
+\]</span></p>
+<p><span class="math inline">\(\rho \in
+\mathbb{C}^n\)</span>如(2.4)所示，现在</p>
+<p><span class="math display">\[
+\begin{aligned}
+G_\gamma &amp; =\int_{\Omega}(1+h) \nabla u \cdot \nabla v d x \\
+&amp; +\int_{\Omega} h(\nabla \delta u \cdot \nabla v+\nabla u \cdot
+\nabla \delta v) d x \\
+&amp; +\int_{\Omega}(1+h) \nabla \delta u \cdot \nabla \delta v d x
+\end{aligned} \qquad(12)
+\]</span></p>
+<p><span class="math inline">\(u, v\)</span>如(8)并且</p>
+<p><span class="math display">\[
+\begin{aligned}
+\nabla \cdot(\gamma \nabla(u+\delta u)) &amp; =\nabla \cdot(\gamma
+\nabla(v+\delta v))=0 \text { in } \Omega \\
+\left.\delta u\right|_{\partial \Omega} &amp; =\left.\delta
+v\right|_{\partial \Omega}=0
+\end{aligned} \qquad(13)
+\]</span></p>
+<p>现在应用于(13)式的标准椭圆估计表明</p>
+<p><span class="math display">\[
+\|\nabla \delta u\|_{L^2(\Omega)}, \quad\|\nabla \delta
+v\|_{L^2(\Omega)} \leq C\|h\|_{L^{\infty}(\Omega)}|k| e^{\frac{1}{2}
+r|k|} \qquad(14)
+\]</span></p>
+<p>对于某个<span class="math inline">\(C&gt;0\)</span>，其中<span class="math inline">\(r\)</span>表示包含<span class="math inline">\(\Omega\)</span>的最小球的半径。</p>
+<p>将<span class="math inline">\(u, v\)</span>代入(2.7)中，我们得到</p>
+<p><span class="math display">\[
+\widehat{\chi \Omega \gamma}(k)=-2
+\frac{G_\gamma}{|k|^2}+R(k)=\widehat{F}(k)+R(k) \qquad(15)
+\]</span></p>
+<p>式中<span class="math inline">\(F\)</span>由<span class="math inline">\(G_\gamma\)</span>决定，因此已知。利用(14)，我们可以证明<span class="math inline">\(R(k)\)</span>满足估计</p>
+<p><span class="math display">\[
+|R(k)| \leq C\|h\|_{L^{\infty}(\Omega)}^2 e^{r|k|} \qquad(16)
+\]</span></p>
+<p>也就是说，我们知道<span class="math inline">\(\widehat{\chi \Omega
+\gamma}(k)\)</span>直到一个对<span class="math inline">\(k\)</span>足够小的项。更确切地说，令<span class="math inline">\(1&lt;\alpha&lt;2\)</span> .则有 <span class="math display">\[
+|k| \leq \frac{2-\alpha}{r} \log \frac{1}{\|h\|_{L^{\infty}}}=: \sigma
+\qquad(17)
+\]</span></p>
+<p>我们有 <span class="math display">\[
+|R(k)| \leq C\|h\|_{L^{\infty}(\Omega)}^\alpha \qquad(18)
+\]</span></p>
+<p>对于某些 <span class="math inline">\(C&gt;0\)</span>.</p>
+<p>我们取<span class="math inline">\(\widehat{\eta}\)</span> 是 <span class="math inline">\(C^{\infty}\)</span>的一个截断使得<span class="math inline">\(\widehat{\eta}(0)=1, \operatorname{supp}
+\widehat{\eta}(k) \subset\left\{k \in \mathbb{R}^n,|k| \leq
+1\right\}\)</span>且<span class="math inline">\(\eta_\sigma(x)=\sigma^n
+\eta(\sigma x)\)</span>。然后我们得到</p>
+<p><span class="math display">\[
+\widehat{\chi \Omega \gamma}(k)
+\widehat{\eta}\left(\frac{k}{\sigma}\right)=\frac{-2 G_\gamma
+\gamma}{|k|^2} \widehat{\eta}\left(\frac{k}{\sigma}\right)+R(k)
+\widehat{\eta}\left(\frac{k}{\sigma}\right) .
+\]</span></p>
+<p>利用这一点我们得到下面的估计</p>
+<p><span class="math display">\[
+|l(x)| \leq C\|h\|_{L^{\infty}(\Omega)}^\alpha\left[\log
+\frac{1}{\|h\|_{L^{\infty}(\Omega)}}\right]^n \qquad(19)
+\]</span></p>
+<p>其中<span class="math inline">\(l(x)=\left(\chi_{\Omega} \gamma *
+\eta_\sigma\right)(x)-\left(F *
+\eta_\sigma\right)(x)\)</span>。式(19)给出了当<span class="math inline">\(h\)</span>足够小时，平滑后的电导率<span class="math inline">\(\chi_{\Omega} \gamma *
+\eta_\sigma\)</span>的近似表达式。</p>
+<p>这个Calderón的近似估计和它的修正已经在数值上进行了尝试[60]。</p>
+<p>使用这些指数解的另一个完全不同的反问题是具有角平均测量的反输运问题[10]。</p>
+<p>这个估计使用了低频的谐波指数。在第四节中，我们考虑电导率方程的高(复)频率解
+<span class="math display">\[
+L_\gamma=\nabla \cdot(\gamma \nabla u)=0
+\]</span></p>
+]]></content>
+      <categories>
+        <category>论文泛读</category>
+      </categories>
+      <tags>
+        <tag>EIT</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>NAS-PINN</title>
+    <url>/2025/02/11/NAS-PINN/</url>
+    <content><![CDATA[<h1 id="nas-pinn-neural-architecture-search-guided-physics-informed-neural-network-for-solving-pdesnas-pinn神经网络结构搜索引导的物理信息神经网络用于求解偏微分方程">NAS-PINN:
+Neural architecture search-guided physics-informed neural network for
+solving
+PDEs(NAS-PINN：神经网络结构搜索引导的物理信息神经网络，用于求解偏微分方程)</h1>
+<h2 id="摘要">摘要</h2>
+<p>物理信息神经网络( PINN
+)自提出以来一直是求解偏微分方程的主流框架。通过损失函数将物理信息融入到神经网络中，它可以以无监督的方式预测PDEs的解。然而，神经网络结构的设计基本依赖于先验知识和经验，这造成了很大的麻烦和较高的计算开销。因此，<strong>我们提出了一种神经结构搜索引导的方法，即NAS
+- PINN，用于自动搜索求解某些PDEs的最佳神经结构</strong>。
+通过将搜索空间松弛为连续空间，并利用掩码实现不同形状张量的添加，NAS -
+PINN可以通过双层优化进行训练，其中内层循环优化神经网络的权重和偏置，外层循环优化网络结构参数。我们通过包括Poisson，Burgers和Advection方程在内的几个数值实验来验证NAS
+-
+PINN的能力。总结了求解不同PDE的有效神经网络结构的特点，可用于指导PINN中神经网络的设计。研究发现，更多的隐藏层并不一定意味着更好的性能，有时可能是有害的。
+特别是对于Poisson和Advection，在PINNs中更适合采用神经元数目较多的浅层神经网络。研究还表明，对于复杂问题，具有残差连接的神经网络可以提高PINNs的性能。
+<span id="more"></span></p>
+<h2 id="介绍">介绍</h2>
+<p>神经网络结构搜索( Neural Architecture Search，NAS
+)是一种在特定搜索空间中搜索最优神经网络结构的算法。传统的NAS算法通过神经网络模块的排列组合来构建架构，并对这些架构进行训练和测试以确定其性能，然后根据性能排序选择最佳的神经网络架构。这样的离散过程面临着计算效率低和计算成本高的问题。因此，减少计算开销、提高搜索效率一直是NAS的主要研究热点之一。
+<strong>本文将NAS融入PINN的框架中，提出了一种神经架构搜索引导的物理信息神经网络(
+NAS-PINN)</strong>。我们实现了用少量数据自动搜索求解给定PDE的最佳神经网络结构。掩码用于张量的添加，以帮助搜索每层中不同数量的神经元。通过对一系列PDE的数值实验，验证了所提方法的有效性.通过对数值结果的分析，总结了高效神经网络结构的特点，为PINNs的进一步研究提供了指导。</p>
+<h2 id="方法">方法</h2>
+<h3 id="pinn的框架">PINN的框架</h3>
+<p><img src="/2025/02/11/NAS-PINN/1.jpg"></p>
+<h3 id="可微nas">可微NAS</h3>
+<p>在传统的NAS算法中，神经网络的层数通常是固定的，并为每一层提供特定的操作选择。这样的配置使得搜索空间不连续，无法通过基于梯度的方法进行优化，极大地限制了算法的收敛速度和效率。
+Liu等人[ 29 ]提出了DARTS，并引入了可微NAS的概念。设<span class="math inline">\(O\)</span>是一个由候选操作组成的集合，其中任何一个操作都表示关于输入x的某个函数<span class="math inline">\(o(x)\)</span>.通过对候选操作施加松弛，可以使搜索空间连续：
+<span class="math display">\[
+\bar{o}^{(i,j)}(x)=\sum_{o\in
+O}\frac{exp(\alpha^{(i,j)}_o)}{\textstyle\sum_{o&#39;\in
+O}exp(\alpha^{(i,j)_{o&#39;}})}o(x) \qquad (6)
+\]</span> 其中<span class="math inline">\(\bar
+o^{(i,j)}(x)\)</span>为松弛后第<span class="math inline">\(i\)</span>层与第<span class="math inline">\(j\)</span>层之间的混合运算，<span class="math inline">\(\alpha^{(i,j)}_o\)</span>为运算<span class="math inline">\(o\)</span>的权.现在测试和比较所有可能的操作组合的离散过程可以简化为通过基于梯度的优化方法学习一组合适的权重<span class="math inline">\(\alpha^{(i,j)}_o\)</span>。当算法收敛时，通过选择权重最高的候选操作，可以将松弛的搜索空间提取到离散的神经架构中。</p>
+<h3 id="掩码">掩码</h3>
+<p>虽然式(6)将搜索空间缩小为一个连续的空间，张量运算只允许相同形状的张量相加，使得搜索神经元个数不切实际，如图2(a)所示。受卷积神经网络中零填充的启发，我们可以将神经元填充到最大数量k，如图2
+(b)所示。在图2(c)中，通过将填充的神经元乘以一个零张量掩码，我们将额外的神经元去激活，以模拟不同数量的神经元。最后，通过共享权重，可以将可选的隐藏层减少为一个，输出y可以表示为：
+<span class="math display">\[
+\mathbf{y} = \sigma(\mathbf{w}\cdot\mathbf{x}+\mathbf{b})\cdot
+\begin{pmatrix}
+[g_1,g_2,g_3]\times     
+\begin{bmatrix}
+   \mathbf{mask}_1 \\
+   \mathbf{mask}_2 \\
+   \mathbf{mask}_3
+\end{bmatrix}^T
+\end{pmatrix}
+\]</span> 其中<span class="math inline">\(\sigma(\cdot)\)</span>为激活函数，<span class="math inline">\(\mathbf{w}\)</span>和<span class="math inline">\(\mathbf{b}\)</span>分别为单隐层的权值和偏置，<span class="math inline">\(g_i\)</span>为标量，为每个神经元个数的权值，<span class="math inline">\(\mathbf{mask}_i\)</span>为每个神经元个数的掩码，形状为<span class="math inline">\(1\times k\)</span>。假设神经元个数为<span class="math inline">\(j\)</span>，则<span class="math inline">\(\mathbf{mask}\)</span>的前<span class="math inline">\(j\)</span>个元素为1，其余<span class="math inline">\((k-j)\)</span>个元素为0。 <img src="/2025/02/11/NAS-PINN/2.jpg" alt="fig.2">
+为了确定层数，我们引入身份变换作为操作，即跳过该层，且输出<span class="math inline">\(\mathbf{y}\)</span>变为: <span class="math display">\[
+\mathbf{y} = \alpha_1 \cdot
+\mathbf{x}+\alpha_2\cdot\sigma(\mathbf{w}\cdot\mathbf{x}+\mathbf{b})\cdot
+\begin{pmatrix}
+[g_1,g_2,g_3]\times     
+\begin{bmatrix}
+   \mathbf{mask}_1 \\
+   \mathbf{mask}_2 \\
+   \mathbf{mask}_3
+\end{bmatrix}^T
+\end{pmatrix} \qquad (8)
+\]</span> 其中，<span class="math inline">\(\alpha_1\)</span>为身份转换权重，表示跳过该层，<span class="math inline">\(\alpha_2\)</span>为保留该层的权重。
+式(8)给出了每层输入和输出之间的映射关系，通过反复应用，可以建立一个DNN模型，其中最合适的层可以根据权重<span class="math inline">\(\alpha\)</span>来选择，最合适的每层神经元可以根据权重<span class="math inline">\(g\)</span>来决定。这里，我们将<span class="math inline">\(\alpha\)</span>和<span class="math inline">\(g\)</span>统称为<span class="math inline">\(\boldsymbol{\alpha}\)</span>，<span class="math inline">\(\bf{w}\)</span>和<span class="math inline">\(\bf{b}\)</span>统称为<span class="math inline">\(\boldsymbol{\theta}\)</span>。</p>
+<h3 id="mas-pinn">MAS-PINN</h3>
+<p>现在我们可以得到NAS -
+PINN的整体框架，如图3所示，它可以被认为是一个<strong>双层优化问题</strong>。在内循环中，对DNN的权值和偏置<span class="math inline">\(\boldsymbol{\theta}\)</span>进行优化，而在外循环中，优化目标是寻找最佳的<span class="math inline">\(\boldsymbol{\alpha}\)</span>。其过程可以表示为：
+<span class="math display">\[
+\underset{\boldsymbol{\alpha}}{min}MSE(\boldsymbol{\theta}^*,\boldsymbol{\alpha})
+\\ s.t. \boldsymbol{\theta}^*=
+\underset{\boldsymbol{\theta}}{argmin}Loss(\boldsymbol{\theta},\boldsymbol{\alpha})
+\]</span> 内环的损失函数可以设计为式( 2 ) ~ ( 5
+)（PINN损失函数：数据匹配损失，PDE残差损失，边界条件损失）和外环的损失函数可以写成：
+<span class="math display">\[
+MSE=\frac{1}{n}\sum^n_{i=1}(\hat u-u)^2  \qquad(10)
+\]</span>
+其中u是已知的解析解或数值解，n是数据点的个数，对于外循环，所需的n可以很小。这样的双层优化问题可以通过交替优化来解决，相应的过程在算法1中展示。
+当训练结束时，可以根据<span class="math inline">\(\boldsymbol{\alpha}\)</span>推导出离散的神经网络模型。基本上，我们可以首先通过比较<span class="math inline">\(a_1\)</span>和<span class="math inline">\(a_2\)</span>来决定是否跳过某一层。如果保留该层，我们可以根据<span class="math inline">\(g\)</span>来决定神经元的数量。如果跳过某一层，则无需考察其权重<span class="math inline">\(g\)</span>。 在一些<span class="math inline">\(a_1\)</span>和<span class="math inline">\(a_2\)</span>相对接近的情况下，我们假设跳过层和保留层同样重要，并给出了一个混合模型。在混合模型中，层是身份变换和神经网络操作的组合。神经元的数量决定于一个离散的神经元，因此这些层可以表示为：
+<span class="math display">\[
+\mathbf{y} = \alpha_1 \cdot
+\mathbf{x}+\alpha_2\cdot\sigma(\mathbf{w}\cdot\mathbf{x}+\mathbf{b})\cdot
+(g_{max}\times \boldsymbol{mask}_{max})^T
+\]</span> 式中,<span class="math inline">\(g_{max}\)</span>为所有权值<span class="math inline">\(g\)</span>中的最大值，<span class="math inline">\(\boldsymbol{mask}_{max}\)</span>为对应于<span class="math inline">\(g_{max}\)</span>的零张量掩码。 <img src="/2025/02/11/NAS-PINN/3.jpg" alt="fig.3"> <img src="/2025/02/11/NAS-PINN/4.jpg" alt="algorithm 1"></p>
+<h2 id="实验">实验</h2>
+<h3 id="possion-equation">Possion equation</h3>
+<p>泊松方程是一类描述电磁场和热场的基本偏微分方程，在电磁学和机械工程中有着广泛的应用。这里，我们考虑一个带有Dirichlet边界条件的二维Poisson方程：
+<img src="/2025/02/11/NAS-PINN/5.jpg" alt="possion equation"> 该方程有解析解：
+<img src="/2025/02/11/NAS-PINN/6.jpg" alt="analytical solution">
+我们首先考虑正方形计算域中的泊松方程，以验证所提出的NAS -
+PINN的有效性。我们构造了一个相对较小的搜索空间，它是一个最多包含5个隐藏层的神经网络，每层包含30、50或70个神经元。对离散搜索空间中的每一种可能的神经架构分别进行训练和测试，作为网格搜索的近似实例。然后，我们使用NAS
+-
+PINN来搜索一个神经结构，并研究它是否是最好的。所有离散搜索空间中的363个架构由Adam训练，其中500个配置点在域内随机采样，100个边界点均匀分布在边界上。
+在架构搜索阶段，1000个配置点和200个边界点采用与之前相同的策略进行采样，以搜索最佳的神经架构，并将Adam应用于架构搜索阶段。然后以与363架构相同的方式从头开始训练得到的神经架构。</p>
+<p>为了进行更全面的比较，还对传统的Auto
+ML方法SMAC进行了测试。SMAC是一个通用的用于超参数优化的贝叶斯优化包，对于所讨论的问题，需要优化的超参数是隐藏层的数量和神经元的数量。对于SMAC，一个相当小的研究空间包括15种不同的神经结构，其中每个隐藏层的神经元数量只能是相同的。SMAC使用与架构搜索阶段相同的1000个配置点和200个边界点。
+最后，均匀采样1000000个点，测试所有收敛的神经架构。不同架构的预测解和误差分布如图4所示，L2误差如表1所示。所有实验均重复5次，L2误差由5次重复的平均值得到。
+这些结构以序列的形式描述在表1中。序列的第一个和最后一个元素代表输入和输出通道，而其他元素代表每一层的神经元数目。例如，98号架构的输入大小为n×2，其中n为批次大小，2代表坐标x和y，第一层隐含层有70个神经元。通过NAS
+- PINN得到的架构为No.358。</p>
+<p>从表1和图4中，我们可以清楚地看到NAS-PINN的神经架构具有最小的L2误差和最小的最大误差值，并且其误差分布相比于其他架构也有所改善。因此，所提出的NASPINN确实可以在给定的搜索空间中找到最佳的神经网络结构。此外，虽然No.98也表现出相对较好的性能(在363种可能的体系结构中,它是第二好的体系结构)，但它比NAS-PINN的架构拥有更多的参数，这表明更多的参数并不一定意味着更好的性能，一个适当设计的神经架构显得尤为重要。
+此外，在PINNs中，更深的神经网络总是更好的这一常识似乎并不是在所有情况下都是正确的。至少对于给定的泊松方程，浅层但宽的神经网络(隐含层较少,但每层神经元较多的神经网络)优于深层的神经网络。</p>
+<p>与SMAC相比，NAS - PINN可以在更大、更灵活的搜索空间中进行搜索，从而NAS
+-
+PINN更有可能找到真正最佳的神经架构。值得注意的是，虽然SMAC在只有15个神经结构的较小搜索空间中进行搜索，但它需要SMAC
+2。08 h找到357号架构，而NAS -
+PINN使用1.57h，从363个不同的架构中找到358号架构。所有的数值实验均在Intel(R)Core
+i9-9900 K @ 3.60 Ghz /NVIDIA GeForce Rtx 3090 上进行 <img src="/2025/02/11/NAS-PINN/7.jpg" alt="fig.4"> <img src="/2025/02/11/NAS-PINN/8.jpg" alt="table.1"></p>
+]]></content>
+      <categories>
+        <category>论文泛读</category>
+      </categories>
+      <tags>
+        <tag>神经网络架构</tag>
+        <tag>PINN</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Active_Contours_Without_Edges</title>
     <url>/2025/03/03/Active-Contours-Without-Edges/</url>
     <content><![CDATA[<h1 id="active-contours-without-edges">Active Contours Without
@@ -304,301 +599,6 @@ y)-c_2\right|^2\left(1-H_{\varepsilon}(\phi(x, y))\right) d x d y
       </categories>
       <tags>
         <tag>图像分割</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Electrical impedance tomography and Calderón’s problem</title>
-    <url>/2025/03/16/Electrical%20impedance%20tomography%20and%20Calderon%E2%80%99s%20problem/</url>
-    <content><![CDATA[<h1 id="electrical-impedance-tomography-and-calderóns-problem">Electrical
-impedance tomography and Calderón’s problem</h1>
-<h2 id="摘要">摘要</h2>
-<p>我们回顾了电阻抗断层成像逆方法的数学发展，该方法通过在介质边界测量电压和电流来确定介质的电特性。在数学文献中，这个问题也被称为Calderón问题，来源于Calderón的开创性贡献[23]
-.我们将这篇文章集中在复杂几何光学解决方案的主题上，这些解决方案已经导致了该领域的许多进展。在最后一节中，我们回顾了一些Calderón问题的反例，这些反例由于与隐匿性和不可见性的联系而引起了人们的兴趣。
-<span id="more"></span></p>
-<h2 id="介绍">介绍</h2>
-<p>考虑到人体器官和组织具有截然不同的电导率，EIT也出现在医学成像中[71]。一个令人兴奋的潜在应用是乳腺癌的早期诊断[149]。乳腺恶性肿瘤的电导率通常为0.2
-mho，明显高于正常组织的0.03mho。另一个应用是监测肺功能[62]。关于EIT的其他医学成像应用，参见该书[52]和《生理学测量》[53]。这种反演方法也被用于检测埋地管道的泄漏[70]。</p>
-<p>我们现在更精确地描述这个数学问题。</p>
-<p>设<span class="math inline">\(\Omega \subseteq
-\mathbb{R}^n\)</span>是一个边界光滑的有界区域(我们将描述的许多结果对于具有Lipschitz边界的区域是有效的)。<span class="math inline">\(\Omega\)</span>的电导率用一个有界的正函数<span class="math inline">\(\gamma(x)\)</span>表示.在没有电流汇或电流源的情况下，给出了电势的方程
-<span class="math display">\[
-\nabla \cdot(\gamma \nabla u)=0 \text { in } \Omega \qquad(1)
-\]</span></p>
-<p>根据欧姆定律，<span class="math inline">\(\gamma \nabla
-u\)</span>表示当前的电流通量。</p>
-<p>给定边界上的一个势函数<span class="math inline">\(f \in
-H^{\frac{1}{2}}(\partial \Omega)\)</span>，诱导势<span class="math inline">\(u \in
-H^1(\Omega)\)</span>是下面Dirichlet问题的解</p>
-<p><span class="math display">\[
-\begin{aligned}
-\nabla \cdot(\gamma \nabla u) &amp; =0 \text { in } \Omega \\
-\left.u\right|_{\partial \Omega} &amp; =f .
-\end{aligned} \qquad(2)
-\]</span></p>
-<p>Dirichlet to Neumann映射，或电压到电流映射，由</p>
-<p><span class="math display">\[
-\Lambda_\gamma(f)=\left.\left(\gamma \frac{\partial u}{\partial
-\nu}\right)\right|_{\partial \Omega} \qquad(3)
-\]</span></p>
-<p>给出，其中<span class="math inline">\(\nu\)</span>表示<span class="math inline">\(\partial \Omega\)</span>的单位外法线。</p>
-<p>反问题是已知<span class="math inline">\(\Lambda_\gamma\)</span>确定<span class="math inline">\(\gamma\)</span>。很难找到一种系统的方法来规定边界处的电压测量值，以便能够找到电导率。Calderón转而采取了不同的路线。</p>
-<p>利用散度定理，我们有 <span class="math display">\[
-Q_\gamma(f):=\int_{\Omega} \gamma|\nabla u|^2 d x=\int_{\partial \Omega}
-\Lambda_\gamma(f) f d S \qquad(4)
-\]</span></p>
-<p>式中<span class="math inline">\(d S\)</span>为表面测度，<span class="math inline">\(u\)</span>为式(2)的解。换言之，<span class="math inline">\(Q_\gamma(f)\)</span>是与线性映射<span class="math inline">\(\Lambda_\gamma(f)\)</span>相联系的二次型，且对任意的<span class="math inline">\(f \in H^{\frac{1}{2}}(\partial
-\Omega)\)</span>，知道<span class="math inline">\(\Lambda_\gamma(f)\)</span>或<span class="math inline">\(Q_\gamma(f)\)</span>是等价的。 <span class="math inline">\(Q_\gamma(f)\)</span>衡量了在边界处维持电势<span class="math inline">\(f\)</span>所需的能量。Calderón的观点是，如果人们着眼于<span class="math inline">\(Q_\gamma(f)\)</span>，问题就变成了寻找方程(1)的足够多的解<span class="math inline">\(u \in H^1(\Omega)\)</span>，以便在内部寻找<span class="math inline">\(\gamma\)</span>。我们将在接下来的章节中进一步解释这种方法，其中我们研究了映射的线性化。
-<span class="math display">\[
-\gamma \xrightarrow{Q} Q_\gamma \qquad(5)
-\]</span></p>
-<p>这里我们把<span class="math inline">\(Q_\gamma\)</span>看成是与二次型(4)相联系的双线性形式。</p>
-<p>第2节介绍Calderón的文章，以及他如何利用复指数证明(5)的线性化在恒定电导率下是单射的。他还给出了一个重建电导率的近似公式，这个电导率先验地接近于一个恒定的电导率。在第3节中，我们给出了Calderón方法在确定孔洞和夹杂物中的应用。在第4节中，我们描述了关于电导率及其法向导数的边界值的唯一性，稳定性和重构的结果。</p>
-<p>在第5节中，我们描述了Sylvester和Uhlmann[132]，[131]构造的与有界位势相关的Schrödinger方程的复几何光学解。这些解表现为卡Calderón关于大复频率的复指数解。在第6节中，我们利用这些解证明了在维数<span class="math inline">\(n \geq
-3\)</span>时，反问题的全局可辨识性结果、稳定性估计和重构方法。我们还描述了可辨识性结果对非线性电导率的扩展[124]，并给出了复杂几何光学解的其他应用。</p>
-<p>在第7节中，我们考虑了部分数据问题，即当DN映射在边界的一部分上测量时的情况.我们描述文献[75]对三维及以上非线性问题的结果。这使用了更大类的CGO解，具有使用Carleman估计构造的非线性相函数。对于部分数据的线性化问题，我们也回顾了文献[29]。</p>
-<p>在第8节中，我们考虑二维情况。特别是，我们简要描述了Astala和Päivärinta最近证明有界可测系数唯一性的工作，以及Bukhgeim从与薛定谔方程相关的柯西数据中证明势唯一性的研究。最后，我们描述了Imanuvilov、Uhlmann和Yamamoto在部分数据问题上的工作[59]。</p>
-<p>第2~8节讨论了各向同性电导率的情况。在第九节中，我们考虑了各向异性电导率的情况，即电导率也依赖于方向。在两个维度上，对各向异性问题的理解已经有了实质性的进展，因为人们通常可以通过使用等温坐标将问题简化为各向同性的情况。在维度3中，文献[85]指出的问题具有几何性质。我们回顾了[83]，[31]的结果.</p>
-<p>在第10节中，我们描述了Calderón问题和从边界点之间的旅行时间恢复介质声速问题之间的联系。最后在第11节中讨论了变换光学和不可见性的思想在静电学中的应用。</p>
-<p>我们在引言的最后提到，我们不讨论EIT中的其他一些重要的发展，包括Borcea等人在离散电阻网络上的工作和对连续情况的近似[17]，以及边界未知时的情况[78]。我们主要集中在涉及复杂几何光学解的应用中。关于EIT的其他综述见[16]，[48]，[27]和[140]。</p>
-<h2 id="calderón的论文">Calderón的论文</h2>
-<p>Calderón在文献[23]中证明了映射<span class="math inline">\(Q\)</span>是解析的。<span class="math inline">\(Q\)</span>在<span class="math inline">\(\gamma=\gamma_0\)</span>处沿<span class="math inline">\(h\)</span>方向的Fréchet导数由下式给出</p>
-<p><span class="math display">\[
-\left.d Q\right|_{\gamma=\gamma_0}(h)(f, g)=\int_{\Omega} h \nabla u
-\cdot \nabla v d x \qquad(6)
-\]</span></p>
-<p>其中<span class="math inline">\(u, v \in H^1(\Omega)\)</span>
-是下面的解</p>
-<p><span class="math display">\[
-\left\{\begin{array}{l}
-\nabla \cdot\left(\gamma_0 \nabla u\right)=\nabla \cdot\left(\gamma_0
-\nabla v\right)=0 \text { in } \Omega \\
-\left.u\right|_{\partial \Omega}=f \in H^{\frac{1}{2}}(\partial
-\Omega),\left.\quad v\right|_{\partial \Omega}=g \in
-H^{\frac{1}{2}}(\partial \Omega) .
-\end{array}\right. \qquad(7)
-\]</span></p>
-<p>因此，如果<span class="math inline">\(H^1(\Omega)\)</span>的解<span class="math inline">\(\nabla \cdot\left(\gamma_0 \nabla
-u\right)=0\)</span>的乘积在<span class="math inline">\(L^2(\Omega)\)</span>中稠密，则线性化映射是单射的。</p>
-<p>Calderón证明了线性化映射在<span class="math inline">\(\gamma_0=\)</span>常数的情况下的单射性，为了简单起见，我们假设它是常值函数1。问题归结为调和函数的梯度积在<span class="math inline">\(L^2(\Omega)\)</span>中是否稠密</p>
-<p>Calderón取如下调和函数：</p>
-<p><span class="math display">\[
-u=e^{x \cdot \rho}, \quad v=e^{-x \cdot \bar{\rho}} \qquad(8)
-\]</span></p>
-<p>其中 <span class="math inline">\(\rho \in \mathbb{C}^n\)</span>
-有</p>
-<p><span class="math display">\[
-\rho \cdot \rho=0 \qquad(9)
-\]</span></p>
-<p>我们注意到条件(9)等价于下面</p>
-<p><span class="math display">\[
-\begin{aligned}
-&amp; \rho=\frac{\eta+i k}{2}, \eta, k \in \mathbb{R}^n \\
-&amp; |\eta|=|k|, \eta \cdot k=0
-\end{aligned} \qquad(10)
-\]</span></p>
-<p>然后将(8)的解代入(6)中，我们得到如果<span class="math inline">\(\left.d Q\right|_{\gamma_0=1}(h)=0\)</span></p>
-<p><span class="math display">\[
-|k|^2\left(\chi_{\Omega} h\right)^{\wedge}(k)=0 \quad \forall k \in
-\mathbb{R}^n
-\]</span></p>
-<p>式中<span class="math inline">\(\chi_{\Omega}\)</span>为<span class="math inline">\(\Omega\)</span>的特征函数，<span class="math inline">\({
-}^{\wedge}\)</span>为傅里叶变换。然后由Fourier反演公式得出<span class="math inline">\(h=0\)</span>在<span class="math inline">\(\Omega\)</span>上。然而，由于在<span class="math inline">\(Q\)</span>的取值范围内允许使用隐函数定理的条件要么是错误的，要么是未知的，因此不能应用隐函数定理得出<span class="math inline">\(\gamma\)</span>在常数附近可逆的结论。</p>
-<p>Calderón还观察到，如果使用解(8)，我们可以找到电导率<span class="math inline">\(\gamma\)</span>的一个近似</p>
-<p><span class="math display">\[
-\gamma=1+h \qquad(11)
-\]</span></p>
-<p>并且<span class="math inline">\(h\)</span>在<span class="math inline">\(L^{\infty}\)</span>范数下足够小。</p>
-<p>我们给出 <span class="math display">\[
-G_\gamma=Q_\gamma\left(\left.e^{x \cdot \rho}\right|_{\partial
-\Omega},\left.e^{-x \cdot \bar{\rho}}\right|_{\partial \Omega}\right)
-\]</span></p>
-<p><span class="math inline">\(\rho \in
-\mathbb{C}^n\)</span>如(2.4)所示，现在</p>
-<p><span class="math display">\[
-\begin{aligned}
-G_\gamma &amp; =\int_{\Omega}(1+h) \nabla u \cdot \nabla v d x \\
-&amp; +\int_{\Omega} h(\nabla \delta u \cdot \nabla v+\nabla u \cdot
-\nabla \delta v) d x \\
-&amp; +\int_{\Omega}(1+h) \nabla \delta u \cdot \nabla \delta v d x
-\end{aligned} \qquad(12)
-\]</span></p>
-<p><span class="math inline">\(u, v\)</span>如(8)并且</p>
-<p><span class="math display">\[
-\begin{aligned}
-\nabla \cdot(\gamma \nabla(u+\delta u)) &amp; =\nabla \cdot(\gamma
-\nabla(v+\delta v))=0 \text { in } \Omega \\
-\left.\delta u\right|_{\partial \Omega} &amp; =\left.\delta
-v\right|_{\partial \Omega}=0
-\end{aligned} \qquad(13)
-\]</span></p>
-<p>现在应用于(13)式的标准椭圆估计表明</p>
-<p><span class="math display">\[
-\|\nabla \delta u\|_{L^2(\Omega)}, \quad\|\nabla \delta
-v\|_{L^2(\Omega)} \leq C\|h\|_{L^{\infty}(\Omega)}|k| e^{\frac{1}{2}
-r|k|} \qquad(14)
-\]</span></p>
-<p>对于某个<span class="math inline">\(C&gt;0\)</span>，其中<span class="math inline">\(r\)</span>表示包含<span class="math inline">\(\Omega\)</span>的最小球的半径。</p>
-<p>将<span class="math inline">\(u, v\)</span>代入(2.7)中，我们得到</p>
-<p><span class="math display">\[
-\widehat{\chi \Omega \gamma}(k)=-2
-\frac{G_\gamma}{|k|^2}+R(k)=\widehat{F}(k)+R(k) \qquad(15)
-\]</span></p>
-<p>式中<span class="math inline">\(F\)</span>由<span class="math inline">\(G_\gamma\)</span>决定，因此已知。利用(14)，我们可以证明<span class="math inline">\(R(k)\)</span>满足估计</p>
-<p><span class="math display">\[
-|R(k)| \leq C\|h\|_{L^{\infty}(\Omega)}^2 e^{r|k|} \qquad(16)
-\]</span></p>
-<p>也就是说，我们知道<span class="math inline">\(\widehat{\chi \Omega
-\gamma}(k)\)</span>直到一个对<span class="math inline">\(k\)</span>足够小的项。更确切地说，令<span class="math inline">\(1&lt;\alpha&lt;2\)</span> .则有 <span class="math display">\[
-|k| \leq \frac{2-\alpha}{r} \log \frac{1}{\|h\|_{L^{\infty}}}=: \sigma
-\qquad(17)
-\]</span></p>
-<p>我们有 <span class="math display">\[
-|R(k)| \leq C\|h\|_{L^{\infty}(\Omega)}^\alpha \qquad(18)
-\]</span></p>
-<p>对于某些 <span class="math inline">\(C&gt;0\)</span>.</p>
-<p>我们取<span class="math inline">\(\widehat{\eta}\)</span> 是 <span class="math inline">\(C^{\infty}\)</span>的一个截断使得<span class="math inline">\(\widehat{\eta}(0)=1, \operatorname{supp}
-\widehat{\eta}(k) \subset\left\{k \in \mathbb{R}^n,|k| \leq
-1\right\}\)</span>且<span class="math inline">\(\eta_\sigma(x)=\sigma^n
-\eta(\sigma x)\)</span>。然后我们得到</p>
-<p><span class="math display">\[
-\widehat{\chi \Omega \gamma}(k)
-\widehat{\eta}\left(\frac{k}{\sigma}\right)=\frac{-2 G_\gamma
-\gamma}{|k|^2} \widehat{\eta}\left(\frac{k}{\sigma}\right)+R(k)
-\widehat{\eta}\left(\frac{k}{\sigma}\right) .
-\]</span></p>
-<p>利用这一点我们得到下面的估计</p>
-<p><span class="math display">\[
-|l(x)| \leq C\|h\|_{L^{\infty}(\Omega)}^\alpha\left[\log
-\frac{1}{\|h\|_{L^{\infty}(\Omega)}}\right]^n \qquad(19)
-\]</span></p>
-<p>其中<span class="math inline">\(l(x)=\left(\chi_{\Omega} \gamma *
-\eta_\sigma\right)(x)-\left(F *
-\eta_\sigma\right)(x)\)</span>。式(19)给出了当<span class="math inline">\(h\)</span>足够小时，平滑后的电导率<span class="math inline">\(\chi_{\Omega} \gamma *
-\eta_\sigma\)</span>的近似表达式。</p>
-<p>这个Calderón的近似估计和它的修正已经在数值上进行了尝试[60]。</p>
-<p>使用这些指数解的另一个完全不同的反问题是具有角平均测量的反输运问题[10]。</p>
-<p>这个估计使用了低频的谐波指数。在第四节中，我们考虑电导率方程的高(复)频率解
-<span class="math display">\[
-L_\gamma=\nabla \cdot(\gamma \nabla u)=0
-\]</span></p>
-]]></content>
-      <categories>
-        <category>论文泛读</category>
-      </categories>
-      <tags>
-        <tag>EIT</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>NAS-PINN</title>
-    <url>/2025/02/11/NAS-PINN/</url>
-    <content><![CDATA[<h1 id="nas-pinn-neural-architecture-search-guided-physics-informed-neural-network-for-solving-pdesnas-pinn神经网络结构搜索引导的物理信息神经网络用于求解偏微分方程">NAS-PINN:
-Neural architecture search-guided physics-informed neural network for
-solving
-PDEs(NAS-PINN：神经网络结构搜索引导的物理信息神经网络，用于求解偏微分方程)</h1>
-<h2 id="摘要">摘要</h2>
-<p>物理信息神经网络( PINN
-)自提出以来一直是求解偏微分方程的主流框架。通过损失函数将物理信息融入到神经网络中，它可以以无监督的方式预测PDEs的解。然而，神经网络结构的设计基本依赖于先验知识和经验，这造成了很大的麻烦和较高的计算开销。因此，<strong>我们提出了一种神经结构搜索引导的方法，即NAS
-- PINN，用于自动搜索求解某些PDEs的最佳神经结构</strong>。
-通过将搜索空间松弛为连续空间，并利用掩码实现不同形状张量的添加，NAS -
-PINN可以通过双层优化进行训练，其中内层循环优化神经网络的权重和偏置，外层循环优化网络结构参数。我们通过包括Poisson，Burgers和Advection方程在内的几个数值实验来验证NAS
--
-PINN的能力。总结了求解不同PDE的有效神经网络结构的特点，可用于指导PINN中神经网络的设计。研究发现，更多的隐藏层并不一定意味着更好的性能，有时可能是有害的。
-特别是对于Poisson和Advection，在PINNs中更适合采用神经元数目较多的浅层神经网络。研究还表明，对于复杂问题，具有残差连接的神经网络可以提高PINNs的性能。
-<span id="more"></span></p>
-<h2 id="介绍">介绍</h2>
-<p>神经网络结构搜索( Neural Architecture Search，NAS
-)是一种在特定搜索空间中搜索最优神经网络结构的算法。传统的NAS算法通过神经网络模块的排列组合来构建架构，并对这些架构进行训练和测试以确定其性能，然后根据性能排序选择最佳的神经网络架构。这样的离散过程面临着计算效率低和计算成本高的问题。因此，减少计算开销、提高搜索效率一直是NAS的主要研究热点之一。
-<strong>本文将NAS融入PINN的框架中，提出了一种神经架构搜索引导的物理信息神经网络(
-NAS-PINN)</strong>。我们实现了用少量数据自动搜索求解给定PDE的最佳神经网络结构。掩码用于张量的添加，以帮助搜索每层中不同数量的神经元。通过对一系列PDE的数值实验，验证了所提方法的有效性.通过对数值结果的分析，总结了高效神经网络结构的特点，为PINNs的进一步研究提供了指导。</p>
-<h2 id="方法">方法</h2>
-<h3 id="pinn的框架">PINN的框架</h3>
-<p><img src="/2025/02/11/NAS-PINN/1.jpg"></p>
-<h3 id="可微nas">可微NAS</h3>
-<p>在传统的NAS算法中，神经网络的层数通常是固定的，并为每一层提供特定的操作选择。这样的配置使得搜索空间不连续，无法通过基于梯度的方法进行优化，极大地限制了算法的收敛速度和效率。
-Liu等人[ 29 ]提出了DARTS，并引入了可微NAS的概念。设<span class="math inline">\(O\)</span>是一个由候选操作组成的集合，其中任何一个操作都表示关于输入x的某个函数<span class="math inline">\(o(x)\)</span>.通过对候选操作施加松弛，可以使搜索空间连续：
-<span class="math display">\[
-\bar{o}^{(i,j)}(x)=\sum_{o\in
-O}\frac{exp(\alpha^{(i,j)}_o)}{\textstyle\sum_{o&#39;\in
-O}exp(\alpha^{(i,j)_{o&#39;}})}o(x) \qquad (6)
-\]</span> 其中<span class="math inline">\(\bar
-o^{(i,j)}(x)\)</span>为松弛后第<span class="math inline">\(i\)</span>层与第<span class="math inline">\(j\)</span>层之间的混合运算，<span class="math inline">\(\alpha^{(i,j)}_o\)</span>为运算<span class="math inline">\(o\)</span>的权.现在测试和比较所有可能的操作组合的离散过程可以简化为通过基于梯度的优化方法学习一组合适的权重<span class="math inline">\(\alpha^{(i,j)}_o\)</span>。当算法收敛时，通过选择权重最高的候选操作，可以将松弛的搜索空间提取到离散的神经架构中。</p>
-<h3 id="掩码">掩码</h3>
-<p>虽然式(6)将搜索空间缩小为一个连续的空间，张量运算只允许相同形状的张量相加，使得搜索神经元个数不切实际，如图2(a)所示。受卷积神经网络中零填充的启发，我们可以将神经元填充到最大数量k，如图2
-(b)所示。在图2(c)中，通过将填充的神经元乘以一个零张量掩码，我们将额外的神经元去激活，以模拟不同数量的神经元。最后，通过共享权重，可以将可选的隐藏层减少为一个，输出y可以表示为：
-<span class="math display">\[
-\mathbf{y} = \sigma(\mathbf{w}\cdot\mathbf{x}+\mathbf{b})\cdot
-\begin{pmatrix}
-[g_1,g_2,g_3]\times     
-\begin{bmatrix}
-   \mathbf{mask}_1 \\
-   \mathbf{mask}_2 \\
-   \mathbf{mask}_3
-\end{bmatrix}^T
-\end{pmatrix}
-\]</span> 其中<span class="math inline">\(\sigma(\cdot)\)</span>为激活函数，<span class="math inline">\(\mathbf{w}\)</span>和<span class="math inline">\(\mathbf{b}\)</span>分别为单隐层的权值和偏置，<span class="math inline">\(g_i\)</span>为标量，为每个神经元个数的权值，<span class="math inline">\(\mathbf{mask}_i\)</span>为每个神经元个数的掩码，形状为<span class="math inline">\(1\times k\)</span>。假设神经元个数为<span class="math inline">\(j\)</span>，则<span class="math inline">\(\mathbf{mask}\)</span>的前<span class="math inline">\(j\)</span>个元素为1，其余<span class="math inline">\((k-j)\)</span>个元素为0。 <img src="/2025/02/11/NAS-PINN/2.jpg" alt="fig.2">
-为了确定层数，我们引入身份变换作为操作，即跳过该层，且输出<span class="math inline">\(\mathbf{y}\)</span>变为: <span class="math display">\[
-\mathbf{y} = \alpha_1 \cdot
-\mathbf{x}+\alpha_2\cdot\sigma(\mathbf{w}\cdot\mathbf{x}+\mathbf{b})\cdot
-\begin{pmatrix}
-[g_1,g_2,g_3]\times     
-\begin{bmatrix}
-   \mathbf{mask}_1 \\
-   \mathbf{mask}_2 \\
-   \mathbf{mask}_3
-\end{bmatrix}^T
-\end{pmatrix} \qquad (8)
-\]</span> 其中，<span class="math inline">\(\alpha_1\)</span>为身份转换权重，表示跳过该层，<span class="math inline">\(\alpha_2\)</span>为保留该层的权重。
-式(8)给出了每层输入和输出之间的映射关系，通过反复应用，可以建立一个DNN模型，其中最合适的层可以根据权重<span class="math inline">\(\alpha\)</span>来选择，最合适的每层神经元可以根据权重<span class="math inline">\(g\)</span>来决定。这里，我们将<span class="math inline">\(\alpha\)</span>和<span class="math inline">\(g\)</span>统称为<span class="math inline">\(\boldsymbol{\alpha}\)</span>，<span class="math inline">\(\bf{w}\)</span>和<span class="math inline">\(\bf{b}\)</span>统称为<span class="math inline">\(\boldsymbol{\theta}\)</span>。</p>
-<h3 id="mas-pinn">MAS-PINN</h3>
-<p>现在我们可以得到NAS -
-PINN的整体框架，如图3所示，它可以被认为是一个<strong>双层优化问题</strong>。在内循环中，对DNN的权值和偏置<span class="math inline">\(\boldsymbol{\theta}\)</span>进行优化，而在外循环中，优化目标是寻找最佳的<span class="math inline">\(\boldsymbol{\alpha}\)</span>。其过程可以表示为：
-<span class="math display">\[
-\underset{\boldsymbol{\alpha}}{min}MSE(\boldsymbol{\theta}^*,\boldsymbol{\alpha})
-\\ s.t. \boldsymbol{\theta}^*=
-\underset{\boldsymbol{\theta}}{argmin}Loss(\boldsymbol{\theta},\boldsymbol{\alpha})
-\]</span> 内环的损失函数可以设计为式( 2 ) ~ ( 5
-)（PINN损失函数：数据匹配损失，PDE残差损失，边界条件损失）和外环的损失函数可以写成：
-<span class="math display">\[
-MSE=\frac{1}{n}\sum^n_{i=1}(\hat u-u)^2  \qquad(10)
-\]</span>
-其中u是已知的解析解或数值解，n是数据点的个数，对于外循环，所需的n可以很小。这样的双层优化问题可以通过交替优化来解决，相应的过程在算法1中展示。
-当训练结束时，可以根据<span class="math inline">\(\boldsymbol{\alpha}\)</span>推导出离散的神经网络模型。基本上，我们可以首先通过比较<span class="math inline">\(a_1\)</span>和<span class="math inline">\(a_2\)</span>来决定是否跳过某一层。如果保留该层，我们可以根据<span class="math inline">\(g\)</span>来决定神经元的数量。如果跳过某一层，则无需考察其权重<span class="math inline">\(g\)</span>。 在一些<span class="math inline">\(a_1\)</span>和<span class="math inline">\(a_2\)</span>相对接近的情况下，我们假设跳过层和保留层同样重要，并给出了一个混合模型。在混合模型中，层是身份变换和神经网络操作的组合。神经元的数量决定于一个离散的神经元，因此这些层可以表示为：
-<span class="math display">\[
-\mathbf{y} = \alpha_1 \cdot
-\mathbf{x}+\alpha_2\cdot\sigma(\mathbf{w}\cdot\mathbf{x}+\mathbf{b})\cdot
-(g_{max}\times \boldsymbol{mask}_{max})^T
-\]</span> 式中,<span class="math inline">\(g_{max}\)</span>为所有权值<span class="math inline">\(g\)</span>中的最大值，<span class="math inline">\(\boldsymbol{mask}_{max}\)</span>为对应于<span class="math inline">\(g_{max}\)</span>的零张量掩码。 <img src="/2025/02/11/NAS-PINN/3.jpg" alt="fig.3"> <img src="/2025/02/11/NAS-PINN/4.jpg" alt="algorithm 1"></p>
-<h2 id="实验">实验</h2>
-<h3 id="possion-equation">Possion equation</h3>
-<p>泊松方程是一类描述电磁场和热场的基本偏微分方程，在电磁学和机械工程中有着广泛的应用。这里，我们考虑一个带有Dirichlet边界条件的二维Poisson方程：
-<img src="/2025/02/11/NAS-PINN/5.jpg" alt="possion equation"> 该方程有解析解：
-<img src="/2025/02/11/NAS-PINN/6.jpg" alt="analytical solution">
-我们首先考虑正方形计算域中的泊松方程，以验证所提出的NAS -
-PINN的有效性。我们构造了一个相对较小的搜索空间，它是一个最多包含5个隐藏层的神经网络，每层包含30、50或70个神经元。对离散搜索空间中的每一种可能的神经架构分别进行训练和测试，作为网格搜索的近似实例。然后，我们使用NAS
--
-PINN来搜索一个神经结构，并研究它是否是最好的。所有离散搜索空间中的363个架构由Adam训练，其中500个配置点在域内随机采样，100个边界点均匀分布在边界上。
-在架构搜索阶段，1000个配置点和200个边界点采用与之前相同的策略进行采样，以搜索最佳的神经架构，并将Adam应用于架构搜索阶段。然后以与363架构相同的方式从头开始训练得到的神经架构。</p>
-<p>为了进行更全面的比较，还对传统的Auto
-ML方法SMAC进行了测试。SMAC是一个通用的用于超参数优化的贝叶斯优化包，对于所讨论的问题，需要优化的超参数是隐藏层的数量和神经元的数量。对于SMAC，一个相当小的研究空间包括15种不同的神经结构，其中每个隐藏层的神经元数量只能是相同的。SMAC使用与架构搜索阶段相同的1000个配置点和200个边界点。
-最后，均匀采样1000000个点，测试所有收敛的神经架构。不同架构的预测解和误差分布如图4所示，L2误差如表1所示。所有实验均重复5次，L2误差由5次重复的平均值得到。
-这些结构以序列的形式描述在表1中。序列的第一个和最后一个元素代表输入和输出通道，而其他元素代表每一层的神经元数目。例如，98号架构的输入大小为n×2，其中n为批次大小，2代表坐标x和y，第一层隐含层有70个神经元。通过NAS
-- PINN得到的架构为No.358。</p>
-<p>从表1和图4中，我们可以清楚地看到NAS-PINN的神经架构具有最小的L2误差和最小的最大误差值，并且其误差分布相比于其他架构也有所改善。因此，所提出的NASPINN确实可以在给定的搜索空间中找到最佳的神经网络结构。此外，虽然No.98也表现出相对较好的性能(在363种可能的体系结构中,它是第二好的体系结构)，但它比NAS-PINN的架构拥有更多的参数，这表明更多的参数并不一定意味着更好的性能，一个适当设计的神经架构显得尤为重要。
-此外，在PINNs中，更深的神经网络总是更好的这一常识似乎并不是在所有情况下都是正确的。至少对于给定的泊松方程，浅层但宽的神经网络(隐含层较少,但每层神经元较多的神经网络)优于深层的神经网络。</p>
-<p>与SMAC相比，NAS - PINN可以在更大、更灵活的搜索空间中进行搜索，从而NAS
--
-PINN更有可能找到真正最佳的神经架构。值得注意的是，虽然SMAC在只有15个神经结构的较小搜索空间中进行搜索，但它需要SMAC
-2。08 h找到357号架构，而NAS -
-PINN使用1.57h，从363个不同的架构中找到358号架构。所有的数值实验均在Intel(R)Core
-i9-9900 K @ 3.60 Ghz /NVIDIA GeForce Rtx 3090 上进行 <img src="/2025/02/11/NAS-PINN/7.jpg" alt="fig.4"> <img src="/2025/02/11/NAS-PINN/8.jpg" alt="table.1"></p>
-]]></content>
-      <categories>
-        <category>论文泛读</category>
-      </categories>
-      <tags>
-        <tag>神经网络架构</tag>
-        <tag>PINN</tag>
       </tags>
   </entry>
   <entry>
@@ -1043,6 +1043,888 @@ x\)</span>(用MC近似,类似于式(15))的算子范数(5)，这在我们的实�
       <tags>
         <tag>EIT</tag>
         <tag>弱对抗网络</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>最优传输(Optimal Transportation)</title>
+    <url>/2025/02/09/OT1/</url>
+    <content><![CDATA[<h2 id="什么是最优传输">什么是最优传输？</h2>
+<p>最优传输最开始由Monge于1781年提出。一个典型的Monge问题是考虑将一堆具有一定形状的沙子搬运到指定的另外一个形状所需要的具有最小代价的搬运方法。
+如下图所示，我们想将左边红色区域的沙堆搬运到右边，形成右边绿色的沙堆的形状。我们想要找到消耗最少的搬运方式。
+<img src="/2025/02/09/OT1/1.jpg" alt="image">
+一句话来概括，就是<strong>如何用最少的代价将一个质量分布转为另一个质量分布。</strong>
+<span id="more"></span></p>
+<h2 id="质量分布">质量分布</h2>
+<p>质量分布其实就是两个测度空间<span class="math inline">\((X,\mu),(Y,\nu)\)</span>。一般情况下，质量不会凭空产生，所以我们会要求这两个分布的“总质量”是一样的，即<span class="math inline">\(\int_x d\mu=\int_Yd\nu\)</span>。
+问题有了考虑的对象，我们还可以定义成本函数<span class="math inline">\(c(x,y):X \times Y \to \mathbb
+R^+\)</span>，一般是有界的，来衡量将质量从点<span class="math inline">\(x\)</span>运到点<span class="math inline">\(y\)</span>的成本。那么如何去进行移动？主要有两个角度去考虑，分别是Monge问题和Kantorovich问题。</p>
+<h2 id="monge问题">Monge问题</h2>
+<p>Monge问题就是寻找一个保测度的映射<span class="math inline">\(T:X \to
+Y\)</span> <span class="math display">\[
+\underset{T} {\min} \int_X c(x,T(x))d \mu(x),T_{ \# } \mu= \nu
+\]</span> <span class="math inline">\(T_{
+\#  }\)</span>是前推算子（<span class="math inline">\(T_{ \#
+}\)</span>的作用对象是<span class="math inline">\(\mu\)</span>，表示把测度<span class="math inline">\(\mu\)</span>推到<span class="math inline">\(\nu\)</span>），这个“推”的过程就是一个保测度的过程，即
+<span class="math display">\[
+T_{ \#  }\mu = \nu \iff \forall B \subset Y,\nu (B)=\mu (T^{-1}(B))
+\]</span> <img src="/2025/02/09/OT1/2.jpg" alt="Monge Map">
+但是映射的定义就限制了我们不能实现“一对多”的操作，这就导致了一个很严重的问题，Monge问题不一定有解。比如一个狄拉克分布（在包含某个点的集合测度是1，其余是0）就不可能保测度地映射到高斯分布。
+我们可以让质量“可分”，即以概率的形式去进行“移动”。这就是Kantorovich问题。</p>
+<h2 id="kantorovich问题">Kantorovich问题</h2>
+<p>在Kantorovich问题中，Kantorovich问题中，我们对Monge问题进行松弛，不再寻找一个映射，而是寻找一个联合分布（耦合coupling），其中它的边界分布分别是<span class="math inline">\(\mu,\nu\)</span>。从而最小化总成本 <span class="math display">\[
+\underset{\pi}{\min}\int_{X \times Y}c(x,y)d\pi(x,y),P_{x
+\#  }\pi=\mu,P_{y \# }\pi=\nu
+\]</span> <img src="/2025/02/09/OT1/3.jpg" alt="Kantorovich Relaxation"> <span class="math inline">\(\pi(x,y)\)</span>就是从<span class="math inline">\(x\)</span>移动到<span class="math inline">\(y\)</span>的概率，上式是总成本的期望。
+这样的松弛之后，Kantorovich本质上变成了一个无限维的线性规划问题（如果分布是离散的，比如一堆点，我们要做的就是在两个点云之间做matching，那么<span class="math inline">\(\pi\)</span>就变成了一个矩阵，就变成了有限维的线性规划问题）
+线性规划理论告诉我们，如果耦合集合非空且紧，目标函数是下半连续的，那么线性规划一定可以取到最小值。也就保证了Kantorovich一定有解。</p>
+<h2 id="分布之间的度量-wasserstein距离">分布之间的度量-Wasserstein距离</h2>
+<p>比较两种分布的一些方法：</p>
+<p><strong>交叉熵</strong>：对应分布为<span class="math inline">\(p(x)\)</span>的随机变量，熵<span class="math inline">\(H(p)\)</span>表示其最优编码长度。交叉熵是按照概率分布<span class="math inline">\(q\)</span>的最优编码对真实分布为<span class="math inline">\(p\)</span>的信息进行编码的长度 交叉熵定义为 <span class="math display">\[
+H(p,q)=E_q[-logq(x)]=-\displaystyle\sum_{x}p(x)logq(x)
+\]</span> 在给定<span class="math inline">\(p\)</span>的情况下，如果<span class="math inline">\(q\)</span>和<span class="math inline">\(p\)</span>越接近，交叉熵越小；如果<span class="math inline">\(q\)</span>和<span class="math inline">\(p\)</span>越远，交叉熵越大</p>
+<p><strong>KL散度</strong>:是用概率分布<span class="math inline">\(q\)</span>来近似<span class="math inline">\(p\)</span>时所造成的信息损失量。KL散度是按照概率分布<span class="math inline">\(q\)</span>的最优编码对真实分布为<span class="math inline">\(p\)</span>的信息进行编码，其平均编码长度<span class="math inline">\(H(p,q)\)</span>和<span class="math inline">\(p\)</span>的最优平均编码长度<span class="math inline">\(H(p)\)</span>之间的差异。对于离散概率分布<span class="math inline">\(p\)</span>和<span class="math inline">\(q\)</span>，从<span class="math inline">\(q\)</span>到<span class="math inline">\(p\)</span>的KL散度定义为: <span class="math display">\[
+D_{KL}(p\parallel q)=H(p,q)-H(p)=\sum_x p(x)log{\frac {p(x)} {q(x)} }
+\]</span>
+KL散度可以是衡量两个概率分布之间的距离。KL散度总是非负的，只有当<span class="math inline">\(p=q\)</span>时，<span class="math inline">\(D_{KL}(p\parallel
+q)=0\)</span>。两个分布越接近，KL散度越小；两个分布越远，KL散度越大。但KL散度并不是一个真正的度量或距离，一是KL散度不满足距离的对称性，二是KL散度不满足距离的三角不等式性质。</p>
+<p><strong>JS散度</strong>：
+JS散度是一种对称的衡量两个分布相似度的度量方式，定义为 <span class="math display">\[
+D_{JS}(p\parallel q)={\frac 1 2}D_{KL}(p \parallel m)+{\frac 1
+2}D_{KL}(q \parallel m)
+\]</span> 其中，<span class="math inline">\(m={\frac 1 2}(p+q)\)</span>
+JS 散度是KL散度一种改进。但两种散度都存在一个问题，即如果两个分布p, q
+没有重叠或者重叠非常少时，KL散度和JS 散度都很难衡量两个分布的距离</p>
+<p><strong>Wasserstein距离</strong>： Wasserstein 距离（Wasserstein
+Distance）也用于衡量两个分布之间的距离。对于两个分布<span class="math inline">\(q_1,q_2,p-Wasserstein\)</span>距离定义为 <span class="math display">\[
+W_p(q_1,q_2)=(\underset{\pi(x,y) \in U(x,y)} {\inf}E_{(x,y)\sim \pi
+(x,y)}[d(x,y)^p]) ^{1/p}
+\]</span> 其中，<span class="math inline">\(U(x,y)\)</span>是边际分布为<span class="math inline">\(q_1\)</span>和<span class="math inline">\(q_2\)</span>的所有可能的联合分布集合，<span class="math inline">\(d(x,y)\)</span>为<span class="math inline">\(x\)</span>和<span class="math inline">\(y\)</span>的距离 Wasserstein距离相比KL散度和JS
+散度的优势在于：即使两个分布没有重叠或者重叠非常少，Wasserstein
+距离仍然能反映两个分布的远近。</p>
+<p>我们可以发现，如果令<span class="math inline">\(d(x,y)^p=c(x,y)\)</span>，Wasserstein距离实际上就是从一个分布转换为另一个分布所要付出的代价。</p>
+<p>Wasserstein
+GAN就是将W-1距离作为损失函数，解决了GAN的许多问题，比如训练不稳定，判别器不能训练的“太好”等。究其原因主要是因为W-1度量比KL度量更“弱”：也就是说在K-L散度下收敛的序列在W-1距离下也一定收敛。这样的性质就保证了W-1可以捕捉到序列更多的几何信息（比如不重叠的分布的KL散度永远是0，但W-1距离不然。），训练会更鲁棒。</p>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>最优化</tag>
+        <tag>最优运输</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Solving electrical impedance tomography with deep learning  Networks</title>
+    <url>/2025/03/17/Solving-electrical-impedance-tomography-with-deep-learning/</url>
+    <content><![CDATA[<h1 id="solving-electrical-impedance-tomography-with-deep-learning-networks">Solving
+electrical impedance tomography with deep learning Networks</h1>
+<p>期刊：Journal of Computational Physics</p>
+<p>时间：November 2019</p>
+<h2 id="摘要">摘要</h2>
+<p>本文介绍了一种利用深度神经网络解决电阻抗层析成像(EIT)问题的新方法。EIT的数学问题是从Dirichlet-to-Neumann(DtN)映射反演电导率。电导率到DtN映射的正向映射和反向映射都是高维非线性的。受正向映射的线性扰动分析的启发，基于数值低秩特性，我们提出了2D和3D问题的正向和反向映射的紧致神经网络结构。数值结果表明了所提出的神经网络的有效性。
+<span id="more"></span></p>
+<h2 id="介绍">介绍</h2>
+<p>电阻抗层析成像(Electrical Impedance
+Tomography，EIT)是通过在物体边界处进行电压和电流测量来确定未知介质电导率分布的问题。作为一种无辐射成像技术，EIT可以重复、非侵入地测量物体的区域变化；因此，它已被用作重症医学中多种应用的监测工具，如监测通气分布[52]、评估肺过度扩张[41]和检测气胸[18]，以及许多工业应用[53]。</p>
+<h3 id="背景">背景</h3>
+<p>EIT数学公式的核心是Dirichlet-to-Neumann（DtN）映射，它是椭圆偏微分方程分析中的关键对象，在经典
+Calderón 问题中起着重要作用 [14,50,8]</p>
+<p>EIT的控制方程，或等效的逆电导率问题，是 <span class="math display">\[
+\begin{array}{cl}
+-\operatorname{div}(\gamma(x) \nabla \phi(x))=0, &amp; \text { in }
+\Omega \subset \mathbb{R}^d, \\
+\phi(x)=\psi(x), &amp; \text { on } \partial \Omega,  \qquad(1.1)
+\end{array}
+\]</span></p>
+<p>其中 是<span class="math inline">\(\Omega\)</span>有界Lipschitz域，<span class="math inline">\(\phi(x)\)</span>是电压，<span class="math inline">\(\gamma(x)&gt;0\)</span>是电导率分布，<span class="math inline">\(\psi(x)\)</span>是施加在边界上的电压。相应的DtN映射由
+<span class="math display">\[
+\Lambda_\gamma: H^{\frac{1}{2}}(\partial \Omega) \rightarrow
+H^{-\frac{1}{2}}(\partial \Omega),\left.\left.\quad
+\psi(x)\right|_{\partial \Omega} \rightarrow \gamma(x) \frac{\partial
+\phi(x)}{\partial n(x)}\right|_{\partial \Omega}
+\]</span></p>
+<p>其中<span class="math inline">\(n(x)\)</span>是外法向量。这里<span class="math inline">\(H^{\frac{1}{2}}(\partial \Omega)\)</span>是<span class="math inline">\(L^2(\partial \Omega)\)</span>函数的空间，它是<span class="math inline">\(H^1(\Omega)\)</span>中函数的轨迹，<span class="math inline">\(H^{-\frac{1}{2}}(\partial
+\Omega)\)</span>是它的对偶。我们建议读者阅读 [48]
+以了解有关DtN映射的更多详细信息</p>
+<p>一个密切相关的逆电导率问题涉及零能量时Schrödinger方程的DtN映射
+[48]，其形式如下 <span class="math display">\[
+\begin{aligned}
+(-\Delta+\eta(x)) u(x)=0, &amp; \text { in } \Omega \\
+u(x)=f(x), &amp; \text { on } \partial \Omega
+\end{aligned}    \qquad(1.2)
+\]</span></p>
+<p>然后，Schrödinger方程的DtN映射由下式定义</p>
+<p><span class="math display">\[
+\Lambda_\eta: H^{\frac{1}{2}}(\partial \Omega) \rightarrow
+H^{-\frac{1}{2}}(\partial \Omega),\left.\left.\quad
+f(x)\right|_{\partial \Omega} \rightarrow \frac{\partial u(x)}{\partial
+n(x)}\right|_{\partial \Omega} \qquad(1.3)
+\]</span></p>
+<p><span class="math inline">\(\Lambda_\eta\)</span>和<span class="math inline">\(\Lambda_\gamma\)</span>这两个DtN映射密切相关。如果<span class="math inline">\(\phi\)</span>是(1.1)的解，那么<span class="math inline">\(u=\sqrt{\gamma} \phi\)</span>是(1.2)
+的解，其中<span class="math inline">\(\eta=\frac{\Delta
+\sqrt{\gamma}}{\sqrt{\gamma}}\)</span>且 <span class="math inline">\(f=\sqrt{\gamma} \psi\)</span>。此外，<span class="math inline">\(\Lambda_\eta=\gamma^{-1 / 2} \Lambda_\gamma
+\gamma^{-1 / 2}+\frac{1}{2 \gamma} \frac{\partial \gamma}{\partial
+n}\)</span>。实际上，<span class="math inline">\(\Lambda_\eta\)</span>和<span class="math inline">\(\Lambda_\gamma\)</span>这两个映射携带相同的信息，并且可以相互确定[48]。本文将重点介绍Schrödinger方程的DtN映射<span class="math inline">\(\Lambda_\eta\)</span>。所有结果都可以毫无困难地扩展到
+DtN 映射<span class="math inline">\(\Lambda_\gamma\)</span>。</p>
+<p>由于DtN映射<span class="math inline">\(\Lambda_\eta\)</span>对于固定<span class="math inline">\(\eta\)</span>是线性的 [8]，因此对 <span class="math inline">\(r, s \in \partial
+\Omega\)</span>，存在一个分布核<span class="math inline">\(\lambda_\eta(r, s)\)</span>使得 <span class="math display">\[
+\left(\Lambda_\eta f\right)(r)=\frac{\partial u}{\partial
+n}(r)=\int_{\partial \Omega} \lambda_\eta(r, s) f(s) \mathrm{d} S(s)
+\qquad(1.4)
+\]</span></p>
+<p>DtN 映射的正向问题是，给定<span class="math inline">\(\eta(x)\)</span>，求解核<span class="math inline">\(\lambda_\eta(r, s)\)</span>，即<span class="math inline">\(\eta \rightarrow \lambda_\eta\)</span>。</p>
+<p>逆问题的任务是在<span class="math inline">\(\Omega\)</span>中根据观测数据恢复<span class="math inline">\(\eta(x)\)</span>，观测数据通常是Dirichlet边界条件<span class="math inline">\(f\)</span> 的对<span class="math inline">\(\left(f, \Lambda_\eta
+f\right)\)</span>和相应的Neumann数据<span class="math inline">\(\Lambda_\eta
+f\)</span>的集合。在假设Dirichlet边界条件被充分采样的情况下，可以假设核<span class="math inline">\(\lambda_\eta\)</span>是已知的，因此，逆问题是从<span class="math inline">\(\lambda_\eta\)</span>恢复<span class="math inline">\(\eta\)</span>，即<span class="math inline">\(\lambda_\eta \rightarrow \eta\)</span>。由于 <span class="math inline">\(\left.\lambda_\eta(r, s)\right|_{r, s \in \partial
+\Omega}\)</span>是<span class="math inline">\(2(d-1)\)</span>个变量的函数，而<span class="math inline">\(\eta(x)\)</span>是<span class="math inline">\(d\)</span>个变量的函数，因此如果<span class="math inline">\(d=1\)</span>，则由于简单的维度计数，逆问题无法解决。对于
+<span class="math inline">\(d \geq
+2\)</span>，原则上，逆问题的解存在并且在某些条件下是唯一的
+[51]。然而，由于EIT的椭圆性质，即使对于<span class="math inline">\(d
+\geq 2\)</span>，逆问题也是严重的病态[2-4,12]</p>
+<p>正向和逆向问题的数值解可能具有挑战性。前向问题是从<span class="math inline">\(d\)</span>维函数到<span class="math inline">\(2(d-1)\)</span>维函数的映射。对于3D问题，计算和表示固定<span class="math inline">\(\eta\)</span>的整个DtN映射<span class="math inline">\(\Lambda_\eta\)</span>可能非常昂贵。对于逆问题，由于条件不良，逆映射<span class="math inline">\(\Lambda_\eta \rightarrow
+\eta\)</span>在数值上不稳定[2-4,12]。为了避免不稳定，通常需要一个依赖于正则化项来稳定逆问题，例如，参见
+[30,16,33]。从算法上讲，逆问题通常使用迭代方法 [30,27,11,12]
+来解决，这通常需要大量的迭代。</p>
+<p>在过去的几年里，深度神经网络（DNN）在计算机视觉、图像处理、语音识别和许多其他人工智能应用中取得了巨大成功
+[31,37,26,43,39,47,38,46]。最近，基于DNN的方法也被应用于求解偏微分方程
+[34,9,28,23,22,6,44,21,36]。这些尝试可分为两类。第一类[45,15,28,35,20]旨在表示具有DNN的高维偏微分方程的解（而不是有限元和有限差分法等经典方法）。第二类[42,29,34,23,22,21,36,40,7]处理参数化的PDE问题，并使用DNN来表示从PDE的高维参数到PDE解的映射。</p>
+<h3 id="贡献">贡献</h3>
+<p>深度神经网络在用于解决正向和逆向问题时具有多个优势。对于前向问题，由于新颖的软件和硬件架构可以快速将神经网络应用于输入数据，因此当用
+DNN
+表示前向映射时，可以显著加速前向问题。对于逆问题，解算法和正则化项的选择是两个关键问题。幸运的是，深度神经网络可以在这两个方面提供帮助。首先，关于求解算法，由于其在表示高维函数方面的灵活性，DNN
+可能用于近似完整的逆映射，从而避免迭代求解过程。其次，关于正则化术语，机器学习的最新研究表明，DNN
+通常可以自动从数据中提取特征，并提供数据驱动的正则化。</p>
+<p>本文通过使用一种新颖的神经网络架构表示从<span class="math inline">\(\Lambda_\eta\)</span>到<span class="math inline">\(\eta\)</span>的逆映射，将深度学习方法应用于EIT问题。<strong>新架构的动机来自对EIT问题的正向映射和逆映射的线性近似的扰动分析</strong>。分析表明，在重参数化DtN映射<span class="math inline">\(\Lambda_\eta\)</span>后，<span class="math inline">\(\eta\)</span>和<span class="math inline">\(\Lambda_\eta\)</span>之间的映射在局部数值上是低秩的。这个观察使我们能够将<span class="math inline">\(d\)</span>维<span class="math inline">\(\eta\)</span>和<span class="math inline">\(2（d −
+1）\)</span>维<span class="math inline">\(\Lambda_\eta\)</span>之间的映射简化为两个（准）<span class="math inline">\(（d −
+1）\)</span>维函数之间的映射。作为平移不变性和全局性的，这个新映射用最近提出的
+BCR-Net[10]表示，它是一个基于小波分解的非标准形式的多尺度神经网络。这种神经网络架构用于近似正向映射和反向映射。对于正在考虑的测试问题，由于BCR-Net的降维和紧凑的结构，最后的神经网络在2D情况下只有<span class="math inline">\(10^4 ∼ 10^5\)</span>个参数，在3D情况下只有<span class="math inline">\(10^5 ∼
+10^6\)</span>个参数。相当少量的参数允许在相当有限的数据集上进行训练，这通常是
+EIT 问题的情况。</p>
+<h3 id="文章架构">文章架构</h3>
+<p>本文的其余部分概述如下。第2节研究了DtN映射的数学背景。第 3
+节讨论了2D情况下正向映射和逆向映射的DNN的设计和架构，以及数值测试。结果扩展到第4节中的3D情况。</p>
+<h2 id="dtn映射的数学分析">DtN映射的数学分析</h2>
+<p>本节总结了DtN映射的必要数学背景。让我们用<span class="math inline">\(\mathcal{G} f(x)=\int_{\Omega} G(x, y) f(y)
+\mathrm{d} y\)</span>表示 <span class="math inline">\(\mathcal{L}=-\Delta+\eta\)</span>和<span class="math inline">\(\mathcal{G}=\mathcal{L}^{-1}\)</span>，其中<span class="math inline">\(G\)</span>是运算符<span class="math inline">\(\mathcal{L}\)</span>的Green函数，具有Dirichlet边界条件。散度定理的应用表明</p>
+<p><span class="math display">\[
+0=\int_{\partial \Omega} \frac{\partial u}{\partial n(y)}(y) G(x, y)
+\mathrm{d} S(y)=\int_{\Omega} \operatorname{div}_y\left(\nabla_y u(y)
+\cdot G(x, y)\right) \mathrm{d} y=\int_{\Omega}\left(\Delta_y u \cdot
+G+\nabla_y G \nabla_y u\right) \mathrm{d} y \qquad(2.1)
+\]</span></p>
+<p>类似地，将散度定理第二次应用于上述结果会导致</p>
+<p><span class="math display">\[
+\begin{aligned}
+\int_{\partial \Omega} \frac{\partial G}{\partial n(y)}(x, y) f(y)
+\mathrm{d} S(y) &amp; =\int_{\Omega} \operatorname{div}_y\left(\nabla_y
+G(x, y) \cdot u(y)\right) \mathrm{d} y \\
+&amp; =\int_{\Omega}\left(\Delta_y G(x, y) \cdot u(y)+\nabla_y G(x, y)
+\nabla_y u(y)\right) \mathrm{d} y \\
+&amp; =\int_{\Omega}\left(\Delta_y G(x, y) \cdot u(y)-\Delta_y u(y)
+\cdot G(x, y)\right) \mathrm{d} y \\
+&amp; =\int_{\Omega}\left(-\left(-\Delta_y+\eta(y)\right) G(x, y) \cdot
+u(y)+\left(-\Delta_y+\eta(y)\right) u(y) \cdot G(x, y)\right) \mathrm{d}
+y \\
+&amp; =-u(x)
+\end{aligned} \qquad(2.2)
+\]</span></p>
+<p>这里最后一个相等利用的事实是<span class="math inline">\(G\)</span>是<span class="math inline">\(\mathcal{L}=-\Delta+\eta\)</span>的Green函数，<span class="math inline">\(u\)</span>是(1.2)的解。对 <span class="math inline">\(x \in \partial \Omega\)</span>取(2.2)的两条边关于
+<span class="math inline">\(n(x)\)</span>的法向导数，得到 <span class="math display">\[
+\frac{\partial u}{\partial n}(x)=-\int_{\partial \Omega}
+\frac{\partial^2 G}{\partial n(x) n(y)}(x, y) f(y) \mathrm{d} S(y),
+\quad x \in \partial \Omega \qquad(2.3)
+\]</span> 它用格林函数G描述了DtN映射<span class="math inline">\(\Lambda_\eta(\psi)\)</span>的核:</p>
+<p><span class="math display">\[
+\lambda_\eta(r, s)=-\frac{\partial^2 G}{\partial n(r) n(s)}(r, s), \quad
+r, s \in \partial \Omega  \qquad(2.4)
+\]</span></p>
+<p>为避免混淆，我们用<span class="math inline">\(r,
+s\)</span>来表示边界上的点，用<span class="math inline">\(p,
+q\)</span>来表示域中的点。</p>
+<p>为了理解 DtN 映射如何取决于电位<span class="math inline">\(\eta\)</span>，我们对<span class="math inline">\(\eta&gt;0\)</span>接近固定<span class="math inline">\(\eta_0\)</span>的<span class="math inline">\(\eta\)</span>到<span class="math inline">\(\lambda_\eta\)</span>的映射进行了扰动分析。为简单起见，假设<span class="math inline">\(\eta_0=0\)</span>。让我们引入<span class="math inline">\(\mathcal{E}=-\eta \mathcal{I}\)</span>，其中<span class="math inline">\(\mathcal{I}\)</span>是恒等运算符，<span class="math inline">\(\mathcal{L}_0=-\Delta\)</span>，<span class="math inline">\(\mathcal{G}_0=\mathcal{L}_0^{-1}\)</span>（核用<span class="math inline">\(G_0\)</span>表示）作为<span class="math inline">\(\mathcal{L}_0\)</span>的格林函数，具有Dirichlet边界条件。当<span class="math inline">\(\eta&gt;0\)</span>足够小时，<span class="math inline">\(\mathcal{G}\)</span>可以通过Neumann级数展开</p>
+<p><span class="math display">\[
+\mathcal{G}=\left(\mathcal{L}_0-\mathcal{E}\right)^{-1}=\mathcal{G}_0+\mathcal{G}_0
+\mathcal{E} \mathcal{G}_0+\mathcal{G}_0 \mathcal{E} \mathcal{G}_0
+\mathcal{E} \mathcal{G}_0+\ldots \qquad(2.5)
+\]</span></p>
+<p>通过引入<span class="math inline">\(\lambda_0(r,
+s)=\left.\lambda_\eta(r,
+s)\right|_{\eta=\eta_0}\)</span>，可以通过了解背景情况<span class="math inline">\(\eta=\eta_0\)</span>来计算，相当于关注差值<span class="math inline">\(\lambda_\eta-\lambda_0\)</span>（通常称为差值成像，详见
+[13]），这也是<span class="math inline">\(\mathcal{G}-\mathcal{G}_0\)</span>的核。对于足够小的<span class="math inline">\(\eta\)</span>，运算符<span class="math inline">\(\mathcal{G}-\mathcal{G}_0\)</span>可以用它的第一项<span class="math inline">\(\mathcal{G}_0 \mathcal{E}
+\mathcal{G}_0\)</span>来近似，它在<span class="math inline">\(\mathcal{E}\)</span>中是线性的。利用<span class="math inline">\(\mathcal{E}=-\eta
+\mathcal{I}\)</span>的事实，得出以下差值 DtN 映射的近似值<span class="math inline">\(\mu\)</span>，</p>
+<p><span class="math display">\[
+\mu(r, s):=\left(\lambda_\eta-\lambda_0\right)(r,
+s)=-\frac{\partial^2\left(G-G_0\right)}{\partial n(r) \partial n(s)}(r,
+s) \approx \int_{\Omega}\left(\frac{\partial G_0}{\partial n(r)}(r, p)
+\frac{\partial G_0}{\partial n(s)}(p, s)\right) \eta(p) \mathrm{d} p
+\qquad(2.6)
+\]</span> <strong>它是NN体系结构设计的动机</strong>。</p>
+<h2 id="用于2d情况的神经网络">用于2D情况的神经网络</h2>
+<p>考虑域<span class="math inline">\(\Omega=[0,1] \times[-Z,
+Z]\)</span>，其中<span class="math inline">\(Z\)</span>是一个固定常数。为简单起见，在左边界和右边界处指定了周期性边界条件。如图1.所示，电极只能放置在顶部边界（单侧检测）或顶部和底部边界（双面检测）上。对于单边检测，为简单起见，假设底部为零Dirichlet边界条件，但其他边界条件也相关。在下文中，我们将首先考虑用于单边检测的正向映射和反向映射。然后，该架构扩展到双边检测案例。</p>
+<p>在大多数EIT问题中，电导率在域边界附近是已知的。这意味着存在一个常数<span class="math inline">\(\delta&gt;0\)</span>，使得 <span class="math inline">\(\eta(p)\)</span>支撑在<span class="math inline">\([0,1] \times[-(Z-\delta), Z-\delta]\)</span>。</p>
+<figure>
+<img src="/2025/03/17/Solving-electrical-impedance-tomography-with-deep-learning/1.jpg" alt="image">
+<figcaption aria-hidden="true">image</figcaption>
+</figure>
+<h3 id="单边检测的前向映射">单边检测的前向映射</h3>
+<p>对于单边检测，DtN映射限制在顶部边界。设<span class="math inline">\(r=\left(r_1, Z\right), s=\left(s_1,
+Z\right)\)</span>和<span class="math inline">\(p=(x,
+z)\)</span>，其中<span class="math inline">\(x\)</span>是水平坐标，<span class="math inline">\(z\)</span>是深度坐标。映射（2.6）可以重写为 <span class="math display">\[
+\mu\left(\left(r_1, Z\right),\left(s_1, Z\right)\right) \approx
+\int_{\Omega} \frac{\partial G_0}{\partial n(r)}\left(\left(r_1,
+Z\right),(x, z)\right) \frac{\partial G_0}{\partial
+n(s)}\left(\left(s_1, Z\right),(x, z)\right) \eta(x, z) \mathrm{d} x
+\mathrm{~d} z \qquad(3.1)
+\]</span></p>
+<p>注意到<span class="math inline">\(p\)</span>和<span class="math inline">\(q\)</span>用于域<span class="math inline">\(\Omega\)</span>中的点，<span class="math inline">\(r\)</span>和<span class="math inline">\(s\)</span>用于边界上的点，<span class="math inline">\(x\)</span>和<span class="math inline">\(z\)</span>用于水平和深度坐标。</p>
+<p>分析和架构设计的一个关键步骤是引入新的水平变量<span class="math inline">\(m\)</span>和<span class="math inline">\(h\)</span>，使<span class="math inline">\(r_1=m+h\)</span>和<span class="math inline">\(s_1=m-h\)</span>。用新的变量得到重参数化差值DtN映射<span class="math inline">\(\mu\)</span> <span class="math display">\[
+\mu(m, h):=\mu((m+h, Z),(m-h, Z)) \approx \int_{\Omega} K(m, h, x, z)
+\eta(x, z) \mathrm{d} x \mathrm{~d} z \qquad(3.2)
+\]</span></p>
+<p>核<span class="math inline">\(k\)</span>如下给出 <span class="math display">\[
+K(m, h, x, z):=\frac{\partial G_0}{\partial n}((m+h, Z),(x, z))
+\frac{\partial G_0}{\partial n}((m-h, Z),(x, z))  \qquad(3.3)
+\]</span></p>
+<p>其中，<span class="math inline">\(n=(0,1)\)</span> 且 <span class="math inline">\(\frac{\partial G_0}{\partial n}(\cdot,
+\cdot)\)</span>为<span class="math inline">\(G_0\)</span>在第1个变量上的方向导数。注意到<span class="math inline">\(G_0\)</span>是左边和右边带有周期边界条件，上边和下边带有Dirichlet边界条件的区域上算子<span class="math inline">\(-\Delta\)</span>的Green函数，我们可以将<span class="math inline">\(G_0\)</span>显式地写成[25] <span class="math display">\[
+G_0(p, q)=\sum_{\ell \in
+\mathbb{Z}^2}\left(\Gamma\left(p-q+\left(\ell_1, 2 \ell_2
+Z\right)\right)-\Gamma\left(p-q^*+\left(\ell_1, 2 \ell_2
+Z\right)\right)\right) \qquad(3.4)
+\]</span></p>
+<p>式中 <span class="math inline">\(q^*=\left(q_1, 2
+Z+q_2\right)\)</span>为算子<span class="math inline">\(-\Delta\)</span>在整个空间<span class="math inline">\(\mathbb{R}^2\)</span>上的格林函数。由于当<span class="math inline">\(\eta=\eta_0\)</span>时，Green函数<span class="math inline">\(G_0\)</span>在水平方向上是平移不变的， <span class="math display">\[
+\frac{\partial G_0}{\partial n}((m \pm h, Z),(x, z))=\frac{\partial
+G_0}{\partial n}(( \pm h, Z),(x-m, z)) \qquad(3.5)
+\]</span></p>
+<p>对于其余的讨论，可以方便地将<span class="math inline">\(h\)</span>和<span class="math inline">\(z\)</span>作为参数进行处理和引入 <span class="math display">\[
+\begin{array}{ll}
+\frac{\partial G_{0, \pm h, z}}{\partial n}(x-m):=\frac{\partial
+G_0}{\partial n}(( \pm h, Z),(x-m, z), &amp; \eta_z(x):=\eta(x, z) \\
+k_{h, z}(m):=\frac{\partial G_{0,+h, z}}{\partial n}(m) \frac{\partial
+G_{0,-h, z}}{\partial n}(m), &amp; \mu_h(m):=\mu(m, h)
+\end{array}
+\]</span></p>
+<p>利用新的记号，(3.2)可重新表述为 <span class="math display">\[
+\mu_h(m) \approx \int_{-Z}^Z\left(k_{h, z} * \eta_z\right)(m) \mathrm{d}
+z=\int_{-(Z-\delta)}^{Z-\delta}\left(k_{h, z} * \eta_z\right)(m)
+\mathrm{d} z \qquad(3.6)
+\]</span></p>
+<p>式中卷积作用在<span class="math inline">\(m\)</span>。最后一个等式成立的原因是考虑到<span class="math inline">\(\eta\)</span>在深度方向上被支撑于<span class="math inline">\(-(Z-\delta)\)</span>和<span class="math inline">\(Z-\delta\)</span>之间</p>
+<p><em>低秩逼近和降维</em> : 一个关键的观察是这样</p>
+<p><span class="math display">\[
+\text{the kernel} \, k_{h, z}(m) \, \text{is smooth in} \, h \,
+\text{for} \, h \in[0,1] \, \text{and} \, z \in(-(Z-\delta), Z-\delta).
+\]</span></p>
+<p>考察式(3.3)中<span class="math inline">\(K\)</span>的定义可知，<span class="math inline">\(k_{h, z}(m)\)</span>仅在<span class="math inline">\(z=Z\)</span>时奇异，因此，对于<span class="math inline">\(h \in[0,1], m \in[0,1]\)</span>，和z<span class="math inline">\(z \in(-(Z-\delta), Z-\delta)\)</span>，核<span class="math inline">\(k_{h, z}(m)\)</span>是一致光滑的。<span class="math inline">\(h\)</span>和<span class="math inline">\(z\)</span>变量中的光滑性表明，<span class="math inline">\(k_{h, z}(m)\)</span>在<span class="math inline">\(h\)</span>和<span class="math inline">\(z\)</span>中可以通过少量项的近似方案得到很好的近似。为简化讨论，不失一般性地假设采用稳定的插值方案(如切比雪夫插值)。通过将<span class="math inline">\(h\)</span>变量和<span class="math inline">\(z\)</span>变量的插值点集分别记为<span class="math inline">\(\{\hat{h}\}\)</span>和<span class="math inline">\(\{\hat{z}\}\)</span>，这样的插值为 <span class="math display">\[
+k_{h, z}(m) \approx \sum_{\hat{h}} \sum_{\hat{z}} R_{h, \hat{h}}
+k_{\hat{h}, \hat{z}}(m) R_{z, \hat{z}} \qquad(3.7)
+\]</span></p>
+<p>其中<span class="math inline">\(R_{h, \hat{h}}\)</span>和<span class="math inline">\(R_{z, \hat{z}}\)</span>分别是<span class="math inline">\(h\)</span>和<span class="math inline">\(z\)</span>变量的插值算子.</p>
+<p>这种对<span class="math inline">\(k_{h,
+z}\)</span>的近似自然隐含了对(3.6)式的近似。</p>
+<p><span class="math display">\[
+\mu_h(m) \approx \sum_{\hat{h}} R_{h, \hat{h}}\left(\sum_{\hat{z}}
+k_{\hat{h}, \hat{z}} *\left(\int_{-(Z-\delta)}^{Z-\delta} R_{z, \hat{z}}
+\eta_z \mathrm{~d} z\right)\right)(m) \qquad(3.8)
+\]</span></p>
+<p>从算法上讲，<strong>这种近似允许将前向映射分解为三个步骤</strong>：
+1. 将二维函数<span class="math inline">\(\eta_z=\eta(x,
+z)\)</span>压缩为一维函数的集合</p>
+<p><span class="math display">\[
+\tilde{\eta}_{\hat{z}}(x):=\int_{-(z-\delta)}^{z-\delta} R_{z, \hat{z}}
+\eta_z(x) \mathrm{d} z
+\]</span></p>
+<ol start="2" type="1">
+<li>与k<span class="math inline">\(k_{\hat{h},
+z}\)</span>在一维空间中卷积得到</li>
+</ol>
+<p><span class="math display">\[
+\tilde{\mu}_{\hat{h}}(m):=\left(\sum_{\hat{z}} k_{\hat{h}, \hat{z}} *
+\tilde{\eta}_{\hat{z}}\right)(m)
+\]</span></p>
+<ol start="3" type="1">
+<li>将一维函数集合<span class="math inline">\(\tilde{\mu}_{\hat{h}}(m)\)</span>插值为二维函数</li>
+</ol>
+<p><span class="math display">\[
+\mu_h(m)=\sum_{\hat{h}} R_{h, \hat{h}} \tilde{\mu}_{\hat{h}}(m)
+\]</span></p>
+<p>这有效地将前向映射减少到若干个1D卷积。在(3.8)中的这种降维是神经网络构造的基础。</p>
+<p><strong>备注1.</strong> 可以去掉<span class="math inline">\(\eta(p)\)</span>支撑在在<span class="math inline">\([0,1] \times[-(Z-\delta),
+Z-\delta]\)</span>的假设.实际上，我们可以用<span class="math inline">\(\delta \ll Z\)</span>将<span class="math inline">\([-Z, Z]\)</span>分成三个区间<span class="math inline">\([-Z,-(Z-\delta)],[-(Z-\delta),
+Z-\delta]\)</span>和<span class="math inline">\([Z-\delta,
+Z]\)</span>，然后逐个研究限制在每个区间上的核<span class="math inline">\(k_{h, z}(m)\)</span>的性质.由于<span class="math inline">\(\delta \ll Z\)</span>，低秩逼近(3.8)仍然有效</p>
+<p><em>离散化</em>
+：到目前为止的分析都是在连续设定下进行的。一个简单的数值方法是用均匀的笛卡尔网格对区域<span class="math inline">\(\Omega\)</span>进行离散，拉普拉斯算子用5点中心差分格式逼近，边界上的方向导数用单边一阶差分代替。数值格林函数定义为零边界条件离散拉普拉斯算子的逆。令<span class="math inline">\(N_r\)</span>为电极的个数。通过求解(1.2) <span class="math inline">\(N_r\)</span>次来评估DtN图，每次将<span class="math inline">\(f ( x
+)\)</span>设置为一个电极处的delta函数。在稍微滥用表示法的情况下，用相同的字母表示连续核及其离散化。(3.8)的离散版本:
+<span class="math display">\[
+\mu_h(m) \approx \sum_{\hat{h}} R_{h, \hat{h}}\left(\sum_{\hat{z}}
+k_{\hat{h}, \hat{z}} *\left(\sum_z R_{z, \hat{z}}
+\eta_z\right)\right)(m) \qquad(3.9)
+\]</span></p>
+<p>神经网络架构。微扰分析表明，当<span class="math inline">\(\eta&gt;0\)</span>充分小时，前向映射<span class="math inline">\(\eta \rightarrow
+\mu\)</span>可以用(3.9)式近似。具体来说，计算(3.9)的三个步骤可以自然地表示为一个具有三个模块的神经网络：
+- 编码模块将二维数据<span class="math inline">\(\eta\)</span>压缩为一组一维数据<span class="math inline">\(\tilde{\eta}_{\hat{z}}\)</span> - 将<span class="math inline">\(k_{\hat{h}, \hat{z}}\)</span>与一维数据<span class="math inline">\(\tilde{\eta}_{\hat{z}}\)</span>卷积得到<span class="math inline">\(\tilde{\mu}_{\hat{h}}\)</span>的中间模块 -
+一个将一维数据集合<span class="math inline">\(\tilde{\mu}_{\hat{h}}\)</span>扩展到二维数据<span class="math inline">\(\mu\)</span>的解码模块</p>
+<p>当<span class="math inline">\(\eta\)</span>不能充分小时，前向映射<span class="math inline">\(\eta \rightarrow
+\mu\)</span>的线性近似是不准确的。为了将式(3.9)的神经网络扩展到非线性情况，一个直接的解决方法是包含非线性激活函数并增加层数，例如在[23、21]中。为了简单起见，我们假设集合
+<span class="math inline">\(\{\hat{z}\}\)</span>的大小<span class="math inline">\(N_{\hat{z}}\)</span>和<span class="math inline">\(\{\hat{h}\}\)</span>的大小<span class="math inline">\(N_{\hat{h}}\)</span>都等于一个常数参数<span class="math inline">\(c\)</span></p>
+<p><span class="math display">\[
+    \begin{array}{l}
+   \hline \
+   \textbf{算法1} \quad 单边检测前向映射\eta \rightarrow \mu 的神经网络
+\\
+   \hline
+   \qquad \textbf{需要：}c=N_{\hat{z}}=N_{\hat{h}}, n_{\text {cnn }} \in
+\mathbb{N}, \eta \in \mathbb{R}^{N_x \times N_z} \\
+   \qquad \textbf{确保：}\mu \in \mathbb{R}^{N_m \times N_h}\\
+   \qquad 1: \tilde{\eta} \leftarrow \text{Encoding} [c](\eta) \\
+   \qquad 2: \tilde{\mu} \leftarrow \text{BCR-Net1d} \left[c, n_{\text
+{cnn }}\right](\tilde{\eta})\\
+   \qquad 3: \mu \leftarrow
+\text{Decoding}\left[N_h\right](\tilde{\mu})\\
+   \qquad 4: \text{return} \, \mu \\
+   \hline
+\end{array}
+\]</span></p>
+<p><img src="/2025/03/17/Solving-electrical-impedance-tomography-with-deep-learning/2.png" alt="image">
+在算法1中总结了用于单边检测的前向映射的神经网络结构，并在图2中进行了说明。让我们对神经网络的这三个组成部分一一进行解释</p>
+<ul>
+<li><p>编码模块：<span class="math inline">\(\tilde{\eta}=\)</span>
+Encoding <span class="math inline">\([c](\eta)\)</span>仅在<span class="math inline">\(z\)</span>维压缩<span class="math inline">\(\eta
+\in \mathbb{R}^{N_x \times N_z}\)</span>到<span class="math inline">\(\tilde{\eta} \in \mathbb{R}^{N_x \times
+c}\)</span>。它可以用一维卷积层Conv1d实现，窗口大小为1，通道数为<span class="math inline">\(c\)</span>，取<span class="math inline">\(\eta\)</span>的第二个维度作为通道。线性激活函数对于这里使用的Conv1d层是足够的</p></li>
+<li><p>中间模块：由于(3.9)中的线性情况下的核<span class="math inline">\(k_{\hat{h},
+\mathcal{z}}\)</span>是一个卷积，它可以由一个一维卷积层Conv1d实现，其中窗口大小<span class="math inline">\(N_x\)</span>，通道数<span class="math inline">\(c\)</span>和线性激活函数。对于非线性情况，一个自然的扩展是使用多个卷积层，并在每一层后添加非线性激活函数，如整流线性单元(ReLU)函数。对于精细离散化的问题，一个窗口大小为<span class="math inline">\(N_x\)</span>的卷积层可能有很多参数。最近，一些具有更少参数的多尺度神经网络被提出作为全宽卷积层的有效替代者。实例包括[23、22]中基于层次矩阵的方法和BCR-Net
+[21]中基于层次矩阵的方法。这里，使用BCR-Net来表示中间模块。BCR-Net是基于拟微分算子的数据稀疏非标准小波表示[10]提出的。它将不同尺度下的信息分开处理，每个尺度可以理解为一个局部卷积神经网络。一维<span class="math inline">\(\tilde{\mu}=\text{ BCR-Net1d}\left[c, n_{\text
+{cnn }}\right](\tilde{\eta})\)</span>将<span class="math inline">\(\tilde{\eta} \in \mathbb{R}^{N_x \times
+c}\)</span>映射到<span class="math inline">\(\tilde{\mu} \in
+\mathbb{R}^{N_x \times
+c}\)</span>，其中每个尺度下局部卷积神经网络的通道数和层数分别为<span class="math inline">\(c\)</span>和<span class="math inline">\(n_{\mathrm{cnn}}\)</span>。读者可参见[21]，以了解BCR-Net的更多细节。</p></li>
+<li><p>解码模块：<span class="math inline">\(\mu=
+\text{Decoding}\left[N_h\right](\tilde{\mu})\)</span>将一维数据集<span class="math inline">\(\tilde{\mu} \in \mathbb{R}^{N_m \times
+c}\)</span>解码为二维数据集<span class="math inline">\(\mu \in
+\mathbb{R}^{N_m \times
+N_h}\)</span>。在实现中，该解码模块由窗口大小为1、通道数为<span class="math inline">\(N_h\)</span>、线性激活函数的一维卷积层Conv1d实现。</p></li>
+</ul>
+<h3 id="用于单边检测的逆映射">用于单边检测的逆映射</h3>
+<p>扰动分析表明，如果<span class="math inline">\(\eta\)</span>充分小，前向映射可以被很好地逼近</p>
+<p><span class="math display">\[
+\mu \approx K \eta \qquad(3.10)
+\]</span></p>
+<p>这是离散化（3.2）的运算符表示法。这里，<span class="math inline">\(\eta\)</span>是由( <span class="math inline">\(x,
+z\)</span> )索引的向量，<span class="math inline">\(\mu\)</span>是由(
+<span class="math inline">\(m, h\)</span> )索引的向量，<span class="math inline">\(K\)</span>是由( <span class="math inline">\(m,
+h\)</span> )索引的行和( <span class="math inline">\(x, z\)</span>
+)索引的列组成的矩阵.通常的滤波反投影算法[32]采用这种形式</p>
+<p><span class="math display">\[
+\eta \approx\left(K^{\top} K+\varepsilon I\right)^{-1} K^{\top} \mu
+\]</span> 其中<span class="math inline">\(\varepsilon\)</span>是一个正则化参数。</p>
+<p>在上述讨论之后，应用于<span class="math inline">\(K\)</span>的降维近似对<span class="math inline">\(K^{\top}\)</span>也是有效的 <span class="math display">\[
+\left(K^{\top} \mu\right)_z(x) \approx \sum_{\hat{z}} R_{z,
+\hat{z}}\left(\sum_{\hat{z}} k_{\hat{h}, \hat{z}} *\left(\sum_h R_{h,
+\hat{h}} \mu_h\right)\right)(x)
+\]</span></p>
+<p>因此，我们得到了一个类似的将<span class="math inline">\(K^{\top}\)</span>应用于<span class="math inline">\(\mu\)</span>的三步算法，该算法也可以表述为一个具有三个模块的神经网络：
+- 从<span class="math inline">\(\mu\)</span>编码到<span class="math inline">\(\tilde{\mu}_{\hat{h}}=\sum_h R_{h, \hat{h}}
+\mu_h\)</span></p>
+<ul>
+<li><p>卷积形成<span class="math inline">\(\tilde{\eta}_{\hat{z}}=\sum_{\hat{h}} k_{\hat{h},
+2} * \tilde{\mu}_{\hat{h}}\)</span></p></li>
+<li><p>从<span class="math inline">\(\tilde{\eta}_{\hat{z}}\)</span>解码到<span class="math inline">\(\left(K^{\top} \mu\right)_z=\sum_{\hat{z}} R_{z,
+\hat{z}} \tilde{\eta}_{\hat{z}}\)</span></p></li>
+</ul>
+<p><span class="math inline">\(\left(K^{\top} K+\varepsilon
+I\right)^{-1}\)</span>部分可以看作是对<span class="math inline">\(K^{\top} \mu\)</span>的后处理。<span class="math inline">\(K\)</span>(3.3)的定义意味着算子( <span class="math inline">\(K^{\top} K+\varepsilon I\)</span>
+)是卷积算子。作为反卷积算子，<span class="math inline">\(\left(K^{\top}
+K+\varepsilon I\right)^{-1}\)</span>也可以用卷积神经网络来实现。</p>
+<p>结合这两个组件表明，对于逆映射，合适的架构是前向映射的NN架构，然后是2d卷积神经网络。逆映射的神经网络架构在算法2中进行了概述，如图3所示。算法2中的层与算法1中的层共享相同的定义，除了CNN2d层，其定义如下。</p>
+<ul>
+<li>后处理模块：<span class="math inline">\(\eta=\mathrm{CNN} 2
+\mathrm{~d}\left[w, n_{\mathrm{cnn2}}\right](\bar{\eta})\)</span>将<span class="math inline">\(\bar{\eta} \in \mathbb{R}^{N_x \times
+N_z}\)</span>映射为<span class="math inline">\(\eta \in \mathbb{R}^{N_x
+\times N_z}\)</span>，是一个具有<span class="math inline">\(n_{\text
+{cnn2 }}\)</span>个卷积层的二维卷积神经网络，<span class="math inline">\(w\)</span>为窗口大小。ReLU被用作所有中间层的激活函数。然而，由于<span class="math inline">\(\eta\)</span>可以取任意实数，最后一层采用线性激活函数。</li>
+</ul>
+<p><span class="math display">\[
+    \begin{array}{l}
+   \hline \
+   \textbf{算法2} \quad 单边检测逆映射\eta \rightarrow \mu 的神经网络 \\
+   \hline
+   \qquad \textbf{需要：}c, w, n_{\mathrm{cnn}}, n_{\mathrm{cnn} 2} \in
+\mathbb{N}, \mu \in \mathbb{R}^{N_m \times N_h}\\
+   \qquad \textbf{确保：}\eta \in \mathbb{R}^{N_x \times N_z}\\
+   \qquad 1: \tilde{\mu} \leftarrow \text { Encoding }[c](\mu) \\
+   \qquad 2: \tilde{\eta} \leftarrow \text { BCR-Net1d }\left[c,
+n_{\text {cnn }}\right](\tilde{\mu})\\
+   \qquad 3: \bar{\eta} \leftarrow
+\operatorname{Decoding}\left[N_z\right](\tilde{\eta})\\
+   \qquad 4: \eta \leftarrow \operatorname{CNN} 2 \mathrm{~d}\left[w,
+n_{\text {cnn2 }}\right](\bar{\eta}) \\
+   \qquad 5: \text{return} \,\eta \\
+   \hline
+\end{array}
+\]</span></p>
+<figure>
+<img src="/2025/03/17/Solving-electrical-impedance-tomography-with-deep-learning/3.png" alt="image">
+<figcaption aria-hidden="true">image</figcaption>
+</figure>
+]]></content>
+      <categories>
+        <category>论文泛读</category>
+      </categories>
+      <tags>
+        <tag>EIT</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>最优传输（二）</title>
+    <url>/2025/02/10/OT2/</url>
+    <content><![CDATA[<h1 id="kantorovich问题的对偶问题">Kantorovich问题的对偶问题</h1>
+<p>这篇文章我们讲讲对偶理论，并且探究对偶问题和Kantorovich问题之间的关系
+<span id="more"></span></p>
+<h2 id="离散版本的kantorovich问题对偶">离散版本的Kantorovich问题对偶</h2>
+<p>有两个离散分布<span class="math inline">\(a=\sum_i
+a_i\delta_{x_i},b=\sum_j b_i\delta_{y_i}\)</span>，分别包含离散点<span class="math inline">\(\lbrace {x_i} \rbrace_{i=1}^n, \lbrace {y_j}
+\rbrace_{j=1}^m\)</span></p>
+<p>有一个成本矩阵<span class="math inline">\(C \in \mathbb R^{n\times
+m}\)</span>,<span class="math inline">\(C_{ij}\)</span>就是从<span class="math inline">\(x_i\)</span>运到<span class="math inline">\(y_j\)</span>的成本</p>
+<p>我们寻找一个联合分布的矩阵<span class="math inline">\(P\in \mathbb
+R^{n \times m}\)</span>使得总成本最小化 <span class="math display">\[
+\underset{p\in U(a,b)}{\min}\langle C,P \rangle = \underset{p\in
+U(a,b)}{\min} \sum_{i,j}C_{ij}P_{ij}
+\]</span> 其中，<span class="math inline">\(U(a,b)=\{\pi \in \mathbb
+R^{n\times m}_+|\pi1_m=a\in\mathbb R^n,\pi^T1_m=b\in\mathbb
+R^m\}\)</span></p>
+<p>拉格朗日对偶形式： <span class="math display">\[
+\underset{P\ge 0}{\min}\underset{(f,g)\in \mathbb R^n \times \mathbb
+R^m}{\max}\langle C,P \rangle + \langle a-P1_m,f \rangle + \langle
+b-P^T1_n,g \rangle
+\]</span></p>
+<p>交换min，max，有</p>
+<p><span class="math display">\[
+\underset{(f,g)\in \mathbb R^n\times \mathbb R^m}{\max}\langle a,f
+\rangle + \langle b,g \rangle + \underset{P\ge 0}{\min}\langle
+C-f1^T_m-1_ng^T,P \rangle
+\]</span></p>
+<p>可以将后面min的变为约束</p>
+<p><span class="math display">\[
+C-f1^T_m-1_ng^T=C-f \oplus g \ge 0
+\]</span></p>
+<p>综上，我们得到了对偶问题：</p>
+<p><span class="math display">\[
+\underset{(f,g)\in R(a,b)}{max}\langle f,a \rangle + \langle g,b \rangle
+\]</span></p>
+<p>其中，<span class="math inline">\(R(a,b)=\{(f,g)\in \mathbb R^n\times
+R^m:f_i+g_i \le C_{ij}\}\)</span></p>
+<h2 id="连续版本的kantorovich问题对偶">连续版本的Kantorovich问题对偶</h2>
+<p>现在两个分布变为连续的<span class="math inline">\(\alpha(x),x\in
+X,\beta(y),y\in Y\)</span>，成本函数连续化<span class="math inline">\(c(x_i,y_j)=C_{ij}\)</span>，我们将上面的乘子向量<span class="math inline">\(f,g\)</span>推广成<span class="math inline">\(f(x_i)=f_i,g(y_j)=g_j\)</span>。得到对偶形式为
+<span class="math display">\[
+\underset{(f,g)\in R(c)}{\sup}\int_X f(x) \, d\alpha(x)+\int_Y g(y) \,
+d\beta(y)
+\]</span> 其中<span class="math inline">\(R(c)=\{(f,g):\forall
+(x,y),f(x_i)+g(y_j) \le c(x_i,y_j)\}\)</span></p>
+<h3 id="通俗理解原问题和对偶问题">通俗理解原问题和对偶问题</h3>
+<p>假设有一个运营商运营着<span class="math inline">\(n\)</span>个仓库和<span class="math inline">\(m\)</span>个工厂，每个仓库有<span class="math inline">\(a_i\)</span>质量的商品，每个工厂需要<span class="math inline">\(b_j\)</span>质量的商品，从<span class="math inline">\(i\)</span>仓库到<span class="math inline">\(j\)</span>工厂运输单位质量的商品需要成本<span class="math inline">\(C_{ij}\)</span>。</p>
+<p><strong>原问题就是站在运营商的角度考虑</strong>：找出最优的传输方案<span class="math inline">\(P^*\)</span>使得传输总成本<span class="math inline">\(\sum_{i,j}C_{ij}P_{ij}\)</span>最小。</p>
+<p>假设这个运营商外包给了一个供应商，供应商只需要给每个仓库和工厂定价：单位质量的商品第<span class="math inline">\(i\)</span>个仓库收取<span class="math inline">\(f_i\)</span>的费用，第<span class="math inline">\(j\)</span>个工厂收取<span class="math inline">\(g_j\)</span>的费用。</p>
+<p>供应商不能随便定价，供应商在定价过程中需要保证所有<span class="math inline">\(f_i+g_j \le
+C_{ij}\)</span>，一旦超过这个价格，那在某些路径上运营商就要付出额外的价格，还不如自己运呢。</p>
+<p>所以对偶问题就是站在供应商的角度来考虑：在<span class="math inline">\(f_i+g_j \le C_{ij}\)</span>的情况下希望收费<span class="math inline">\(\langle f,a \rangle + \langle g,b
+\rangle\)</span>最大。</p>
+<h2 id="互补松弛条件">互补松弛条件</h2>
+<p>考虑原问题的最优解<span class="math inline">\(P^*\)</span>和对偶问题最优对<span class="math inline">\((f^*,g^*)\)</span>的关系，并且证明他们满足互补松弛条件</p>
+<p>设<span class="math inline">\(\bar z\)</span>为原问题的最优解，<span class="math inline">\(\underline
+z\)</span>为对偶问题的最优解，先证明<strong>弱对偶性</strong>满足，即<span class="math inline">\(\bar z \ge \underline z\)</span></p>
+<p>首先对原始问题进行一下改写，把决策变量<span class="math inline">\(P\)</span>“拉直”为<span class="math inline">\(p\)</span>： <span class="math display">\[
+P\in \mathbb R^{n \times m}\in U(a,b) \iff p \in \mathbb R^{nm}_+,Ap=
+\begin{bmatrix}
+   a  \\
+   b
+\end{bmatrix}
+\]</span> 其中 <span class="math display">\[
+A=
+\begin{bmatrix}
+   1^T_n \otimes I_m  \\
+   I_n \otimes1^T_m
+\end{bmatrix},A \in \mathbb R^{(n+m)\times nm}
+\]</span> 定义<span class="math inline">\(c\)</span>也为成本矩阵对应的展平形式，则原始问题的拉格朗日函数：
+<span class="math display">\[
+H(h)=\underset{p\in \mathbb R^{nm}_+}{\min}(c^Tp-h^T(Ap-q))
+\]</span> 其中<span class="math inline">\(q=\begin{bmatrix}
+   a  \\
+   b
+\end{bmatrix}\)</span>。这是一个松弛问题，因为约束<span class="math inline">\(Ap=q\)</span>被软化为罚函数形式。对于原问题的最优解<span class="math inline">\(p^*\)</span>，对于任何<span class="math inline">\(h\)</span>，有： <span class="math display">\[
+H(h)\le c^T p^*-h^T(Ap^*-q)=c^T p^*=\bar z
+\]</span> 当<span class="math inline">\(h\)</span>满足对偶可行性(<span class="math inline">\(A^Th\le c\)</span>)时，对偶问题的目标值<span class="math inline">\(h^Tq\)</span>是拉格朗日函数的下界。</p>
+<p>因此结合上式： <span class="math display">\[
+\underline z=\underset{h,A^Th \le c}{\max}h^Tq\le
+\underset{h}{\max}h^Tq+\underset{p\in \mathbb
+R^{mn}_+}{\min}(c^T-h^TA)p=\underset{h\in \mathbb R^{n+m}}{\max}H(h)\le
+c^T p^*=\bar z
+\]</span>
+这表明对偶问题的最优值不超过原始问题的最优值，从而证明了弱对偶性。</p>
+<p>可以证明强对偶性也是满足的，证明过程需要slater条件。</p>
+<p>对于连续型，也是有如下定理保证了强对偶性：</p>
+<blockquote>
+<p>设<span class="math inline">\(\mu\)</span>和<span class="math inline">\(\nu\)</span>是定义在完备可分度量空间<span class="math inline">\(X\)</span>和<span class="math inline">\(Y\)</span>上的概率测度，<span class="math inline">\(c:X\times Y \to \mathbb
+R_+\)</span>是一个可测函数，那么： <span class="math display">\[
+\underset{\pi\in\Pi(\mu,\nu)}{\inf}\int_{X\times Y}c \, d\pi =
+\underset{(\varphi,\psi)}{\sup}\lbrack \int_X \varphi \, d\mu + \int_Y
+\psi \, d\nu \rbrack
+\]</span></p>
+</blockquote>
+<p>最优化理论告诉我们，如果强对偶性满足，那么我们可以使用KKT中的经典的互补松弛条件得到：
+<span class="math display">\[
+P^*(x,y)(f^*(x)+g^*(y)-c(x,y))=0
+\]</span></p>
+<p>这就是原问题的最优解<span class="math inline">\(P^*\)</span>和对偶问题最优对<span class="math inline">\((f^*,g^*)\)</span>的关系。即在支撑集上<span class="math inline">\(P^*&gt;0\)</span>，对偶问题的最优函数永远满足<span class="math inline">\(f^*(x)+g^*(y)=c(x,y)\)</span></p>
+<h2 id="c-变换">c-变换</h2>
+<p>现在我们知道对偶问题两个函数的一个很重要的性质，就是在<span class="math inline">\(P^*\)</span>支撑集上有<span class="math inline">\(f^*(x)+g^*(y)=c(x,y)\)</span></p>
+<p>下面假设这个函数对不是最优的，如果我们固定了<span class="math inline">\(f(x)\)</span>，能否得到一个“最好”的<span class="math inline">\(g(y)\)</span>使得对偶问题的目标函数尽可能大？c-变换就回答了这个问题</p>
+<p>因为 <span class="math display">\[
+f(x)+g(y)\le c(x,y)\\
+\iff g(y)\le c(x,y)-f(x)\\
+\iff g(y)\le \underset{x}{\inf} \{c(x,y)-f(x)\}
+\]</span> 而<span class="math inline">\(f(x)\)</span>已经固定，我们希望<span class="math inline">\(\int g(y) \, d\beta(y)\)</span>越大越好，所以<span class="math inline">\(g(y)\)</span>越大越好，自然就得到了一个“最好的”函数：
+<span class="math display">\[
+\bar f(y)=\underset{x}{\inf}\{c(x,y)-f(x)\}
+\]</span> 这个<span class="math inline">\(\bar f(y)\)</span>就叫做<span class="math inline">\(f\)</span>的c-变换</p>
+<p>如果一个函数<span class="math inline">\(f\)</span>可以写成某个<span class="math inline">\(g\)</span>的c-变换，那么就称<span class="math inline">\(f\)</span>是c-凹的</p>
+<p><strong>注</strong>：对偶问题的最优解<span class="math inline">\((f^*,g^*)\)</span>一定是c-凹的。否则令另一个是其c-变换，目标函数变大，矛盾。</p>
+<p>下面定理还保证了最优对的存在性： &gt;设<span class="math inline">\(\mu\)</span>和<span class="math inline">\(\nu\)</span>是<span class="math inline">\(X\)</span>和<span class="math inline">\(Y\)</span>上的概率测度使得 <span class="math display">\[
+\int_{X\times Y}c(x,y) \, d\mu(x) \, d\nu(y)&lt;\infty
+\]</span> 则对偶 Kantorovich 问题存在一个最优对<span class="math inline">\((\varphi,\psi)\)</span>且<span class="math inline">\(\bar \varphi = \psi\)</span>，<span class="math inline">\(\bar \psi=\varphi\)</span>几乎处处成立。</p>
+<h2 id="kantorovichrubinstein定理">Kantorovich–Rubinstein定理</h2>
+<p>虽然对偶问题要求两个函数<span class="math inline">\(f,g\)</span>
+，但通过c-transform可以将这两个函数“联系”起来，对偶问题从 <span class="math display">\[
+\underset{(f,g)\in R(c)}{\sup}\int_X f \, d\mu + \int_Y g \, d\nu
+\]</span> 变为 <span class="math display">\[
+\underset{f}{\sup}\int_X f \, d\mu + \int_Y \bar f \, d\nu
+\]</span> 我们可以证明，如果在度量空间<span class="math inline">\(X=Y\)</span>上，<span class="math inline">\(d(x,y)\)</span>是度量，且<span class="math inline">\(c(x,y)=d(x,y)\)</span>。如果<span class="math inline">\(f=\bar g\)</span>是一组c-变换，那么<span class="math inline">\(f\)</span>是d-Lipschitz的。</p>
+<p>证明如下： <span class="math display">\[
+f(z)=\underset{y}{\inf} \lbrace d(z,y)-g(y) \rbrace \le
+\underset{y}{\inf} \lbrace d(z,x)+d(x,y)-g(y) \rbrace=f(x)+d(z,x)
+\]</span> 互换<span class="math inline">\(z,x\)</span>即得到<span class="math inline">\(|f(x)-g(z)|\le d(x,z)\)</span></p>
+<p>然后我们可以继续证明，如果<span class="math inline">\(f\)</span>是d-Lipschitz的，那么其c-变换<span class="math inline">\(\bar f = -f\)</span>： &gt;令<span class="math inline">\(x=y\)</span>，有<span class="math inline">\(\bar
+f(x)=\underset{x}{\inf}\{d(x,x)-f(x)\}\le -f(x)\)</span>，又因为<span class="math inline">\(f\)</span>是d-Lipschitz的。所以<span class="math inline">\(\bar f(y)=\underset{x}{\inf}\{d(x,y)-f(x)\}\ge
+-f(y)\)</span>。所以<span class="math inline">\(\bar f=-f\)</span></p>
+<p>综上，结合强对偶性，我们有 <span class="math display">\[
+\underset{\pi\in U(a,b)}{\inf}\int_{X^2}d(x,y)\,
+d\pi=\underset{f}{\sup}\int_X f \, d\mu + \int_X \bar f \, d\nu =
+\underset{\lVert f \rVert_{\text{Lip}}\le 1}{\sup}\int_X f \, d\mu -
+\int_X  f \, d\nu
+\]</span> 其中，<span class="math inline">\(\lVert f
+\rVert_{\text{Lip}}=\underset{x \not = y}{\sup}\frac {\lVert
+f(x)-f(y)\rVert}{d(x,y)}\)</span></p>
+<p>我们现在得到了一个非常好非常好的结论：当成本函数是一个度量的时候，对偶问题可以变成上面的形式，我们只需要求解一个d-Lipschitz函数就可以了。</p>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>最优化</tag>
+        <tag>最优运输</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>The_Perception-Distortion_Tradeoff</title>
+    <url>/2025/03/02/The-Perception-Distortion-Tradeoff/</url>
+    <content><![CDATA[<h1 id="the-perception-distortion-tradeoff感知-失真权衡">The
+Perception-Distortion Tradeoff（感知-失真权衡）</h1>
+<p>会议： CVPR</p>
+<p>时间： 2018</p>
+<h2 id="摘要">摘要</h2>
+<p>图像复原算法通常是通过某种失真测度(例如：PSNR、SSIM、IFC、VIF)或通过量化感知质量的人类主观评分来评估的。在本文中，我们从数学上证明了失真和感知质量是相互矛盾的。具体来说，<strong>我们研究了从真实图像中正确判别图像复原算法输出的最佳概率</strong>。<strong>我们证明，随着平均扭曲的减小，这个概率必定增加(说明感知质量较差)</strong>。与通常的信念相反，这个结果对任何失真测度都是正确的，而不仅仅是PSNR或SSIM标准的问题。然而，正如我们在实验中所显示的那样，对于某些措施来说，(例如：VGG特征之间的距离)并不那么严重。我们还表明，生成对抗网络(Generative-adversarial-nets，GANs)为接近感知-失真界提供了一种原则性的方法。
+这构成了他们在低级视觉任务中观察到的成功的理论支持。基于我们的分析，我们提出了一种新的评估图像复原方法的方法，并使用它对最近的超分辨率算法进行了广泛的比较。</p>
+<span id="more"></span>
+<h2 id="介绍">介绍</h2>
+<p>在过去的几十年中，图像复原算法(例如去噪,去模糊,超分辨率等)在视觉质量和失真指标如峰值信噪比(PSNR)和结构相似性指数(SSIM)方面都取得了不断的进步[45]。然而，近年来，重建精度的提高似乎并不总是伴随着视觉质量的提高。事实上，也许是反直觉的，在感知质量方面占优势的算法，往往在例如PSNR和SSIM等方面处于劣势[22、16、6、38、51、49]。这种现象通常被解释为现有失真测度的一个缺点[44]，它推动了对替代的"更感性"标准的不断搜索。
+在本文中，我们对感知质量和失真测度之间的表观权衡提供了一个补充的解释。<strong>具体来说，我们证明了感知-失真平面中存在一个区域，无论算法方案(见图1)如何，这个区域都是无法达到的。此外，该区域的边界是单调的。因此，在其附近，只有可能改善感知质量或失真，其中一个是以牺牲另一个为代价的</strong>。对于所有的失真测度，感知-失真权衡是存在的，而不仅仅是均方误差(
+MSE
+)或SSIM标准的问题。<strong>然而，对于某些措施而言，这种权衡要弱于其他措施。例如，我们通过实验发现最近提出的深度网络特征之间的距离[16、22]与感知质量之间的权衡弱于MSE。这与该度量比MSE更"感性"的观察一致</strong>。</p>
+<figure>
+<img src="/2025/03/02/The-Perception-Distortion-Tradeoff/The-Perception-Distortion-Tradeoff\1.png" alt="image">
+<figcaption aria-hidden="true">image</figcaption>
+</figure>
+<p>让我们来厘清失真与感知质量的区别。图像复原的目标是从退化图像<span class="math inline">\(y\)</span> (例如,噪声、模糊等)中估计出图像<span class="math inline">\(x\)</span>。失真是指重建图像<span class="math inline">\(x\)</span>与原始图像<span class="math inline">\(\hat{x}\)</span>之间的差异。感知质量，另一方面，仅指<span class="math inline">\(\hat{x}\)</span>的视觉质量，而不考虑它与<span class="math inline">\(x\)</span>的相似性。也就是说，它是<span class="math inline">\(\hat{x}\)</span>看起来像一个有效的自然图像的程度。一种越来越流行的测量感知质量的方法是使用real-vs.-fake用户研究，该研究考察了人类观察者判断<span class="math inline">\(\hat{x}\)</span>是真实的还是算法[15、53、39、8、6、14、54、11]
+(类似于生成对抗网络的思想[10])。因此，感知质量可以被定义为在这种鉴别实验中的最佳成功概率，正如我们所显示的那样，它<strong>正比于<span class="math inline">\(\hat{x}\)</span>的分布与自然图像的分布之间的距离</strong>。
+基于这些关于感知和失真的定义，我们遵循率失真理论的逻辑[4]。也就是说，我们寻求将最佳可达到的感知质量(对自然图像统计的最小偏差)的行为描述为最大允许平均失真的函数，对于任何估计量。该感知-失真函数(图1中的宽曲线)分离了感知-失真平面中的可达区域和不可达区域，从而描述了感知和失真之间的基本权衡。我们的分析表明，算法不可能同时非常准确，并产生愚弄观察者相信它们是真实的图像，不管用什么方法来量化精度。
+这种权衡意味着优化失真测度不仅是无效的，而且在视觉质量方面可能是有害的。这已经在[
+22、16、38、51、6]中得到了经验观察，但从未在理论上得到证实。
+从算法设计的角度，我们证明了生成对抗网络(GANs)提供了一种接近感知-失真边界的原则性方法。这为GANs在图像复原[22、38、35、51、36、15、55]上的优势提供了越来越多的实证支持。
+感知-失真权衡对低层视觉有重要影响。在某些应用中，重建精度是非常重要的。在另一些情况下，感知质量可能更受欢迎。同时实现这两个目标的不可能性呼吁了一种新的评估算法的方式：将它们放置在感知-失真平面上。我们使用这种新的方法对最近的超分辨率(
+SR )方法进行了广泛的比较，揭示了哪种SR方法最接近感知-失真界。</p>
+<h2 id="问题描述">问题描述</h2>
+<p>从统计学意义上讲，一幅自然图像<span class="math inline">\(x\)</span>可以看作是由自然图像<span class="math inline">\(p_X\)</span>的分布实现的。在图像复原中，我们通过某种条件分布<span class="math inline">\(p_{Y|X}\)</span>
+(对应于噪声、模糊、下采样等。)来观察一个关于<span class="math inline">\(x\)</span>的退化版本<span class="math inline">\(y\)</span>。给定<span class="math inline">\(y\)</span>，我们根据某种分布<span class="math inline">\(p_{\hat{X}|Y}\)</span>产生一个估计量<span class="math inline">\(\hat{x}\)</span>
+。这种描述很一般，因为它不限制估计量<span class="math inline">\(\hat{x}\)</span>是<span class="math inline">\(y\)</span>的确定性函数。该问题设置如图2所示。</p>
+<figure>
+<img src="/2025/03/02/The-Perception-Distortion-Tradeoff/The-Perception-Distortion-Tradeoff\2.png" alt="image">
+<figcaption aria-hidden="true">image</figcaption>
+</figure>
+<p>给定一个全参考相异性准则<span class="math inline">\(\Delta(x,\hat{x})\)</span>，估计量<span class="math inline">\(\hat{X}\)</span>的平均偏差由下式给出 <span class="math display">\[
+\mathbb{E}[\Delta(X, \hat{X})] \qquad (2)
+\]</span> 其中，期望关于联合分布<span class="math inline">\(p_{X,\hat{X}}\)</span>。该定义与在退化自然图像数据库中评估平均性能的通常做法一致。注意到一些失真措施，例如.
+SSIM，实际上是(越高越好)的相似性度量，但总是可以反转成为相异性度量。
+估计<span class="math inline">\(\hat{X}\)</span>的感知质量(如通过真实和虚假的人类观点研究进行量化)与它的重建图像的分布<span class="math inline">\(p_{\hat{X}}\)</span>和自然图像的分布<span class="math inline">\(p_X\)</span>之间的距离直接相关。因此，我们定义估计<span class="math inline">\(p_{\hat{X}}\)</span>的感知质量指标(越低越好)为
+<span class="math display">\[
+d\left(p_X, p_{\hat{X}}\right) \qquad (3)
+\]</span> 其中<span class="math inline">\(d(·,·)\)</span>是分布之间的一些散度，例如KL散度，TV距离，Wasserstein距离等。
+注意到，当算法的输出遵循自然图像的分布时,即<span class="math inline">\(p_{\hat{X}}=p_X\)</span>，可以获得尽可能好的感知质量。在这种情况下，通过查看重建图像，无法判断它们是由算法生成的。然而，并不是每一个具有这种性质的估计量都一定是准确的。事实上，我们可以通过随机绘制与原始"真实"图像无关的自然图像来达到完美的感知质量。在这种情况下，畸变将相当大。
+我们的目标是刻画(2)和(3)之间的权衡。</p>
+<h2 id="感知-失真平衡">感知-失真平衡</h2>
+<p>我们看到，低失真通常并不意味着良好的感知质量。那么，一个有趣的问题是：给定失真水平的估计器所能达到的最佳感知质量是什么？</p>
+<p><strong>定义1</strong> 信号恢复任务的感知-失真函数由下式给出</p>
+<p><span class="math display">\[
+P(D)=\min _{p_{\hat{X} \mid Y}} d\left(p_X, p_{\hat{X}}\right) \quad
+\text { s.t. } \quad \mathbb{E}[\Delta(X, \hat{X})] \leq D \qquad(9)
+\]</span></p>
+<p>其中<span class="math inline">\(\Delta(\cdot,\cdot)\)</span>是失真测度，<span class="math inline">\(d(\cdot,\cdot)\)</span>是分布之间的散度。
+简言之，<span class="math inline">\(P ( D )\)</span>是分布<span class="math inline">\(p_X\)</span>和<span class="math inline">\(p_{\hat{X}}\)</span>之间的最小偏差，它可以通过一个带有偏差<span class="math inline">\(D\)</span>的估计量来获得。为了直观地了解该函数的典型行为，考虑如下例子。</p>
+<p><strong>例1</strong> 假设<span class="math inline">\(Y=X+N\)</span>，其中<span class="math inline">\(X
+\sim \mathcal{N}(0,1)\)</span>和<span class="math inline">\(N \sim
+\mathcal{N}\left(0, \sigma_N\right)\)</span>是相互独立的.取"<span class="math inline">\(\Delta(\cdot,
+\cdot)\)</span>"为误差平方失真，<span class="math inline">\(d(\cdot,
+\cdot)\)</span>为KL散度。为了简单起见，我们把注意力限制在形如<span class="math inline">\(\hat{X}=a
+Y\)</span>的估计量上。在这种情况下，我们可以导出方程（9）的一个封闭形式的解。对图5中的若干噪声水平<span class="math inline">\(\sigma_N\)</span>作图。可以看出，最小可达<span class="math inline">\(d_{\mathrm{KL}}\left(p_X,
+p_{\hat{X}}\right)\)</span>随着最大允许失真(MSE)的增大而减小。此外，这种权衡是凸的，并且在更高的噪声水平<span class="math inline">\(\sigma_N\)</span>变得更加严重。</p>
+<figure>
+<img src="/2025/03/02/The-Perception-Distortion-Tradeoff/The-Perception-Distortion-Tradeoff\3.png" alt="image">
+<figcaption aria-hidden="true">image</figcaption>
+</figure>
+<p>在一般情况下，解析地求解(9)是不可能的。然而，事实证明，如图5所示的行为是典型的，正如我们接下来的(见附录中的证明)所示。</p>
+<p><strong>定理1</strong>
+(感知-失真权衡)。假设第3节的问题设定。如果式(3)的<span class="math inline">\(d(p,q)\)</span>在其第二个参数中为凸函数（<span class="math inline">\(d\left(p, \lambda q_1+(1-\lambda) q_2\right) \leq
+\lambda d\left(p, q_1\right)+(1-\lambda) d\left(p, q_2\right), \forall
+\lambda \in[0,1]\)</span>），则式(9)的感知-失真函数<span class="math inline">\(P(D)\)</span>为 1.单调不增 2.凸的</p>
+<p>注意到定理1对失真测度<span class="math inline">\(\Delta(·,·)\)</span>不做任何假设。这意味着对于任何失真测度，包括例如MSE、SSIM、VGG特征间的平方误差[
+16、22
+]等，都存在感知质量和失真之间的权衡。然而，这并不意味着所有的失真测度都具有相同的感知-失真函数。事实上，正如我们在Sec.6，对于捕获图像之间语义相似性的失真度量，这种权衡往往更不严重。</p>
+<p><span class="math inline">\(P(D)\)</span>的凸性意味着在低失真和高感知质量的极端情况下，这种权衡更加严重。这一点在考虑与真假图像区分能力相关的TV散度时尤为重要。(见Sec
+. 2.2)。由于<span class="math inline">\(P ( D
+)\)</span>在低失真的情况下更陡峭，因此对于失真已经很低的算法，任何小的失真改善都必然伴随着对鉴别器的欺骗能力的大幅度降低。同样，对于感知指数已经较低的算法，感知质量的任何微小提升，必然伴随着失真的大幅增加。让我们评论一下，<span class="math inline">\(d( p , q)\)</span>是凸的这一假设，并不是很有限制。
+例如，任意的<span class="math inline">\(f\)</span> -散度( e.g. KL , TV
+,Hellinger, <span class="math inline">\(\mathcal{X}^2\)</span>)以及Renyi散度，都满足这个假设[5、43]
+。在任何情况下，即使没有这个假设，函数<span class="math inline">\(P ( D
+)\)</span>也是单调非增的。</p>
+<h2 id="通过gan进行折衷">通过GAN进行折衷</h2>
+<p>存在一种系统的方法来设计逼近感知-失真曲线的估计器：使用GANs。具体来说，受[22、35、51、38、36、15]的启发，恢复问题可以通过修改GAN的生成器的损失来解决</p>
+<p><span class="math display">\[
+\ell_{\mathrm{gen}}=\ell_{\text {distortion }}+\lambda
+\ell_{\mathrm{adv}} \qquad(11)
+\]</span></p>
+<p>式中，<span class="math inline">\(\ell_{\text {distortion
+}}\)</span>原始图像与重建图像之间的失真，<span class="math inline">\(\ell_{\text {adv
+}}\)</span>为标准GAN对抗损失。众所周知，<span class="math inline">\(\ell_{\text {adv
+}}\)</span>正比于生成器和数据分布[10、1、34]
+(散度的类型取决于损失)之间的某种散度<span class="math inline">\(d\left(p_X,
+p_{\hat{X}}\right)\)</span>。因此，(11)实际上是对目标的近似。</p>
+<p><span class="math display">\[
+\ell_{\text {gen }} \approx \mathbb{E}[\Delta(x, \hat{x})]+\lambda
+d\left(p_X, p_{\hat{X}}\right)
+\]</span></p>
+<p>将<span class="math inline">\(\lambda\)</span>视为拉格朗日乘子，显然，对某个<span class="math inline">\(D\)</span>，最小化<span class="math inline">\(\ell_{\text {gen
+}}\)</span>等价于最小化(9)。改变<span class="math inline">\(\lambda\)</span>对应于改变<span class="math inline">\(D\)</span>，从而产生沿感知-失真函数的估计器。</p>
+<p>我们用这种方法来探索图4中<span class="math inline">\(\sigma=3\)</span>的数字去噪例子的感知失真权衡。我们训练了一个基于Wasserstein生成式对抗网络(WGAN)的去噪器[1、12]，其MSE失真损失为<span class="math inline">\(\ell_{\text {distortion }}\)</span>。这里，<span class="math inline">\(\ell_{\text {adv
+}}\)</span>正比于生成器和数据分布之间的Wasserstein距离<span class="math inline">\(d_W\left(p_X,
+p_{\hat{X}}\right)\)</span>。<strong>WGAN的一个有价值的性质是它的鉴别器(评论家)损失是<span class="math inline">\(d_W\left(p_X,
+p_{\hat{X}}\right)\)</span>的一个精确估计(直到一个常数因子)
+[1]。这使得我们可以很容易地计算训练好的去噪器的感知质量指标</strong>。我们得到具有几个<span class="math inline">\(\lambda
+\in[0,0.3]\)</span>值的估计量的集合。对于每个去噪器，我们通过最终的判别器损失来评估感知质量。如图6所示，连接感知-失真平面上的估计量的曲线是单调递减的。此外，它与逐渐从模糊和准确过渡到尖锐和不准确的估计有关。这条曲线显然与解析界
+(9)
+(用虚线表示)不重合。然而，它似乎与之相邻。<strong>这表现在WGAN曲线的最左端点非常接近理论界的最左端点，这与MMSE估计器相对应</strong>。WGAN训练细节和架构参见附录。</p>
+<p>除了MMSE估计器，图6还包括MAP估计器和一个从数据集(记为"随机抽签")中随机抽取图像的估计器。如上所述，通过WGAN判别器[1]的最终损失来评估这3个估计器的感知质量，训练来区分估计器的输出和数据集中的图像。<strong>值得注意的是，去噪WGAN估计器(D)实现了与MAP估计器相同的失真，但具有更好的感知质量。此外，它达到了与随机绘制估计器几乎相同的感知质量，但具有显著更低的失真</strong>。</p>
+<figure>
+<img src="/2025/03/02/The-Perception-Distortion-Tradeoff/The-Perception-Distortion-Tradeoff\4.png" alt="image">
+<figcaption aria-hidden="true">image</figcaption>
+</figure>
+<h2 id="结论">结论</h2>
+<p>我们证明并证明了失真和感知质量相互矛盾的反直觉现象。也就是说，算法的失真越小，它的分布就越必须偏离自然场景的统计数据。我们实证表明，许多流行的扭曲测量都存在这种权衡，包括那些被认为与人类感知密切相关的测量。因此，任何单独的失真测量都不适合评估图像恢复方法。我们的新方法利用一对
+NR 和 FR
+指标将每种算法置于感知失真平面上，从而有助于对图像恢复方法进行更翔实的比较。</p>
+]]></content>
+      <categories>
+        <category>论文泛读</category>
+      </categories>
+      <tags>
+        <tag>图像恢复</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Unsupervised Noise Adaptive Speech Enhancement by Discriminator-Constrained Optimal Transport</title>
+    <url>/2025/02/24/Unsupervised-Noise-Adaptive-Speech-Enhancement-by-Discriminator-Constrained-Optimal-Transport/</url>
+    <content><![CDATA[<h1 id="unsupervised-noise-adaptive-speech-enhancement-by-discriminator-constrained-optimal-transport判别器约束最优传输的无监督噪声自适应语音增强">Unsupervised
+Noise Adaptive Speech Enhancement by Discriminator-Constrained Optimal
+Transport（判别器约束最优传输的无监督噪声自适应语音增强）</h1>
+<p>会议：NeurIPS</p>
+<p>时间：2021</p>
+<h2 id="摘要">摘要</h2>
+<p>本文提出了一种新的判别器约束的最优传输网络(DOTN)，该网络执行无监督的域自适应语音增强(SE)，这是语音处理中必不可少的回归任务。<strong>DOTN旨在利用从源域获得的知识，在目标域中估计带噪语音的干净参考</strong>。训练和测试数据之间的领域转换已被报道是不同领域学习问题的障碍。尽管有丰富的文献研究无监督域适应分类，但所提出的方法，特别是在回归中，仍然是稀缺的，并且往往依赖于关于输入数据的额外信息。<strong>提出的DOTN方法将数学分析中的最优传输(OT)理论与生成对抗框架进行策略性融合，以帮助评估目标域中的连续标签</strong>。在两个SE任务上的实验结果表明，通过扩展经典的OT公式，我们提出的DOTN以一种纯无监督的方式优于先前的对抗域适应框架。
+<span id="more"></span></p>
+<h2 id="介绍">介绍</h2>
+<p>语音增强(SE)的目标是将低质量的语音信号转换为质量和可懂度提高的语音信号。SE作为语音处理领域的一个重要的回归任务，已被广泛用作语音相关应用的预处理器，如语音编码[1]、自动语音识别(
+Automatic Speech Recognition，ASR )
+[2]、说话人识别[3]和辅助听觉设备[4、5]。最近机器学习的进展使SE技术取得了重大进展。一般来说，基于学习的SE方法在训练阶段估计从带噪语音信号到干净语音信号的映射函数的变换[6]。估计变换在测试阶段将带噪语音信号转换为类干净信号。各种神经网络模型已被用于表征噪声到干净变换。这类模型的著名例子包括全连接神经网络[7]，深度去噪自编码器[8]，卷积神经网络[9]，长短期记忆网络[10]和Transformer
+[11]。为了有效地处理各种噪声情况，我们通常准备相当数量的涵盖各种噪声类型的训练数据来训练SE模型。<strong>然而在实际应用场景中，测试数据中的噪声类型可能并不总是包含在训练集中。因此，从训练数据中学习到的噪声到干净的转换不能很好地应用于处理测试噪声，从而导致有限的增强性能</strong>。这种训练-测试不匹配通常被称为<strong>SE的域不匹配问题</strong>。需要一种有效的解决方案，<strong>通过制定与测试条件相匹配的精确的噪声到干净的转换来执行域适应来调整SE模型</strong>。大多数现有的领域自适应方法至少依赖于以下一种自适应机制：对齐领域不变特征[12、13、14]和对抗训练，其中在训练过程中引入判别器作为领域分类器[15、16、17]。</p>
+<p><strong>本研究旨在通过引入最优传输(OT)来解决SE的无监督域适应问题。特别地，我们考虑在目标域上用完全无标签的数据进行SE测试，且只有源域的有标签数据可供参考</strong>。一般而言，OT理论通过比较两个(概率)分布，并考虑介于两者之间的所有可能的运输方案，从而找到一个具有最小位移成本的方案。OT的概念可以用来最小化域失配，从而实现无监督的域自适应。即使使用OT提供的数学特性，由于人类语音具有的复杂结构，获得优异SE性能的障碍仍然存在。为了进一步克服这些障碍，生成对抗网络(Generative
+Adversarial
+Network，GAN)的另一个概念被整合来帮助实现复杂的SE域自适应。虽然现有的域转换技术"域对抗训练"和我们的提案在名称上有相似之处，但其基本结构有本质的不同。该方法的一个关键要素在于<strong>一个用于检测语音输出特征的判别器，而不是一个域分类器</strong>。更准确地说，我们的方法中的<strong>判别器通过学习源标签的概率分布来控制输出语音质量</strong>。这种新颖的方法专为无监督的SE域自适应而设计，表现出优异的性能，并在VoiceBank和TIMIT数据集上进行了验证。</p>
+<h3 id="贡献">贡献</h3>
+<p>我们<strong>提出了一种新的方法，专门用于回归环境下的无监督域适应</strong>。这一领域的研究成果仍然十分有限；此外，现有的方法往往需要对源域进行额外的分类，或者可能尚未得到强回归应用的支持。相反，我们的方法不需要源样本、源标签和目标样本以外的任何额外的输入信息。我们的方法被应用于两个标准化SE任务，即VoiceBank
+-
+DEMAND和TIMIT，并在语音质量感知评价(PESQ)和短时客观可懂度(STOI)评分方面取得了优异的自适应性能。
+此外，由于输入要求简单，我们可以通过增加目标域中允许的噪声类型的数量来很容易地研究目标样本复杂度对我们方法的影响，这在我们所知之前的文献中没有被报道过。</p>
+<h2 id="相关工作">相关工作</h2>
+<h3 id="对抗域适应adversarial-domain-adaptation">对抗域适应（Adversarial
+domain adaptation）</h3>
+<p>领域对抗训练( Domain Adversarial Training，DAT
+)的主要目标是<strong>通过利用来自目标领域的大量未标记数据，训练出能够适应其他相似领域的深度模型(从源域)</strong>[15、18]。传统的DAT系统由<strong>深度特征提取器、标签预测器和领域分类器</strong>三部分组成。通过使用梯度反转层，提取的深度特征对主要学习任务具有判别性，并且在源域和目标域之间的转换具有不变性。DAT方法已被应用和证实可以有效地补偿许多任务中源(训练时间)和目标(测试时间)条件的不匹配，例如语音信号处理[19、20]、图像处理[15、21]和可穿戴传感器信号处理[22]。DAT方法已被应用和证实可以有效地<strong>补偿许多任务中源(训练时间)和目标(测试时间)条件的不匹配</strong>，例如语音信号处理[19、20]、图像处理[15、21]和可穿戴传感器信号处理[22]。后来发展的多源域对抗网络(MDAN)
+[23]扩展了原有的DAT，解除了单域迁移的约束，利用多个域分类器为主要学习任务提取有判别力的深度特征，同时对多个域迁移[3、24]具有不变性。</p>
+<h3 id="域适应的最优传输optimal-transport-for-domain-adaptation">域适应的最优传输（Optimal
+transport for domain adaptation）</h3>
+<p>迄今为止，OT
+[25、26]已被用于域适应[27、28]，并取得了相关的分析结果[29]。不仅如此，在[30、31]的联合分配框架下，OT的概念被证明是更有用的。最近，为了提高OT对异常值的敏感性，Robust
+OT被提出[32]。此外，还提出了一种将对抗域适应的概念与OT和边界分离相结合的方法[33]。然而，在这些研究中进行的几乎所有实验都是分类问题，不像SE任务是我们研究的重点。</p>
+<h3 id="语音增强中的域适应domain-adaptation-in-speech-enhancement">语音增强中的域适应（Domain
+adaptation in speech enhancement）</h3>
+<p>现有的SE方法中的域适应可以分为两类：有监督和无监督。对于有监督域自适应，测试条件中的成对噪声和干净语音信号可用来调整SE模型中的参数。在[34、35]中，已经提出了基于迁移学习的方法来适应SE模型，以缓解语料不匹配。为了克服灾难性遗忘问题，Lee等人在对SE模型进行预形成域适应时，提出了一种结合曲率正则化和路径优化增强策略的SERIL算法[36]。相反，对于无监督域适应，只提供带噪语音信号，而相应的干净对应物是无法获得的。一般而言，无监督域适应对现实场景具有较好的适用性。在[37]中，SE的无监督域适应是通过最小化教师分类器和学生分类器产生的后验概率之间的库尔贝克-莱布勒散度来实现的，而没有成对的噪声-干净的适应数据。在[19、38]中，DAT方法用于使SE模型适应新的噪声条件。
+<strong>尽管现有的无监督领域自适应方法取得了很好的性能，但需要额外的信息</strong>，例如单词标签、语言模型和噪声类型标签。在本文中，我们提出了一种新的方法：判别器约束的OT网络(
+DOTN
+)来对SE进行无监督域适应。与相关工作不同，<strong>DOTN在适应原始SE模型以匹配新的噪声条件时不需要额外的标签信息</strong>。我们的实验表明，DOTN能够有效地将SE模型适应于新的测试条件，并且取得了比之前的对抗域适应方法更好的适应性能，这些对抗域适应方法需要额外的噪声类型信息。</p>
+<h2 id="方法">方法</h2>
+<h3 id="问题设置与注释">问题设置与注释</h3>
+<p>考虑具有配对数据的源域<span class="math inline">\(\left(\mathbf{X}^s,
+\mathbf{Y}^s\right)=\left\{\left(\mathbf{x}_i^s,
+\mathbf{y}_i^s\right)\right\}_{i=1}^{N_s}\)</span>，其中<span class="math inline">\(\mathbf{x}_i^s \in \mathbb{R}^n, \mathbf{y}_i^s
+\in \mathbb{R}^m\)</span>表示样本<span class="math inline">\(i\)</span>的输入和对应的标签。无监督域适应假设存在另一个目标域，只包含未标记的数据，<span class="math inline">\(\mathbf{X}^t=\left\{\mathbf{x}_i^t \in
+\mathbb{R}^n\right\}_{i=1}^{N_s}\)</span>。目标是根据源域提供的知识，为目标标签<span class="math inline">\(\mathbf{Y}^t=\left\{\mathbf{y}_i^t\right\}_{i=1}^{N_t}\)</span>(存在但不为人知)寻求一个真值估计器(或统计假设)<span class="math inline">\(f: \mathbb{R}^n \rightarrow
+\mathbb{R}^m\)</span>。</p>
+<p>数据集<span class="math inline">\(\mathcal{D}\)</span>的概率分布用<span class="math inline">\(\mathbb{P}_{\mathcal{D}}\)</span>表示，这里<span class="math inline">\(\mathcal{D}\)</span>要么是<span class="math inline">\(\mathbf{X}^s, \mathbf{Y}^s,
+\mathbf{X}^t\)</span>或<span class="math inline">\(\mathbf{Y}^t\)</span>在我们的讨论中。我们的问题是寻找一个函数<span class="math inline">\(f\)</span>，使得<span class="math inline">\(f\)</span>在<span class="math inline">\(\mathbf{Y}^t\)</span>中诱导一个概率分布<span class="math inline">\(\mathbb{P}_{f\left(\mathbf{X}^t\right)}\)</span>，在一定测度下有<span class="math inline">\(\mathbb{P}_{f\left(\mathbf{X}^t\right)}
+\rightarrow
+\mathbb{P}_{\mathbf{Y}^t}\)</span>。我们提出使用OT的概念来解决这个问题。</p>
+<h3 id="提出模型判别器约束的最优运输网络-discriminator-constrained-optimal-transport-networkdotn">提出模型：判别器约束的最优运输网络
+Discriminator-Constrained Optimal Transport Network(DOTN)</h3>
+<p>给定一对分布<span class="math inline">\(\mathbb{P}_{\mathcal{D}_1}\)</span>和<span class="math inline">\(\mathbb{P}_{\mathcal{D}_2}\)</span>和一个置换成本矩阵<span class="math inline">\(C \geq 0\)</span>，OT求解运输计划<span class="math inline">\(\gamma \in \prod\left(\mathbb{P}_ {\mathcal{D}_
+1},
+\mathbb{P}_{\mathcal{D}_2}\right)\)</span>使得总成本(在离散的设定下)最小</p>
+<p><span class="math display">\[
+\min _{\gamma \in \Pi\left(\mathbb{P}_{\mathcal{D}_1},
+\mathbb{P}_{\mathcal{D}_2}\right)}\langle C, \gamma\rangle_F,
+\]</span></p>
+<p>其中<span class="math inline">\(\prod\left(\mathbb{P}_{\mathcal{D}_1},
+\mathbb{P}_{\mathcal{D}_2}\right)\)</span>表示边际为<span class="math inline">\(\mathbb{P}_{\mathcal{D}_1}\)</span>和<span class="math inline">\(\mathbb{P}_{\mathcal{D}_1}\)</span>的联合分布空间，<span class="math inline">\(\langle\cdot,
+\cdot\rangle_F\)</span>为Frobenius积，并且<span class="math inline">\(C\)</span>的项<span class="math inline">\(C_{i
+j}\)</span>表示第i个和第j个样本的置换成本。可以证明，这个问题的最小值是一个距离，并且当相应的代价是范数[25、26]时称为Wasserstein距离</p>
+<p><strong>我们提出的方法包括两部分：OT对齐和Wasserstein生成对抗网络（WGAN）训练
+[39，40]。这两个步骤都基于OT，但是，它们被考虑为两对不同的分布，并采用不同的算法。</strong></p>
+<p><strong>通过联合分配最佳运输进行调整</strong>
+ 我们的适应机制依赖于源域和目标域的联合分布之间的对齐（对于目标域，标签是估计标签）。特别是，我们通过最小化联合分布<span class="math inline">\(\mathbb{P}_{\mathbf{X}^s} \times
+\mathbb{P}_{\mathbf{Y}^s}\)</span>和<span class="math inline">\(\mathbb{P}_{\mathbf{X}^t} \times
+\mathbb{P}_{f\left(\mathbf{X}^t\right)}\)</span>之间的OT损失来近似<span class="math inline">\(f\)</span>，并选择一个成本矩阵</p>
+<p><span class="math display">\[
+C_{i
+j}=\alpha\left\|\mathbf{x}_i^s-\mathbf{x}_j^t\right\|^2+\beta\left\|\mathbf{y}_i^s-f\left(\mathbf{x}_j^t\right)\right\|^2,
+\quad(\alpha, \beta&gt;0) \qquad (2)
+\]</span></p>
+<p>通过对齐源域和目标域的联合分布，当 OT
+寻找每个目标样本最“相似”的源样本时，自然而然地实现了噪声适应。</p>
+<p>尽管 OT
+为每个样本提供了准确的估计值，但每个估计误差的影响可能会在训练过程中累积，并在不保留语音数据结构的情况下将
+f 误导到方便的局部最小值。为了避免这种情况，我们采用了 Wasserstein
+生成对抗网络（WGAN）训练来补充和增强我们的适应系统。</p>
+<p><strong>输出和源标签的判别训练</strong>
+ 与我们考虑输入和标签的联合分布的适应不同，我们专注于源标签分布<span class="math inline">\(\mathbb{P}_{\mathbf{Y}^s}\)</span>和输出分布<span class="math inline">\(\mathbb{P}_{f\left(\mathbf{X}^t\right)}\)</span>的WGAN训练。在生成对抗训练的术语中，我们将<span class="math inline">\(f\)</span>视为生成器，并引入基于卷积神经网络的判别器<span class="math inline">\(h\)</span>作为
+“评判者”。一般来说，我们使用判别器来决定<span class="math inline">\(f\)</span>的输出是否与源标签
+“相似”。从形式上讲，WGAN 算法求解</p>
+<p><span class="math display">\[
+\min _f \max _{h \in \mathcal{L}}\left\{\mathbb{E}_{y \sim
+\mathbb{P}_{\mathbf{Y}^s}}(h(y))-\mathbb{E}_{x \sim
+\mathbb{P}_{\mathbf{X}^t}}(h(f(x)))\right\}
+\]</span></p>
+<p>由Kantorovich-Rubinstein 对偶性 [25]，其中<span class="math inline">\(\mathcal{L}\)</span>是 1-Lipschitz
+函数的集合。在这种情况下，在最优判别器下，最小化相对于生成器参数的值函数，使分布<span class="math inline">\(\mathbb{P}_{\mathbf{Y}^s}\)</span>和<span class="math inline">\(\mathbb{P}_{f\left(\mathbf{X}^t\right)}\)</span>之间的
+Wasserstein 距离最小。</p>
+<p>这种判别性训练补充了我们的对齐方式，并从源标签和目标标签估计之间的明确关系中提供了额外的约束。这些约束支持联合分布对齐，并在梯度下降训练过程中提供进一步的指导。当我们的判别性训练支持联合分布对齐时，实验的性能会大大提高。</p>
+<h3 id="损失函数和提出的算法">损失函数和提出的算法</h3>
+<p>我们的域对齐可以通过解决下面的优化问题来实现：</p>
+<p><span class="math display">\[
+\min _{\gamma, f} \mathcal{L}_1+\mathcal{L}_2=\min _{\gamma, f}
+\frac{1}{N^s}
+\sum_i\left\|\mathbf{y}_i^s-f\left(\mathbf{x}_i^s\right)\right\|^2+\sum_{i,
+j} \gamma_{i
+j}\left(\alpha\left\|\mathbf{x}_i^s-\mathbf{x}_j^t\right\|^2+\beta\left\|\mathbf{y}_i^s-f\left(\mathbf{x}_j^t\right)\right\|^2\right)
+\qquad (4)
+\]</span></p>
+<p>其中<span class="math inline">\(\alpha,
+\beta&gt;0\)</span>是平衡所选择的参数。值得注意的是，第一项强调了源域的知识在训练过程中不会被遗忘，这在[31、41、42]中都有所体现。没有这种重视，就不能很好地保持源领域知识，从而整体性能可能会下降。在SE实验中也观察到了这一现象。第二项是用于域对齐的。为了说明一些直觉，考虑理想情况其中Eq.
+(4)完全极小化为零，从而导致</p>
+<p><span class="math display">\[
+\left\|\mathbf{x}_i^s-\mathbf{x}_j^t\right\|^2 \equiv 0 \text { and
+}\left\|\mathbf{y}_i^s-f\left(\mathbf{x}_j^t\right)\right\|^2 \equiv 0
+\quad \Rightarrow \quad \mathbf{x}_i^s=\mathbf{x}_j^t \text { and }
+\mathbf{y}_i^s=f\left(\mathbf{x}_j^t\right)
+\]</span></p>
+<p>对于所有<span class="math inline">\(i,
+j\)</span>。这表明对于每个给定的目标域样本<span class="math inline">\(\mathbf{x}_j^t\)</span>，都会找到来自源域的相同样本<span class="math inline">\(\mathbf{x}_
+i^s\)</span>,然后由相应的源标签构建未知目标标签。尽管实际上不太可能发生零损失的理想情况，但OT损失旨在寻找最“相似”的对应关系，这需要Eq.（4）的域对齐直觉。从这个角度来看，虽然<span class="math inline">\(C_{i j}\)</span>中的项<span class="math inline">\(\left\|\mathbf{x}_ i^s-\mathbf{x}_
+j^t\right\|\)</span>（在方程 （2） 中）与<span class="math inline">\(f\)</span>和<span class="math inline">\(h\)</span>的网络反向传播没有直接关系，但它不能被忽视，因为丢弃该项将导致错误的运输计划<span class="math inline">\(\gamma_{i j}\)</span>并最终导致不希望的对齐。</p>
+<p>对于判别式训练，判别器<span class="math inline">\(h\)</span>由判别器损失函数<span class="math inline">\(\mathcal{L}_h=\frac{1}{m} \sum_{i=1}^m
+h\left(\mathbf{y}_i^s\right)-h\left(f\left(\mathbf{x}_i^t\right)\right)\)</span>训练，<span class="math inline">\(f\)</span>遵循生成器损失函数<span class="math inline">\(\mathcal{L}_f=-\frac{1}{m} \sum_{i=1}^m
+h\left(f\left(\mathbf{x}_i^t\right)\right)\)</span>，其中<span class="math inline">\(m\)</span>是批量大小。由于我们的框架中有多组参数<span class="math inline">\(\gamma, h\)</span>和<span class="math inline">\(f\)</span>，因此每次都会更新一组参数，而其他一组参数是固定的。</p>
+<p><span class="math display">\[
+    \begin{array}{l}
+   \hline \
+   \textbf{算法1} \quad \text{DOTN，提出的算法} \\
+   \hline \
+    \textbf{需要：}
+\mathbf{x}^s，源域输入。\mathbf{y}^s，源域标签。\mathbf{x}^t，目标域输入。c，裁剪参数。m，批量大小。\\
+    \qquad n_f, n_h, n_s：
+分别是每次生成器训练、判别器训练和源域训练的\text{OT}迭代次数。n，迭代次数。\\
+    \textbf{需要：}
+\theta_f，估计器f的初始参数。\theta_h，判别器h的初始参数 \\
+    \quad \textbf{for} \, \, 每批源样本 \left(\mathbf{x}^s,
+\mathbf{y}^s\right)和目标样本\left(\mathbf{y}^t\right) \, \,
+\textbf{do}\\
+    \qquad \quad 固定\theta_f，用\text{OT}求解方程（4）中的\gamma\\
+    \qquad \quad 固定 \gamma，\theta_f \leftarrow
+\operatorname{Adam}\left(\nabla_{\theta_f} \mathcal{L}_2, \theta_f,
+\theta_h\right) \text {. } \\
+    \qquad \quad \textbf{if} \, \, n \bmod n_f==0 \textbf { then }\\
+    \qquad \qquad \quad \theta_f \leftarrow
+\operatorname{Adam}\left(\nabla_{\theta_f} \mathcal{L}_1, \theta_f,
+\theta_h\right) .\\
+    \qquad \quad \textbf{end if} \\
+    \qquad \quad \textbf{if} \, \, n \bmod n_f==0 \textbf { then }\\
+    \qquad \qquad \quad \theta_f \leftarrow
+\operatorname{Adam}\left(\nabla_{\theta_f} \mathcal{L}_f, \theta_f,
+\theta_h\right) .\\
+    \qquad \quad \textbf{end if} \\
+    \qquad \quad \textbf{if} \, \, n \bmod n_h==0 \textbf { then }\\
+    \qquad \qquad \quad \theta_h \leftarrow
+\operatorname{Adam}\left(\nabla_{\theta_h} \mathcal{L}_h, \theta_f,
+\theta_h\right) .\\
+    \qquad \qquad \quad \theta_h \leftarrow
+\operatorname{clip}\left(\theta_h,-c, c\right) \\
+    \qquad \quad \textbf{end if} \\  
+    \quad \textbf{end for}\\  
+   \hline
+\end{array}
+\]</span></p>
+<h2 id="结论">结论</h2>
+<p>在这项研究中，我们提出了一种新的DOTN方法，该方法专为回归设置中的无监督域适应而设计。我们的方法巧妙地融合了OT和生成对抗框架，根据源域提供的信息在目标域中实现无监督学习，不需要额外的结构或输入，例如多源域和噪声类型标签。我们的实验表明，所提出的方法能够在SE中实现卓越的适应性能，在VoiceBank-DEMAND和TIMIT数据集的PESQ和STOI分数上优于其他对抗域适应方法。此外，我们表明，当适度增加目标样本的复杂度时（通过增加目标域中的噪声类型数量），只观察到小程度的退化。这表明我们的方法对目标域中的样本复杂性是稳健的。</p>
+]]></content>
+      <categories>
+        <category>论文泛读</category>
+      </categories>
+      <tags>
+        <tag>最优化</tag>
+        <tag>最优运输</tag>
+        <tag>SE（语音增强）</tag>
       </tags>
   </entry>
   <entry>
@@ -1650,888 +2532,6 @@ B_k(\eta) &amp;
       </tags>
   </entry>
   <entry>
-    <title>最优传输(Optimal Transportation)</title>
-    <url>/2025/02/09/OT1/</url>
-    <content><![CDATA[<h2 id="什么是最优传输">什么是最优传输？</h2>
-<p>最优传输最开始由Monge于1781年提出。一个典型的Monge问题是考虑将一堆具有一定形状的沙子搬运到指定的另外一个形状所需要的具有最小代价的搬运方法。
-如下图所示，我们想将左边红色区域的沙堆搬运到右边，形成右边绿色的沙堆的形状。我们想要找到消耗最少的搬运方式。
-<img src="/2025/02/09/OT1/1.jpg" alt="image">
-一句话来概括，就是<strong>如何用最少的代价将一个质量分布转为另一个质量分布。</strong>
-<span id="more"></span></p>
-<h2 id="质量分布">质量分布</h2>
-<p>质量分布其实就是两个测度空间<span class="math inline">\((X,\mu),(Y,\nu)\)</span>。一般情况下，质量不会凭空产生，所以我们会要求这两个分布的“总质量”是一样的，即<span class="math inline">\(\int_x d\mu=\int_Yd\nu\)</span>。
-问题有了考虑的对象，我们还可以定义成本函数<span class="math inline">\(c(x,y):X \times Y \to \mathbb
-R^+\)</span>，一般是有界的，来衡量将质量从点<span class="math inline">\(x\)</span>运到点<span class="math inline">\(y\)</span>的成本。那么如何去进行移动？主要有两个角度去考虑，分别是Monge问题和Kantorovich问题。</p>
-<h2 id="monge问题">Monge问题</h2>
-<p>Monge问题就是寻找一个保测度的映射<span class="math inline">\(T:X \to
-Y\)</span> <span class="math display">\[
-\underset{T} {\min} \int_X c(x,T(x))d \mu(x),T_{ \# } \mu= \nu
-\]</span> <span class="math inline">\(T_{
-\#  }\)</span>是前推算子（<span class="math inline">\(T_{ \#
-}\)</span>的作用对象是<span class="math inline">\(\mu\)</span>，表示把测度<span class="math inline">\(\mu\)</span>推到<span class="math inline">\(\nu\)</span>），这个“推”的过程就是一个保测度的过程，即
-<span class="math display">\[
-T_{ \#  }\mu = \nu \iff \forall B \subset Y,\nu (B)=\mu (T^{-1}(B))
-\]</span> <img src="/2025/02/09/OT1/2.jpg" alt="Monge Map">
-但是映射的定义就限制了我们不能实现“一对多”的操作，这就导致了一个很严重的问题，Monge问题不一定有解。比如一个狄拉克分布（在包含某个点的集合测度是1，其余是0）就不可能保测度地映射到高斯分布。
-我们可以让质量“可分”，即以概率的形式去进行“移动”。这就是Kantorovich问题。</p>
-<h2 id="kantorovich问题">Kantorovich问题</h2>
-<p>在Kantorovich问题中，Kantorovich问题中，我们对Monge问题进行松弛，不再寻找一个映射，而是寻找一个联合分布（耦合coupling），其中它的边界分布分别是<span class="math inline">\(\mu,\nu\)</span>。从而最小化总成本 <span class="math display">\[
-\underset{\pi}{\min}\int_{X \times Y}c(x,y)d\pi(x,y),P_{x
-\#  }\pi=\mu,P_{y \# }\pi=\nu
-\]</span> <img src="/2025/02/09/OT1/3.jpg" alt="Kantorovich Relaxation"> <span class="math inline">\(\pi(x,y)\)</span>就是从<span class="math inline">\(x\)</span>移动到<span class="math inline">\(y\)</span>的概率，上式是总成本的期望。
-这样的松弛之后，Kantorovich本质上变成了一个无限维的线性规划问题（如果分布是离散的，比如一堆点，我们要做的就是在两个点云之间做matching，那么<span class="math inline">\(\pi\)</span>就变成了一个矩阵，就变成了有限维的线性规划问题）
-线性规划理论告诉我们，如果耦合集合非空且紧，目标函数是下半连续的，那么线性规划一定可以取到最小值。也就保证了Kantorovich一定有解。</p>
-<h2 id="分布之间的度量-wasserstein距离">分布之间的度量-Wasserstein距离</h2>
-<p>比较两种分布的一些方法：</p>
-<p><strong>交叉熵</strong>：对应分布为<span class="math inline">\(p(x)\)</span>的随机变量，熵<span class="math inline">\(H(p)\)</span>表示其最优编码长度。交叉熵是按照概率分布<span class="math inline">\(q\)</span>的最优编码对真实分布为<span class="math inline">\(p\)</span>的信息进行编码的长度 交叉熵定义为 <span class="math display">\[
-H(p,q)=E_q[-logq(x)]=-\displaystyle\sum_{x}p(x)logq(x)
-\]</span> 在给定<span class="math inline">\(p\)</span>的情况下，如果<span class="math inline">\(q\)</span>和<span class="math inline">\(p\)</span>越接近，交叉熵越小；如果<span class="math inline">\(q\)</span>和<span class="math inline">\(p\)</span>越远，交叉熵越大</p>
-<p><strong>KL散度</strong>:是用概率分布<span class="math inline">\(q\)</span>来近似<span class="math inline">\(p\)</span>时所造成的信息损失量。KL散度是按照概率分布<span class="math inline">\(q\)</span>的最优编码对真实分布为<span class="math inline">\(p\)</span>的信息进行编码，其平均编码长度<span class="math inline">\(H(p,q)\)</span>和<span class="math inline">\(p\)</span>的最优平均编码长度<span class="math inline">\(H(p)\)</span>之间的差异。对于离散概率分布<span class="math inline">\(p\)</span>和<span class="math inline">\(q\)</span>，从<span class="math inline">\(q\)</span>到<span class="math inline">\(p\)</span>的KL散度定义为: <span class="math display">\[
-D_{KL}(p\parallel q)=H(p,q)-H(p)=\sum_x p(x)log{\frac {p(x)} {q(x)} }
-\]</span>
-KL散度可以是衡量两个概率分布之间的距离。KL散度总是非负的，只有当<span class="math inline">\(p=q\)</span>时，<span class="math inline">\(D_{KL}(p\parallel
-q)=0\)</span>。两个分布越接近，KL散度越小；两个分布越远，KL散度越大。但KL散度并不是一个真正的度量或距离，一是KL散度不满足距离的对称性，二是KL散度不满足距离的三角不等式性质。</p>
-<p><strong>JS散度</strong>：
-JS散度是一种对称的衡量两个分布相似度的度量方式，定义为 <span class="math display">\[
-D_{JS}(p\parallel q)={\frac 1 2}D_{KL}(p \parallel m)+{\frac 1
-2}D_{KL}(q \parallel m)
-\]</span> 其中，<span class="math inline">\(m={\frac 1 2}(p+q)\)</span>
-JS 散度是KL散度一种改进。但两种散度都存在一个问题，即如果两个分布p, q
-没有重叠或者重叠非常少时，KL散度和JS 散度都很难衡量两个分布的距离</p>
-<p><strong>Wasserstein距离</strong>： Wasserstein 距离（Wasserstein
-Distance）也用于衡量两个分布之间的距离。对于两个分布<span class="math inline">\(q_1,q_2,p-Wasserstein\)</span>距离定义为 <span class="math display">\[
-W_p(q_1,q_2)=(\underset{\pi(x,y) \in U(x,y)} {\inf}E_{(x,y)\sim \pi
-(x,y)}[d(x,y)^p]) ^{1/p}
-\]</span> 其中，<span class="math inline">\(U(x,y)\)</span>是边际分布为<span class="math inline">\(q_1\)</span>和<span class="math inline">\(q_2\)</span>的所有可能的联合分布集合，<span class="math inline">\(d(x,y)\)</span>为<span class="math inline">\(x\)</span>和<span class="math inline">\(y\)</span>的距离 Wasserstein距离相比KL散度和JS
-散度的优势在于：即使两个分布没有重叠或者重叠非常少，Wasserstein
-距离仍然能反映两个分布的远近。</p>
-<p>我们可以发现，如果令<span class="math inline">\(d(x,y)^p=c(x,y)\)</span>，Wasserstein距离实际上就是从一个分布转换为另一个分布所要付出的代价。</p>
-<p>Wasserstein
-GAN就是将W-1距离作为损失函数，解决了GAN的许多问题，比如训练不稳定，判别器不能训练的“太好”等。究其原因主要是因为W-1度量比KL度量更“弱”：也就是说在K-L散度下收敛的序列在W-1距离下也一定收敛。这样的性质就保证了W-1可以捕捉到序列更多的几何信息（比如不重叠的分布的KL散度永远是0，但W-1距离不然。），训练会更鲁棒。</p>
-]]></content>
-      <categories>
-        <category>学习笔记</category>
-      </categories>
-      <tags>
-        <tag>最优化</tag>
-        <tag>最优运输</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>最优传输（二）</title>
-    <url>/2025/02/10/OT2/</url>
-    <content><![CDATA[<h1 id="kantorovich问题的对偶问题">Kantorovich问题的对偶问题</h1>
-<p>这篇文章我们讲讲对偶理论，并且探究对偶问题和Kantorovich问题之间的关系
-<span id="more"></span></p>
-<h2 id="离散版本的kantorovich问题对偶">离散版本的Kantorovich问题对偶</h2>
-<p>有两个离散分布<span class="math inline">\(a=\sum_i
-a_i\delta_{x_i},b=\sum_j b_i\delta_{y_i}\)</span>，分别包含离散点<span class="math inline">\(\lbrace {x_i} \rbrace_{i=1}^n, \lbrace {y_j}
-\rbrace_{j=1}^m\)</span></p>
-<p>有一个成本矩阵<span class="math inline">\(C \in \mathbb R^{n\times
-m}\)</span>,<span class="math inline">\(C_{ij}\)</span>就是从<span class="math inline">\(x_i\)</span>运到<span class="math inline">\(y_j\)</span>的成本</p>
-<p>我们寻找一个联合分布的矩阵<span class="math inline">\(P\in \mathbb
-R^{n \times m}\)</span>使得总成本最小化 <span class="math display">\[
-\underset{p\in U(a,b)}{\min}\langle C,P \rangle = \underset{p\in
-U(a,b)}{\min} \sum_{i,j}C_{ij}P_{ij}
-\]</span> 其中，<span class="math inline">\(U(a,b)=\{\pi \in \mathbb
-R^{n\times m}_+|\pi1_m=a\in\mathbb R^n,\pi^T1_m=b\in\mathbb
-R^m\}\)</span></p>
-<p>拉格朗日对偶形式： <span class="math display">\[
-\underset{P\ge 0}{\min}\underset{(f,g)\in \mathbb R^n \times \mathbb
-R^m}{\max}\langle C,P \rangle + \langle a-P1_m,f \rangle + \langle
-b-P^T1_n,g \rangle
-\]</span></p>
-<p>交换min，max，有</p>
-<p><span class="math display">\[
-\underset{(f,g)\in \mathbb R^n\times \mathbb R^m}{\max}\langle a,f
-\rangle + \langle b,g \rangle + \underset{P\ge 0}{\min}\langle
-C-f1^T_m-1_ng^T,P \rangle
-\]</span></p>
-<p>可以将后面min的变为约束</p>
-<p><span class="math display">\[
-C-f1^T_m-1_ng^T=C-f \oplus g \ge 0
-\]</span></p>
-<p>综上，我们得到了对偶问题：</p>
-<p><span class="math display">\[
-\underset{(f,g)\in R(a,b)}{max}\langle f,a \rangle + \langle g,b \rangle
-\]</span></p>
-<p>其中，<span class="math inline">\(R(a,b)=\{(f,g)\in \mathbb R^n\times
-R^m:f_i+g_i \le C_{ij}\}\)</span></p>
-<h2 id="连续版本的kantorovich问题对偶">连续版本的Kantorovich问题对偶</h2>
-<p>现在两个分布变为连续的<span class="math inline">\(\alpha(x),x\in
-X,\beta(y),y\in Y\)</span>，成本函数连续化<span class="math inline">\(c(x_i,y_j)=C_{ij}\)</span>，我们将上面的乘子向量<span class="math inline">\(f,g\)</span>推广成<span class="math inline">\(f(x_i)=f_i,g(y_j)=g_j\)</span>。得到对偶形式为
-<span class="math display">\[
-\underset{(f,g)\in R(c)}{\sup}\int_X f(x) \, d\alpha(x)+\int_Y g(y) \,
-d\beta(y)
-\]</span> 其中<span class="math inline">\(R(c)=\{(f,g):\forall
-(x,y),f(x_i)+g(y_j) \le c(x_i,y_j)\}\)</span></p>
-<h3 id="通俗理解原问题和对偶问题">通俗理解原问题和对偶问题</h3>
-<p>假设有一个运营商运营着<span class="math inline">\(n\)</span>个仓库和<span class="math inline">\(m\)</span>个工厂，每个仓库有<span class="math inline">\(a_i\)</span>质量的商品，每个工厂需要<span class="math inline">\(b_j\)</span>质量的商品，从<span class="math inline">\(i\)</span>仓库到<span class="math inline">\(j\)</span>工厂运输单位质量的商品需要成本<span class="math inline">\(C_{ij}\)</span>。</p>
-<p><strong>原问题就是站在运营商的角度考虑</strong>：找出最优的传输方案<span class="math inline">\(P^*\)</span>使得传输总成本<span class="math inline">\(\sum_{i,j}C_{ij}P_{ij}\)</span>最小。</p>
-<p>假设这个运营商外包给了一个供应商，供应商只需要给每个仓库和工厂定价：单位质量的商品第<span class="math inline">\(i\)</span>个仓库收取<span class="math inline">\(f_i\)</span>的费用，第<span class="math inline">\(j\)</span>个工厂收取<span class="math inline">\(g_j\)</span>的费用。</p>
-<p>供应商不能随便定价，供应商在定价过程中需要保证所有<span class="math inline">\(f_i+g_j \le
-C_{ij}\)</span>，一旦超过这个价格，那在某些路径上运营商就要付出额外的价格，还不如自己运呢。</p>
-<p>所以对偶问题就是站在供应商的角度来考虑：在<span class="math inline">\(f_i+g_j \le C_{ij}\)</span>的情况下希望收费<span class="math inline">\(\langle f,a \rangle + \langle g,b
-\rangle\)</span>最大。</p>
-<h2 id="互补松弛条件">互补松弛条件</h2>
-<p>考虑原问题的最优解<span class="math inline">\(P^*\)</span>和对偶问题最优对<span class="math inline">\((f^*,g^*)\)</span>的关系，并且证明他们满足互补松弛条件</p>
-<p>设<span class="math inline">\(\bar z\)</span>为原问题的最优解，<span class="math inline">\(\underline
-z\)</span>为对偶问题的最优解，先证明<strong>弱对偶性</strong>满足，即<span class="math inline">\(\bar z \ge \underline z\)</span></p>
-<p>首先对原始问题进行一下改写，把决策变量<span class="math inline">\(P\)</span>“拉直”为<span class="math inline">\(p\)</span>： <span class="math display">\[
-P\in \mathbb R^{n \times m}\in U(a,b) \iff p \in \mathbb R^{nm}_+,Ap=
-\begin{bmatrix}
-   a  \\
-   b
-\end{bmatrix}
-\]</span> 其中 <span class="math display">\[
-A=
-\begin{bmatrix}
-   1^T_n \otimes I_m  \\
-   I_n \otimes1^T_m
-\end{bmatrix},A \in \mathbb R^{(n+m)\times nm}
-\]</span> 定义<span class="math inline">\(c\)</span>也为成本矩阵对应的展平形式，则原始问题的拉格朗日函数：
-<span class="math display">\[
-H(h)=\underset{p\in \mathbb R^{nm}_+}{\min}(c^Tp-h^T(Ap-q))
-\]</span> 其中<span class="math inline">\(q=\begin{bmatrix}
-   a  \\
-   b
-\end{bmatrix}\)</span>。这是一个松弛问题，因为约束<span class="math inline">\(Ap=q\)</span>被软化为罚函数形式。对于原问题的最优解<span class="math inline">\(p^*\)</span>，对于任何<span class="math inline">\(h\)</span>，有： <span class="math display">\[
-H(h)\le c^T p^*-h^T(Ap^*-q)=c^T p^*=\bar z
-\]</span> 当<span class="math inline">\(h\)</span>满足对偶可行性(<span class="math inline">\(A^Th\le c\)</span>)时，对偶问题的目标值<span class="math inline">\(h^Tq\)</span>是拉格朗日函数的下界。</p>
-<p>因此结合上式： <span class="math display">\[
-\underline z=\underset{h,A^Th \le c}{\max}h^Tq\le
-\underset{h}{\max}h^Tq+\underset{p\in \mathbb
-R^{mn}_+}{\min}(c^T-h^TA)p=\underset{h\in \mathbb R^{n+m}}{\max}H(h)\le
-c^T p^*=\bar z
-\]</span>
-这表明对偶问题的最优值不超过原始问题的最优值，从而证明了弱对偶性。</p>
-<p>可以证明强对偶性也是满足的，证明过程需要slater条件。</p>
-<p>对于连续型，也是有如下定理保证了强对偶性：</p>
-<blockquote>
-<p>设<span class="math inline">\(\mu\)</span>和<span class="math inline">\(\nu\)</span>是定义在完备可分度量空间<span class="math inline">\(X\)</span>和<span class="math inline">\(Y\)</span>上的概率测度，<span class="math inline">\(c:X\times Y \to \mathbb
-R_+\)</span>是一个可测函数，那么： <span class="math display">\[
-\underset{\pi\in\Pi(\mu,\nu)}{\inf}\int_{X\times Y}c \, d\pi =
-\underset{(\varphi,\psi)}{\sup}\lbrack \int_X \varphi \, d\mu + \int_Y
-\psi \, d\nu \rbrack
-\]</span></p>
-</blockquote>
-<p>最优化理论告诉我们，如果强对偶性满足，那么我们可以使用KKT中的经典的互补松弛条件得到：
-<span class="math display">\[
-P^*(x,y)(f^*(x)+g^*(y)-c(x,y))=0
-\]</span></p>
-<p>这就是原问题的最优解<span class="math inline">\(P^*\)</span>和对偶问题最优对<span class="math inline">\((f^*,g^*)\)</span>的关系。即在支撑集上<span class="math inline">\(P^*&gt;0\)</span>，对偶问题的最优函数永远满足<span class="math inline">\(f^*(x)+g^*(y)=c(x,y)\)</span></p>
-<h2 id="c-变换">c-变换</h2>
-<p>现在我们知道对偶问题两个函数的一个很重要的性质，就是在<span class="math inline">\(P^*\)</span>支撑集上有<span class="math inline">\(f^*(x)+g^*(y)=c(x,y)\)</span></p>
-<p>下面假设这个函数对不是最优的，如果我们固定了<span class="math inline">\(f(x)\)</span>，能否得到一个“最好”的<span class="math inline">\(g(y)\)</span>使得对偶问题的目标函数尽可能大？c-变换就回答了这个问题</p>
-<p>因为 <span class="math display">\[
-f(x)+g(y)\le c(x,y)\\
-\iff g(y)\le c(x,y)-f(x)\\
-\iff g(y)\le \underset{x}{\inf} \{c(x,y)-f(x)\}
-\]</span> 而<span class="math inline">\(f(x)\)</span>已经固定，我们希望<span class="math inline">\(\int g(y) \, d\beta(y)\)</span>越大越好，所以<span class="math inline">\(g(y)\)</span>越大越好，自然就得到了一个“最好的”函数：
-<span class="math display">\[
-\bar f(y)=\underset{x}{\inf}\{c(x,y)-f(x)\}
-\]</span> 这个<span class="math inline">\(\bar f(y)\)</span>就叫做<span class="math inline">\(f\)</span>的c-变换</p>
-<p>如果一个函数<span class="math inline">\(f\)</span>可以写成某个<span class="math inline">\(g\)</span>的c-变换，那么就称<span class="math inline">\(f\)</span>是c-凹的</p>
-<p><strong>注</strong>：对偶问题的最优解<span class="math inline">\((f^*,g^*)\)</span>一定是c-凹的。否则令另一个是其c-变换，目标函数变大，矛盾。</p>
-<p>下面定理还保证了最优对的存在性： &gt;设<span class="math inline">\(\mu\)</span>和<span class="math inline">\(\nu\)</span>是<span class="math inline">\(X\)</span>和<span class="math inline">\(Y\)</span>上的概率测度使得 <span class="math display">\[
-\int_{X\times Y}c(x,y) \, d\mu(x) \, d\nu(y)&lt;\infty
-\]</span> 则对偶 Kantorovich 问题存在一个最优对<span class="math inline">\((\varphi,\psi)\)</span>且<span class="math inline">\(\bar \varphi = \psi\)</span>，<span class="math inline">\(\bar \psi=\varphi\)</span>几乎处处成立。</p>
-<h2 id="kantorovichrubinstein定理">Kantorovich–Rubinstein定理</h2>
-<p>虽然对偶问题要求两个函数<span class="math inline">\(f,g\)</span>
-，但通过c-transform可以将这两个函数“联系”起来，对偶问题从 <span class="math display">\[
-\underset{(f,g)\in R(c)}{\sup}\int_X f \, d\mu + \int_Y g \, d\nu
-\]</span> 变为 <span class="math display">\[
-\underset{f}{\sup}\int_X f \, d\mu + \int_Y \bar f \, d\nu
-\]</span> 我们可以证明，如果在度量空间<span class="math inline">\(X=Y\)</span>上，<span class="math inline">\(d(x,y)\)</span>是度量，且<span class="math inline">\(c(x,y)=d(x,y)\)</span>。如果<span class="math inline">\(f=\bar g\)</span>是一组c-变换，那么<span class="math inline">\(f\)</span>是d-Lipschitz的。</p>
-<p>证明如下： <span class="math display">\[
-f(z)=\underset{y}{\inf} \lbrace d(z,y)-g(y) \rbrace \le
-\underset{y}{\inf} \lbrace d(z,x)+d(x,y)-g(y) \rbrace=f(x)+d(z,x)
-\]</span> 互换<span class="math inline">\(z,x\)</span>即得到<span class="math inline">\(|f(x)-g(z)|\le d(x,z)\)</span></p>
-<p>然后我们可以继续证明，如果<span class="math inline">\(f\)</span>是d-Lipschitz的，那么其c-变换<span class="math inline">\(\bar f = -f\)</span>： &gt;令<span class="math inline">\(x=y\)</span>，有<span class="math inline">\(\bar
-f(x)=\underset{x}{\inf}\{d(x,x)-f(x)\}\le -f(x)\)</span>，又因为<span class="math inline">\(f\)</span>是d-Lipschitz的。所以<span class="math inline">\(\bar f(y)=\underset{x}{\inf}\{d(x,y)-f(x)\}\ge
--f(y)\)</span>。所以<span class="math inline">\(\bar f=-f\)</span></p>
-<p>综上，结合强对偶性，我们有 <span class="math display">\[
-\underset{\pi\in U(a,b)}{\inf}\int_{X^2}d(x,y)\,
-d\pi=\underset{f}{\sup}\int_X f \, d\mu + \int_X \bar f \, d\nu =
-\underset{\lVert f \rVert_{\text{Lip}}\le 1}{\sup}\int_X f \, d\mu -
-\int_X  f \, d\nu
-\]</span> 其中，<span class="math inline">\(\lVert f
-\rVert_{\text{Lip}}=\underset{x \not = y}{\sup}\frac {\lVert
-f(x)-f(y)\rVert}{d(x,y)}\)</span></p>
-<p>我们现在得到了一个非常好非常好的结论：当成本函数是一个度量的时候，对偶问题可以变成上面的形式，我们只需要求解一个d-Lipschitz函数就可以了。</p>
-]]></content>
-      <categories>
-        <category>学习笔记</category>
-      </categories>
-      <tags>
-        <tag>最优化</tag>
-        <tag>最优运输</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Solving electrical impedance tomography with deep learning  Networks</title>
-    <url>/2025/03/17/Solving-electrical-impedance-tomography-with-deep-learning/</url>
-    <content><![CDATA[<h1 id="solving-electrical-impedance-tomography-with-deep-learning-networks">Solving
-electrical impedance tomography with deep learning Networks</h1>
-<p>期刊：Journal of Computational Physics</p>
-<p>时间：November 2019</p>
-<h2 id="摘要">摘要</h2>
-<p>本文介绍了一种利用深度神经网络解决电阻抗层析成像(EIT)问题的新方法。EIT的数学问题是从Dirichlet-to-Neumann(DtN)映射反演电导率。电导率到DtN映射的正向映射和反向映射都是高维非线性的。受正向映射的线性扰动分析的启发，基于数值低秩特性，我们提出了2D和3D问题的正向和反向映射的紧致神经网络结构。数值结果表明了所提出的神经网络的有效性。
-<span id="more"></span></p>
-<h2 id="介绍">介绍</h2>
-<p>电阻抗层析成像(Electrical Impedance
-Tomography，EIT)是通过在物体边界处进行电压和电流测量来确定未知介质电导率分布的问题。作为一种无辐射成像技术，EIT可以重复、非侵入地测量物体的区域变化；因此，它已被用作重症医学中多种应用的监测工具，如监测通气分布[52]、评估肺过度扩张[41]和检测气胸[18]，以及许多工业应用[53]。</p>
-<h3 id="背景">背景</h3>
-<p>EIT数学公式的核心是Dirichlet-to-Neumann（DtN）映射，它是椭圆偏微分方程分析中的关键对象，在经典
-Calderón 问题中起着重要作用 [14,50,8]</p>
-<p>EIT的控制方程，或等效的逆电导率问题，是 <span class="math display">\[
-\begin{array}{cl}
--\operatorname{div}(\gamma(x) \nabla \phi(x))=0, &amp; \text { in }
-\Omega \subset \mathbb{R}^d, \\
-\phi(x)=\psi(x), &amp; \text { on } \partial \Omega,  \qquad(1.1)
-\end{array}
-\]</span></p>
-<p>其中 是<span class="math inline">\(\Omega\)</span>有界Lipschitz域，<span class="math inline">\(\phi(x)\)</span>是电压，<span class="math inline">\(\gamma(x)&gt;0\)</span>是电导率分布，<span class="math inline">\(\psi(x)\)</span>是施加在边界上的电压。相应的DtN映射由
-<span class="math display">\[
-\Lambda_\gamma: H^{\frac{1}{2}}(\partial \Omega) \rightarrow
-H^{-\frac{1}{2}}(\partial \Omega),\left.\left.\quad
-\psi(x)\right|_{\partial \Omega} \rightarrow \gamma(x) \frac{\partial
-\phi(x)}{\partial n(x)}\right|_{\partial \Omega}
-\]</span></p>
-<p>其中<span class="math inline">\(n(x)\)</span>是外法向量。这里<span class="math inline">\(H^{\frac{1}{2}}(\partial \Omega)\)</span>是<span class="math inline">\(L^2(\partial \Omega)\)</span>函数的空间，它是<span class="math inline">\(H^1(\Omega)\)</span>中函数的轨迹，<span class="math inline">\(H^{-\frac{1}{2}}(\partial
-\Omega)\)</span>是它的对偶。我们建议读者阅读 [48]
-以了解有关DtN映射的更多详细信息</p>
-<p>一个密切相关的逆电导率问题涉及零能量时Schrödinger方程的DtN映射
-[48]，其形式如下 <span class="math display">\[
-\begin{aligned}
-(-\Delta+\eta(x)) u(x)=0, &amp; \text { in } \Omega \\
-u(x)=f(x), &amp; \text { on } \partial \Omega
-\end{aligned}    \qquad(1.2)
-\]</span></p>
-<p>然后，Schrödinger方程的DtN映射由下式定义</p>
-<p><span class="math display">\[
-\Lambda_\eta: H^{\frac{1}{2}}(\partial \Omega) \rightarrow
-H^{-\frac{1}{2}}(\partial \Omega),\left.\left.\quad
-f(x)\right|_{\partial \Omega} \rightarrow \frac{\partial u(x)}{\partial
-n(x)}\right|_{\partial \Omega} \qquad(1.3)
-\]</span></p>
-<p><span class="math inline">\(\Lambda_\eta\)</span>和<span class="math inline">\(\Lambda_\gamma\)</span>这两个DtN映射密切相关。如果<span class="math inline">\(\phi\)</span>是(1.1)的解，那么<span class="math inline">\(u=\sqrt{\gamma} \phi\)</span>是(1.2)
-的解，其中<span class="math inline">\(\eta=\frac{\Delta
-\sqrt{\gamma}}{\sqrt{\gamma}}\)</span>且 <span class="math inline">\(f=\sqrt{\gamma} \psi\)</span>。此外，<span class="math inline">\(\Lambda_\eta=\gamma^{-1 / 2} \Lambda_\gamma
-\gamma^{-1 / 2}+\frac{1}{2 \gamma} \frac{\partial \gamma}{\partial
-n}\)</span>。实际上，<span class="math inline">\(\Lambda_\eta\)</span>和<span class="math inline">\(\Lambda_\gamma\)</span>这两个映射携带相同的信息，并且可以相互确定[48]。本文将重点介绍Schrödinger方程的DtN映射<span class="math inline">\(\Lambda_\eta\)</span>。所有结果都可以毫无困难地扩展到
-DtN 映射<span class="math inline">\(\Lambda_\gamma\)</span>。</p>
-<p>由于DtN映射<span class="math inline">\(\Lambda_\eta\)</span>对于固定<span class="math inline">\(\eta\)</span>是线性的 [8]，因此对 <span class="math inline">\(r, s \in \partial
-\Omega\)</span>，存在一个分布核<span class="math inline">\(\lambda_\eta(r, s)\)</span>使得 <span class="math display">\[
-\left(\Lambda_\eta f\right)(r)=\frac{\partial u}{\partial
-n}(r)=\int_{\partial \Omega} \lambda_\eta(r, s) f(s) \mathrm{d} S(s)
-\qquad(1.4)
-\]</span></p>
-<p>DtN 映射的正向问题是，给定<span class="math inline">\(\eta(x)\)</span>，求解核<span class="math inline">\(\lambda_\eta(r, s)\)</span>，即<span class="math inline">\(\eta \rightarrow \lambda_\eta\)</span>。</p>
-<p>逆问题的任务是在<span class="math inline">\(\Omega\)</span>中根据观测数据恢复<span class="math inline">\(\eta(x)\)</span>，观测数据通常是Dirichlet边界条件<span class="math inline">\(f\)</span> 的对<span class="math inline">\(\left(f, \Lambda_\eta
-f\right)\)</span>和相应的Neumann数据<span class="math inline">\(\Lambda_\eta
-f\)</span>的集合。在假设Dirichlet边界条件被充分采样的情况下，可以假设核<span class="math inline">\(\lambda_\eta\)</span>是已知的，因此，逆问题是从<span class="math inline">\(\lambda_\eta\)</span>恢复<span class="math inline">\(\eta\)</span>，即<span class="math inline">\(\lambda_\eta \rightarrow \eta\)</span>。由于 <span class="math inline">\(\left.\lambda_\eta(r, s)\right|_{r, s \in \partial
-\Omega}\)</span>是<span class="math inline">\(2(d-1)\)</span>个变量的函数，而<span class="math inline">\(\eta(x)\)</span>是<span class="math inline">\(d\)</span>个变量的函数，因此如果<span class="math inline">\(d=1\)</span>，则由于简单的维度计数，逆问题无法解决。对于
-<span class="math inline">\(d \geq
-2\)</span>，原则上，逆问题的解存在并且在某些条件下是唯一的
-[51]。然而，由于EIT的椭圆性质，即使对于<span class="math inline">\(d
-\geq 2\)</span>，逆问题也是严重的病态[2-4,12]</p>
-<p>正向和逆向问题的数值解可能具有挑战性。前向问题是从<span class="math inline">\(d\)</span>维函数到<span class="math inline">\(2(d-1)\)</span>维函数的映射。对于3D问题，计算和表示固定<span class="math inline">\(\eta\)</span>的整个DtN映射<span class="math inline">\(\Lambda_\eta\)</span>可能非常昂贵。对于逆问题，由于条件不良，逆映射<span class="math inline">\(\Lambda_\eta \rightarrow
-\eta\)</span>在数值上不稳定[2-4,12]。为了避免不稳定，通常需要一个依赖于正则化项来稳定逆问题，例如，参见
-[30,16,33]。从算法上讲，逆问题通常使用迭代方法 [30,27,11,12]
-来解决，这通常需要大量的迭代。</p>
-<p>在过去的几年里，深度神经网络（DNN）在计算机视觉、图像处理、语音识别和许多其他人工智能应用中取得了巨大成功
-[31,37,26,43,39,47,38,46]。最近，基于DNN的方法也被应用于求解偏微分方程
-[34,9,28,23,22,6,44,21,36]。这些尝试可分为两类。第一类[45,15,28,35,20]旨在表示具有DNN的高维偏微分方程的解（而不是有限元和有限差分法等经典方法）。第二类[42,29,34,23,22,21,36,40,7]处理参数化的PDE问题，并使用DNN来表示从PDE的高维参数到PDE解的映射。</p>
-<h3 id="贡献">贡献</h3>
-<p>深度神经网络在用于解决正向和逆向问题时具有多个优势。对于前向问题，由于新颖的软件和硬件架构可以快速将神经网络应用于输入数据，因此当用
-DNN
-表示前向映射时，可以显著加速前向问题。对于逆问题，解算法和正则化项的选择是两个关键问题。幸运的是，深度神经网络可以在这两个方面提供帮助。首先，关于求解算法，由于其在表示高维函数方面的灵活性，DNN
-可能用于近似完整的逆映射，从而避免迭代求解过程。其次，关于正则化术语，机器学习的最新研究表明，DNN
-通常可以自动从数据中提取特征，并提供数据驱动的正则化。</p>
-<p>本文通过使用一种新颖的神经网络架构表示从<span class="math inline">\(\Lambda_\eta\)</span>到<span class="math inline">\(\eta\)</span>的逆映射，将深度学习方法应用于EIT问题。<strong>新架构的动机来自对EIT问题的正向映射和逆映射的线性近似的扰动分析</strong>。分析表明，在重参数化DtN映射<span class="math inline">\(\Lambda_\eta\)</span>后，<span class="math inline">\(\eta\)</span>和<span class="math inline">\(\Lambda_\eta\)</span>之间的映射在局部数值上是低秩的。这个观察使我们能够将<span class="math inline">\(d\)</span>维<span class="math inline">\(\eta\)</span>和<span class="math inline">\(2（d −
-1）\)</span>维<span class="math inline">\(\Lambda_\eta\)</span>之间的映射简化为两个（准）<span class="math inline">\(（d −
-1）\)</span>维函数之间的映射。作为平移不变性和全局性的，这个新映射用最近提出的
-BCR-Net[10]表示，它是一个基于小波分解的非标准形式的多尺度神经网络。这种神经网络架构用于近似正向映射和反向映射。对于正在考虑的测试问题，由于BCR-Net的降维和紧凑的结构，最后的神经网络在2D情况下只有<span class="math inline">\(10^4 ∼ 10^5\)</span>个参数，在3D情况下只有<span class="math inline">\(10^5 ∼
-10^6\)</span>个参数。相当少量的参数允许在相当有限的数据集上进行训练，这通常是
-EIT 问题的情况。</p>
-<h3 id="文章架构">文章架构</h3>
-<p>本文的其余部分概述如下。第2节研究了DtN映射的数学背景。第 3
-节讨论了2D情况下正向映射和逆向映射的DNN的设计和架构，以及数值测试。结果扩展到第4节中的3D情况。</p>
-<h2 id="dtn映射的数学分析">DtN映射的数学分析</h2>
-<p>本节总结了DtN映射的必要数学背景。让我们用<span class="math inline">\(\mathcal{G} f(x)=\int_{\Omega} G(x, y) f(y)
-\mathrm{d} y\)</span>表示 <span class="math inline">\(\mathcal{L}=-\Delta+\eta\)</span>和<span class="math inline">\(\mathcal{G}=\mathcal{L}^{-1}\)</span>，其中<span class="math inline">\(G\)</span>是运算符<span class="math inline">\(\mathcal{L}\)</span>的Green函数，具有Dirichlet边界条件。散度定理的应用表明</p>
-<p><span class="math display">\[
-0=\int_{\partial \Omega} \frac{\partial u}{\partial n(y)}(y) G(x, y)
-\mathrm{d} S(y)=\int_{\Omega} \operatorname{div}_y\left(\nabla_y u(y)
-\cdot G(x, y)\right) \mathrm{d} y=\int_{\Omega}\left(\Delta_y u \cdot
-G+\nabla_y G \nabla_y u\right) \mathrm{d} y \qquad(2.1)
-\]</span></p>
-<p>类似地，将散度定理第二次应用于上述结果会导致</p>
-<p><span class="math display">\[
-\begin{aligned}
-\int_{\partial \Omega} \frac{\partial G}{\partial n(y)}(x, y) f(y)
-\mathrm{d} S(y) &amp; =\int_{\Omega} \operatorname{div}_y\left(\nabla_y
-G(x, y) \cdot u(y)\right) \mathrm{d} y \\
-&amp; =\int_{\Omega}\left(\Delta_y G(x, y) \cdot u(y)+\nabla_y G(x, y)
-\nabla_y u(y)\right) \mathrm{d} y \\
-&amp; =\int_{\Omega}\left(\Delta_y G(x, y) \cdot u(y)-\Delta_y u(y)
-\cdot G(x, y)\right) \mathrm{d} y \\
-&amp; =\int_{\Omega}\left(-\left(-\Delta_y+\eta(y)\right) G(x, y) \cdot
-u(y)+\left(-\Delta_y+\eta(y)\right) u(y) \cdot G(x, y)\right) \mathrm{d}
-y \\
-&amp; =-u(x)
-\end{aligned} \qquad(2.2)
-\]</span></p>
-<p>这里最后一个相等利用的事实是<span class="math inline">\(G\)</span>是<span class="math inline">\(\mathcal{L}=-\Delta+\eta\)</span>的Green函数，<span class="math inline">\(u\)</span>是(1.2)的解。对 <span class="math inline">\(x \in \partial \Omega\)</span>取(2.2)的两条边关于
-<span class="math inline">\(n(x)\)</span>的法向导数，得到 <span class="math display">\[
-\frac{\partial u}{\partial n}(x)=-\int_{\partial \Omega}
-\frac{\partial^2 G}{\partial n(x) n(y)}(x, y) f(y) \mathrm{d} S(y),
-\quad x \in \partial \Omega \qquad(2.3)
-\]</span> 它用格林函数G描述了DtN映射<span class="math inline">\(\Lambda_\eta(\psi)\)</span>的核:</p>
-<p><span class="math display">\[
-\lambda_\eta(r, s)=-\frac{\partial^2 G}{\partial n(r) n(s)}(r, s), \quad
-r, s \in \partial \Omega  \qquad(2.4)
-\]</span></p>
-<p>为避免混淆，我们用<span class="math inline">\(r,
-s\)</span>来表示边界上的点，用<span class="math inline">\(p,
-q\)</span>来表示域中的点。</p>
-<p>为了理解 DtN 映射如何取决于电位<span class="math inline">\(\eta\)</span>，我们对<span class="math inline">\(\eta&gt;0\)</span>接近固定<span class="math inline">\(\eta_0\)</span>的<span class="math inline">\(\eta\)</span>到<span class="math inline">\(\lambda_\eta\)</span>的映射进行了扰动分析。为简单起见，假设<span class="math inline">\(\eta_0=0\)</span>。让我们引入<span class="math inline">\(\mathcal{E}=-\eta \mathcal{I}\)</span>，其中<span class="math inline">\(\mathcal{I}\)</span>是恒等运算符，<span class="math inline">\(\mathcal{L}_0=-\Delta\)</span>，<span class="math inline">\(\mathcal{G}_0=\mathcal{L}_0^{-1}\)</span>（核用<span class="math inline">\(G_0\)</span>表示）作为<span class="math inline">\(\mathcal{L}_0\)</span>的格林函数，具有Dirichlet边界条件。当<span class="math inline">\(\eta&gt;0\)</span>足够小时，<span class="math inline">\(\mathcal{G}\)</span>可以通过Neumann级数展开</p>
-<p><span class="math display">\[
-\mathcal{G}=\left(\mathcal{L}_0-\mathcal{E}\right)^{-1}=\mathcal{G}_0+\mathcal{G}_0
-\mathcal{E} \mathcal{G}_0+\mathcal{G}_0 \mathcal{E} \mathcal{G}_0
-\mathcal{E} \mathcal{G}_0+\ldots \qquad(2.5)
-\]</span></p>
-<p>通过引入<span class="math inline">\(\lambda_0(r,
-s)=\left.\lambda_\eta(r,
-s)\right|_{\eta=\eta_0}\)</span>，可以通过了解背景情况<span class="math inline">\(\eta=\eta_0\)</span>来计算，相当于关注差值<span class="math inline">\(\lambda_\eta-\lambda_0\)</span>（通常称为差值成像，详见
-[13]），这也是<span class="math inline">\(\mathcal{G}-\mathcal{G}_0\)</span>的核。对于足够小的<span class="math inline">\(\eta\)</span>，运算符<span class="math inline">\(\mathcal{G}-\mathcal{G}_0\)</span>可以用它的第一项<span class="math inline">\(\mathcal{G}_0 \mathcal{E}
-\mathcal{G}_0\)</span>来近似，它在<span class="math inline">\(\mathcal{E}\)</span>中是线性的。利用<span class="math inline">\(\mathcal{E}=-\eta
-\mathcal{I}\)</span>的事实，得出以下差值 DtN 映射的近似值<span class="math inline">\(\mu\)</span>，</p>
-<p><span class="math display">\[
-\mu(r, s):=\left(\lambda_\eta-\lambda_0\right)(r,
-s)=-\frac{\partial^2\left(G-G_0\right)}{\partial n(r) \partial n(s)}(r,
-s) \approx \int_{\Omega}\left(\frac{\partial G_0}{\partial n(r)}(r, p)
-\frac{\partial G_0}{\partial n(s)}(p, s)\right) \eta(p) \mathrm{d} p
-\qquad(2.6)
-\]</span> <strong>它是NN体系结构设计的动机</strong>。</p>
-<h2 id="用于2d情况的神经网络">用于2D情况的神经网络</h2>
-<p>考虑域<span class="math inline">\(\Omega=[0,1] \times[-Z,
-Z]\)</span>，其中<span class="math inline">\(Z\)</span>是一个固定常数。为简单起见，在左边界和右边界处指定了周期性边界条件。如图1.所示，电极只能放置在顶部边界（单侧检测）或顶部和底部边界（双面检测）上。对于单边检测，为简单起见，假设底部为零Dirichlet边界条件，但其他边界条件也相关。在下文中，我们将首先考虑用于单边检测的正向映射和反向映射。然后，该架构扩展到双边检测案例。</p>
-<p>在大多数EIT问题中，电导率在域边界附近是已知的。这意味着存在一个常数<span class="math inline">\(\delta&gt;0\)</span>，使得 <span class="math inline">\(\eta(p)\)</span>支撑在<span class="math inline">\([0,1] \times[-(Z-\delta), Z-\delta]\)</span>。</p>
-<figure>
-<img src="/2025/03/17/Solving-electrical-impedance-tomography-with-deep-learning/1.jpg" alt="image">
-<figcaption aria-hidden="true">image</figcaption>
-</figure>
-<h3 id="单边检测的前向映射">单边检测的前向映射</h3>
-<p>对于单边检测，DtN映射限制在顶部边界。设<span class="math inline">\(r=\left(r_1, Z\right), s=\left(s_1,
-Z\right)\)</span>和<span class="math inline">\(p=(x,
-z)\)</span>，其中<span class="math inline">\(x\)</span>是水平坐标，<span class="math inline">\(z\)</span>是深度坐标。映射（2.6）可以重写为 <span class="math display">\[
-\mu\left(\left(r_1, Z\right),\left(s_1, Z\right)\right) \approx
-\int_{\Omega} \frac{\partial G_0}{\partial n(r)}\left(\left(r_1,
-Z\right),(x, z)\right) \frac{\partial G_0}{\partial
-n(s)}\left(\left(s_1, Z\right),(x, z)\right) \eta(x, z) \mathrm{d} x
-\mathrm{~d} z \qquad(3.1)
-\]</span></p>
-<p>注意到<span class="math inline">\(p\)</span>和<span class="math inline">\(q\)</span>用于域<span class="math inline">\(\Omega\)</span>中的点，<span class="math inline">\(r\)</span>和<span class="math inline">\(s\)</span>用于边界上的点，<span class="math inline">\(x\)</span>和<span class="math inline">\(z\)</span>用于水平和深度坐标。</p>
-<p>分析和架构设计的一个关键步骤是引入新的水平变量<span class="math inline">\(m\)</span>和<span class="math inline">\(h\)</span>，使<span class="math inline">\(r_1=m+h\)</span>和<span class="math inline">\(s_1=m-h\)</span>。用新的变量得到重参数化差值DtN映射<span class="math inline">\(\mu\)</span> <span class="math display">\[
-\mu(m, h):=\mu((m+h, Z),(m-h, Z)) \approx \int_{\Omega} K(m, h, x, z)
-\eta(x, z) \mathrm{d} x \mathrm{~d} z \qquad(3.2)
-\]</span></p>
-<p>核<span class="math inline">\(k\)</span>如下给出 <span class="math display">\[
-K(m, h, x, z):=\frac{\partial G_0}{\partial n}((m+h, Z),(x, z))
-\frac{\partial G_0}{\partial n}((m-h, Z),(x, z))  \qquad(3.3)
-\]</span></p>
-<p>其中，<span class="math inline">\(n=(0,1)\)</span> 且 <span class="math inline">\(\frac{\partial G_0}{\partial n}(\cdot,
-\cdot)\)</span>为<span class="math inline">\(G_0\)</span>在第1个变量上的方向导数。注意到<span class="math inline">\(G_0\)</span>是左边和右边带有周期边界条件，上边和下边带有Dirichlet边界条件的区域上算子<span class="math inline">\(-\Delta\)</span>的Green函数，我们可以将<span class="math inline">\(G_0\)</span>显式地写成[25] <span class="math display">\[
-G_0(p, q)=\sum_{\ell \in
-\mathbb{Z}^2}\left(\Gamma\left(p-q+\left(\ell_1, 2 \ell_2
-Z\right)\right)-\Gamma\left(p-q^*+\left(\ell_1, 2 \ell_2
-Z\right)\right)\right) \qquad(3.4)
-\]</span></p>
-<p>式中 <span class="math inline">\(q^*=\left(q_1, 2
-Z+q_2\right)\)</span>为算子<span class="math inline">\(-\Delta\)</span>在整个空间<span class="math inline">\(\mathbb{R}^2\)</span>上的格林函数。由于当<span class="math inline">\(\eta=\eta_0\)</span>时，Green函数<span class="math inline">\(G_0\)</span>在水平方向上是平移不变的， <span class="math display">\[
-\frac{\partial G_0}{\partial n}((m \pm h, Z),(x, z))=\frac{\partial
-G_0}{\partial n}(( \pm h, Z),(x-m, z)) \qquad(3.5)
-\]</span></p>
-<p>对于其余的讨论，可以方便地将<span class="math inline">\(h\)</span>和<span class="math inline">\(z\)</span>作为参数进行处理和引入 <span class="math display">\[
-\begin{array}{ll}
-\frac{\partial G_{0, \pm h, z}}{\partial n}(x-m):=\frac{\partial
-G_0}{\partial n}(( \pm h, Z),(x-m, z), &amp; \eta_z(x):=\eta(x, z) \\
-k_{h, z}(m):=\frac{\partial G_{0,+h, z}}{\partial n}(m) \frac{\partial
-G_{0,-h, z}}{\partial n}(m), &amp; \mu_h(m):=\mu(m, h)
-\end{array}
-\]</span></p>
-<p>利用新的记号，(3.2)可重新表述为 <span class="math display">\[
-\mu_h(m) \approx \int_{-Z}^Z\left(k_{h, z} * \eta_z\right)(m) \mathrm{d}
-z=\int_{-(Z-\delta)}^{Z-\delta}\left(k_{h, z} * \eta_z\right)(m)
-\mathrm{d} z \qquad(3.6)
-\]</span></p>
-<p>式中卷积作用在<span class="math inline">\(m\)</span>。最后一个等式成立的原因是考虑到<span class="math inline">\(\eta\)</span>在深度方向上被支撑于<span class="math inline">\(-(Z-\delta)\)</span>和<span class="math inline">\(Z-\delta\)</span>之间</p>
-<p><em>低秩逼近和降维</em> : 一个关键的观察是这样</p>
-<p><span class="math display">\[
-\text{the kernel} \, k_{h, z}(m) \, \text{is smooth in} \, h \,
-\text{for} \, h \in[0,1] \, \text{and} \, z \in(-(Z-\delta), Z-\delta).
-\]</span></p>
-<p>考察式(3.3)中<span class="math inline">\(K\)</span>的定义可知，<span class="math inline">\(k_{h, z}(m)\)</span>仅在<span class="math inline">\(z=Z\)</span>时奇异，因此，对于<span class="math inline">\(h \in[0,1], m \in[0,1]\)</span>，和z<span class="math inline">\(z \in(-(Z-\delta), Z-\delta)\)</span>，核<span class="math inline">\(k_{h, z}(m)\)</span>是一致光滑的。<span class="math inline">\(h\)</span>和<span class="math inline">\(z\)</span>变量中的光滑性表明，<span class="math inline">\(k_{h, z}(m)\)</span>在<span class="math inline">\(h\)</span>和<span class="math inline">\(z\)</span>中可以通过少量项的近似方案得到很好的近似。为简化讨论，不失一般性地假设采用稳定的插值方案(如切比雪夫插值)。通过将<span class="math inline">\(h\)</span>变量和<span class="math inline">\(z\)</span>变量的插值点集分别记为<span class="math inline">\(\{\hat{h}\}\)</span>和<span class="math inline">\(\{\hat{z}\}\)</span>，这样的插值为 <span class="math display">\[
-k_{h, z}(m) \approx \sum_{\hat{h}} \sum_{\hat{z}} R_{h, \hat{h}}
-k_{\hat{h}, \hat{z}}(m) R_{z, \hat{z}} \qquad(3.7)
-\]</span></p>
-<p>其中<span class="math inline">\(R_{h, \hat{h}}\)</span>和<span class="math inline">\(R_{z, \hat{z}}\)</span>分别是<span class="math inline">\(h\)</span>和<span class="math inline">\(z\)</span>变量的插值算子.</p>
-<p>这种对<span class="math inline">\(k_{h,
-z}\)</span>的近似自然隐含了对(3.6)式的近似。</p>
-<p><span class="math display">\[
-\mu_h(m) \approx \sum_{\hat{h}} R_{h, \hat{h}}\left(\sum_{\hat{z}}
-k_{\hat{h}, \hat{z}} *\left(\int_{-(Z-\delta)}^{Z-\delta} R_{z, \hat{z}}
-\eta_z \mathrm{~d} z\right)\right)(m) \qquad(3.8)
-\]</span></p>
-<p>从算法上讲，<strong>这种近似允许将前向映射分解为三个步骤</strong>：
-1. 将二维函数<span class="math inline">\(\eta_z=\eta(x,
-z)\)</span>压缩为一维函数的集合</p>
-<p><span class="math display">\[
-\tilde{\eta}_{\hat{z}}(x):=\int_{-(z-\delta)}^{z-\delta} R_{z, \hat{z}}
-\eta_z(x) \mathrm{d} z
-\]</span></p>
-<ol start="2" type="1">
-<li>与k<span class="math inline">\(k_{\hat{h},
-z}\)</span>在一维空间中卷积得到</li>
-</ol>
-<p><span class="math display">\[
-\tilde{\mu}_{\hat{h}}(m):=\left(\sum_{\hat{z}} k_{\hat{h}, \hat{z}} *
-\tilde{\eta}_{\hat{z}}\right)(m)
-\]</span></p>
-<ol start="3" type="1">
-<li>将一维函数集合<span class="math inline">\(\tilde{\mu}_{\hat{h}}(m)\)</span>插值为二维函数</li>
-</ol>
-<p><span class="math display">\[
-\mu_h(m)=\sum_{\hat{h}} R_{h, \hat{h}} \tilde{\mu}_{\hat{h}}(m)
-\]</span></p>
-<p>这有效地将前向映射减少到若干个1D卷积。在(3.8)中的这种降维是神经网络构造的基础。</p>
-<p><strong>备注1.</strong> 可以去掉<span class="math inline">\(\eta(p)\)</span>支撑在在<span class="math inline">\([0,1] \times[-(Z-\delta),
-Z-\delta]\)</span>的假设.实际上，我们可以用<span class="math inline">\(\delta \ll Z\)</span>将<span class="math inline">\([-Z, Z]\)</span>分成三个区间<span class="math inline">\([-Z,-(Z-\delta)],[-(Z-\delta),
-Z-\delta]\)</span>和<span class="math inline">\([Z-\delta,
-Z]\)</span>，然后逐个研究限制在每个区间上的核<span class="math inline">\(k_{h, z}(m)\)</span>的性质.由于<span class="math inline">\(\delta \ll Z\)</span>，低秩逼近(3.8)仍然有效</p>
-<p><em>离散化</em>
-：到目前为止的分析都是在连续设定下进行的。一个简单的数值方法是用均匀的笛卡尔网格对区域<span class="math inline">\(\Omega\)</span>进行离散，拉普拉斯算子用5点中心差分格式逼近，边界上的方向导数用单边一阶差分代替。数值格林函数定义为零边界条件离散拉普拉斯算子的逆。令<span class="math inline">\(N_r\)</span>为电极的个数。通过求解(1.2) <span class="math inline">\(N_r\)</span>次来评估DtN图，每次将<span class="math inline">\(f ( x
-)\)</span>设置为一个电极处的delta函数。在稍微滥用表示法的情况下，用相同的字母表示连续核及其离散化。(3.8)的离散版本:
-<span class="math display">\[
-\mu_h(m) \approx \sum_{\hat{h}} R_{h, \hat{h}}\left(\sum_{\hat{z}}
-k_{\hat{h}, \hat{z}} *\left(\sum_z R_{z, \hat{z}}
-\eta_z\right)\right)(m) \qquad(3.9)
-\]</span></p>
-<p>神经网络架构。微扰分析表明，当<span class="math inline">\(\eta&gt;0\)</span>充分小时，前向映射<span class="math inline">\(\eta \rightarrow
-\mu\)</span>可以用(3.9)式近似。具体来说，计算(3.9)的三个步骤可以自然地表示为一个具有三个模块的神经网络：
-- 编码模块将二维数据<span class="math inline">\(\eta\)</span>压缩为一组一维数据<span class="math inline">\(\tilde{\eta}_{\hat{z}}\)</span> - 将<span class="math inline">\(k_{\hat{h}, \hat{z}}\)</span>与一维数据<span class="math inline">\(\tilde{\eta}_{\hat{z}}\)</span>卷积得到<span class="math inline">\(\tilde{\mu}_{\hat{h}}\)</span>的中间模块 -
-一个将一维数据集合<span class="math inline">\(\tilde{\mu}_{\hat{h}}\)</span>扩展到二维数据<span class="math inline">\(\mu\)</span>的解码模块</p>
-<p>当<span class="math inline">\(\eta\)</span>不能充分小时，前向映射<span class="math inline">\(\eta \rightarrow
-\mu\)</span>的线性近似是不准确的。为了将式(3.9)的神经网络扩展到非线性情况，一个直接的解决方法是包含非线性激活函数并增加层数，例如在[23、21]中。为了简单起见，我们假设集合
-<span class="math inline">\(\{\hat{z}\}\)</span>的大小<span class="math inline">\(N_{\hat{z}}\)</span>和<span class="math inline">\(\{\hat{h}\}\)</span>的大小<span class="math inline">\(N_{\hat{h}}\)</span>都等于一个常数参数<span class="math inline">\(c\)</span></p>
-<p><span class="math display">\[
-    \begin{array}{l}
-   \hline \
-   \textbf{算法1} \quad 单边检测前向映射\eta \rightarrow \mu 的神经网络
-\\
-   \hline
-   \qquad \textbf{需要：}c=N_{\hat{z}}=N_{\hat{h}}, n_{\text {cnn }} \in
-\mathbb{N}, \eta \in \mathbb{R}^{N_x \times N_z} \\
-   \qquad \textbf{确保：}\mu \in \mathbb{R}^{N_m \times N_h}\\
-   \qquad 1: \tilde{\eta} \leftarrow \text{Encoding} [c](\eta) \\
-   \qquad 2: \tilde{\mu} \leftarrow \text{BCR-Net1d} \left[c, n_{\text
-{cnn }}\right](\tilde{\eta})\\
-   \qquad 3: \mu \leftarrow
-\text{Decoding}\left[N_h\right](\tilde{\mu})\\
-   \qquad 4: \text{return} \, \mu \\
-   \hline
-\end{array}
-\]</span></p>
-<p><img src="/2025/03/17/Solving-electrical-impedance-tomography-with-deep-learning/2.png" alt="image">
-在算法1中总结了用于单边检测的前向映射的神经网络结构，并在图2中进行了说明。让我们对神经网络的这三个组成部分一一进行解释</p>
-<ul>
-<li><p>编码模块：<span class="math inline">\(\tilde{\eta}=\)</span>
-Encoding <span class="math inline">\([c](\eta)\)</span>仅在<span class="math inline">\(z\)</span>维压缩<span class="math inline">\(\eta
-\in \mathbb{R}^{N_x \times N_z}\)</span>到<span class="math inline">\(\tilde{\eta} \in \mathbb{R}^{N_x \times
-c}\)</span>。它可以用一维卷积层Conv1d实现，窗口大小为1，通道数为<span class="math inline">\(c\)</span>，取<span class="math inline">\(\eta\)</span>的第二个维度作为通道。线性激活函数对于这里使用的Conv1d层是足够的</p></li>
-<li><p>中间模块：由于(3.9)中的线性情况下的核<span class="math inline">\(k_{\hat{h},
-\mathcal{z}}\)</span>是一个卷积，它可以由一个一维卷积层Conv1d实现，其中窗口大小<span class="math inline">\(N_x\)</span>，通道数<span class="math inline">\(c\)</span>和线性激活函数。对于非线性情况，一个自然的扩展是使用多个卷积层，并在每一层后添加非线性激活函数，如整流线性单元(ReLU)函数。对于精细离散化的问题，一个窗口大小为<span class="math inline">\(N_x\)</span>的卷积层可能有很多参数。最近，一些具有更少参数的多尺度神经网络被提出作为全宽卷积层的有效替代者。实例包括[23、22]中基于层次矩阵的方法和BCR-Net
-[21]中基于层次矩阵的方法。这里，使用BCR-Net来表示中间模块。BCR-Net是基于拟微分算子的数据稀疏非标准小波表示[10]提出的。它将不同尺度下的信息分开处理，每个尺度可以理解为一个局部卷积神经网络。一维<span class="math inline">\(\tilde{\mu}=\text{ BCR-Net1d}\left[c, n_{\text
-{cnn }}\right](\tilde{\eta})\)</span>将<span class="math inline">\(\tilde{\eta} \in \mathbb{R}^{N_x \times
-c}\)</span>映射到<span class="math inline">\(\tilde{\mu} \in
-\mathbb{R}^{N_x \times
-c}\)</span>，其中每个尺度下局部卷积神经网络的通道数和层数分别为<span class="math inline">\(c\)</span>和<span class="math inline">\(n_{\mathrm{cnn}}\)</span>。读者可参见[21]，以了解BCR-Net的更多细节。</p></li>
-<li><p>解码模块：<span class="math inline">\(\mu=
-\text{Decoding}\left[N_h\right](\tilde{\mu})\)</span>将一维数据集<span class="math inline">\(\tilde{\mu} \in \mathbb{R}^{N_m \times
-c}\)</span>解码为二维数据集<span class="math inline">\(\mu \in
-\mathbb{R}^{N_m \times
-N_h}\)</span>。在实现中，该解码模块由窗口大小为1、通道数为<span class="math inline">\(N_h\)</span>、线性激活函数的一维卷积层Conv1d实现。</p></li>
-</ul>
-<h3 id="用于单边检测的逆映射">用于单边检测的逆映射</h3>
-<p>扰动分析表明，如果<span class="math inline">\(\eta\)</span>充分小，前向映射可以被很好地逼近</p>
-<p><span class="math display">\[
-\mu \approx K \eta \qquad(3.10)
-\]</span></p>
-<p>这是离散化（3.2）的运算符表示法。这里，<span class="math inline">\(\eta\)</span>是由( <span class="math inline">\(x,
-z\)</span> )索引的向量，<span class="math inline">\(\mu\)</span>是由(
-<span class="math inline">\(m, h\)</span> )索引的向量，<span class="math inline">\(K\)</span>是由( <span class="math inline">\(m,
-h\)</span> )索引的行和( <span class="math inline">\(x, z\)</span>
-)索引的列组成的矩阵.通常的滤波反投影算法[32]采用这种形式</p>
-<p><span class="math display">\[
-\eta \approx\left(K^{\top} K+\varepsilon I\right)^{-1} K^{\top} \mu
-\]</span> 其中<span class="math inline">\(\varepsilon\)</span>是一个正则化参数。</p>
-<p>在上述讨论之后，应用于<span class="math inline">\(K\)</span>的降维近似对<span class="math inline">\(K^{\top}\)</span>也是有效的 <span class="math display">\[
-\left(K^{\top} \mu\right)_z(x) \approx \sum_{\hat{z}} R_{z,
-\hat{z}}\left(\sum_{\hat{z}} k_{\hat{h}, \hat{z}} *\left(\sum_h R_{h,
-\hat{h}} \mu_h\right)\right)(x)
-\]</span></p>
-<p>因此，我们得到了一个类似的将<span class="math inline">\(K^{\top}\)</span>应用于<span class="math inline">\(\mu\)</span>的三步算法，该算法也可以表述为一个具有三个模块的神经网络：
-- 从<span class="math inline">\(\mu\)</span>编码到<span class="math inline">\(\tilde{\mu}_{\hat{h}}=\sum_h R_{h, \hat{h}}
-\mu_h\)</span></p>
-<ul>
-<li><p>卷积形成<span class="math inline">\(\tilde{\eta}_{\hat{z}}=\sum_{\hat{h}} k_{\hat{h},
-2} * \tilde{\mu}_{\hat{h}}\)</span></p></li>
-<li><p>从<span class="math inline">\(\tilde{\eta}_{\hat{z}}\)</span>解码到<span class="math inline">\(\left(K^{\top} \mu\right)_z=\sum_{\hat{z}} R_{z,
-\hat{z}} \tilde{\eta}_{\hat{z}}\)</span></p></li>
-</ul>
-<p><span class="math inline">\(\left(K^{\top} K+\varepsilon
-I\right)^{-1}\)</span>部分可以看作是对<span class="math inline">\(K^{\top} \mu\)</span>的后处理。<span class="math inline">\(K\)</span>(3.3)的定义意味着算子( <span class="math inline">\(K^{\top} K+\varepsilon I\)</span>
-)是卷积算子。作为反卷积算子，<span class="math inline">\(\left(K^{\top}
-K+\varepsilon I\right)^{-1}\)</span>也可以用卷积神经网络来实现。</p>
-<p>结合这两个组件表明，对于逆映射，合适的架构是前向映射的NN架构，然后是2d卷积神经网络。逆映射的神经网络架构在算法2中进行了概述，如图3所示。算法2中的层与算法1中的层共享相同的定义，除了CNN2d层，其定义如下。</p>
-<ul>
-<li>后处理模块：<span class="math inline">\(\eta=\mathrm{CNN} 2
-\mathrm{~d}\left[w, n_{\mathrm{cnn2}}\right](\bar{\eta})\)</span>将<span class="math inline">\(\bar{\eta} \in \mathbb{R}^{N_x \times
-N_z}\)</span>映射为<span class="math inline">\(\eta \in \mathbb{R}^{N_x
-\times N_z}\)</span>，是一个具有<span class="math inline">\(n_{\text
-{cnn2 }}\)</span>个卷积层的二维卷积神经网络，<span class="math inline">\(w\)</span>为窗口大小。ReLU被用作所有中间层的激活函数。然而，由于<span class="math inline">\(\eta\)</span>可以取任意实数，最后一层采用线性激活函数。</li>
-</ul>
-<p><span class="math display">\[
-    \begin{array}{l}
-   \hline \
-   \textbf{算法2} \quad 单边检测逆映射\eta \rightarrow \mu 的神经网络 \\
-   \hline
-   \qquad \textbf{需要：}c, w, n_{\mathrm{cnn}}, n_{\mathrm{cnn} 2} \in
-\mathbb{N}, \mu \in \mathbb{R}^{N_m \times N_h}\\
-   \qquad \textbf{确保：}\eta \in \mathbb{R}^{N_x \times N_z}\\
-   \qquad 1: \tilde{\mu} \leftarrow \text { Encoding }[c](\mu) \\
-   \qquad 2: \tilde{\eta} \leftarrow \text { BCR-Net1d }\left[c,
-n_{\text {cnn }}\right](\tilde{\mu})\\
-   \qquad 3: \bar{\eta} \leftarrow
-\operatorname{Decoding}\left[N_z\right](\tilde{\eta})\\
-   \qquad 4: \eta \leftarrow \operatorname{CNN} 2 \mathrm{~d}\left[w,
-n_{\text {cnn2 }}\right](\bar{\eta}) \\
-   \qquad 5: \text{return} \,\eta \\
-   \hline
-\end{array}
-\]</span></p>
-<figure>
-<img src="/2025/03/17/Solving-electrical-impedance-tomography-with-deep-learning/3.png" alt="image">
-<figcaption aria-hidden="true">image</figcaption>
-</figure>
-]]></content>
-      <categories>
-        <category>论文泛读</category>
-      </categories>
-      <tags>
-        <tag>EIT</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>The_Perception-Distortion_Tradeoff</title>
-    <url>/2025/03/02/The-Perception-Distortion-Tradeoff/</url>
-    <content><![CDATA[<h1 id="the-perception-distortion-tradeoff感知-失真权衡">The
-Perception-Distortion Tradeoff（感知-失真权衡）</h1>
-<p>会议： CVPR</p>
-<p>时间： 2018</p>
-<h2 id="摘要">摘要</h2>
-<p>图像复原算法通常是通过某种失真测度(例如：PSNR、SSIM、IFC、VIF)或通过量化感知质量的人类主观评分来评估的。在本文中，我们从数学上证明了失真和感知质量是相互矛盾的。具体来说，<strong>我们研究了从真实图像中正确判别图像复原算法输出的最佳概率</strong>。<strong>我们证明，随着平均扭曲的减小，这个概率必定增加(说明感知质量较差)</strong>。与通常的信念相反，这个结果对任何失真测度都是正确的，而不仅仅是PSNR或SSIM标准的问题。然而，正如我们在实验中所显示的那样，对于某些措施来说，(例如：VGG特征之间的距离)并不那么严重。我们还表明，生成对抗网络(Generative-adversarial-nets，GANs)为接近感知-失真界提供了一种原则性的方法。
-这构成了他们在低级视觉任务中观察到的成功的理论支持。基于我们的分析，我们提出了一种新的评估图像复原方法的方法，并使用它对最近的超分辨率算法进行了广泛的比较。</p>
-<span id="more"></span>
-<h2 id="介绍">介绍</h2>
-<p>在过去的几十年中，图像复原算法(例如去噪,去模糊,超分辨率等)在视觉质量和失真指标如峰值信噪比(PSNR)和结构相似性指数(SSIM)方面都取得了不断的进步[45]。然而，近年来，重建精度的提高似乎并不总是伴随着视觉质量的提高。事实上，也许是反直觉的，在感知质量方面占优势的算法，往往在例如PSNR和SSIM等方面处于劣势[22、16、6、38、51、49]。这种现象通常被解释为现有失真测度的一个缺点[44]，它推动了对替代的"更感性"标准的不断搜索。
-在本文中，我们对感知质量和失真测度之间的表观权衡提供了一个补充的解释。<strong>具体来说，我们证明了感知-失真平面中存在一个区域，无论算法方案(见图1)如何，这个区域都是无法达到的。此外，该区域的边界是单调的。因此，在其附近，只有可能改善感知质量或失真，其中一个是以牺牲另一个为代价的</strong>。对于所有的失真测度，感知-失真权衡是存在的，而不仅仅是均方误差(
-MSE
-)或SSIM标准的问题。<strong>然而，对于某些措施而言，这种权衡要弱于其他措施。例如，我们通过实验发现最近提出的深度网络特征之间的距离[16、22]与感知质量之间的权衡弱于MSE。这与该度量比MSE更"感性"的观察一致</strong>。</p>
-<figure>
-<img src="/2025/03/02/The-Perception-Distortion-Tradeoff/The-Perception-Distortion-Tradeoff\1.png" alt="image">
-<figcaption aria-hidden="true">image</figcaption>
-</figure>
-<p>让我们来厘清失真与感知质量的区别。图像复原的目标是从退化图像<span class="math inline">\(y\)</span> (例如,噪声、模糊等)中估计出图像<span class="math inline">\(x\)</span>。失真是指重建图像<span class="math inline">\(x\)</span>与原始图像<span class="math inline">\(\hat{x}\)</span>之间的差异。感知质量，另一方面，仅指<span class="math inline">\(\hat{x}\)</span>的视觉质量，而不考虑它与<span class="math inline">\(x\)</span>的相似性。也就是说，它是<span class="math inline">\(\hat{x}\)</span>看起来像一个有效的自然图像的程度。一种越来越流行的测量感知质量的方法是使用real-vs.-fake用户研究，该研究考察了人类观察者判断<span class="math inline">\(\hat{x}\)</span>是真实的还是算法[15、53、39、8、6、14、54、11]
-(类似于生成对抗网络的思想[10])。因此，感知质量可以被定义为在这种鉴别实验中的最佳成功概率，正如我们所显示的那样，它<strong>正比于<span class="math inline">\(\hat{x}\)</span>的分布与自然图像的分布之间的距离</strong>。
-基于这些关于感知和失真的定义，我们遵循率失真理论的逻辑[4]。也就是说，我们寻求将最佳可达到的感知质量(对自然图像统计的最小偏差)的行为描述为最大允许平均失真的函数，对于任何估计量。该感知-失真函数(图1中的宽曲线)分离了感知-失真平面中的可达区域和不可达区域，从而描述了感知和失真之间的基本权衡。我们的分析表明，算法不可能同时非常准确，并产生愚弄观察者相信它们是真实的图像，不管用什么方法来量化精度。
-这种权衡意味着优化失真测度不仅是无效的，而且在视觉质量方面可能是有害的。这已经在[
-22、16、38、51、6]中得到了经验观察，但从未在理论上得到证实。
-从算法设计的角度，我们证明了生成对抗网络(GANs)提供了一种接近感知-失真边界的原则性方法。这为GANs在图像复原[22、38、35、51、36、15、55]上的优势提供了越来越多的实证支持。
-感知-失真权衡对低层视觉有重要影响。在某些应用中，重建精度是非常重要的。在另一些情况下，感知质量可能更受欢迎。同时实现这两个目标的不可能性呼吁了一种新的评估算法的方式：将它们放置在感知-失真平面上。我们使用这种新的方法对最近的超分辨率(
-SR )方法进行了广泛的比较，揭示了哪种SR方法最接近感知-失真界。</p>
-<h2 id="问题描述">问题描述</h2>
-<p>从统计学意义上讲，一幅自然图像<span class="math inline">\(x\)</span>可以看作是由自然图像<span class="math inline">\(p_X\)</span>的分布实现的。在图像复原中，我们通过某种条件分布<span class="math inline">\(p_{Y|X}\)</span>
-(对应于噪声、模糊、下采样等。)来观察一个关于<span class="math inline">\(x\)</span>的退化版本<span class="math inline">\(y\)</span>。给定<span class="math inline">\(y\)</span>，我们根据某种分布<span class="math inline">\(p_{\hat{X}|Y}\)</span>产生一个估计量<span class="math inline">\(\hat{x}\)</span>
-。这种描述很一般，因为它不限制估计量<span class="math inline">\(\hat{x}\)</span>是<span class="math inline">\(y\)</span>的确定性函数。该问题设置如图2所示。</p>
-<figure>
-<img src="/2025/03/02/The-Perception-Distortion-Tradeoff/The-Perception-Distortion-Tradeoff\2.png" alt="image">
-<figcaption aria-hidden="true">image</figcaption>
-</figure>
-<p>给定一个全参考相异性准则<span class="math inline">\(\Delta(x,\hat{x})\)</span>，估计量<span class="math inline">\(\hat{X}\)</span>的平均偏差由下式给出 <span class="math display">\[
-\mathbb{E}[\Delta(X, \hat{X})] \qquad (2)
-\]</span> 其中，期望关于联合分布<span class="math inline">\(p_{X,\hat{X}}\)</span>。该定义与在退化自然图像数据库中评估平均性能的通常做法一致。注意到一些失真措施，例如.
-SSIM，实际上是(越高越好)的相似性度量，但总是可以反转成为相异性度量。
-估计<span class="math inline">\(\hat{X}\)</span>的感知质量(如通过真实和虚假的人类观点研究进行量化)与它的重建图像的分布<span class="math inline">\(p_{\hat{X}}\)</span>和自然图像的分布<span class="math inline">\(p_X\)</span>之间的距离直接相关。因此，我们定义估计<span class="math inline">\(p_{\hat{X}}\)</span>的感知质量指标(越低越好)为
-<span class="math display">\[
-d\left(p_X, p_{\hat{X}}\right) \qquad (3)
-\]</span> 其中<span class="math inline">\(d(·,·)\)</span>是分布之间的一些散度，例如KL散度，TV距离，Wasserstein距离等。
-注意到，当算法的输出遵循自然图像的分布时,即<span class="math inline">\(p_{\hat{X}}=p_X\)</span>，可以获得尽可能好的感知质量。在这种情况下，通过查看重建图像，无法判断它们是由算法生成的。然而，并不是每一个具有这种性质的估计量都一定是准确的。事实上，我们可以通过随机绘制与原始"真实"图像无关的自然图像来达到完美的感知质量。在这种情况下，畸变将相当大。
-我们的目标是刻画(2)和(3)之间的权衡。</p>
-<h2 id="感知-失真平衡">感知-失真平衡</h2>
-<p>我们看到，低失真通常并不意味着良好的感知质量。那么，一个有趣的问题是：给定失真水平的估计器所能达到的最佳感知质量是什么？</p>
-<p><strong>定义1</strong> 信号恢复任务的感知-失真函数由下式给出</p>
-<p><span class="math display">\[
-P(D)=\min _{p_{\hat{X} \mid Y}} d\left(p_X, p_{\hat{X}}\right) \quad
-\text { s.t. } \quad \mathbb{E}[\Delta(X, \hat{X})] \leq D \qquad(9)
-\]</span></p>
-<p>其中<span class="math inline">\(\Delta(\cdot,\cdot)\)</span>是失真测度，<span class="math inline">\(d(\cdot,\cdot)\)</span>是分布之间的散度。
-简言之，<span class="math inline">\(P ( D )\)</span>是分布<span class="math inline">\(p_X\)</span>和<span class="math inline">\(p_{\hat{X}}\)</span>之间的最小偏差，它可以通过一个带有偏差<span class="math inline">\(D\)</span>的估计量来获得。为了直观地了解该函数的典型行为，考虑如下例子。</p>
-<p><strong>例1</strong> 假设<span class="math inline">\(Y=X+N\)</span>，其中<span class="math inline">\(X
-\sim \mathcal{N}(0,1)\)</span>和<span class="math inline">\(N \sim
-\mathcal{N}\left(0, \sigma_N\right)\)</span>是相互独立的.取"<span class="math inline">\(\Delta(\cdot,
-\cdot)\)</span>"为误差平方失真，<span class="math inline">\(d(\cdot,
-\cdot)\)</span>为KL散度。为了简单起见，我们把注意力限制在形如<span class="math inline">\(\hat{X}=a
-Y\)</span>的估计量上。在这种情况下，我们可以导出方程（9）的一个封闭形式的解。对图5中的若干噪声水平<span class="math inline">\(\sigma_N\)</span>作图。可以看出，最小可达<span class="math inline">\(d_{\mathrm{KL}}\left(p_X,
-p_{\hat{X}}\right)\)</span>随着最大允许失真(MSE)的增大而减小。此外，这种权衡是凸的，并且在更高的噪声水平<span class="math inline">\(\sigma_N\)</span>变得更加严重。</p>
-<figure>
-<img src="/2025/03/02/The-Perception-Distortion-Tradeoff/The-Perception-Distortion-Tradeoff\3.png" alt="image">
-<figcaption aria-hidden="true">image</figcaption>
-</figure>
-<p>在一般情况下，解析地求解(9)是不可能的。然而，事实证明，如图5所示的行为是典型的，正如我们接下来的(见附录中的证明)所示。</p>
-<p><strong>定理1</strong>
-(感知-失真权衡)。假设第3节的问题设定。如果式(3)的<span class="math inline">\(d(p,q)\)</span>在其第二个参数中为凸函数（<span class="math inline">\(d\left(p, \lambda q_1+(1-\lambda) q_2\right) \leq
-\lambda d\left(p, q_1\right)+(1-\lambda) d\left(p, q_2\right), \forall
-\lambda \in[0,1]\)</span>），则式(9)的感知-失真函数<span class="math inline">\(P(D)\)</span>为 1.单调不增 2.凸的</p>
-<p>注意到定理1对失真测度<span class="math inline">\(\Delta(·,·)\)</span>不做任何假设。这意味着对于任何失真测度，包括例如MSE、SSIM、VGG特征间的平方误差[
-16、22
-]等，都存在感知质量和失真之间的权衡。然而，这并不意味着所有的失真测度都具有相同的感知-失真函数。事实上，正如我们在Sec.6，对于捕获图像之间语义相似性的失真度量，这种权衡往往更不严重。</p>
-<p><span class="math inline">\(P(D)\)</span>的凸性意味着在低失真和高感知质量的极端情况下，这种权衡更加严重。这一点在考虑与真假图像区分能力相关的TV散度时尤为重要。(见Sec
-. 2.2)。由于<span class="math inline">\(P ( D
-)\)</span>在低失真的情况下更陡峭，因此对于失真已经很低的算法，任何小的失真改善都必然伴随着对鉴别器的欺骗能力的大幅度降低。同样，对于感知指数已经较低的算法，感知质量的任何微小提升，必然伴随着失真的大幅增加。让我们评论一下，<span class="math inline">\(d( p , q)\)</span>是凸的这一假设，并不是很有限制。
-例如，任意的<span class="math inline">\(f\)</span> -散度( e.g. KL , TV
-,Hellinger, <span class="math inline">\(\mathcal{X}^2\)</span>)以及Renyi散度，都满足这个假设[5、43]
-。在任何情况下，即使没有这个假设，函数<span class="math inline">\(P ( D
-)\)</span>也是单调非增的。</p>
-<h2 id="通过gan进行折衷">通过GAN进行折衷</h2>
-<p>存在一种系统的方法来设计逼近感知-失真曲线的估计器：使用GANs。具体来说，受[22、35、51、38、36、15]的启发，恢复问题可以通过修改GAN的生成器的损失来解决</p>
-<p><span class="math display">\[
-\ell_{\mathrm{gen}}=\ell_{\text {distortion }}+\lambda
-\ell_{\mathrm{adv}} \qquad(11)
-\]</span></p>
-<p>式中，<span class="math inline">\(\ell_{\text {distortion
-}}\)</span>原始图像与重建图像之间的失真，<span class="math inline">\(\ell_{\text {adv
-}}\)</span>为标准GAN对抗损失。众所周知，<span class="math inline">\(\ell_{\text {adv
-}}\)</span>正比于生成器和数据分布[10、1、34]
-(散度的类型取决于损失)之间的某种散度<span class="math inline">\(d\left(p_X,
-p_{\hat{X}}\right)\)</span>。因此，(11)实际上是对目标的近似。</p>
-<p><span class="math display">\[
-\ell_{\text {gen }} \approx \mathbb{E}[\Delta(x, \hat{x})]+\lambda
-d\left(p_X, p_{\hat{X}}\right)
-\]</span></p>
-<p>将<span class="math inline">\(\lambda\)</span>视为拉格朗日乘子，显然，对某个<span class="math inline">\(D\)</span>，最小化<span class="math inline">\(\ell_{\text {gen
-}}\)</span>等价于最小化(9)。改变<span class="math inline">\(\lambda\)</span>对应于改变<span class="math inline">\(D\)</span>，从而产生沿感知-失真函数的估计器。</p>
-<p>我们用这种方法来探索图4中<span class="math inline">\(\sigma=3\)</span>的数字去噪例子的感知失真权衡。我们训练了一个基于Wasserstein生成式对抗网络(WGAN)的去噪器[1、12]，其MSE失真损失为<span class="math inline">\(\ell_{\text {distortion }}\)</span>。这里，<span class="math inline">\(\ell_{\text {adv
-}}\)</span>正比于生成器和数据分布之间的Wasserstein距离<span class="math inline">\(d_W\left(p_X,
-p_{\hat{X}}\right)\)</span>。<strong>WGAN的一个有价值的性质是它的鉴别器(评论家)损失是<span class="math inline">\(d_W\left(p_X,
-p_{\hat{X}}\right)\)</span>的一个精确估计(直到一个常数因子)
-[1]。这使得我们可以很容易地计算训练好的去噪器的感知质量指标</strong>。我们得到具有几个<span class="math inline">\(\lambda
-\in[0,0.3]\)</span>值的估计量的集合。对于每个去噪器，我们通过最终的判别器损失来评估感知质量。如图6所示，连接感知-失真平面上的估计量的曲线是单调递减的。此外，它与逐渐从模糊和准确过渡到尖锐和不准确的估计有关。这条曲线显然与解析界
-(9)
-(用虚线表示)不重合。然而，它似乎与之相邻。<strong>这表现在WGAN曲线的最左端点非常接近理论界的最左端点，这与MMSE估计器相对应</strong>。WGAN训练细节和架构参见附录。</p>
-<p>除了MMSE估计器，图6还包括MAP估计器和一个从数据集(记为"随机抽签")中随机抽取图像的估计器。如上所述，通过WGAN判别器[1]的最终损失来评估这3个估计器的感知质量，训练来区分估计器的输出和数据集中的图像。<strong>值得注意的是，去噪WGAN估计器(D)实现了与MAP估计器相同的失真，但具有更好的感知质量。此外，它达到了与随机绘制估计器几乎相同的感知质量，但具有显著更低的失真</strong>。</p>
-<figure>
-<img src="/2025/03/02/The-Perception-Distortion-Tradeoff/The-Perception-Distortion-Tradeoff\4.png" alt="image">
-<figcaption aria-hidden="true">image</figcaption>
-</figure>
-<h2 id="结论">结论</h2>
-<p>我们证明并证明了失真和感知质量相互矛盾的反直觉现象。也就是说，算法的失真越小，它的分布就越必须偏离自然场景的统计数据。我们实证表明，许多流行的扭曲测量都存在这种权衡，包括那些被认为与人类感知密切相关的测量。因此，任何单独的失真测量都不适合评估图像恢复方法。我们的新方法利用一对
-NR 和 FR
-指标将每种算法置于感知失真平面上，从而有助于对图像恢复方法进行更翔实的比较。</p>
-]]></content>
-      <categories>
-        <category>论文泛读</category>
-      </categories>
-      <tags>
-        <tag>图像恢复</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Unsupervised Noise Adaptive Speech Enhancement by Discriminator-Constrained Optimal Transport</title>
-    <url>/2025/02/24/Unsupervised-Noise-Adaptive-Speech-Enhancement-by-Discriminator-Constrained-Optimal-Transport/</url>
-    <content><![CDATA[<h1 id="unsupervised-noise-adaptive-speech-enhancement-by-discriminator-constrained-optimal-transport判别器约束最优传输的无监督噪声自适应语音增强">Unsupervised
-Noise Adaptive Speech Enhancement by Discriminator-Constrained Optimal
-Transport（判别器约束最优传输的无监督噪声自适应语音增强）</h1>
-<p>会议：NeurIPS</p>
-<p>时间：2021</p>
-<h2 id="摘要">摘要</h2>
-<p>本文提出了一种新的判别器约束的最优传输网络(DOTN)，该网络执行无监督的域自适应语音增强(SE)，这是语音处理中必不可少的回归任务。<strong>DOTN旨在利用从源域获得的知识，在目标域中估计带噪语音的干净参考</strong>。训练和测试数据之间的领域转换已被报道是不同领域学习问题的障碍。尽管有丰富的文献研究无监督域适应分类，但所提出的方法，特别是在回归中，仍然是稀缺的，并且往往依赖于关于输入数据的额外信息。<strong>提出的DOTN方法将数学分析中的最优传输(OT)理论与生成对抗框架进行策略性融合，以帮助评估目标域中的连续标签</strong>。在两个SE任务上的实验结果表明，通过扩展经典的OT公式，我们提出的DOTN以一种纯无监督的方式优于先前的对抗域适应框架。
-<span id="more"></span></p>
-<h2 id="介绍">介绍</h2>
-<p>语音增强(SE)的目标是将低质量的语音信号转换为质量和可懂度提高的语音信号。SE作为语音处理领域的一个重要的回归任务，已被广泛用作语音相关应用的预处理器，如语音编码[1]、自动语音识别(
-Automatic Speech Recognition，ASR )
-[2]、说话人识别[3]和辅助听觉设备[4、5]。最近机器学习的进展使SE技术取得了重大进展。一般来说，基于学习的SE方法在训练阶段估计从带噪语音信号到干净语音信号的映射函数的变换[6]。估计变换在测试阶段将带噪语音信号转换为类干净信号。各种神经网络模型已被用于表征噪声到干净变换。这类模型的著名例子包括全连接神经网络[7]，深度去噪自编码器[8]，卷积神经网络[9]，长短期记忆网络[10]和Transformer
-[11]。为了有效地处理各种噪声情况，我们通常准备相当数量的涵盖各种噪声类型的训练数据来训练SE模型。<strong>然而在实际应用场景中，测试数据中的噪声类型可能并不总是包含在训练集中。因此，从训练数据中学习到的噪声到干净的转换不能很好地应用于处理测试噪声，从而导致有限的增强性能</strong>。这种训练-测试不匹配通常被称为<strong>SE的域不匹配问题</strong>。需要一种有效的解决方案，<strong>通过制定与测试条件相匹配的精确的噪声到干净的转换来执行域适应来调整SE模型</strong>。大多数现有的领域自适应方法至少依赖于以下一种自适应机制：对齐领域不变特征[12、13、14]和对抗训练，其中在训练过程中引入判别器作为领域分类器[15、16、17]。</p>
-<p><strong>本研究旨在通过引入最优传输(OT)来解决SE的无监督域适应问题。特别地，我们考虑在目标域上用完全无标签的数据进行SE测试，且只有源域的有标签数据可供参考</strong>。一般而言，OT理论通过比较两个(概率)分布，并考虑介于两者之间的所有可能的运输方案，从而找到一个具有最小位移成本的方案。OT的概念可以用来最小化域失配，从而实现无监督的域自适应。即使使用OT提供的数学特性，由于人类语音具有的复杂结构，获得优异SE性能的障碍仍然存在。为了进一步克服这些障碍，生成对抗网络(Generative
-Adversarial
-Network，GAN)的另一个概念被整合来帮助实现复杂的SE域自适应。虽然现有的域转换技术"域对抗训练"和我们的提案在名称上有相似之处，但其基本结构有本质的不同。该方法的一个关键要素在于<strong>一个用于检测语音输出特征的判别器，而不是一个域分类器</strong>。更准确地说，我们的方法中的<strong>判别器通过学习源标签的概率分布来控制输出语音质量</strong>。这种新颖的方法专为无监督的SE域自适应而设计，表现出优异的性能，并在VoiceBank和TIMIT数据集上进行了验证。</p>
-<h3 id="贡献">贡献</h3>
-<p>我们<strong>提出了一种新的方法，专门用于回归环境下的无监督域适应</strong>。这一领域的研究成果仍然十分有限；此外，现有的方法往往需要对源域进行额外的分类，或者可能尚未得到强回归应用的支持。相反，我们的方法不需要源样本、源标签和目标样本以外的任何额外的输入信息。我们的方法被应用于两个标准化SE任务，即VoiceBank
--
-DEMAND和TIMIT，并在语音质量感知评价(PESQ)和短时客观可懂度(STOI)评分方面取得了优异的自适应性能。
-此外，由于输入要求简单，我们可以通过增加目标域中允许的噪声类型的数量来很容易地研究目标样本复杂度对我们方法的影响，这在我们所知之前的文献中没有被报道过。</p>
-<h2 id="相关工作">相关工作</h2>
-<h3 id="对抗域适应adversarial-domain-adaptation">对抗域适应（Adversarial
-domain adaptation）</h3>
-<p>领域对抗训练( Domain Adversarial Training，DAT
-)的主要目标是<strong>通过利用来自目标领域的大量未标记数据，训练出能够适应其他相似领域的深度模型(从源域)</strong>[15、18]。传统的DAT系统由<strong>深度特征提取器、标签预测器和领域分类器</strong>三部分组成。通过使用梯度反转层，提取的深度特征对主要学习任务具有判别性，并且在源域和目标域之间的转换具有不变性。DAT方法已被应用和证实可以有效地补偿许多任务中源(训练时间)和目标(测试时间)条件的不匹配，例如语音信号处理[19、20]、图像处理[15、21]和可穿戴传感器信号处理[22]。DAT方法已被应用和证实可以有效地<strong>补偿许多任务中源(训练时间)和目标(测试时间)条件的不匹配</strong>，例如语音信号处理[19、20]、图像处理[15、21]和可穿戴传感器信号处理[22]。后来发展的多源域对抗网络(MDAN)
-[23]扩展了原有的DAT，解除了单域迁移的约束，利用多个域分类器为主要学习任务提取有判别力的深度特征，同时对多个域迁移[3、24]具有不变性。</p>
-<h3 id="域适应的最优传输optimal-transport-for-domain-adaptation">域适应的最优传输（Optimal
-transport for domain adaptation）</h3>
-<p>迄今为止，OT
-[25、26]已被用于域适应[27、28]，并取得了相关的分析结果[29]。不仅如此，在[30、31]的联合分配框架下，OT的概念被证明是更有用的。最近，为了提高OT对异常值的敏感性，Robust
-OT被提出[32]。此外，还提出了一种将对抗域适应的概念与OT和边界分离相结合的方法[33]。然而，在这些研究中进行的几乎所有实验都是分类问题，不像SE任务是我们研究的重点。</p>
-<h3 id="语音增强中的域适应domain-adaptation-in-speech-enhancement">语音增强中的域适应（Domain
-adaptation in speech enhancement）</h3>
-<p>现有的SE方法中的域适应可以分为两类：有监督和无监督。对于有监督域自适应，测试条件中的成对噪声和干净语音信号可用来调整SE模型中的参数。在[34、35]中，已经提出了基于迁移学习的方法来适应SE模型，以缓解语料不匹配。为了克服灾难性遗忘问题，Lee等人在对SE模型进行预形成域适应时，提出了一种结合曲率正则化和路径优化增强策略的SERIL算法[36]。相反，对于无监督域适应，只提供带噪语音信号，而相应的干净对应物是无法获得的。一般而言，无监督域适应对现实场景具有较好的适用性。在[37]中，SE的无监督域适应是通过最小化教师分类器和学生分类器产生的后验概率之间的库尔贝克-莱布勒散度来实现的，而没有成对的噪声-干净的适应数据。在[19、38]中，DAT方法用于使SE模型适应新的噪声条件。
-<strong>尽管现有的无监督领域自适应方法取得了很好的性能，但需要额外的信息</strong>，例如单词标签、语言模型和噪声类型标签。在本文中，我们提出了一种新的方法：判别器约束的OT网络(
-DOTN
-)来对SE进行无监督域适应。与相关工作不同，<strong>DOTN在适应原始SE模型以匹配新的噪声条件时不需要额外的标签信息</strong>。我们的实验表明，DOTN能够有效地将SE模型适应于新的测试条件，并且取得了比之前的对抗域适应方法更好的适应性能，这些对抗域适应方法需要额外的噪声类型信息。</p>
-<h2 id="方法">方法</h2>
-<h3 id="问题设置与注释">问题设置与注释</h3>
-<p>考虑具有配对数据的源域<span class="math inline">\(\left(\mathbf{X}^s,
-\mathbf{Y}^s\right)=\left\{\left(\mathbf{x}_i^s,
-\mathbf{y}_i^s\right)\right\}_{i=1}^{N_s}\)</span>，其中<span class="math inline">\(\mathbf{x}_i^s \in \mathbb{R}^n, \mathbf{y}_i^s
-\in \mathbb{R}^m\)</span>表示样本<span class="math inline">\(i\)</span>的输入和对应的标签。无监督域适应假设存在另一个目标域，只包含未标记的数据，<span class="math inline">\(\mathbf{X}^t=\left\{\mathbf{x}_i^t \in
-\mathbb{R}^n\right\}_{i=1}^{N_s}\)</span>。目标是根据源域提供的知识，为目标标签<span class="math inline">\(\mathbf{Y}^t=\left\{\mathbf{y}_i^t\right\}_{i=1}^{N_t}\)</span>(存在但不为人知)寻求一个真值估计器(或统计假设)<span class="math inline">\(f: \mathbb{R}^n \rightarrow
-\mathbb{R}^m\)</span>。</p>
-<p>数据集<span class="math inline">\(\mathcal{D}\)</span>的概率分布用<span class="math inline">\(\mathbb{P}_{\mathcal{D}}\)</span>表示，这里<span class="math inline">\(\mathcal{D}\)</span>要么是<span class="math inline">\(\mathbf{X}^s, \mathbf{Y}^s,
-\mathbf{X}^t\)</span>或<span class="math inline">\(\mathbf{Y}^t\)</span>在我们的讨论中。我们的问题是寻找一个函数<span class="math inline">\(f\)</span>，使得<span class="math inline">\(f\)</span>在<span class="math inline">\(\mathbf{Y}^t\)</span>中诱导一个概率分布<span class="math inline">\(\mathbb{P}_{f\left(\mathbf{X}^t\right)}\)</span>，在一定测度下有<span class="math inline">\(\mathbb{P}_{f\left(\mathbf{X}^t\right)}
-\rightarrow
-\mathbb{P}_{\mathbf{Y}^t}\)</span>。我们提出使用OT的概念来解决这个问题。</p>
-<h3 id="提出模型判别器约束的最优运输网络-discriminator-constrained-optimal-transport-networkdotn">提出模型：判别器约束的最优运输网络
-Discriminator-Constrained Optimal Transport Network(DOTN)</h3>
-<p>给定一对分布<span class="math inline">\(\mathbb{P}_{\mathcal{D}_1}\)</span>和<span class="math inline">\(\mathbb{P}_{\mathcal{D}_2}\)</span>和一个置换成本矩阵<span class="math inline">\(C \geq 0\)</span>，OT求解运输计划<span class="math inline">\(\gamma \in \prod\left(\mathbb{P}_ {\mathcal{D}_
-1},
-\mathbb{P}_{\mathcal{D}_2}\right)\)</span>使得总成本(在离散的设定下)最小</p>
-<p><span class="math display">\[
-\min _{\gamma \in \Pi\left(\mathbb{P}_{\mathcal{D}_1},
-\mathbb{P}_{\mathcal{D}_2}\right)}\langle C, \gamma\rangle_F,
-\]</span></p>
-<p>其中<span class="math inline">\(\prod\left(\mathbb{P}_{\mathcal{D}_1},
-\mathbb{P}_{\mathcal{D}_2}\right)\)</span>表示边际为<span class="math inline">\(\mathbb{P}_{\mathcal{D}_1}\)</span>和<span class="math inline">\(\mathbb{P}_{\mathcal{D}_1}\)</span>的联合分布空间，<span class="math inline">\(\langle\cdot,
-\cdot\rangle_F\)</span>为Frobenius积，并且<span class="math inline">\(C\)</span>的项<span class="math inline">\(C_{i
-j}\)</span>表示第i个和第j个样本的置换成本。可以证明，这个问题的最小值是一个距离，并且当相应的代价是范数[25、26]时称为Wasserstein距离</p>
-<p><strong>我们提出的方法包括两部分：OT对齐和Wasserstein生成对抗网络（WGAN）训练
-[39，40]。这两个步骤都基于OT，但是，它们被考虑为两对不同的分布，并采用不同的算法。</strong></p>
-<p><strong>通过联合分配最佳运输进行调整</strong>
- 我们的适应机制依赖于源域和目标域的联合分布之间的对齐（对于目标域，标签是估计标签）。特别是，我们通过最小化联合分布<span class="math inline">\(\mathbb{P}_{\mathbf{X}^s} \times
-\mathbb{P}_{\mathbf{Y}^s}\)</span>和<span class="math inline">\(\mathbb{P}_{\mathbf{X}^t} \times
-\mathbb{P}_{f\left(\mathbf{X}^t\right)}\)</span>之间的OT损失来近似<span class="math inline">\(f\)</span>，并选择一个成本矩阵</p>
-<p><span class="math display">\[
-C_{i
-j}=\alpha\left\|\mathbf{x}_i^s-\mathbf{x}_j^t\right\|^2+\beta\left\|\mathbf{y}_i^s-f\left(\mathbf{x}_j^t\right)\right\|^2,
-\quad(\alpha, \beta&gt;0) \qquad (2)
-\]</span></p>
-<p>通过对齐源域和目标域的联合分布，当 OT
-寻找每个目标样本最“相似”的源样本时，自然而然地实现了噪声适应。</p>
-<p>尽管 OT
-为每个样本提供了准确的估计值，但每个估计误差的影响可能会在训练过程中累积，并在不保留语音数据结构的情况下将
-f 误导到方便的局部最小值。为了避免这种情况，我们采用了 Wasserstein
-生成对抗网络（WGAN）训练来补充和增强我们的适应系统。</p>
-<p><strong>输出和源标签的判别训练</strong>
- 与我们考虑输入和标签的联合分布的适应不同，我们专注于源标签分布<span class="math inline">\(\mathbb{P}_{\mathbf{Y}^s}\)</span>和输出分布<span class="math inline">\(\mathbb{P}_{f\left(\mathbf{X}^t\right)}\)</span>的WGAN训练。在生成对抗训练的术语中，我们将<span class="math inline">\(f\)</span>视为生成器，并引入基于卷积神经网络的判别器<span class="math inline">\(h\)</span>作为
-“评判者”。一般来说，我们使用判别器来决定<span class="math inline">\(f\)</span>的输出是否与源标签
-“相似”。从形式上讲，WGAN 算法求解</p>
-<p><span class="math display">\[
-\min _f \max _{h \in \mathcal{L}}\left\{\mathbb{E}_{y \sim
-\mathbb{P}_{\mathbf{Y}^s}}(h(y))-\mathbb{E}_{x \sim
-\mathbb{P}_{\mathbf{X}^t}}(h(f(x)))\right\}
-\]</span></p>
-<p>由Kantorovich-Rubinstein 对偶性 [25]，其中<span class="math inline">\(\mathcal{L}\)</span>是 1-Lipschitz
-函数的集合。在这种情况下，在最优判别器下，最小化相对于生成器参数的值函数，使分布<span class="math inline">\(\mathbb{P}_{\mathbf{Y}^s}\)</span>和<span class="math inline">\(\mathbb{P}_{f\left(\mathbf{X}^t\right)}\)</span>之间的
-Wasserstein 距离最小。</p>
-<p>这种判别性训练补充了我们的对齐方式，并从源标签和目标标签估计之间的明确关系中提供了额外的约束。这些约束支持联合分布对齐，并在梯度下降训练过程中提供进一步的指导。当我们的判别性训练支持联合分布对齐时，实验的性能会大大提高。</p>
-<h3 id="损失函数和提出的算法">损失函数和提出的算法</h3>
-<p>我们的域对齐可以通过解决下面的优化问题来实现：</p>
-<p><span class="math display">\[
-\min _{\gamma, f} \mathcal{L}_1+\mathcal{L}_2=\min _{\gamma, f}
-\frac{1}{N^s}
-\sum_i\left\|\mathbf{y}_i^s-f\left(\mathbf{x}_i^s\right)\right\|^2+\sum_{i,
-j} \gamma_{i
-j}\left(\alpha\left\|\mathbf{x}_i^s-\mathbf{x}_j^t\right\|^2+\beta\left\|\mathbf{y}_i^s-f\left(\mathbf{x}_j^t\right)\right\|^2\right)
-\qquad (4)
-\]</span></p>
-<p>其中<span class="math inline">\(\alpha,
-\beta&gt;0\)</span>是平衡所选择的参数。值得注意的是，第一项强调了源域的知识在训练过程中不会被遗忘，这在[31、41、42]中都有所体现。没有这种重视，就不能很好地保持源领域知识，从而整体性能可能会下降。在SE实验中也观察到了这一现象。第二项是用于域对齐的。为了说明一些直觉，考虑理想情况其中Eq.
-(4)完全极小化为零，从而导致</p>
-<p><span class="math display">\[
-\left\|\mathbf{x}_i^s-\mathbf{x}_j^t\right\|^2 \equiv 0 \text { and
-}\left\|\mathbf{y}_i^s-f\left(\mathbf{x}_j^t\right)\right\|^2 \equiv 0
-\quad \Rightarrow \quad \mathbf{x}_i^s=\mathbf{x}_j^t \text { and }
-\mathbf{y}_i^s=f\left(\mathbf{x}_j^t\right)
-\]</span></p>
-<p>对于所有<span class="math inline">\(i,
-j\)</span>。这表明对于每个给定的目标域样本<span class="math inline">\(\mathbf{x}_j^t\)</span>，都会找到来自源域的相同样本<span class="math inline">\(\mathbf{x}_
-i^s\)</span>,然后由相应的源标签构建未知目标标签。尽管实际上不太可能发生零损失的理想情况，但OT损失旨在寻找最“相似”的对应关系，这需要Eq.（4）的域对齐直觉。从这个角度来看，虽然<span class="math inline">\(C_{i j}\)</span>中的项<span class="math inline">\(\left\|\mathbf{x}_ i^s-\mathbf{x}_
-j^t\right\|\)</span>（在方程 （2） 中）与<span class="math inline">\(f\)</span>和<span class="math inline">\(h\)</span>的网络反向传播没有直接关系，但它不能被忽视，因为丢弃该项将导致错误的运输计划<span class="math inline">\(\gamma_{i j}\)</span>并最终导致不希望的对齐。</p>
-<p>对于判别式训练，判别器<span class="math inline">\(h\)</span>由判别器损失函数<span class="math inline">\(\mathcal{L}_h=\frac{1}{m} \sum_{i=1}^m
-h\left(\mathbf{y}_i^s\right)-h\left(f\left(\mathbf{x}_i^t\right)\right)\)</span>训练，<span class="math inline">\(f\)</span>遵循生成器损失函数<span class="math inline">\(\mathcal{L}_f=-\frac{1}{m} \sum_{i=1}^m
-h\left(f\left(\mathbf{x}_i^t\right)\right)\)</span>，其中<span class="math inline">\(m\)</span>是批量大小。由于我们的框架中有多组参数<span class="math inline">\(\gamma, h\)</span>和<span class="math inline">\(f\)</span>，因此每次都会更新一组参数，而其他一组参数是固定的。</p>
-<p><span class="math display">\[
-    \begin{array}{l}
-   \hline \
-   \textbf{算法1} \quad \text{DOTN，提出的算法} \\
-   \hline \
-    \textbf{需要：}
-\mathbf{x}^s，源域输入。\mathbf{y}^s，源域标签。\mathbf{x}^t，目标域输入。c，裁剪参数。m，批量大小。\\
-    \qquad n_f, n_h, n_s：
-分别是每次生成器训练、判别器训练和源域训练的\text{OT}迭代次数。n，迭代次数。\\
-    \textbf{需要：}
-\theta_f，估计器f的初始参数。\theta_h，判别器h的初始参数 \\
-    \quad \textbf{for} \, \, 每批源样本 \left(\mathbf{x}^s,
-\mathbf{y}^s\right)和目标样本\left(\mathbf{y}^t\right) \, \,
-\textbf{do}\\
-    \qquad \quad 固定\theta_f，用\text{OT}求解方程（4）中的\gamma\\
-    \qquad \quad 固定 \gamma，\theta_f \leftarrow
-\operatorname{Adam}\left(\nabla_{\theta_f} \mathcal{L}_2, \theta_f,
-\theta_h\right) \text {. } \\
-    \qquad \quad \textbf{if} \, \, n \bmod n_f==0 \textbf { then }\\
-    \qquad \qquad \quad \theta_f \leftarrow
-\operatorname{Adam}\left(\nabla_{\theta_f} \mathcal{L}_1, \theta_f,
-\theta_h\right) .\\
-    \qquad \quad \textbf{end if} \\
-    \qquad \quad \textbf{if} \, \, n \bmod n_f==0 \textbf { then }\\
-    \qquad \qquad \quad \theta_f \leftarrow
-\operatorname{Adam}\left(\nabla_{\theta_f} \mathcal{L}_f, \theta_f,
-\theta_h\right) .\\
-    \qquad \quad \textbf{end if} \\
-    \qquad \quad \textbf{if} \, \, n \bmod n_h==0 \textbf { then }\\
-    \qquad \qquad \quad \theta_h \leftarrow
-\operatorname{Adam}\left(\nabla_{\theta_h} \mathcal{L}_h, \theta_f,
-\theta_h\right) .\\
-    \qquad \qquad \quad \theta_h \leftarrow
-\operatorname{clip}\left(\theta_h,-c, c\right) \\
-    \qquad \quad \textbf{end if} \\  
-    \quad \textbf{end for}\\  
-   \hline
-\end{array}
-\]</span></p>
-<h2 id="结论">结论</h2>
-<p>在这项研究中，我们提出了一种新的DOTN方法，该方法专为回归设置中的无监督域适应而设计。我们的方法巧妙地融合了OT和生成对抗框架，根据源域提供的信息在目标域中实现无监督学习，不需要额外的结构或输入，例如多源域和噪声类型标签。我们的实验表明，所提出的方法能够在SE中实现卓越的适应性能，在VoiceBank-DEMAND和TIMIT数据集的PESQ和STOI分数上优于其他对抗域适应方法。此外，我们表明，当适度增加目标样本的复杂度时（通过增加目标域中的噪声类型数量），只观察到小程度的退化。这表明我们的方法对目标域中的样本复杂性是稳健的。</p>
-]]></content>
-      <categories>
-        <category>论文泛读</category>
-      </categories>
-      <tags>
-        <tag>最优化</tag>
-        <tag>最优运输</tag>
-        <tag>SE（语音增强）</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>WGAN</title>
     <url>/2025/03/10/WGAN/</url>
     <content><![CDATA[<h1 id="wasserstein-gan">Wasserstein GAN</h1>
@@ -2611,11 +2611,8 @@ D\left(\mathbb{P}_r \| \mathbb{P}_g\right)-2 \log 2\)</span>,
 <p>该理论告诉我们，训练好的判别器最好也就是<span class="math inline">\(2
 \log 2-2 J S D\left(\mathbb{P}_r \|
 \mathbb{P}_g\right)\)</span>。然而，在实际中，如果我们仅训练<span class="math inline">\(D\)</span>直到收敛，它的误差将趋于0，但是如图一所示，这表明它们之间的JSD是最大的。唯一可能的情况是，两个分布不是连续的，或者它们有不相交的支撑。</p>
-<figure>
-<img src="/2025/03/10/WGAN/WGAN\1.png" alt="image">
-<figcaption aria-hidden="true">image</figcaption>
-</figure>
-<p>原因总结：真实数据分布的支撑集往往形成流形，而生成器的输出分布也往往是流形，而两个流形相交部分测度为0。</p>
+<p><img src="/2025/03/10/WGAN/WGAN\1.png">
+原因总结：真实数据分布的支撑集往往形成流形，而生成器的输出分布也往往是流形，而两个流形相交部分测度为0。</p>
 <p>定理2.3 设<span class="math inline">\(\mathbb{P}_r\)</span>和<span class="math inline">\(\mathbb{P}_g\)</span>是两个分布，其支撑点位于两个流形<span class="math inline">\(\mathcal{M}\)</span>和<span class="math inline">\(\mathcal{P}\)</span>中，这两个流形不具有全维且不完全对齐。我们进一步假设<span class="math inline">\(\mathbb{P}_r\)</span>和<span class="math inline">\(\mathbb{P}_g\)</span>在各自的流形上是连续的，则有
 <span class="math display">\[
 \begin{aligned}
@@ -2626,10 +2623,7 @@ K L\left(\mathbb{P}_g \| \mathbb{P}_r\right) &amp; =+\infty
 \]</span></p>
 <p>值得注意的是，即使两个流形任意靠近，这些分歧也会被放大。我们的生成器的样本可能看起来很好，但两个KL散度都是无穷大，JSD为常数log2，这在训练的时候会发生梯度消失。</p>
 <p>为什么log2？</p>
-<figure>
-<img src="/2025/03/10/WGAN/WGAN\2.png" alt="image">
-<figcaption aria-hidden="true">image</figcaption>
-</figure>
+<p><img src="/2025/03/10/WGAN/WGAN\2.png"></p>
 <p>回到WGAN</p>
 <h2 id="不同距离">不同距离</h2>
 <p>设<span class="math inline">\(\mathcal{X}\)</span>是紧致度量集(如图像的空间<span class="math inline">\([0,1]^d\)</span>)，<span class="math inline">\(\Sigma\)</span>表示<span class="math inline">\(\mathcal{X}\)</span>的所有Borel子集构成的集合，<span class="math inline">\(\operatorname{Prob}(\mathcal{X})\)</span>表示定义在<span class="math inline">\(\mathcal{X}\)</span>上的概率测度空间。定义两个分布<span class="math inline">\(\mathbb{P}_r, \mathbb{P}_g \in
@@ -2677,10 +2671,7 @@ L\left(\mathbb{P}_\theta \| \mathbb{P}_0\right)=K L\left(\mathbb{P}_0 \|
 <p>当<span class="math inline">\(\theta_t \rightarrow
 0\)</span>时，序列<span class="math inline">\(\left(\mathbb{P}_{\theta_t}\right)_{t \in
 \mathbb{N}}\)</span>在EM距离下收敛于<span class="math inline">\(\mathbb{P}_0\)</span>，但在JS、KL、反向KL或TV散度下均不收敛。图1说明了EM和JS距离的情况。</p>
-<figure>
-<img src="/2025/03/10/WGAN/WGAN\3.png" alt="image">
-<figcaption aria-hidden="true">image</figcaption>
-</figure>
+<p><img src="/2025/03/10/WGAN/WGAN\3.png"></p>
 <p>示例1提供了一个案例，可以通过在EM距离上进行梯度下降来学习低维流形上的概率分布。这无法通过其他距离和散度来实现，因为由此产生的损失函数甚至不是连续的。尽管这个简单的例子以具有不相交支撑的分布为特征，但当支撑在一组零测集中包含非空交集时，同样的结论成立。</p>
 <p>由于Wasserstein距离比JS距离更弱，我们现在可以问，在适当的假设下，<span class="math inline">\(W\left(\mathbb{P}_r,
 \mathbb{P}_\theta\right)\)</span>是否是<span class="math inline">\(\theta\)</span>上的连续损失函数</p>
@@ -2806,10 +2797,7 @@ f_w\left(g_\theta\left(z^{(i)}\right)\right) \\11:
 <p>权重裁剪显然是强制实施Lipschitz约束的一种糟糕的方法。如果裁剪参数很大，则任何权重可能需要很长时间才能达到其极限，从而使critic更难训练直到最优。如果裁剪很小，则当层数较大或未使用批量归一化（例如在RNN中）时，这很容易导致渐变消失。尝试了简单的变体（例如将权重投影到球体），几乎没有区别，并且由于它的简单性和已经很好的性能，作者坚持使用权重裁剪。作者将在神经网络设置中强制执行Lipschitz约束的主题留给进一步研究，并且积极鼓励感兴趣的研究人员改进这种方法。</p>
 <p>EM距离是连续且可微的事实意味着可以（并且应该）训练critic直到最优。论点很简单，训练critic的次数越多，得到的Wasserstein梯度就越可靠，这实际上很有用，因为Wasserstein几乎在所有地方都是可导的对于JS，随着判别器变得更好，梯度变得更可靠，但真正的梯度为0，因为JS是局部饱和的，得到的梯度消失。图2展示了一个概念验证，训练一个GAN判别器和一个WGAN
 critic，直到最优。判别器学习非常快，可以很好地区分假和真，并且正如预期的那样，没有提供可靠的梯度信息。然而，critic无法饱和，并收敛到一个线性函数，该函数在任何地方都给出了非常干净的渐变。我们约束权重的事实限制了函数在空间的不同部分最多是线性的，迫使最优critic具有这种行为。</p>
-<figure>
-<img src="/2025/03/10/WGAN/WGAN\4.png" alt="image">
-<figcaption aria-hidden="true">image</figcaption>
-</figure>
+<p><img src="/2025/03/10/WGAN/WGAN\4.png"></p>
 <p>也许更重要的是，可以训练critic直到最优，这使得这样做时不会发生collapse
 modes。这是因为collapse
 modes来自这样一个事实，即固定判别器的最佳生成器是判别器分配最高值的点的增量之和，如[4]所观察到并在[11]中突出显示的那样。</p>
@@ -2827,10 +2815,7 @@ D\)</span>技巧[4]进行训练。生成的样本为3通道，大小为64×64像
 <span class="math inline">\(f\)</span>(算法1中第2-8行)，此时的损失函数是EM距离的估计，直到与我们约束f的Lipschitz常数的方式相关的常数。</p>
 <p>我们的第一个实验说明了这种估计如何与生成样本的质量很好地相关。除了卷积DCGAN架构，我们还进行了实验，使用512个隐藏单元的4层ReLU-MLP替换生成器或同时替换生成器和critic。</p>
 <p>图3为3种架构的WGAN训练过程中EM距离的WGAN估计(3)的演化情况。从图中可以清楚地看出，这些曲线与生成样本的视觉质量有很好的相关性。</p>
-<figure>
-<img src="/2025/03/10/WGAN/WGAN\5.png" alt="image">
-<figcaption aria-hidden="true">image</figcaption>
-</figure>
+<p><img src="/2025/03/10/WGAN/WGAN\5.png"></p>
 <p>据我们所知，这是GAN文献中第一次显示这样的属性，GAN的损失显示了收敛的属性。在对抗网络中进行研究时，此属性非常有用，因为人们不需要盯着生成的样本来找出故障模式，也不需要获得哪些模型比其他模型做得更好的信息。</p>
 <p>然而，我们并不认为这是一种定量评估生成模型的新方法。依赖于critic架构的恒定比例因子意味着很难比较不同critic的模型。更重要的是，在实践中critic没有无限能力的事实使得我们很难知道我们估计的EM距离究竟有多接近。也就是说，我们成功地使用了损失度量来反复验证我们的实验，并且没有失败，我们认为这是对以前没有这种设施的训练GAN的一个巨大的改进。</p>
 <p>相反，图4描绘了GAN训练过程中JS距离的GAN估计的演变。更准确地说，在GAN训练过程中，对判别器进行训练最大化
@@ -2843,10 +2828,7 @@ D\)</span>技巧[4]进行训练。生成的样本为3通道，大小为64×64像
 \mathbb{P}_\theta\right)-2 \log
 2\)</span>的下界。在图中，我们画出了量<span class="math inline">\(\frac{1}{2} L\left(D, g_\theta\right)+\log
 2\)</span>，这是JS距离的一个下界</p>
-<figure>
-<img src="/2025/03/10/WGAN/WGAN\6.png" alt="image">
-<figcaption aria-hidden="true">image</figcaption>
-</figure>
+<p><img src="/2025/03/10/WGAN/WGAN\6.png"></p>
 <p>这个数量显然与样品质量相关性很差。还要注意，JS估计值通常保持不变，或者上升而不是下降。事实上，它通常非常接近<span class="math inline">\(log
 2≈0.69\)</span>，这是JS距离的最高值。换句话说，JS距离饱和，鉴别器无损耗，生成的样本在某些情况下是有意义的（DCGAN生成器，右上图），在其他情况下会折叠成一个无意义的图像[4]。最后一个现象在[1]中得到了理论解释，并在[11]中得到了强调。</p>
 <p>当使用<span class="math inline">\(- log
@@ -2860,22 +2842,14 @@ D\)</span>技巧[4]时，判别器损失和生成器损失是不同的。附录E
 critic或GAN判别器保留了卷积DCGAN架构</p>
 <p>图5、图6和图7显示了同时使用WGAN和GAN算法为这三种架构生成的样本。我们将生成的样本的完整片参考附录F。样品未经过Cherry-Picked处理。</p>
 <p>在没任何实验中我们都未看到WGAN算法发生模式崩溃的证据</p>
-<figure>
-<img src="/2025/03/10/WGAN/WGAN\7.png" alt="image">
-<figcaption aria-hidden="true">image</figcaption>
-</figure>
-<p>图5：使用DCGAN生成器训练的算法。左：Wgan算法。右：标准GAN配方。两种算法都产生了高质量的样本</p>
-<figure>
-<img src="/2025/03/10/WGAN/WGAN\8.png" alt="image">
-<figcaption aria-hidden="true">image</figcaption>
-</figure>
-<p>图6：算法用一个没有批归一化的生成器和每层固定数量的过滤器进行训练。除了去掉批量归一化，参数的数量也因此减少了一个数量级以上。左：Wgan算法。右：标准GAN配方。正如我们可以看到标准的GAN没有学习到，而WGAN仍然能够产生样本。</p>
-<figure>
-<img src="/2025/03/10/WGAN/WGAN\9.png" alt="image">
-<figcaption aria-hidden="true">image</figcaption>
-</figure>
-<p>图7：用4层512单元ReLU非线性的MLP生成器训练的算法。参数数量与DCGAN类似，但对图像生成缺乏较强的诱导偏差。左：Wgan算法。右：标准GAN配方。WGAN方法仍然能够产生样品，质量低于DCGAN，质量高于标准GAN的MLP。注意到GAN
-MLP中模式崩溃的显著程度 ## 结论</p>
+<p><img src="/2025/03/10/WGAN/WGAN\7.png">
+图5：使用DCGAN生成器训练的算法。左：Wgan算法。右：标准GAN配方。两种算法都产生了高质量的样本</p>
+<p><img src="/2025/03/10/WGAN/WGAN\8.png">
+图6：算法用一个没有批归一化的生成器和每层固定数量的过滤器进行训练。除了去掉批量归一化，参数的数量也因此减少了一个数量级以上。左：Wgan算法。右：标准GAN配方。正如我们可以看到标准的GAN没有学习到，而WGAN仍然能够产生样本。</p>
+<p><img src="/2025/03/10/WGAN/WGAN\9.png">
+图7：用4层512单元ReLU非线性的MLP生成器训练的算法。参数数量与DCGAN类似，但对图像生成缺乏较强的诱导偏差。左：Wgan算法。右：标准GAN配方。WGAN方法仍然能够产生样品，质量低于DCGAN，质量高于标准GAN的MLP。注意到GAN
+MLP中模式崩溃的显著程度</p>
+<h2 id="结论">结论</h2>
 <p>引入了WGAN算法，它是传统GAN训练的一种替代。在这个新的模型中，表明可以提高学习的稳定性，摆脱模式崩溃等问题，并提供有意义的学习曲线，用于调试和超参数搜索。此外，文章表明，相应的优化问题是健全的，并提供了广泛的理论工作，突出了与其他距离分布之间的深层联系。</p>
 ]]></content>
       <categories>
@@ -2883,87 +2857,6 @@ MLP中模式崩溃的显著程度 ## 结论</p>
       </categories>
       <tags>
         <tag>GAN</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>两个曲线之间的距离</title>
-    <url>/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/</url>
-    <content><![CDATA[<h2 id="两个曲线之间的距离">两个曲线之间的距离</h2>
-<p>搜Fréchet怎么打的时候看到了Fréchet距离，感觉这两天接触的距离比较多，做下整理（说不定以后换个距离就是个创新点）</p>
-<p>本篇主要介绍两个距离：<strong>Fréchet距离</strong>和<strong>Hausdorff距离</strong>。以后看到了比较两个曲线的方法再做补充（之前介绍过的两个分布之间的距离也会写篇博客整理出来）
-<span id="more"></span></p>
-<h2 id="fréchet距离">Fréchet距离</h2>
-<p>Fréchet distance(弗雷歇距离)是法国数学家Maurice René
-Fréchet在1906年提出的一种路径空间相似形描述，这种描述同时还考虑进路径空间距离的因素，对于空间路径的相似性比较适用。</p>
-<p><strong>直观的理解，Fréchet distance就是最短的狗绳长度</strong>： ·
-主人走路径A，狗走路径B，他们有不同的配速方案。 ·
-主人和狗各自走完这两条路径过程中所需要的最短狗绳长度。（在某一种配速下需要的狗绳长度，但其他配速下需要的狗绳长度更长）
-<img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/1.jpg" alt="image"></p>
-<p><strong>严格的数学定义：</strong> 设<span class="math inline">\((\mathbb S ,d)\)</span>是一个度量空间，<span class="math inline">\(d\)</span>是<span class="math inline">\(\mathbb{S}\)</span>上的度量。 1. <span class="math inline">\(A\)</span>是<span class="math inline">\(\mathbb{S}\)</span>上的一个将单位区间映射到<span class="math inline">\(\mathbb{S}\)</span>的连续映射，例如：<span class="math inline">\(A:[0,1] \to \mathbb S\)</span>. 2.
-从单位区间到其自身的重参数化映射<span class="math inline">\(\alpha
-:[0,1]\to [0,1]\)</span>满足如下三个条件：1）<span class="math inline">\(\alpha\)</span>是连续的。 2）<span class="math inline">\(\alpha\)</span>是非降的，即对于任意的<span class="math inline">\(x,y \in [0,1],x\le y\)</span>，都有<span class="math inline">\(\alpha(x) \le \alpha(y)\)</span>。 3）<span class="math inline">\(\alpha\)</span>是满射。此时有<span class="math inline">\(\alpha(0)=0,\alpha(1)=1\)</span> 3. 设<span class="math inline">\(A\)</span>和<span class="math inline">\(B\)</span>是<span class="math inline">\(\mathbb{S}\)</span>上的两条曲线，即<span class="math inline">\(A:[0,1]\to \mathbb{S},B:[0,1]\to
-\mathbb{S}\)</span>。又<span class="math inline">\(\alpha\)</span>和<span class="math inline">\(\beta\)</span>是单位区间的两个重参数化映射，则曲线<span class="math inline">\(A\)</span>和<span class="math inline">\(B\)</span>之间的Fréchet距离定义为： <span class="math display">\[
-F(A,B)=\underset{\alpha ,\beta}{\inf}\underset{t \in [0,1]}{\max}\lbrace
-d(A(\alpha(t)),B(\beta(t)))
-\]</span></p>
-<p>解释：</p>
-<ul>
-<li>两条曲线<span class="math inline">\(A(\alpha(t))\)</span>和<span class="math inline">\(B(\beta(t))\)</span>之间距离最大值的下确界
-<ul>
-<li>t理解为时间</li>
-<li><span class="math inline">\(\alpha(t)\)</span>和<span class="math inline">\(\beta(t)\)</span>理解为人和狗随时间变化的速度</li>
-<li><span class="math inline">\(A(\alpha(t))\)</span>和<span class="math inline">\(B(\beta(t))\)</span>代表t时刻人和狗的位置</li>
-<li>最大值的下确界意思为,每一种人狗速度方案下，都有对应的距离最大值；那么对于所有的速度方案，这些距离最大值中最小的是哪个？</li>
-</ul></li>
-</ul>
-<p><strong>离散化</strong></p>
-<p>设定<span class="math inline">\(t\)</span>是时间点，该时刻，曲线<span class="math inline">\(A\)</span> 上的采样点为<span class="math inline">\(A(\alpha(t))\)</span>, 曲线<span class="math inline">\(B\)</span>上采样点为<span class="math inline">\(B(\alpha(t))\)</span>.
-如果使用欧氏距离，则容易定义<span class="math inline">\(d(A(\alpha(t)),B(\beta(t)))\)</span>.
-在每次采样中<span class="math inline">\(t\)</span>离散的遍历区间<span class="math inline">\([0,1]\)</span>, 得到该种采样下的最大距离<span class="math inline">\(\underset{t\in [0,1]}{\max} \lbrace
-d(A(\alpha(t)),B(\beta(t))) \rbrace\)</span>.
-Fréchet距离就是使该最大距离最小化的采样方式下的值。
-易于理解的，在离散方式下，我们不可能得到真实的Fréchet距离，而可以无限的趋近。但是越精确的值需要越大的计算量。</p>
-<p><img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/2.jpg"></p>
-<h2 id="hausdorff距离">Hausdorff距离</h2>
-<p>衡量两个集合之间的距离</p>
-<p><strong>定义</strong>: 给定欧氏空间中的两点集<span class="math inline">\(A=\lbrace a_1,a_2,... \rbrace , B=\lbrace
-b_1,b_2,...
-\rbrace\)</span>，豪斯多夫（Hausdorff）距离就是用来衡量这两个点集间的距离。定义公式如下:
-<span class="math display">\[
-H(A,B)=\max[h(A,B),h(B,A)]
-\]</span> 其中， <span class="math display">\[
-h(A,B)=\underset{a \in A}{\max}\underset{b\in B}{\min} \lVert a-b \rVert
-\\
-h(B,A)=\underset{b \in B}{\max}\underset{a\in A}{\min} \lVert b-a \rVert
-\]</span> <span class="math inline">\(H(A,B)\)</span>称为双向Hausdorff
-距离，<span class="math inline">\(h(A,B)\)</span>称为从点集A到点集B的单向 Hausdorff
-距离。相应地<span class="math inline">\(h(B,A)\)</span>称为从点集B到点集A的单向Hausdorff距离</p>
-<p><strong>一些图例</strong></p>
-<p><img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/3.jpg"> <img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/4.jpg"></p>
-<p><strong>性质</strong></p>
-<ul>
-<li><p>双向Hausdorff距离 <span class="math inline">\(H(A,B)\)</span>是单向 Hausdorff 距离<span class="math inline">\(h(A,B)\)</span>和<span class="math inline">\(h(B,A)\)</span>两者中较大者，显然它度量了两个点集间的最大不匹配程度。</p></li>
-<li><p>当<span class="math inline">\(A\)</span>和<span class="math inline">\(B\)</span>都是闭集的时候,Hausdorff距离满足度量的三个定理：</p></li>
-</ul>
-<ol type="1">
-<li><span class="math inline">\(H(A,B)\ge 0\)</span>，当且仅当<span class="math inline">\(A=B\)</span>时，<span class="math inline">\(H(A,B)= 0\)</span></li>
-<li><span class="math inline">\(H(A,B)=H(B,A)\)</span></li>
-<li><span class="math inline">\(H(A,B)+H(B,C)\ge H(A,C)\)</span></li>
-</ol>
-<ul>
-<li><p>若凸集<span class="math inline">\(A,B\)</span>满足<span class="math inline">\(A \nsubseteq B,B \nsubseteq A\)</span>并记<span class="math inline">\(\partial A,\partial B\)</span>分别为<span class="math inline">\(A,B\)</span>边界的集合，则<span class="math inline">\(A,B\)</span>的Hausdorff距离等于<span class="math inline">\(\partial A,\partial
-B\)</span>的Hausdorff距离</p></li>
-<li><p>Hausdorff距离易受到突发噪声的影响。</p></li>
-</ul>
-<p><img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/5.jpg"></p>
-<p>当图像受到噪声污染或存在遮挡等情况时，原始的Haudorff距离容易造成误匹配。所以，在1933年，Huttenlocher提出了部分
-Hausdorff距离的概念。</p>
-]]></content>
-      <categories>
-        <category>学习笔记</category>
-      </categories>
-      <tags>
-        <tag>各种距离</tag>
       </tags>
   </entry>
   <entry>
@@ -3278,6 +3171,87 @@ u|}\right)-\lambda_1\left(I-c_1\right)^2+\lambda_2\left(I-c_2\right)^2\right]  \
       </categories>
       <tags>
         <tag>图像处理</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>两个曲线之间的距离</title>
+    <url>/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/</url>
+    <content><![CDATA[<h2 id="两个曲线之间的距离">两个曲线之间的距离</h2>
+<p>搜Fréchet怎么打的时候看到了Fréchet距离，感觉这两天接触的距离比较多，做下整理（说不定以后换个距离就是个创新点）</p>
+<p>本篇主要介绍两个距离：<strong>Fréchet距离</strong>和<strong>Hausdorff距离</strong>。以后看到了比较两个曲线的方法再做补充（之前介绍过的两个分布之间的距离也会写篇博客整理出来）
+<span id="more"></span></p>
+<h2 id="fréchet距离">Fréchet距离</h2>
+<p>Fréchet distance(弗雷歇距离)是法国数学家Maurice René
+Fréchet在1906年提出的一种路径空间相似形描述，这种描述同时还考虑进路径空间距离的因素，对于空间路径的相似性比较适用。</p>
+<p><strong>直观的理解，Fréchet distance就是最短的狗绳长度</strong>： ·
+主人走路径A，狗走路径B，他们有不同的配速方案。 ·
+主人和狗各自走完这两条路径过程中所需要的最短狗绳长度。（在某一种配速下需要的狗绳长度，但其他配速下需要的狗绳长度更长）
+<img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/1.jpg" alt="image"></p>
+<p><strong>严格的数学定义：</strong> 设<span class="math inline">\((\mathbb S ,d)\)</span>是一个度量空间，<span class="math inline">\(d\)</span>是<span class="math inline">\(\mathbb{S}\)</span>上的度量。 1. <span class="math inline">\(A\)</span>是<span class="math inline">\(\mathbb{S}\)</span>上的一个将单位区间映射到<span class="math inline">\(\mathbb{S}\)</span>的连续映射，例如：<span class="math inline">\(A:[0,1] \to \mathbb S\)</span>. 2.
+从单位区间到其自身的重参数化映射<span class="math inline">\(\alpha
+:[0,1]\to [0,1]\)</span>满足如下三个条件：1）<span class="math inline">\(\alpha\)</span>是连续的。 2）<span class="math inline">\(\alpha\)</span>是非降的，即对于任意的<span class="math inline">\(x,y \in [0,1],x\le y\)</span>，都有<span class="math inline">\(\alpha(x) \le \alpha(y)\)</span>。 3）<span class="math inline">\(\alpha\)</span>是满射。此时有<span class="math inline">\(\alpha(0)=0,\alpha(1)=1\)</span> 3. 设<span class="math inline">\(A\)</span>和<span class="math inline">\(B\)</span>是<span class="math inline">\(\mathbb{S}\)</span>上的两条曲线，即<span class="math inline">\(A:[0,1]\to \mathbb{S},B:[0,1]\to
+\mathbb{S}\)</span>。又<span class="math inline">\(\alpha\)</span>和<span class="math inline">\(\beta\)</span>是单位区间的两个重参数化映射，则曲线<span class="math inline">\(A\)</span>和<span class="math inline">\(B\)</span>之间的Fréchet距离定义为： <span class="math display">\[
+F(A,B)=\underset{\alpha ,\beta}{\inf}\underset{t \in [0,1]}{\max}\lbrace
+d(A(\alpha(t)),B(\beta(t)))
+\]</span></p>
+<p>解释：</p>
+<ul>
+<li>两条曲线<span class="math inline">\(A(\alpha(t))\)</span>和<span class="math inline">\(B(\beta(t))\)</span>之间距离最大值的下确界
+<ul>
+<li>t理解为时间</li>
+<li><span class="math inline">\(\alpha(t)\)</span>和<span class="math inline">\(\beta(t)\)</span>理解为人和狗随时间变化的速度</li>
+<li><span class="math inline">\(A(\alpha(t))\)</span>和<span class="math inline">\(B(\beta(t))\)</span>代表t时刻人和狗的位置</li>
+<li>最大值的下确界意思为,每一种人狗速度方案下，都有对应的距离最大值；那么对于所有的速度方案，这些距离最大值中最小的是哪个？</li>
+</ul></li>
+</ul>
+<p><strong>离散化</strong></p>
+<p>设定<span class="math inline">\(t\)</span>是时间点，该时刻，曲线<span class="math inline">\(A\)</span> 上的采样点为<span class="math inline">\(A(\alpha(t))\)</span>, 曲线<span class="math inline">\(B\)</span>上采样点为<span class="math inline">\(B(\alpha(t))\)</span>.
+如果使用欧氏距离，则容易定义<span class="math inline">\(d(A(\alpha(t)),B(\beta(t)))\)</span>.
+在每次采样中<span class="math inline">\(t\)</span>离散的遍历区间<span class="math inline">\([0,1]\)</span>, 得到该种采样下的最大距离<span class="math inline">\(\underset{t\in [0,1]}{\max} \lbrace
+d(A(\alpha(t)),B(\beta(t))) \rbrace\)</span>.
+Fréchet距离就是使该最大距离最小化的采样方式下的值。
+易于理解的，在离散方式下，我们不可能得到真实的Fréchet距离，而可以无限的趋近。但是越精确的值需要越大的计算量。</p>
+<p><img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/2.jpg"></p>
+<h2 id="hausdorff距离">Hausdorff距离</h2>
+<p>衡量两个集合之间的距离</p>
+<p><strong>定义</strong>: 给定欧氏空间中的两点集<span class="math inline">\(A=\lbrace a_1,a_2,... \rbrace , B=\lbrace
+b_1,b_2,...
+\rbrace\)</span>，豪斯多夫（Hausdorff）距离就是用来衡量这两个点集间的距离。定义公式如下:
+<span class="math display">\[
+H(A,B)=\max[h(A,B),h(B,A)]
+\]</span> 其中， <span class="math display">\[
+h(A,B)=\underset{a \in A}{\max}\underset{b\in B}{\min} \lVert a-b \rVert
+\\
+h(B,A)=\underset{b \in B}{\max}\underset{a\in A}{\min} \lVert b-a \rVert
+\]</span> <span class="math inline">\(H(A,B)\)</span>称为双向Hausdorff
+距离，<span class="math inline">\(h(A,B)\)</span>称为从点集A到点集B的单向 Hausdorff
+距离。相应地<span class="math inline">\(h(B,A)\)</span>称为从点集B到点集A的单向Hausdorff距离</p>
+<p><strong>一些图例</strong></p>
+<p><img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/3.jpg"> <img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/4.jpg"></p>
+<p><strong>性质</strong></p>
+<ul>
+<li><p>双向Hausdorff距离 <span class="math inline">\(H(A,B)\)</span>是单向 Hausdorff 距离<span class="math inline">\(h(A,B)\)</span>和<span class="math inline">\(h(B,A)\)</span>两者中较大者，显然它度量了两个点集间的最大不匹配程度。</p></li>
+<li><p>当<span class="math inline">\(A\)</span>和<span class="math inline">\(B\)</span>都是闭集的时候,Hausdorff距离满足度量的三个定理：</p></li>
+</ul>
+<ol type="1">
+<li><span class="math inline">\(H(A,B)\ge 0\)</span>，当且仅当<span class="math inline">\(A=B\)</span>时，<span class="math inline">\(H(A,B)= 0\)</span></li>
+<li><span class="math inline">\(H(A,B)=H(B,A)\)</span></li>
+<li><span class="math inline">\(H(A,B)+H(B,C)\ge H(A,C)\)</span></li>
+</ol>
+<ul>
+<li><p>若凸集<span class="math inline">\(A,B\)</span>满足<span class="math inline">\(A \nsubseteq B,B \nsubseteq A\)</span>并记<span class="math inline">\(\partial A,\partial B\)</span>分别为<span class="math inline">\(A,B\)</span>边界的集合，则<span class="math inline">\(A,B\)</span>的Hausdorff距离等于<span class="math inline">\(\partial A,\partial
+B\)</span>的Hausdorff距离</p></li>
+<li><p>Hausdorff距离易受到突发噪声的影响。</p></li>
+</ul>
+<p><img src="/2025/02/13/%E4%B8%A4%E4%B8%AA%E6%9B%B2%E7%BA%BF%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB/5.jpg"></p>
+<p>当图像受到噪声污染或存在遮挡等情况时，原始的Haudorff距离容易造成误匹配。所以，在1933年，Huttenlocher提出了部分
+Hausdorff距离的概念。</p>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>各种距离</tag>
       </tags>
   </entry>
 </search>
