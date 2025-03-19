@@ -332,7 +332,7 @@ electrical impedance tomography with deep learning Networks</h1>
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-17 10:11:00" itemprop="dateModified" datetime="2025-03-17T10:11:00+08:00">2025-03-17</time>
+                <time title="修改时间：2025-03-19 16:40:26" itemprop="dateModified" datetime="2025-03-19T16:40:26+08:00">2025-03-19</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -388,173 +388,14 @@ impedance tomography and Calderón’s problem</h1>
 <h2 id="摘要">摘要</h2>
 <p>我们回顾了电阻抗断层成像逆方法的数学发展，该方法通过在介质边界测量电压和电流来确定介质的电特性。在数学文献中，这个问题也被称为Calderón问题，来源于Calderón的开创性贡献[23]
 .我们将这篇文章集中在复杂几何光学解决方案的主题上，这些解决方案已经导致了该领域的许多进展。在最后一节中，我们回顾了一些Calderón问题的反例，这些反例由于与隐匿性和不可见性的联系而引起了人们的兴趣。</p>
-<h2 id="介绍">介绍</h2>
-<p>考虑到人体器官和组织具有截然不同的电导率，EIT也出现在医学成像中[71]。一个令人兴奋的潜在应用是乳腺癌的早期诊断[149]。乳腺恶性肿瘤的电导率通常为0.2
-mho，明显高于正常组织的0.03mho。另一个应用是监测肺功能[62]。关于EIT的其他医学成像应用，参见该书[52]和《生理学测量》[53]。这种反演方法也被用于检测埋地管道的泄漏[70]。</p>
-<p>我们现在更精确地描述这个数学问题。</p>
-<p>设<span class="math inline">\(\Omega \subseteq
-\mathbb{R}^n\)</span>是一个边界光滑的有界区域(我们将描述的许多结果对于具有Lipschitz边界的区域是有效的)。<span class="math inline">\(\Omega\)</span>的电导率用一个有界的正函数<span class="math inline">\(\gamma(x)\)</span>表示.在没有电流汇或电流源的情况下，给出了电势的方程
-<span class="math display">\[
-\nabla \cdot(\gamma \nabla u)=0 \text { in } \Omega \qquad(1)
-\]</span></p>
-<p>根据欧姆定律，<span class="math inline">\(\gamma \nabla
-u\)</span>表示当前的电流通量。</p>
-<p>给定边界上的一个势函数<span class="math inline">\(f \in
-H^{\frac{1}{2}}(\partial \Omega)\)</span>，诱导势<span class="math inline">\(u \in
-H^1(\Omega)\)</span>是下面Dirichlet问题的解</p>
-<p><span class="math display">\[
-\begin{aligned}
-\nabla \cdot(\gamma \nabla u) &amp; =0 \text { in } \Omega \\
-\left.u\right|_{\partial \Omega} &amp; =f .
-\end{aligned} \qquad(2)
-\]</span></p>
-<p>Dirichlet to Neumann映射，或电压到电流映射，由</p>
-<p><span class="math display">\[
-\Lambda_\gamma(f)=\left.\left(\gamma \frac{\partial u}{\partial
-\nu}\right)\right|_{\partial \Omega} \qquad(3)
-\]</span></p>
-<p>给出，其中<span class="math inline">\(\nu\)</span>表示<span class="math inline">\(\partial \Omega\)</span>的单位外法线。</p>
-<p>反问题是已知<span class="math inline">\(\Lambda_\gamma\)</span>确定<span class="math inline">\(\gamma\)</span>。很难找到一种系统的方法来规定边界处的电压测量值，以便能够找到电导率。Calderón转而采取了不同的路线。</p>
-<p>利用散度定理，我们有 <span class="math display">\[
-Q_\gamma(f):=\int_{\Omega} \gamma|\nabla u|^2 d x=\int_{\partial \Omega}
-\Lambda_\gamma(f) f d S \qquad(4)
-\]</span></p>
-<p>式中<span class="math inline">\(d S\)</span>为表面测度，<span class="math inline">\(u\)</span>为式(2)的解。换言之，<span class="math inline">\(Q_\gamma(f)\)</span>是与线性映射<span class="math inline">\(\Lambda_\gamma(f)\)</span>相联系的二次型，且对任意的<span class="math inline">\(f \in H^{\frac{1}{2}}(\partial
-\Omega)\)</span>，知道<span class="math inline">\(\Lambda_\gamma(f)\)</span>或<span class="math inline">\(Q_\gamma(f)\)</span>是等价的。 <span class="math inline">\(Q_\gamma(f)\)</span>衡量了在边界处维持电势<span class="math inline">\(f\)</span>所需的能量。Calderón的观点是，如果人们着眼于<span class="math inline">\(Q_\gamma(f)\)</span>，问题就变成了寻找方程(1)的足够多的解<span class="math inline">\(u \in H^1(\Omega)\)</span>，以便在内部寻找<span class="math inline">\(\gamma\)</span>。我们将在接下来的章节中进一步解释这种方法，其中我们研究了映射的线性化。
-<span class="math display">\[
-\gamma \xrightarrow{Q} Q_\gamma \qquad(5)
-\]</span></p>
-<p>这里我们把<span class="math inline">\(Q_\gamma\)</span>看成是与二次型(4)相联系的双线性形式。</p>
-<p>第2节介绍Calderón的文章，以及他如何利用复指数证明(5)的线性化在恒定电导率下是单射的。他还给出了一个重建电导率的近似公式，这个电导率先验地接近于一个恒定的电导率。在第3节中，我们给出了Calderón方法在确定孔洞和夹杂物中的应用。在第4节中，我们描述了关于电导率及其法向导数的边界值的唯一性，稳定性和重构的结果。</p>
-<p>在第5节中，我们描述了Sylvester和Uhlmann[132]，[131]构造的与有界位势相关的Schrödinger方程的复几何光学解。这些解表现为卡Calderón关于大复频率的复指数解。在第6节中，我们利用这些解证明了在维数<span class="math inline">\(n \geq
-3\)</span>时，反问题的全局可辨识性结果、稳定性估计和重构方法。我们还描述了可辨识性结果对非线性电导率的扩展[124]，并给出了复杂几何光学解的其他应用。</p>
-<p>在第7节中，我们考虑了部分数据问题，即当DN映射在边界的一部分上测量时的情况.我们描述文献[75]对三维及以上非线性问题的结果。这使用了更大类的CGO解，具有使用Carleman估计构造的非线性相函数。对于部分数据的线性化问题，我们也回顾了文献[29]。</p>
-<p>在第8节中，我们考虑二维情况。特别是，我们简要描述了Astala和Päivärinta最近证明有界可测系数唯一性的工作，以及Bukhgeim从与薛定谔方程相关的柯西数据中证明势唯一性的研究。最后，我们描述了Imanuvilov、Uhlmann和Yamamoto在部分数据问题上的工作[59]。</p>
-<p>第2~8节讨论了各向同性电导率的情况。在第九节中，我们考虑了各向异性电导率的情况，即电导率也依赖于方向。在两个维度上，对各向异性问题的理解已经有了实质性的进展，因为人们通常可以通过使用等温坐标将问题简化为各向同性的情况。在维度3中，文献[85]指出的问题具有几何性质。我们回顾了[83]，[31]的结果.</p>
-<p>在第10节中，我们描述了Calderón问题和从边界点之间的旅行时间恢复介质声速问题之间的联系。最后在第11节中讨论了变换光学和不可见性的思想在静电学中的应用。</p>
-<p>我们在引言的最后提到，我们不讨论EIT中的其他一些重要的发展，包括Borcea等人在离散电阻网络上的工作和对连续情况的近似[17]，以及边界未知时的情况[78]。我们主要集中在涉及复杂几何光学解的应用中。关于EIT的其他综述见[16]，[48]，[27]和[140]。</p>
-<h2 id="calderón的论文">Calderón的论文</h2>
-<p>Calderón在文献[23]中证明了映射<span class="math inline">\(Q\)</span>是解析的。<span class="math inline">\(Q\)</span>在<span class="math inline">\(\gamma=\gamma_0\)</span>处沿<span class="math inline">\(h\)</span>方向的Fréchet导数由下式给出</p>
-<p><span class="math display">\[
-\left.d Q\right|_{\gamma=\gamma_0}(h)(f, g)=\int_{\Omega} h \nabla u
-\cdot \nabla v d x \qquad(6)
-\]</span></p>
-<p>其中<span class="math inline">\(u, v \in H^1(\Omega)\)</span>
-是下面的解</p>
-<p><span class="math display">\[
-\left\{\begin{array}{l}
-\nabla \cdot\left(\gamma_0 \nabla u\right)=\nabla \cdot\left(\gamma_0
-\nabla v\right)=0 \text { in } \Omega \\
-\left.u\right|_{\partial \Omega}=f \in H^{\frac{1}{2}}(\partial
-\Omega),\left.\quad v\right|_{\partial \Omega}=g \in
-H^{\frac{1}{2}}(\partial \Omega) .
-\end{array}\right. \qquad(7)
-\]</span></p>
-<p>因此，如果<span class="math inline">\(H^1(\Omega)\)</span>的解<span class="math inline">\(\nabla \cdot\left(\gamma_0 \nabla
-u\right)=0\)</span>的乘积在<span class="math inline">\(L^2(\Omega)\)</span>中稠密，则线性化映射是单射的。</p>
-<p>Calderón证明了线性化映射在<span class="math inline">\(\gamma_0=\)</span>常数的情况下的单射性，为了简单起见，我们假设它是常值函数1。问题归结为调和函数的梯度积在<span class="math inline">\(L^2(\Omega)\)</span>中是否稠密</p>
-<p>Calderón取如下调和函数：</p>
-<p><span class="math display">\[
-u=e^{x \cdot \rho}, \quad v=e^{-x \cdot \bar{\rho}} \qquad(8)
-\]</span></p>
-<p>其中 <span class="math inline">\(\rho \in \mathbb{C}^n\)</span>
-有</p>
-<p><span class="math display">\[
-\rho \cdot \rho=0 \qquad(9)
-\]</span></p>
-<p>我们注意到条件(9)等价于下面</p>
-<p><span class="math display">\[
-\begin{aligned}
-&amp; \rho=\frac{\eta+i k}{2}, \eta, k \in \mathbb{R}^n \\
-&amp; |\eta|=|k|, \eta \cdot k=0
-\end{aligned} \qquad(10)
-\]</span></p>
-<p>然后将(8)的解代入(6)中，我们得到如果<span class="math inline">\(\left.d Q\right|_{\gamma_0=1}(h)=0\)</span></p>
-<p><span class="math display">\[
-|k|^2\left(\chi_{\Omega} h\right)^{\wedge}(k)=0 \quad \forall k \in
-\mathbb{R}^n
-\]</span></p>
-<p>式中<span class="math inline">\(\chi_{\Omega}\)</span>为<span class="math inline">\(\Omega\)</span>的特征函数，<span class="math inline">\({
-}^{\wedge}\)</span>为傅里叶变换。然后由Fourier反演公式得出<span class="math inline">\(h=0\)</span>在<span class="math inline">\(\Omega\)</span>上。然而，由于在<span class="math inline">\(Q\)</span>的取值范围内允许使用隐函数定理的条件要么是错误的，要么是未知的，因此不能应用隐函数定理得出<span class="math inline">\(\gamma\)</span>在常数附近可逆的结论。</p>
-<p>Calderón还观察到，如果使用解(8)，我们可以找到电导率<span class="math inline">\(\gamma\)</span>的一个近似</p>
-<p><span class="math display">\[
-\gamma=1+h \qquad(11)
-\]</span></p>
-<p>并且<span class="math inline">\(h\)</span>在<span class="math inline">\(L^{\infty}\)</span>范数下足够小。</p>
-<p>我们给出 <span class="math display">\[
-G_\gamma=Q_\gamma\left(\left.e^{x \cdot \rho}\right|_{\partial
-\Omega},\left.e^{-x \cdot \bar{\rho}}\right|_{\partial \Omega}\right)
-\]</span></p>
-<p><span class="math inline">\(\rho \in
-\mathbb{C}^n\)</span>如(2.4)所示，现在</p>
-<p><span class="math display">\[
-\begin{aligned}
-G_\gamma &amp; =\int_{\Omega}(1+h) \nabla u \cdot \nabla v d x \\
-&amp; +\int_{\Omega} h(\nabla \delta u \cdot \nabla v+\nabla u \cdot
-\nabla \delta v) d x \\
-&amp; +\int_{\Omega}(1+h) \nabla \delta u \cdot \nabla \delta v d x
-\end{aligned} \qquad(12)
-\]</span></p>
-<p><span class="math inline">\(u, v\)</span>如(8)并且</p>
-<p><span class="math display">\[
-\begin{aligned}
-\nabla \cdot(\gamma \nabla(u+\delta u)) &amp; =\nabla \cdot(\gamma
-\nabla(v+\delta v))=0 \text { in } \Omega \\
-\left.\delta u\right|_{\partial \Omega} &amp; =\left.\delta
-v\right|_{\partial \Omega}=0
-\end{aligned} \qquad(13)
-\]</span></p>
-<p>现在应用于(13)式的标准椭圆估计表明</p>
-<p><span class="math display">\[
-\|\nabla \delta u\|_{L^2(\Omega)}, \quad\|\nabla \delta
-v\|_{L^2(\Omega)} \leq C\|h\|_{L^{\infty}(\Omega)}|k| e^{\frac{1}{2}
-r|k|} \qquad(14)
-\]</span></p>
-<p>对于某个<span class="math inline">\(C&gt;0\)</span>，其中<span class="math inline">\(r\)</span>表示包含<span class="math inline">\(\Omega\)</span>的最小球的半径。</p>
-<p>将<span class="math inline">\(u, v\)</span>代入(2.7)中，我们得到</p>
-<p><span class="math display">\[
-\widehat{\chi \Omega \gamma}(k)=-2
-\frac{G_\gamma}{|k|^2}+R(k)=\widehat{F}(k)+R(k) \qquad(15)
-\]</span></p>
-<p>式中<span class="math inline">\(F\)</span>由<span class="math inline">\(G_\gamma\)</span>决定，因此已知。利用(14)，我们可以证明<span class="math inline">\(R(k)\)</span>满足估计</p>
-<p><span class="math display">\[
-|R(k)| \leq C\|h\|_{L^{\infty}(\Omega)}^2 e^{r|k|} \qquad(16)
-\]</span></p>
-<p>也就是说，我们知道<span class="math inline">\(\widehat{\chi \Omega
-\gamma}(k)\)</span>直到一个对<span class="math inline">\(k\)</span>足够小的项。更确切地说，令<span class="math inline">\(1&lt;\alpha&lt;2\)</span> .则有 <span class="math display">\[
-|k| \leq \frac{2-\alpha}{r} \log \frac{1}{\|h\|_{L^{\infty}}}=: \sigma
-\qquad(17)
-\]</span></p>
-<p>我们有 <span class="math display">\[
-|R(k)| \leq C\|h\|_{L^{\infty}(\Omega)}^\alpha \qquad(18)
-\]</span></p>
-<p>对于某些 <span class="math inline">\(C&gt;0\)</span>.</p>
-<p>我们取<span class="math inline">\(\widehat{\eta}\)</span> 是 <span class="math inline">\(C^{\infty}\)</span>的一个截断使得<span class="math inline">\(\widehat{\eta}(0)=1, \operatorname{supp}
-\widehat{\eta}(k) \subset\left\{k \in \mathbb{R}^n,|k| \leq
-1\right\}\)</span>且<span class="math inline">\(\eta_\sigma(x)=\sigma^n
-\eta(\sigma x)\)</span>。然后我们得到</p>
-<p><span class="math display">\[
-\widehat{\chi \Omega \gamma}(k)
-\widehat{\eta}\left(\frac{k}{\sigma}\right)=\frac{-2 G_\gamma
-\gamma}{|k|^2} \widehat{\eta}\left(\frac{k}{\sigma}\right)+R(k)
-\widehat{\eta}\left(\frac{k}{\sigma}\right) .
-\]</span></p>
-<p>利用这一点我们得到下面的估计</p>
-<p><span class="math display">\[
-|l(x)| \leq C\|h\|_{L^{\infty}(\Omega)}^\alpha\left[\log
-\frac{1}{\|h\|_{L^{\infty}(\Omega)}}\right]^n \qquad(19)
-\]</span></p>
-<p>其中<span class="math inline">\(l(x)=\left(\chi_{\Omega} \gamma *
-\eta_\sigma\right)(x)-\left(F *
-\eta_\sigma\right)(x)\)</span>。式(19)给出了当<span class="math inline">\(h\)</span>足够小时，平滑后的电导率<span class="math inline">\(\chi_{\Omega} \gamma *
-\eta_\sigma\)</span>的近似表达式。</p>
-<p>这个Calderón的近似估计和它的修正已经在数值上进行了尝试[60]。</p>
-<p>使用这些指数解的另一个完全不同的反问题是具有角平均测量的反输运问题[10]。</p>
-<p>这个估计使用了低频的谐波指数。在第四节中，我们考虑电导率方程的高(复)频率解
-<span class="math display">\[
-L_\gamma=\nabla \cdot(\gamma \nabla u)=0
-\]</span></p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2025/03/16/Electrical%20impedance%20tomography%20and%20Calderon%E2%80%99s%20problem/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
