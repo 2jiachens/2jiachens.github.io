@@ -2611,7 +2611,7 @@ D\left(\mathbb{P}_r \| \mathbb{P}_g\right)-2 \log 2\)</span>,
 <p>该理论告诉我们，训练好的判别器最好也就是<span class="math inline">\(2
 \log 2-2 J S D\left(\mathbb{P}_r \|
 \mathbb{P}_g\right)\)</span>。然而，在实际中，如果我们仅训练<span class="math inline">\(D\)</span>直到收敛，它的误差将趋于0，但是如图一所示，这表明它们之间的JSD是最大的。唯一可能的情况是，两个分布不是连续的，或者它们有不相交的支撑。</p>
-<p><img src="/2025/03/10/WGAN/WGAN\1.png">
+<p><img src="/2025/03/10/WGAN/1.png">
 原因总结：真实数据分布的支撑集往往形成流形，而生成器的输出分布也往往是流形，而两个流形相交部分测度为0。</p>
 <p>定理2.3 设<span class="math inline">\(\mathbb{P}_r\)</span>和<span class="math inline">\(\mathbb{P}_g\)</span>是两个分布，其支撑点位于两个流形<span class="math inline">\(\mathcal{M}\)</span>和<span class="math inline">\(\mathcal{P}\)</span>中，这两个流形不具有全维且不完全对齐。我们进一步假设<span class="math inline">\(\mathbb{P}_r\)</span>和<span class="math inline">\(\mathbb{P}_g\)</span>在各自的流形上是连续的，则有
 <span class="math display">\[
@@ -2623,7 +2623,7 @@ K L\left(\mathbb{P}_g \| \mathbb{P}_r\right) &amp; =+\infty
 \]</span></p>
 <p>值得注意的是，即使两个流形任意靠近，这些分歧也会被放大。我们的生成器的样本可能看起来很好，但两个KL散度都是无穷大，JSD为常数log2，这在训练的时候会发生梯度消失。</p>
 <p>为什么log2？</p>
-<p><img src="/2025/03/10/WGAN/WGAN\2.png"></p>
+<p><img src="/2025/03/10/WGAN/2.png"></p>
 <p>回到WGAN</p>
 <h2 id="不同距离">不同距离</h2>
 <p>设<span class="math inline">\(\mathcal{X}\)</span>是紧致度量集(如图像的空间<span class="math inline">\([0,1]^d\)</span>)，<span class="math inline">\(\Sigma\)</span>表示<span class="math inline">\(\mathcal{X}\)</span>的所有Borel子集构成的集合，<span class="math inline">\(\operatorname{Prob}(\mathcal{X})\)</span>表示定义在<span class="math inline">\(\mathcal{X}\)</span>上的概率测度空间。定义两个分布<span class="math inline">\(\mathbb{P}_r, \mathbb{P}_g \in
@@ -2671,7 +2671,7 @@ L\left(\mathbb{P}_\theta \| \mathbb{P}_0\right)=K L\left(\mathbb{P}_0 \|
 <p>当<span class="math inline">\(\theta_t \rightarrow
 0\)</span>时，序列<span class="math inline">\(\left(\mathbb{P}_{\theta_t}\right)_{t \in
 \mathbb{N}}\)</span>在EM距离下收敛于<span class="math inline">\(\mathbb{P}_0\)</span>，但在JS、KL、反向KL或TV散度下均不收敛。图1说明了EM和JS距离的情况。</p>
-<p><img src="/2025/03/10/WGAN/WGAN\3.png"></p>
+<p><img src="/2025/03/10/WGAN/3.png"></p>
 <p>示例1提供了一个案例，可以通过在EM距离上进行梯度下降来学习低维流形上的概率分布。这无法通过其他距离和散度来实现，因为由此产生的损失函数甚至不是连续的。尽管这个简单的例子以具有不相交支撑的分布为特征，但当支撑在一组零测集中包含非空交集时，同样的结论成立。</p>
 <p>由于Wasserstein距离比JS距离更弱，我们现在可以问，在适当的假设下，<span class="math inline">\(W\left(\mathbb{P}_r,
 \mathbb{P}_\theta\right)\)</span>是否是<span class="math inline">\(\theta\)</span>上的连续损失函数</p>
@@ -2797,7 +2797,7 @@ f_w\left(g_\theta\left(z^{(i)}\right)\right) \\11:
 <p>权重裁剪显然是强制实施Lipschitz约束的一种糟糕的方法。如果裁剪参数很大，则任何权重可能需要很长时间才能达到其极限，从而使critic更难训练直到最优。如果裁剪很小，则当层数较大或未使用批量归一化（例如在RNN中）时，这很容易导致渐变消失。尝试了简单的变体（例如将权重投影到球体），几乎没有区别，并且由于它的简单性和已经很好的性能，作者坚持使用权重裁剪。作者将在神经网络设置中强制执行Lipschitz约束的主题留给进一步研究，并且积极鼓励感兴趣的研究人员改进这种方法。</p>
 <p>EM距离是连续且可微的事实意味着可以（并且应该）训练critic直到最优。论点很简单，训练critic的次数越多，得到的Wasserstein梯度就越可靠，这实际上很有用，因为Wasserstein几乎在所有地方都是可导的对于JS，随着判别器变得更好，梯度变得更可靠，但真正的梯度为0，因为JS是局部饱和的，得到的梯度消失。图2展示了一个概念验证，训练一个GAN判别器和一个WGAN
 critic，直到最优。判别器学习非常快，可以很好地区分假和真，并且正如预期的那样，没有提供可靠的梯度信息。然而，critic无法饱和，并收敛到一个线性函数，该函数在任何地方都给出了非常干净的渐变。我们约束权重的事实限制了函数在空间的不同部分最多是线性的，迫使最优critic具有这种行为。</p>
-<p><img src="/2025/03/10/WGAN/WGAN\4.png"></p>
+<p><img src="/2025/03/10/WGAN/4.png"></p>
 <p>也许更重要的是，可以训练critic直到最优，这使得这样做时不会发生collapse
 modes。这是因为collapse
 modes来自这样一个事实，即固定判别器的最佳生成器是判别器分配最高值的点的增量之和，如[4]所观察到并在[11]中突出显示的那样。</p>
@@ -2815,7 +2815,7 @@ D\)</span>技巧[4]进行训练。生成的样本为3通道，大小为64×64像
 <span class="math inline">\(f\)</span>(算法1中第2-8行)，此时的损失函数是EM距离的估计，直到与我们约束f的Lipschitz常数的方式相关的常数。</p>
 <p>我们的第一个实验说明了这种估计如何与生成样本的质量很好地相关。除了卷积DCGAN架构，我们还进行了实验，使用512个隐藏单元的4层ReLU-MLP替换生成器或同时替换生成器和critic。</p>
 <p>图3为3种架构的WGAN训练过程中EM距离的WGAN估计(3)的演化情况。从图中可以清楚地看出，这些曲线与生成样本的视觉质量有很好的相关性。</p>
-<p><img src="/2025/03/10/WGAN/WGAN\5.png"></p>
+<p><img src="/2025/03/10/WGAN/5.png"></p>
 <p>据我们所知，这是GAN文献中第一次显示这样的属性，GAN的损失显示了收敛的属性。在对抗网络中进行研究时，此属性非常有用，因为人们不需要盯着生成的样本来找出故障模式，也不需要获得哪些模型比其他模型做得更好的信息。</p>
 <p>然而，我们并不认为这是一种定量评估生成模型的新方法。依赖于critic架构的恒定比例因子意味着很难比较不同critic的模型。更重要的是，在实践中critic没有无限能力的事实使得我们很难知道我们估计的EM距离究竟有多接近。也就是说，我们成功地使用了损失度量来反复验证我们的实验，并且没有失败，我们认为这是对以前没有这种设施的训练GAN的一个巨大的改进。</p>
 <p>相反，图4描绘了GAN训练过程中JS距离的GAN估计的演变。更准确地说，在GAN训练过程中，对判别器进行训练最大化
@@ -2828,7 +2828,7 @@ D\)</span>技巧[4]进行训练。生成的样本为3通道，大小为64×64像
 \mathbb{P}_\theta\right)-2 \log
 2\)</span>的下界。在图中，我们画出了量<span class="math inline">\(\frac{1}{2} L\left(D, g_\theta\right)+\log
 2\)</span>，这是JS距离的一个下界</p>
-<p><img src="/2025/03/10/WGAN/WGAN\6.png"></p>
+<p><img src="/2025/03/10/WGAN/6.png"></p>
 <p>这个数量显然与样品质量相关性很差。还要注意，JS估计值通常保持不变，或者上升而不是下降。事实上，它通常非常接近<span class="math inline">\(log
 2≈0.69\)</span>，这是JS距离的最高值。换句话说，JS距离饱和，鉴别器无损耗，生成的样本在某些情况下是有意义的（DCGAN生成器，右上图），在其他情况下会折叠成一个无意义的图像[4]。最后一个现象在[1]中得到了理论解释，并在[11]中得到了强调。</p>
 <p>当使用<span class="math inline">\(- log
@@ -2842,11 +2842,11 @@ D\)</span>技巧[4]时，判别器损失和生成器损失是不同的。附录E
 critic或GAN判别器保留了卷积DCGAN架构</p>
 <p>图5、图6和图7显示了同时使用WGAN和GAN算法为这三种架构生成的样本。我们将生成的样本的完整片参考附录F。样品未经过Cherry-Picked处理。</p>
 <p>在没任何实验中我们都未看到WGAN算法发生模式崩溃的证据</p>
-<p><img src="/2025/03/10/WGAN/WGAN\7.png">
+<p><img src="/2025/03/10/WGAN/7.png">
 图5：使用DCGAN生成器训练的算法。左：Wgan算法。右：标准GAN配方。两种算法都产生了高质量的样本</p>
-<p><img src="/2025/03/10/WGAN/WGAN\8.png">
+<p><img src="/2025/03/10/WGAN/8.png">
 图6：算法用一个没有批归一化的生成器和每层固定数量的过滤器进行训练。除了去掉批量归一化，参数的数量也因此减少了一个数量级以上。左：Wgan算法。右：标准GAN配方。正如我们可以看到标准的GAN没有学习到，而WGAN仍然能够产生样本。</p>
-<p><img src="/2025/03/10/WGAN/WGAN\9.png">
+<p><img src="/2025/03/10/WGAN/9.png">
 图7：用4层512单元ReLU非线性的MLP生成器训练的算法。参数数量与DCGAN类似，但对图像生成缺乏较强的诱导偏差。左：Wgan算法。右：标准GAN配方。WGAN方法仍然能够产生样品，质量低于DCGAN，质量高于标准GAN的MLP。注意到GAN
 MLP中模式崩溃的显著程度</p>
 <h2 id="结论">结论</h2>
