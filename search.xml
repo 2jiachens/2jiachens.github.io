@@ -307,6 +307,75 @@ y)-c_2\right|^2\left(1-H_{\varepsilon}(\phi(x, y))\right) d x d y
       </tags>
   </entry>
   <entry>
+    <title>Lagrange对偶（Lagrange duality）</title>
+    <url>/2025/02/10/Lagrange%E5%AF%B9%E5%81%B6/</url>
+    <content><![CDATA[<h2 id="问题背景">问题背景</h2>
+<p>在一个优化问题中，原始问题通常会带有很多约束条件，这样直接求解原始问题往往是很困难的，于是考虑将原始问题转化为它的对偶问题，通过求解它的对偶问题来得到原始问题的解。<strong>对偶性</strong>（Duality）是凸优化问题的核心内容。
+<span id="more"></span></p>
+<h2 id="原始问题及其转化">原始问题及其转化</h2>
+<p><strong>原始问题</strong></p>
+<p>将一个原始最优化问题写成如下形式 <span class="math display">\[
+\underset{x}{\min} \quad f_0(x) \\ s.t. \quad f_i(x) \le 0,i=1,2,...,m
+\\ \qquad h_j(x)=0,j=1,2,...,p
+\]</span> 在求解原问题的对偶问题时，并不要求原始问题一定是凸问题，<span class="math inline">\(f\)</span>和<span class="math inline">\(g\)</span>可以是一般函数而不一定非得是凸函数。</p>
+<p><strong>拉格朗日函数</strong></p>
+<p>将原始问题的拉格朗日函数定义为 <span class="math display">\[
+L(x,\lambda,\nu)=f_0(x)+\sum^m_{i=1}\lambda_i f_i(x)+\sum^p_{j=1}\nu_j
+h_j(x)
+\]</span> 其中，<span class="math inline">\(x\in \mathbb
+R^n,\lambda\in\mathbb R^m,\nu\in\mathbb R^p\)</span>
+可以看到，拉格朗日函数<span class="math inline">\(L\)</span>相当于原始问题引入了两个新变量<span class="math inline">\(\lambda,\nu\)</span>，称为拉格朗日乘子</p>
+<p><strong>拉格朗日对偶函数</strong></p>
+<p>拉格朗日对偶函数通过对拉格朗日函数<span class="math inline">\(x\)</span>取下确界得到，即 <span class="math display">\[
+g(\lambda,\nu)=\underset{x}{\inf}L(x,\lambda,\nu)
+\]</span> 对偶函数有如下两条重要性质
+1.对偶函数一定是凹函数，其凹性与原目标函数和约束函数凹凸与否无关
+2.对<span class="math inline">\(\forall\lambda\ge0,\forall\nu\)</span>，如果原问题最优解对应的目标函数值为<span class="math inline">\(P^*\)</span>，则<span class="math inline">\(g(\lambda,\nu)\le p^*\)</span></p>
+<h2 id="拉格朗日对偶问题">拉格朗日对偶问题</h2>
+<p>根据对偶函数的重要性质2，对<span class="math inline">\(\forall\lambda\ge0,\forall\nu\)</span>，对偶函数<span class="math inline">\(g(\lambda,\nu)\)</span>是原问题最优值<span class="math inline">\(P^*\)</span>的一个下界，最好的下界就是最大化对偶函数，因此构造原问题的对偶问题：
+<span class="math display">\[
+\underset{\lambda,\nu}{\max}\quad g(\lambda,\nu) \\ s.t.\quad \lambda
+\ge 0
+\]</span>
+由于对偶函数是凹函数，故拉格朗日对偶问题一定是凸优化问题，其对应的最优解为<span class="math inline">\(\lambda^*,\nu^*\)</span>，若对应的最优值为<span class="math inline">\(d^*\)</span>，则总有<span class="math inline">\(d^* \le p^*\)</span></p>
+<p>当<span class="math inline">\(d^* \le p^*\)</span>时，称为弱对偶
+当<span class="math inline">\(d^* = p^*\)</span>时，称为强对偶 将<span class="math inline">\(p^*-d^*\)</span>称为对偶间隙</p>
+<blockquote>
+<p>在解存在的情况下，弱对偶总是成立的。
+满足强对偶时，可以通过求解对偶问题来得到原始问题的解</p>
+</blockquote>
+<h2 id="slater条件">Slater条件</h2>
+<p>Slater条件用于判断什么情况下强对偶是成立的。
+在<strong>原问题是凸问题</strong>的情况下，若<span class="math inline">\(\exists x \in
+relint(D)\)</span>，使得约束条件满足： <span class="math display">\[
+f_i(x)&lt;0,h_j(x)=0\quad i=1,2,...,p
+\]</span> 则强对偶成立 &gt;<span class="math inline">\(relint(D)表示原始凸问题定义域的相对内部，即在定义域上除了边界点以外的所有点\)</span></p>
+<h2 id="kkt条件">KKT条件</h2>
+<p>在强对偶且<span class="math inline">\(L\)</span>对<span class="math inline">\(x\)</span>可微的前提下，设<span class="math inline">\(x^*,\lambda^*,\nu^*\)</span>分别是原问题和对偶问题的最优解，则以下四组条件称为KKT条件
+<span class="math display">\[
+\begin{cases}
+   \frac{\partial L(x^*,\lambda^*,\nu^*)}{\partial x^*} |_{x=x^*}=0
+&amp;\text{(稳定性条件)} \\ \lambda^*_i f_i(x^*)=0
+&amp;\text{(互松弛条件)}\\ f_i(x^*)\le 0,h_j(x^*)=0
+&amp;\text{(原问题可行性)} \\ \lambda_i^* \ge 0
+&amp;\text{(对偶问题可行性)}
+    &amp;\text{if } d
+\end{cases}
+\]</span></p>
+<p>对<strong>一般的原问题</strong>，KKT
+条件是$x<sup><em>,<sup><em>,<sup>* <span class="math inline">\(为最优解的必要条件，即只要\)</span>x</sup></em>,</sup></em>,</sup>*$为最优解，则一定满足
+KKT 条件。</p>
+<p>对<strong>原问题为凸问题</strong>，KKT条件是<span class="math inline">\(x^*,\lambda^*,\nu^*\)</span>
+为最优解的充要条件</p>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>最优化</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Electrical impedance tomography and Calderón’s problem</title>
     <url>/2025/03/16/Electrical%20impedance%20tomography%20and%20Calderon%E2%80%99s%20problem/</url>
     <content><![CDATA[<h1 id="electrical-impedance-tomography-and-calderóns-problem">Electrical
@@ -977,74 +1046,6 @@ x\)</span>(用MC近似,类似于式(15))的算子范数(5)，这在我们的实�
       </tags>
   </entry>
   <entry>
-    <title>最优传输(Optimal Transportation)</title>
-    <url>/2025/02/09/OT1/</url>
-    <content><![CDATA[<h2 id="什么是最优传输">什么是最优传输？</h2>
-<p>最优传输最开始由Monge于1781年提出。一个典型的Monge问题是考虑将一堆具有一定形状的沙子搬运到指定的另外一个形状所需要的具有最小代价的搬运方法。
-如下图所示，我们想将左边红色区域的沙堆搬运到右边，形成右边绿色的沙堆的形状。我们想要找到消耗最少的搬运方式。
-<img src="/2025/02/09/OT1/1.jpg" alt="image">
-一句话来概括，就是<strong>如何用最少的代价将一个质量分布转为另一个质量分布。</strong>
-<span id="more"></span></p>
-<h2 id="质量分布">质量分布</h2>
-<p>质量分布其实就是两个测度空间<span class="math inline">\((X,\mu),(Y,\nu)\)</span>。一般情况下，质量不会凭空产生，所以我们会要求这两个分布的“总质量”是一样的，即<span class="math inline">\(\int_x d\mu=\int_Yd\nu\)</span>。
-问题有了考虑的对象，我们还可以定义成本函数<span class="math inline">\(c(x,y):X \times Y \to \mathbb
-R^+\)</span>，一般是有界的，来衡量将质量从点<span class="math inline">\(x\)</span>运到点<span class="math inline">\(y\)</span>的成本。那么如何去进行移动？主要有两个角度去考虑，分别是Monge问题和Kantorovich问题。</p>
-<h2 id="monge问题">Monge问题</h2>
-<p>Monge问题就是寻找一个保测度的映射<span class="math inline">\(T:X \to
-Y\)</span> <span class="math display">\[
-\underset{T} {\min} \int_X c(x,T(x))d \mu(x),T_{ \# } \mu= \nu
-\]</span> <span class="math inline">\(T_{
-\#  }\)</span>是前推算子（<span class="math inline">\(T_{ \#
-}\)</span>的作用对象是<span class="math inline">\(\mu\)</span>，表示把测度<span class="math inline">\(\mu\)</span>推到<span class="math inline">\(\nu\)</span>），这个“推”的过程就是一个保测度的过程，即
-<span class="math display">\[
-T_{ \#  }\mu = \nu \iff \forall B \subset Y,\nu (B)=\mu (T^{-1}(B))
-\]</span> <img src="/2025/02/09/OT1/2.jpg" alt="Monge Map">
-但是映射的定义就限制了我们不能实现“一对多”的操作，这就导致了一个很严重的问题，Monge问题不一定有解。比如一个狄拉克分布（在包含某个点的集合测度是1，其余是0）就不可能保测度地映射到高斯分布。
-我们可以让质量“可分”，即以概率的形式去进行“移动”。这就是Kantorovich问题。</p>
-<h2 id="kantorovich问题">Kantorovich问题</h2>
-<p>在Kantorovich问题中，Kantorovich问题中，我们对Monge问题进行松弛，不再寻找一个映射，而是寻找一个联合分布（耦合coupling），其中它的边界分布分别是<span class="math inline">\(\mu,\nu\)</span>。从而最小化总成本 <span class="math display">\[
-\underset{\pi}{\min}\int_{X \times Y}c(x,y)d\pi(x,y),P_{x
-\#  }\pi=\mu,P_{y \# }\pi=\nu
-\]</span> <img src="/2025/02/09/OT1/3.jpg" alt="Kantorovich Relaxation"> <span class="math inline">\(\pi(x,y)\)</span>就是从<span class="math inline">\(x\)</span>移动到<span class="math inline">\(y\)</span>的概率，上式是总成本的期望。
-这样的松弛之后，Kantorovich本质上变成了一个无限维的线性规划问题（如果分布是离散的，比如一堆点，我们要做的就是在两个点云之间做matching，那么<span class="math inline">\(\pi\)</span>就变成了一个矩阵，就变成了有限维的线性规划问题）
-线性规划理论告诉我们，如果耦合集合非空且紧，目标函数是下半连续的，那么线性规划一定可以取到最小值。也就保证了Kantorovich一定有解。</p>
-<h2 id="分布之间的度量-wasserstein距离">分布之间的度量-Wasserstein距离</h2>
-<p>比较两种分布的一些方法：</p>
-<p><strong>交叉熵</strong>：对应分布为<span class="math inline">\(p(x)\)</span>的随机变量，熵<span class="math inline">\(H(p)\)</span>表示其最优编码长度。交叉熵是按照概率分布<span class="math inline">\(q\)</span>的最优编码对真实分布为<span class="math inline">\(p\)</span>的信息进行编码的长度 交叉熵定义为 <span class="math display">\[
-H(p,q)=E_q[-logq(x)]=-\displaystyle\sum_{x}p(x)logq(x)
-\]</span> 在给定<span class="math inline">\(p\)</span>的情况下，如果<span class="math inline">\(q\)</span>和<span class="math inline">\(p\)</span>越接近，交叉熵越小；如果<span class="math inline">\(q\)</span>和<span class="math inline">\(p\)</span>越远，交叉熵越大</p>
-<p><strong>KL散度</strong>:是用概率分布<span class="math inline">\(q\)</span>来近似<span class="math inline">\(p\)</span>时所造成的信息损失量。KL散度是按照概率分布<span class="math inline">\(q\)</span>的最优编码对真实分布为<span class="math inline">\(p\)</span>的信息进行编码，其平均编码长度<span class="math inline">\(H(p,q)\)</span>和<span class="math inline">\(p\)</span>的最优平均编码长度<span class="math inline">\(H(p)\)</span>之间的差异。对于离散概率分布<span class="math inline">\(p\)</span>和<span class="math inline">\(q\)</span>，从<span class="math inline">\(q\)</span>到<span class="math inline">\(p\)</span>的KL散度定义为: <span class="math display">\[
-D_{KL}(p\parallel q)=H(p,q)-H(p)=\sum_x p(x)log{\frac {p(x)} {q(x)} }
-\]</span>
-KL散度可以是衡量两个概率分布之间的距离。KL散度总是非负的，只有当<span class="math inline">\(p=q\)</span>时，<span class="math inline">\(D_{KL}(p\parallel
-q)=0\)</span>。两个分布越接近，KL散度越小；两个分布越远，KL散度越大。但KL散度并不是一个真正的度量或距离，一是KL散度不满足距离的对称性，二是KL散度不满足距离的三角不等式性质。</p>
-<p><strong>JS散度</strong>：
-JS散度是一种对称的衡量两个分布相似度的度量方式，定义为 <span class="math display">\[
-D_{JS}(p\parallel q)={\frac 1 2}D_{KL}(p \parallel m)+{\frac 1
-2}D_{KL}(q \parallel m)
-\]</span> 其中，<span class="math inline">\(m={\frac 1 2}(p+q)\)</span>
-JS 散度是KL散度一种改进。但两种散度都存在一个问题，即如果两个分布p, q
-没有重叠或者重叠非常少时，KL散度和JS 散度都很难衡量两个分布的距离</p>
-<p><strong>Wasserstein距离</strong>： Wasserstein 距离（Wasserstein
-Distance）也用于衡量两个分布之间的距离。对于两个分布<span class="math inline">\(q_1,q_2,p-Wasserstein\)</span>距离定义为 <span class="math display">\[
-W_p(q_1,q_2)=(\underset{\pi(x,y) \in U(x,y)} {\inf}E_{(x,y)\sim \pi
-(x,y)}[d(x,y)^p]) ^{1/p}
-\]</span> 其中，<span class="math inline">\(U(x,y)\)</span>是边际分布为<span class="math inline">\(q_1\)</span>和<span class="math inline">\(q_2\)</span>的所有可能的联合分布集合，<span class="math inline">\(d(x,y)\)</span>为<span class="math inline">\(x\)</span>和<span class="math inline">\(y\)</span>的距离 Wasserstein距离相比KL散度和JS
-散度的优势在于：即使两个分布没有重叠或者重叠非常少，Wasserstein
-距离仍然能反映两个分布的远近。</p>
-<p>我们可以发现，如果令<span class="math inline">\(d(x,y)^p=c(x,y)\)</span>，Wasserstein距离实际上就是从一个分布转换为另一个分布所要付出的代价。</p>
-<p>Wasserstein
-GAN就是将W-1距离作为损失函数，解决了GAN的许多问题，比如训练不稳定，判别器不能训练的“太好”等。究其原因主要是因为W-1度量比KL度量更“弱”：也就是说在K-L散度下收敛的序列在W-1距离下也一定收敛。这样的性质就保证了W-1可以捕捉到序列更多的几何信息（比如不重叠的分布的KL散度永远是0，但W-1距离不然。），训练会更鲁棒。</p>
-]]></content>
-      <categories>
-        <category>学习笔记</category>
-      </categories>
-      <tags>
-        <tag>最优化</tag>
-        <tag>最优运输</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>OPTIMAL TRANSPORTATION FOR ELECTRICAL IMPEDANCE  TOMOGRAPHY</title>
     <url>/2025/02/13/OPTIMAL-TRANSPORTATION-FOR-ELECTRICAL-IMPEDANCE-TOMOGRAPHY/</url>
     <content><![CDATA[<h1 id="optimal-transportation-for-electrical-impedance-tomography电阻抗断层成像的最优传输">OPTIMAL
@@ -1643,78 +1644,9 @@ B_k(\eta) &amp;
         <category>论文精读</category>
       </categories>
       <tags>
+        <tag>最优化</tag>
         <tag>EIT</tag>
-        <tag>最优化</tag>
         <tag>最优运输</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Lagrange对偶（Lagrange duality）</title>
-    <url>/2025/02/10/Lagrange%E5%AF%B9%E5%81%B6/</url>
-    <content><![CDATA[<h2 id="问题背景">问题背景</h2>
-<p>在一个优化问题中，原始问题通常会带有很多约束条件，这样直接求解原始问题往往是很困难的，于是考虑将原始问题转化为它的对偶问题，通过求解它的对偶问题来得到原始问题的解。<strong>对偶性</strong>（Duality）是凸优化问题的核心内容。
-<span id="more"></span></p>
-<h2 id="原始问题及其转化">原始问题及其转化</h2>
-<p><strong>原始问题</strong></p>
-<p>将一个原始最优化问题写成如下形式 <span class="math display">\[
-\underset{x}{\min} \quad f_0(x) \\ s.t. \quad f_i(x) \le 0,i=1,2,...,m
-\\ \qquad h_j(x)=0,j=1,2,...,p
-\]</span> 在求解原问题的对偶问题时，并不要求原始问题一定是凸问题，<span class="math inline">\(f\)</span>和<span class="math inline">\(g\)</span>可以是一般函数而不一定非得是凸函数。</p>
-<p><strong>拉格朗日函数</strong></p>
-<p>将原始问题的拉格朗日函数定义为 <span class="math display">\[
-L(x,\lambda,\nu)=f_0(x)+\sum^m_{i=1}\lambda_i f_i(x)+\sum^p_{j=1}\nu_j
-h_j(x)
-\]</span> 其中，<span class="math inline">\(x\in \mathbb
-R^n,\lambda\in\mathbb R^m,\nu\in\mathbb R^p\)</span>
-可以看到，拉格朗日函数<span class="math inline">\(L\)</span>相当于原始问题引入了两个新变量<span class="math inline">\(\lambda,\nu\)</span>，称为拉格朗日乘子</p>
-<p><strong>拉格朗日对偶函数</strong></p>
-<p>拉格朗日对偶函数通过对拉格朗日函数<span class="math inline">\(x\)</span>取下确界得到，即 <span class="math display">\[
-g(\lambda,\nu)=\underset{x}{\inf}L(x,\lambda,\nu)
-\]</span> 对偶函数有如下两条重要性质
-1.对偶函数一定是凹函数，其凹性与原目标函数和约束函数凹凸与否无关
-2.对<span class="math inline">\(\forall\lambda\ge0,\forall\nu\)</span>，如果原问题最优解对应的目标函数值为<span class="math inline">\(P^*\)</span>，则<span class="math inline">\(g(\lambda,\nu)\le p^*\)</span></p>
-<h2 id="拉格朗日对偶问题">拉格朗日对偶问题</h2>
-<p>根据对偶函数的重要性质2，对<span class="math inline">\(\forall\lambda\ge0,\forall\nu\)</span>，对偶函数<span class="math inline">\(g(\lambda,\nu)\)</span>是原问题最优值<span class="math inline">\(P^*\)</span>的一个下界，最好的下界就是最大化对偶函数，因此构造原问题的对偶问题：
-<span class="math display">\[
-\underset{\lambda,\nu}{\max}\quad g(\lambda,\nu) \\ s.t.\quad \lambda
-\ge 0
-\]</span>
-由于对偶函数是凹函数，故拉格朗日对偶问题一定是凸优化问题，其对应的最优解为<span class="math inline">\(\lambda^*,\nu^*\)</span>，若对应的最优值为<span class="math inline">\(d^*\)</span>，则总有<span class="math inline">\(d^* \le p^*\)</span></p>
-<p>当<span class="math inline">\(d^* \le p^*\)</span>时，称为弱对偶
-当<span class="math inline">\(d^* = p^*\)</span>时，称为强对偶 将<span class="math inline">\(p^*-d^*\)</span>称为对偶间隙</p>
-<blockquote>
-<p>在解存在的情况下，弱对偶总是成立的。
-满足强对偶时，可以通过求解对偶问题来得到原始问题的解</p>
-</blockquote>
-<h2 id="slater条件">Slater条件</h2>
-<p>Slater条件用于判断什么情况下强对偶是成立的。
-在<strong>原问题是凸问题</strong>的情况下，若<span class="math inline">\(\exists x \in
-relint(D)\)</span>，使得约束条件满足： <span class="math display">\[
-f_i(x)&lt;0,h_j(x)=0\quad i=1,2,...,p
-\]</span> 则强对偶成立 &gt;<span class="math inline">\(relint(D)表示原始凸问题定义域的相对内部，即在定义域上除了边界点以外的所有点\)</span></p>
-<h2 id="kkt条件">KKT条件</h2>
-<p>在强对偶且<span class="math inline">\(L\)</span>对<span class="math inline">\(x\)</span>可微的前提下，设<span class="math inline">\(x^*,\lambda^*,\nu^*\)</span>分别是原问题和对偶问题的最优解，则以下四组条件称为KKT条件
-<span class="math display">\[
-\begin{cases}
-   \frac{\partial L(x^*,\lambda^*,\nu^*)}{\partial x^*} |_{x=x^*}=0
-&amp;\text{(稳定性条件)} \\ \lambda^*_i f_i(x^*)=0
-&amp;\text{(互松弛条件)}\\ f_i(x^*)\le 0,h_j(x^*)=0
-&amp;\text{(原问题可行性)} \\ \lambda_i^* \ge 0
-&amp;\text{(对偶问题可行性)}
-    &amp;\text{if } d
-\end{cases}
-\]</span></p>
-<p>对<strong>一般的原问题</strong>，KKT
-条件是$x<sup><em>,<sup><em>,<sup>* <span class="math inline">\(为最优解的必要条件，即只要\)</span>x</sup></em>,</sup></em>,</sup>*$为最优解，则一定满足
-KKT 条件。</p>
-<p>对<strong>原问题为凸问题</strong>，KKT条件是<span class="math inline">\(x^*,\lambda^*,\nu^*\)</span>
-为最优解的充要条件</p>
-]]></content>
-      <categories>
-        <category>学习笔记</category>
-      </categories>
-      <tags>
-        <tag>最优化</tag>
       </tags>
   </entry>
   <entry>
@@ -2235,6 +2167,74 @@ n_{\text {cnn2 }}\right](\bar{\eta}) \\
       </tags>
   </entry>
   <entry>
+    <title>最优传输(Optimal Transportation)</title>
+    <url>/2025/02/09/OT1/</url>
+    <content><![CDATA[<h2 id="什么是最优传输">什么是最优传输？</h2>
+<p>最优传输最开始由Monge于1781年提出。一个典型的Monge问题是考虑将一堆具有一定形状的沙子搬运到指定的另外一个形状所需要的具有最小代价的搬运方法。
+如下图所示，我们想将左边红色区域的沙堆搬运到右边，形成右边绿色的沙堆的形状。我们想要找到消耗最少的搬运方式。
+<img src="/2025/02/09/OT1/1.jpg" alt="image">
+一句话来概括，就是<strong>如何用最少的代价将一个质量分布转为另一个质量分布。</strong>
+<span id="more"></span></p>
+<h2 id="质量分布">质量分布</h2>
+<p>质量分布其实就是两个测度空间<span class="math inline">\((X,\mu),(Y,\nu)\)</span>。一般情况下，质量不会凭空产生，所以我们会要求这两个分布的“总质量”是一样的，即<span class="math inline">\(\int_x d\mu=\int_Yd\nu\)</span>。
+问题有了考虑的对象，我们还可以定义成本函数<span class="math inline">\(c(x,y):X \times Y \to \mathbb
+R^+\)</span>，一般是有界的，来衡量将质量从点<span class="math inline">\(x\)</span>运到点<span class="math inline">\(y\)</span>的成本。那么如何去进行移动？主要有两个角度去考虑，分别是Monge问题和Kantorovich问题。</p>
+<h2 id="monge问题">Monge问题</h2>
+<p>Monge问题就是寻找一个保测度的映射<span class="math inline">\(T:X \to
+Y\)</span> <span class="math display">\[
+\underset{T} {\min} \int_X c(x,T(x))d \mu(x),T_{ \# } \mu= \nu
+\]</span> <span class="math inline">\(T_{
+\#  }\)</span>是前推算子（<span class="math inline">\(T_{ \#
+}\)</span>的作用对象是<span class="math inline">\(\mu\)</span>，表示把测度<span class="math inline">\(\mu\)</span>推到<span class="math inline">\(\nu\)</span>），这个“推”的过程就是一个保测度的过程，即
+<span class="math display">\[
+T_{ \#  }\mu = \nu \iff \forall B \subset Y,\nu (B)=\mu (T^{-1}(B))
+\]</span> <img src="/2025/02/09/OT1/2.jpg" alt="Monge Map">
+但是映射的定义就限制了我们不能实现“一对多”的操作，这就导致了一个很严重的问题，Monge问题不一定有解。比如一个狄拉克分布（在包含某个点的集合测度是1，其余是0）就不可能保测度地映射到高斯分布。
+我们可以让质量“可分”，即以概率的形式去进行“移动”。这就是Kantorovich问题。</p>
+<h2 id="kantorovich问题">Kantorovich问题</h2>
+<p>在Kantorovich问题中，Kantorovich问题中，我们对Monge问题进行松弛，不再寻找一个映射，而是寻找一个联合分布（耦合coupling），其中它的边界分布分别是<span class="math inline">\(\mu,\nu\)</span>。从而最小化总成本 <span class="math display">\[
+\underset{\pi}{\min}\int_{X \times Y}c(x,y)d\pi(x,y),P_{x
+\#  }\pi=\mu,P_{y \# }\pi=\nu
+\]</span> <img src="/2025/02/09/OT1/3.jpg" alt="Kantorovich Relaxation"> <span class="math inline">\(\pi(x,y)\)</span>就是从<span class="math inline">\(x\)</span>移动到<span class="math inline">\(y\)</span>的概率，上式是总成本的期望。
+这样的松弛之后，Kantorovich本质上变成了一个无限维的线性规划问题（如果分布是离散的，比如一堆点，我们要做的就是在两个点云之间做matching，那么<span class="math inline">\(\pi\)</span>就变成了一个矩阵，就变成了有限维的线性规划问题）
+线性规划理论告诉我们，如果耦合集合非空且紧，目标函数是下半连续的，那么线性规划一定可以取到最小值。也就保证了Kantorovich一定有解。</p>
+<h2 id="分布之间的度量-wasserstein距离">分布之间的度量-Wasserstein距离</h2>
+<p>比较两种分布的一些方法：</p>
+<p><strong>交叉熵</strong>：对应分布为<span class="math inline">\(p(x)\)</span>的随机变量，熵<span class="math inline">\(H(p)\)</span>表示其最优编码长度。交叉熵是按照概率分布<span class="math inline">\(q\)</span>的最优编码对真实分布为<span class="math inline">\(p\)</span>的信息进行编码的长度 交叉熵定义为 <span class="math display">\[
+H(p,q)=E_q[-logq(x)]=-\displaystyle\sum_{x}p(x)logq(x)
+\]</span> 在给定<span class="math inline">\(p\)</span>的情况下，如果<span class="math inline">\(q\)</span>和<span class="math inline">\(p\)</span>越接近，交叉熵越小；如果<span class="math inline">\(q\)</span>和<span class="math inline">\(p\)</span>越远，交叉熵越大</p>
+<p><strong>KL散度</strong>:是用概率分布<span class="math inline">\(q\)</span>来近似<span class="math inline">\(p\)</span>时所造成的信息损失量。KL散度是按照概率分布<span class="math inline">\(q\)</span>的最优编码对真实分布为<span class="math inline">\(p\)</span>的信息进行编码，其平均编码长度<span class="math inline">\(H(p,q)\)</span>和<span class="math inline">\(p\)</span>的最优平均编码长度<span class="math inline">\(H(p)\)</span>之间的差异。对于离散概率分布<span class="math inline">\(p\)</span>和<span class="math inline">\(q\)</span>，从<span class="math inline">\(q\)</span>到<span class="math inline">\(p\)</span>的KL散度定义为: <span class="math display">\[
+D_{KL}(p\parallel q)=H(p,q)-H(p)=\sum_x p(x)log{\frac {p(x)} {q(x)} }
+\]</span>
+KL散度可以是衡量两个概率分布之间的距离。KL散度总是非负的，只有当<span class="math inline">\(p=q\)</span>时，<span class="math inline">\(D_{KL}(p\parallel
+q)=0\)</span>。两个分布越接近，KL散度越小；两个分布越远，KL散度越大。但KL散度并不是一个真正的度量或距离，一是KL散度不满足距离的对称性，二是KL散度不满足距离的三角不等式性质。</p>
+<p><strong>JS散度</strong>：
+JS散度是一种对称的衡量两个分布相似度的度量方式，定义为 <span class="math display">\[
+D_{JS}(p\parallel q)={\frac 1 2}D_{KL}(p \parallel m)+{\frac 1
+2}D_{KL}(q \parallel m)
+\]</span> 其中，<span class="math inline">\(m={\frac 1 2}(p+q)\)</span>
+JS 散度是KL散度一种改进。但两种散度都存在一个问题，即如果两个分布p, q
+没有重叠或者重叠非常少时，KL散度和JS 散度都很难衡量两个分布的距离</p>
+<p><strong>Wasserstein距离</strong>： Wasserstein 距离（Wasserstein
+Distance）也用于衡量两个分布之间的距离。对于两个分布<span class="math inline">\(q_1,q_2,p-Wasserstein\)</span>距离定义为 <span class="math display">\[
+W_p(q_1,q_2)=(\underset{\pi(x,y) \in U(x,y)} {\inf}E_{(x,y)\sim \pi
+(x,y)}[d(x,y)^p]) ^{1/p}
+\]</span> 其中，<span class="math inline">\(U(x,y)\)</span>是边际分布为<span class="math inline">\(q_1\)</span>和<span class="math inline">\(q_2\)</span>的所有可能的联合分布集合，<span class="math inline">\(d(x,y)\)</span>为<span class="math inline">\(x\)</span>和<span class="math inline">\(y\)</span>的距离 Wasserstein距离相比KL散度和JS
+散度的优势在于：即使两个分布没有重叠或者重叠非常少，Wasserstein
+距离仍然能反映两个分布的远近。</p>
+<p>我们可以发现，如果令<span class="math inline">\(d(x,y)^p=c(x,y)\)</span>，Wasserstein距离实际上就是从一个分布转换为另一个分布所要付出的代价。</p>
+<p>Wasserstein
+GAN就是将W-1距离作为损失函数，解决了GAN的许多问题，比如训练不稳定，判别器不能训练的“太好”等。究其原因主要是因为W-1度量比KL度量更“弱”：也就是说在K-L散度下收敛的序列在W-1距离下也一定收敛。这样的性质就保证了W-1可以捕捉到序列更多的几何信息（比如不重叠的分布的KL散度永远是0，但W-1距离不然。），训练会更鲁棒。</p>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>最优化</tag>
+        <tag>最优运输</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>The_Perception-Distortion_Tradeoff</title>
     <url>/2025/03/02/The-Perception-Distortion-Tradeoff/</url>
     <content><![CDATA[<h1 id="the-perception-distortion-tradeoff感知-失真权衡">The
@@ -2356,330 +2356,6 @@ NR 和 FR
       </categories>
       <tags>
         <tag>图像恢复</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>WGAN</title>
-    <url>/2025/03/10/WGAN/</url>
-    <content><![CDATA[<h1 id="wasserstein-gan">Wasserstein GAN</h1>
-<span id="more"></span>
-<h2 id="介绍">介绍</h2>
-<p>本文关心的问题是无监督学习问题。主要是，学习一个概率分布意味着什么？对此，经典的答案是学习一个概率密度。这通常是通过定义一个参数密度族<span class="math inline">\(\left(P_\theta\right)_{\theta \in
-\mathbb{R}^d}\)</span>，并在数据上找到使似然函数最大化的密度族：如果有真实的数据样本<span class="math inline">\(\left\{x^{(i)}\right\}_{i-1}^m\)</span>，我们就可以解决这个问题。</p>
-<p><span class="math display">\[
-\max _{\theta \in \mathbb{R}^d} \frac{1}{m} \sum_{i=1}^m \log
-P_\theta\left(x^{(i)}\right)
-\]</span></p>
-<p>如果真实数据分布<span class="math inline">\(\mathbb{P}_r\)</span>具有密度，<span class="math inline">\(\mathbb{P}_\theta\)</span>是参数化密度<span class="math inline">\(P_\theta\)</span>的分布，那么渐近地，这相当于最小化Kullback-Leibler散度<span class="math inline">\(KL\left(\mathbb{P}_r \|
-\mathbb{P}_\theta\right)\)</span></p>
-<p>为此，需要模型密度<span class="math inline">\(P_\theta\)</span>存在。在我们处理由低维流形支撑的分布时，这种情况并不常见。那么模型流形和真实分布的支撑集不太可能有不可忽略（测度大于0）的交集[1]，这意味着KL距离没有定义(或者简单地无限)。</p>
-<p>典型的补救方法是在模型分布中加入噪声项。这就是为什么在经典的机器学习文献中描述的几乎所有的生成模型都包含了噪声成分。在最简单的情况下，为了覆盖所有的例子，假设高斯噪声具有相对较大的带宽。然而，在图像生成模型中，这种噪声会降低样本的质量，使其变得模糊。例如，在文献[23]中，我们可以看到当生成图像的像素已经归一化到<span class="math inline">\([0,1]\)</span>范围内时，当做最大似然估计时，添加到模型中的噪声的最佳标准偏差是0.1。
-这是一个非常高的噪声量，以至于当论文报告他们的模型的样本时，他们没有添加他们报告似然数的噪声项。换句话说，添加的噪声项对于问题显然是不正确的，但需要使最大似然方法发挥作用。</p>
-<p>我们可以定义一个固定分布<span class="math inline">\(p(z)\)</span>的随机变量<span class="math inline">\(Z\)</span>，并通过一个参数函数<span class="math inline">\(g_\theta: \mathcal{Z} \rightarrow
-\mathcal{X}\)</span>
-(通常是某种类型的神经网络)，直接生成服从某一分布<span class="math inline">\(\mathbb{P}_\theta\)</span>的样本，而不是估计可能不存在的<span class="math inline">\(\mathbb{P}_r\)</span>的密度。通过改变<span class="math inline">\(\theta\)</span>，可以改变这种分布，使其接近真实的数据分布<span class="math inline">\(\mathbb{P}_r\)</span>。这在两个方面是有用的。首先，与密度不同，这种方法可以表示限制在低维流形上的分布。其次，容易生成样本的能力往往比知道密度的数值更有用。
-一般而言，给定任意高维密度生成样本在计算上是困难的[16]。</p>
-<p>变分自编码器(Variational Auto-Encoders，VAEs)
-[9]和生成式对抗网络(Generative Adversarial Networks，GANs)
-[4]就是这种方法的典型代表。由于VAEs关注的是样本的近似似然，因此它们具有标准模型的局限性，需要处理额外的噪声项。GANs在目标函数的定义上提供了更多的灵活性，包括Jensen-Shannon
-[4]，所有的f-散度[17]以及一些奇异组合[6]。另一方面，训练GANs是众所周知的微妙和不稳定的，原因在理论上研究[1]。</p>
-<p>在这篇文章中，我们将注意力集中在用不同的方法来度量模型分布和真实分布的接近程度，或者等价地，用不同的方法来定义一个距离或散度<span class="math inline">\(\rho\left(\mathbb{P}_\theta,
-\mathbb{P}_r\right)\)</span>。这种距离之间最根本的区别在于它们对概率分布序列收敛性的影响。一个分布列<span class="math inline">\(\left(\mathbb{P}_t\right)_{t \in
-\mathbb{N}}\)</span>收敛当且仅当存在一个分布<span class="math inline">\(\mathbb{P}_{\infty}\)</span>，使得<span class="math inline">\(\rho\left(\mathbb{P}_t,
-\mathbb{P}_{\infty}\right)\)</span>趋向于零，这取决于距离<span class="math inline">\(\rho\)</span>定义的精确程度。不严格的说，当距离<span class="math inline">\(\rho\)</span>使得一个分布序列更容易收敛时，就会产生一个较弱的拓扑结构。（当<span class="math inline">\(\rho&#39;\)</span>下的收敛序列集是<span class="math inline">\(\rho\)</span>下收敛序列集的子集时，<span class="math inline">\(\rho\)</span>诱导的拓扑比<span class="math inline">\(\rho&#39;\)</span>诱导的拓扑弱）第2节阐明了常用概率距离在这方面的差异。</p>
-<p>为了优化参数<span class="math inline">\(\theta\)</span>，需要使映射<span class="math inline">\(\theta \mapsto
-\mathbb{P}_\theta\)</span>以连续的方式定义我们的模型分布<span class="math inline">\(\mathbb{P}_\theta\)</span>。连续性是指当参数序列<span class="math inline">\(\theta_t\)</span>收敛于<span class="math inline">\(\theta\)</span>时，分布<span class="math inline">\(\mathbb{P}_{\theta_t}\)</span>也收敛于<span class="math inline">\(\mathbb{P}_\theta\)</span>。然而，需要注意的是，分布<span class="math inline">\(\mathbb{P}_{\theta_t}\)</span>收敛的概念取决于我们计算分布之间距离的方式。这个距离越弱，就越容易定义一个从<span class="math inline">\(\theta\)</span>空间到<span class="math inline">\(\mathbb{P}_\theta\)</span>空间的连续映射，因为它的分布就越容易收敛。我们关心映射<span class="math inline">\(\theta \mapsto
-\mathbb{P}_\theta\)</span>连续的主要原因如下. 如果<span class="math inline">\(\rho\)</span>是我们关于两个分布之间的距离的概念，我们希望有一个连续的损失函数<span class="math inline">\(\theta \mapsto \rho\left(\mathbb{P}_\theta,
-\mathbb{P}_r\right)\)</span>，这相当于在使用分布之间的距离<span class="math inline">\(\rho\)</span>时，映射<span class="math inline">\(\theta \mapsto
-\mathbb{P}_\theta\)</span>是连续的。</p>
-<p>本文的贡献在于：
-1.我们提供了一个全面的理论分析，与学习分布中使用的流行概率距离和散度相比，Earth
-Mover（EM）距离是如何表现的</p>
-<p>2.在第3节中，我们定义了一种称为Wasserstein
-GAN的GAN形式，该GAN使EM距离的合理有效近似最小化，我们从理论上证明了相应的优化问题是合理的</p>
-<p>3.在第4节中，我们实证表明，WGAN解决了GAN的主要训练问题。特别是，训练WGAN不需要在训练鉴别器和生成器时保持谨慎的平衡，也不需要仔细设计网络架构。GAN中典型的模式下降现象也大大减少。WGAN最引人注目的实际好处之一是能够通过将鉴别器训练到最优性来连续估计EM距离。绘制这些学习曲线不仅有助于调试和超参数搜索，而且与观察到的样本质量有很好的相关性。</p>
-<h3 id="towards-principled-methods-for-training-generative-adversarial-networks">[1]《Towards
-principled methods for training generative adversarial networks》</h3>
-<h4 id="介绍-1">介绍</h4>
-<p>传统的生成式建模方法依赖于最大化似然，或者等价地最小化未知数据分布<span class="math inline">\(\mathbb{P}_r\)</span>和生成器分布<span class="math inline">\(\mathbb{P}_g\)</span>之间的KL散度。如果假设两个分布都是密度为<span class="math inline">\(P_r\)</span>和<span class="math inline">\(P_g\)</span>的连续分布，那么这些方法都试图最小化
-<span class="math display">\[
-K L\left(\mathbb{P}_r \| \mathbb{P}_g\right)=\int_{\mathcal{X}} P_r(x)
-\log \frac{P_r(x)}{P_g(x)} \mathrm{d} x
-\]</span></p>
-<p>该代价函数具有在<span class="math inline">\(\mathbb{P}_g=\mathbb{P}_r\)</span>处有唯一最小值的良好性质，并且不需要知道未知的<span class="math inline">\(P_r(x)\)</span>来优化它(仅需要样本)。然而，它的发散在<span class="math inline">\(\mathbb{P}_r\)</span>r和<span class="math inline">\(\mathbb{P}_g\)</span>之间不对称（<span class="math inline">\(K L\left(\mathbb{P}_r \| \mathbb{P}_g\right) \not
-= K L\left(\mathbb{P}_g \| \mathbb{P}_r\right)\)</span>）：</p>
-<p>1.若<span class="math inline">\(P_r(x)&gt;P_g(x)\)</span>，则<span class="math inline">\(x\)</span>是来自数据的概率高于生成样本的点。这就是通常所说的'mode
-dropping'现象的核心：存在大片区域满足<span class="math inline">\(P_r\)</span>值较大的，而<span class="math inline">\(P_g\)</span>值较小或为零。需要注意的是，当<span class="math inline">\(P_r(x)&gt;0\)</span>但<span class="math inline">\(P_g(x) \rightarrow
-0\)</span>时，KL内的被积函数迅速增长到无穷大，这意味着该成本函数为没有覆盖部分数据的生成器分布分配了极高的成本（如果生成器不能完全生成全部真实样本数据，那么cost将很高）</p>
-<p>2.如果<span class="math inline">\(P_r(x)&lt;P_g(x)\)</span>，则<span class="math inline">\(x\)</span>作为数据点的概率较低，但由我们的模型生成的概率很高。当我们看到生成器输出的图像看起来不真实时，就是这种情况。在这种情况下，当<span class="math inline">\(P_r(x) \rightarrow 0\)</span>并且<span class="math inline">\(P_g(x)&gt;0\)</span>时，看到KL内的值变为0，这意味着这个成本函数将为生成看起来很假的样本支付极低的成本。</p>
-<p>相反，如果我们将<span class="math inline">\(K L\left(\mathbb{P}_g \|
-\mathbb{P}_r\right)\)</span>最小化，这些误差的权重将被逆转，这意味着这个代价函数将付出很高的成本来生成看上去不真实的图片。生成对抗网络已经被证明可以优化这两个代价函数的对称中间点，即Jensen-shannon散度
-<span class="math display">\[
-J S D\left(\mathbb{P}_r \| \mathbb{P}_g\right)=\frac{1}{2} K
-L\left(\mathbb{P}_r \| \mathbb{P}_A\right)+\frac{1}{2} K
-L\left(\mathbb{P}_g \| \mathbb{P}_A\right)
-\]</span></p>
-<p>其中，<span class="math inline">\(\mathbb{P}_A\)</span>为"平均"分布，密度为<span class="math inline">\(\frac{P_r+P_g}{2}\)</span>
-。可以推测，GANs成功地生成真实图像的原因是由于从传统的最大似然方法转换而来的。然而，还有问题</p>
-<p>生成对抗网络的构建分为两个步骤。我们首先训练一个判别器<span class="math inline">\(D\)</span>使其最大化 <span class="math display">\[
-L\left(D, g_\theta\right)=\mathbb{E}_{x \sim \mathbf{P}_r}[\log
-D(x)]+\mathbb{E}_{x \sim \mathbf{P}_g}[\log (1-D(x))] \qquad(1)
-\]</span></p>
-<p>很容易地证明最优判别器具有形状（L对D（x）求导等于0） <span class="math display">\[
-D^*(x)=\frac{P_r(x)}{P_r(x)+P_g(x)}
-\]</span></p>
-<p>且 <span class="math inline">\(L\left(D^*, g_\theta\right)=2 J S
-D\left(\mathbb{P}_r \| \mathbb{P}_g\right)-2 \log 2\)</span>,
-因此，当判别器是最优的时，最小化作为<span class="math inline">\(\theta\)</span>的函数的方程(1)等价于最小化Jensen-Shannon散度。因此，在理论上，人们期望我们首先训练尽可能接近最优的判别器(因此,
-<span class="math inline">\(\theta\)</span>上的代价函数更好地逼近JSD
-)，然后在<span class="math inline">\(\theta\)</span>上做梯度步骤，交替这两种情况
-，然而，这并不奏效。在实际应用中，随着判别器的变好，生成器的更新也不断变差。</p>
-<h4 id="不稳定的来源">不稳定的来源</h4>
-<p>该理论告诉我们，训练好的判别器最好也就是<span class="math inline">\(2
-\log 2-2 J S D\left(\mathbb{P}_r \|
-\mathbb{P}_g\right)\)</span>。然而，在实际中，如果我们仅训练<span class="math inline">\(D\)</span>直到收敛，它的误差将趋于0，但是如图一所示，这表明它们之间的JSD是最大的。唯一可能的情况是，两个分布不是连续的，或者它们有不相交的支撑。
-<img src="/2025/03/10/WGAN/WGAN\4.png" alt="image"></p>
-<p>原因总结：真实数据分布的支撑集往往形成流形，而生成器的输出分布也往往是流形，而两个流形相交部分测度为0。</p>
-<p>定理2.3 设<span class="math inline">\(\mathbb{P}_r\)</span>和<span class="math inline">\(\mathbb{P}_g\)</span>是两个分布，其支撑点位于两个流形<span class="math inline">\(\mathcal{M}\)</span>和<span class="math inline">\(\mathcal{P}\)</span>中，这两个流形不具有全维且不完全对齐。我们进一步假设<span class="math inline">\(\mathbb{P}_r\)</span>和<span class="math inline">\(\mathbb{P}_g\)</span>在各自的流形上是连续的，则有
-<span class="math display">\[
-\begin{aligned}
-J S D\left(\mathbb{P}_r \| \mathbb{P}_g\right) &amp; =\log 2 \\
-K L\left(\mathbb{P}_r \| \mathbb{P}_g\right) &amp; =+\infty \\
-K L\left(\mathbb{P}_g \| \mathbb{P}_r\right) &amp; =+\infty
-\end{aligned}
-\]</span></p>
-<p>值得注意的是，即使两个流形任意靠近，这些分歧也会被放大。我们的生成器的样本可能看起来很好，但两个KL散度都是无穷大，JSD为常数log2，这在训练的时候会发生梯度消失。</p>
-<p>为什么log2？ <img src="/2025/03/10/WGAN/WGAN\1.jpg" alt="image"></p>
-<p>回到WGAN</p>
-<h2 id="不同距离">不同距离</h2>
-<p>设<span class="math inline">\(\mathcal{X}\)</span>是紧致度量集(如图像的空间<span class="math inline">\([0,1]^d\)</span>)，<span class="math inline">\(\Sigma\)</span>表示<span class="math inline">\(\mathcal{X}\)</span>的所有Borel子集构成的集合，<span class="math inline">\(\operatorname{Prob}(\mathcal{X})\)</span>表示定义在<span class="math inline">\(\mathcal{X}\)</span>上的概率测度空间。定义两个分布<span class="math inline">\(\mathbb{P}_r, \mathbb{P}_g \in
-\operatorname{Prob}(\mathcal{X})\)</span>之间的距离： - 全变分 (TV)
-距离</p>
-<p><span class="math display">\[
-\delta\left(\mathbb{P}_r, \mathbb{P}_g\right)=\sup _{A \in
-\Sigma}\left|\mathbb{P}_r(A)-\mathbb{P}_g(A)\right|
-\]</span></p>
-<ul>
-<li><p>The Kullback-Leibler (KL) 散度 <span class="math display">\[
-K L\left(\mathbb{P}_r \| \mathbb{P}_g\right)=\int \log
-\left(\frac{P_r(x)}{P_g(x)}\right) P_r(x) d \mu(x)
-\]</span></p></li>
-<li><p>The Jensen-Shannon (JS) 散度 <span class="math display">\[
-J S\left(\mathbb{P}_r, \mathbb{P}_g\right)=K L\left(\mathbb{P}_r \|
-\mathbb{P}_m\right)+K L\left(\mathbb{P}_g \| \mathbb{P}_m\right)
-\]</span></p></li>
-</ul>
-<p>其中 <span class="math inline">\(\mathbb{P}_m\)</span>是<span class="math inline">\(\left(\mathbb{P}_r+\mathbb{P}_g\right) /
-2\)</span>的混合</p>
-<ul>
-<li>The Earth-Mover (EM) 距离 （Wasserstein-1 距离） <span class="math display">\[
-W\left(\mathbb{P}_r, \mathbb{P}_g\right)=\inf _{\gamma \in
-\Pi\left(\mathbb{P}_r, \mathbb{P}_g\right)} \mathbb{E}_{(x, y) \sim
-\gamma}[\|x-y\|] \qquad(1)
-\]</span></li>
-</ul>
-<p>其中，<span class="math inline">\(\Pi\left(\mathbb{P}_r,
-\mathbb{P}_g\right)\)</span>表示所有边际分布分别为<span class="math inline">\(\mathbb{P}_r\)</span>和<span class="math inline">\(\mathbb{P}_g\)</span>的联合分布<span class="math inline">\(\gamma(x, y)\)</span>的集合。直观上，<span class="math inline">\(\gamma(x, y)\)</span>表示为了将分布<span class="math inline">\(\mathbb{P}_r\)</span>转化为分布<span class="math inline">\(\mathbb{P}_g\)</span>需要从<span class="math inline">\(x\)</span>输送到<span class="math inline">\(y\)</span>的"质量"。那么EM距离就是最优运输方案的"成本"。</p>
-<p>下面的例子说明了简单的概率分布序列在EM距离下是收敛的，而在上面定义的其他距离和散度下是不收敛的。</p>
-<p>例1 令<span class="math inline">\(Z \sim
-U[0,1]\)</span>为单位区间上的均匀分布。设<span class="math inline">\(\mathbb{P}_0\)</span>为<span class="math inline">\((0, Z) \in
-\mathbb{R}^2\)</span>上的分布(0在x轴上,随机变量<span class="math inline">\(Z\)</span>在y轴上)，在过原点的竖直线上均匀分布。现令<span class="math inline">\(g_\theta(z)=(\theta, z)\)</span>，<span class="math inline">\(\theta\)</span>为单一实参数。不难看出，在这种情况下
-- <span class="math inline">\(W\left(\mathbb{P}_0,
-\mathbb{P}_\theta\right)=|\theta|\)</span>, - <span class="math inline">\(J S\left(\mathbb{P}_0, \mathbb{P}_\theta\right)=
-\begin{cases}\log 2 &amp; \text { if } \theta \neq 0, \\ 0 &amp; \text {
-if } \theta=0,\end{cases}\)</span> - <span class="math inline">\(K
-L\left(\mathbb{P}_\theta \| \mathbb{P}_0\right)=K L\left(\mathbb{P}_0 \|
-\mathbb{P}_\theta\right)= \begin{cases}+\infty &amp; \text { if } \theta
-\neq 0, \\ 0 &amp; \text { if } \theta=0,\end{cases}\)</span> - and
-<span class="math inline">\(\delta\left(\mathbb{P}_0,
-\mathbb{P}_\theta\right)= \begin{cases}1 &amp; \text { if } \theta \neq
-0, \\ 0 &amp; \text { if } \theta=0 .\end{cases}\)</span></p>
-<p>当<span class="math inline">\(\theta_t \rightarrow
-0\)</span>时，序列<span class="math inline">\(\left(\mathbb{P}_{\theta_t}\right)_{t \in
-\mathbb{N}}\)</span>在EM距离下收敛于<span class="math inline">\(\mathbb{P}_0\)</span>，但在JS、KL、反向KL或TV散度下均不收敛。图1说明了EM和JS距离的情况。
-<img src="/2025/03/10/WGAN/WGAN\2.png" alt="image"></p>
-<p>示例1提供了一个案例，可以通过在EM距离上进行梯度下降来学习低维流形上的概率分布。这无法通过其他距离和散度来实现，因为由此产生的损失函数甚至不是连续的。尽管这个简单的例子以具有不相交支撑的分布为特征，但当支撑在一组零测集中包含非空交集时，同样的结论成立。</p>
-<p>由于Wasserstein距离比JS距离更弱，我们现在可以问，在适当的假设下，<span class="math inline">\(W\left(\mathbb{P}_r,
-\mathbb{P}_\theta\right)\)</span>是否是<span class="math inline">\(\theta\)</span>上的连续损失函数</p>
-<p><strong>定理1</strong> 设<span class="math inline">\(\mathbb{P}_r\)</span>是<span class="math inline">\(\mathcal{X}\)</span>上的一个固定分布，<span class="math inline">\(Z\)</span>是另一空间<span class="math inline">\(\mathcal{Z}\)</span>上的随机变量(例如 Gaussian)
-。设<span class="math inline">\(g: \mathcal{Z} \times \mathbb{R}^d
-\rightarrow \mathcal{X}\)</span>是一个函数，记为<span class="math inline">\(g_\theta(z)\)</span>，其中<span class="math inline">\(z\)</span>是第一坐标，<span class="math inline">\(\theta\)</span>是第二坐标。令<span class="math inline">\(\mathbb{P}_\theta\)</span>表示<span class="math inline">\(g_\theta(Z)\)</span>的分布。那么</p>
-<ol type="1">
-<li><p>如果<span class="math inline">\(g\)</span>在关于<span class="math inline">\(\theta\)</span>是连续的，则<span class="math inline">\(W\left(\mathbb{P}_r,
-\mathbb{P}_\theta\right)\)</span>也是连续的</p></li>
-<li><p>如果<span class="math inline">\(g\)</span>是局部Lipschitz并满足假设1，那么<span class="math inline">\(W\left(\mathbb{P}_r,
-\mathbb{P}_\theta\right)\)</span>处处连续，并且几乎处处可微</p></li>
-<li><p>1-2对于Jensen-Shannon散度<span class="math inline">\(J
-S\left(\mathbb{P}_r,
-\mathbb{P}_\theta\right)\)</span>和所有KL都不成立</p></li>
-</ol>
-<p>以下推论告诉我们，通过最小化
-EM距离进行学习对于神经网络来说是有意义的（至少在理论上是这样）</p>
-<p><strong>推论1</strong> 设<span class="math inline">\(g_\theta\)</span>为由<span class="math inline">\(\theta\)</span>参数化的任何前馈神经网络，<span class="math inline">\(p(z)\)</span>为<span class="math inline">\(z\)</span>上的先验分布，使得 <span class="math inline">\(\mathbb{E}_{z \sim
-p(z)}[\|z\|]&lt;\infty\)</span>（例如高斯、均匀等）。然后假设 1
-得到满足，因此<span class="math inline">\(W\left(\mathbb{P}_r,
-\mathbb{P}_\theta\right)\)</span>处处连续，几乎处处可微</p>
-<p>所有这些都表明，对于研究的问题来说，EM是一个至少比
-Jensen-Shannon散度更合理的成本函数。以下定理描述了由这些距离和散度诱导的拓扑的相对强度，其中KL最强，其次是JS和TV，EM最弱</p>
-<p><strong>定理2</strong> 设<span class="math inline">\(\mathbb{P}\)</span>是紧空间<span class="math inline">\(\mathcal{X}\)</span>上的分布，<span class="math inline">\(\left(\mathbb{P}_n\right)_{n \in
-\mathbb{N}}\)</span>是<span class="math inline">\(\mathcal{X}\)</span>上的分布序列。然后，<span class="math inline">\(n \rightarrow \infty\)</span>，</p>
-<ol type="1">
-<li>以下语句是等价的</li>
-</ol>
-<ul>
-<li><span class="math inline">\(\delta\left(\mathbb{P}_n,
-\mathbb{P}\right) \rightarrow 0\)</span></li>
-<li>JS <span class="math inline">\(\left(\mathbb{P}_n, \mathbb{P}\right)
-\rightarrow 0\)</span></li>
-</ul>
-<ol start="2" type="1">
-<li>以下语句是等价的</li>
-</ol>
-<ul>
-<li><span class="math inline">\(W\left(\mathbb{P}_n, \mathbb{P}\right)
-\rightarrow 0\)</span></li>
-<li><span class="math inline">\(\mathbb{P}_n \xrightarrow{\mathcal{D}}
-\mathbb{P}\)</span> 其中 <span class="math inline">\(\xrightarrow{\mathcal{D}}\)</span>
-表示随机变量的分布收敛</li>
-</ul>
-<ol start="3" type="1">
-<li><p><span class="math inline">\(K L\left(\mathbb{P}_n \|
-\mathbb{P}\right) \rightarrow 0\)</span> 或 <span class="math inline">\(K L\left(\mathbb{P} \| \mathbb{P}_n\right)
-\rightarrow 0\)</span>能推出（1）</p></li>
-<li><p>（1）能推出（2）</p></li>
-</ol>
-<p>这突出了这样一个事实，即在学习低维流形支持的分布时，KL、JS 和 TV
-距离不是合理的代价函数。但是，EM
-距离是合理的。下面将介绍优化EM距离的实际近似值</p>
-<h2 id="wasserstein-gan-1">Wasserstein GAN</h2>
-<p>定理2指出<span class="math inline">\(W\left(\mathbb{P}_r,
-\mathbb{P}_\theta\right)\)</span>在优化时可能比<span class="math inline">\(J S\left(\mathbb{P}_r,
-\mathbb{P}_\theta\right)\)</span>具有更好的性质。然而，(1)中的下确界是非常难解的。另一方面，由Kantorovich-Rubinstein对偶[22]</p>
-<p><span class="math display">\[
-W\left(\mathbb{P}_r, \mathbb{P}_\theta\right)=\sup _{\|f\|_L \leq 1}
-\mathbb{E}_{x \sim \mathbb{P}_r}[f(x)]-\mathbb{E}_{x \sim
-\mathbb{P}_\theta}[f(x)] \qquad(2)
-\]</span></p>
-<p>其中，上确界在所有1-Lipschitz函数<span class="math inline">\(f:
-\mathcal{X} \rightarrow \mathbb{R}\)</span>中寻找。请注意，如果我们将
-<span class="math inline">\(\|f\|_L \leq 1\)</span>替换为<span class="math inline">\(\|f\|_L \leq
-K\)</span>（某个常数K的K-Lipschitz），那么我们最终得到<span class="math inline">\(K \cdot W\left(\mathbb{P}_r,
-\mathbb{P}_g\right)\)</span>。因此，如果有一个参数化的函数族<span class="math inline">\(\left\{f_w\right\}_{w \in
-\mathcal{W}}\)</span>都是K-Lipschitz，那么可以考虑解决这个问题</p>
-<p><span class="math display">\[
-\max _{w \in \mathcal{W}} \mathbb{E}_{x \sim
-\mathbb{P}_r}\left[f_w(x)\right]-\mathbb{E}_{z \sim
-p(z)}\left[f_w\left(g_\theta(z)\right]\right.  \qquad(3)
-\]</span></p>
-<p>如果（2）中的上确界是由某个 <span class="math inline">\(w \in
-\mathcal{W}\)</span>（这是一个非常强的假设，类似于证明估计器一致性时的假设）而得到的，那么这个过程将会使<span class="math inline">\(W\left(\mathbb{P}_r,
-\mathbb{P}_\theta\right)\)</span>的计算到达一个常数。此外，我们可以考虑通过估计<span class="math inline">\(\mathbb{E}_{z \sim p(z)}\left[\nabla_\theta
-f_w\left(g_\theta(z)\right)\right]\)</span>通过方程（2）进行反推来对<span class="math inline">\(W\left(\mathbb{P}_r,
-\mathbb{P}_\theta\right)\)</span>求导数（同样，直到一个常数）。虽然这都是直觉，但现在证明，在最优性假设下，这个过程是有原则的。</p>
-<p><strong>定理3</strong> 设<span class="math inline">\(\mathbb{P}_r\)</span>为任意分布。设<span class="math inline">\(\mathbb{P}_\theta\)</span>为<span class="math inline">\(g_\theta(Z)\)</span>的分布，<span class="math inline">\(Z\)</span>为密度为<span class="math inline">\(p\)</span>的随机变量，<span class="math inline">\(g_\theta\)</span>为满足假设1的函数。那么，下面问题有一个解<span class="math inline">\(f: \mathcal{X} \rightarrow \mathbb{R}\)</span></p>
-<p><span class="math display">\[
-\max _{\|f\|_L \leq 1} \mathbb{E}_{x \sim
-\mathbb{P}_r}[f(x)]-\mathbb{E}_{x \sim \mathbb{P}_\theta}[f(x)]
-\]</span> 并且有 <span class="math display">\[
-\nabla_\theta W\left(\mathbb{P}_r,
-\mathbb{P}_\theta\right)=-\mathbb{E}_{z \sim p(z)}\left[\nabla_\theta
-f\left(g_\theta(z)\right)\right]
-\]</span></p>
-<p>现在的问题是找到解决方程（2）中最大化问题的函数<span class="math inline">\(f\)</span>。为了大致近似这一点，我们可以做的是训练一个参数化的神经网络，其中权重<span class="math inline">\(w\)</span>位于紧空间<span class="math inline">\(\mathcal{W}\)</span>中，然后通过<span class="math inline">\(\mathbb{E}_{z \sim p(z)}\left[\nabla_\theta
-f_w\left(g_\theta(z)\right)\right]\)</span>进行反向传播，就像我们使用典型的GAN一样。注意，<span class="math inline">\(\mathcal{W}\)</span>是紧的这一事实意味着所有函数<span class="math inline">\(f_w\)</span>都是K-Lipschitz，它只取决于<span class="math inline">\(\mathcal{W}\)</span>，而不取决于单个权重，因此近似（2）到一个不相关的比例因子和“critic”<span class="math inline">\(f_w\)</span>的容量。为了使参数<span class="math inline">\(w\)</span>位于紧空间中，我们可以做的一件简单的事情是在每次梯度更新后将权重clamp到一个固定的范围中（比如<span class="math inline">\(\mathcal{W}=[-0.01,0.01]^l\)</span>）。Wasserstein生成对抗网络（WGAN）过程在算法1中进行了描述</p>
-<p><span class="math display">\[
-    \begin{array}{l}
-   \hline \
-   \textbf{算法1} \quad \text{WGAN} \\
-   \hline
-   \textbf{给定：}\alpha:学习率。c:裁剪参数。m:批量大小。 \\
-   \qquad n_\text{critic}:每次生成器迭代，迭代\text{critic}的次数\\
-   \textbf{给定：}w_0：初始 critic 参数。\theta_0：初始生成器的参数。
-   \\1:
-   \quad \textbf{while} \,\theta 尚未收敛 \, \textbf{do} \\2:
-   \qquad \textbf{for} \, t=0,...,n_\text{critic} \, \textbf{do} \\3:
-   \qquad \quad
-从真实数据的批次采样一个批次\left\{x^{(i)}\right\}_{i=1}^m \sim
-\mathbb{P}_r \\4:
-   \qquad \quad 采样一批先验样本 \left\{z^{(i)}\right\}_{i=1}^m \sim
-p(z) \\5:
-   \qquad \quad g_w \leftarrow \nabla_w\left[\frac{1}{m} \sum_{i=1}^m
-f_w\left(x^{(i)}\right)-\frac{1}{m} \sum_{i=1}^m
-f_w\left(g_\theta\left(z^{(i)}\right)\right)\right]\\6:
-   \qquad \quad w \leftarrow w+\alpha \cdot
-\operatorname{RMSProp}\left(w, g_w\right)\\7:
-   \qquad \quad w \leftarrow \operatorname{clip}(w,-c, c) \\8:
-   \qquad \textbf{end for}\\9:
-   \qquad 采样一批先验样本 \left\{z^{(i)}\right\}_{i=1}^m \sim p(z)
-\\10:
-   \qquad g_\theta \leftarrow-\nabla_\theta \frac{1}{m} \sum_{i=1}^m
-f_w\left(g_\theta\left(z^{(i)}\right)\right) \\11:
-   \qquad \theta \leftarrow \theta-\alpha \cdot
-\operatorname{RMSProp}\left(\theta, g_\theta\right) \\12:
-   \quad \textbf{end while} \\
-   \hline
-\end{array}
-\]</span></p>
-<p>权重裁剪显然是强制实施Lipschitz约束的一种糟糕的方法。如果裁剪参数很大，则任何权重可能需要很长时间才能达到其极限，从而使critic更难训练直到最优。如果裁剪很小，则当层数较大或未使用批量归一化（例如在RNN中）时，这很容易导致渐变消失。尝试了简单的变体（例如将权重投影到球体），几乎没有区别，并且由于它的简单性和已经很好的性能，作者坚持使用权重裁剪。作者将在神经网络设置中强制执行Lipschitz约束的主题留给进一步研究，并且积极鼓励感兴趣的研究人员改进这种方法。</p>
-<p>EM距离是连续且可微的事实意味着可以（并且应该）训练critic直到最优。论点很简单，训练critic的次数越多，得到的Wasserstein梯度就越可靠，这实际上很有用，因为Wasserstein几乎在所有地方都是可导的对于JS，随着判别器变得更好，梯度变得更可靠，但真正的梯度为0，因为JS是局部饱和的，得到的梯度消失。图2展示了一个概念验证，训练一个GAN判别器和一个WGAN
-critic，直到最优。判别器学习非常快，可以很好地区分假和真，并且正如预期的那样，没有提供可靠的梯度信息。然而，critic无法饱和，并收敛到一个线性函数，该函数在任何地方都给出了非常干净的渐变。我们约束权重的事实限制了函数在空间的不同部分最多是线性的，迫使最优critic具有这种行为。
-<img src="/2025/03/10/WGAN/WGAN\3.png" alt="image"></p>
-<p>也许更重要的是，可以训练critic直到最优，这使得这样做时不会发生collapse
-modes。这是因为collapse
-modes来自这样一个事实，即固定判别器的最佳生成器是判别器分配最高值的点的增量之和，如[4]所观察到并在[11]中突出显示的那样。</p>
-<h2 id="实验结果">实验结果</h2>
-<p>使用Wasserstein-GAN算法运行图像生成实验，并表明使用它比标准GAN中使用的公式有很大的实际好处</p>
-<p>声明主要有两个好处 1.
-一个与生成器的收敛性和样本质量相关的有意义的损失度量 2.
-提高了优化过程的稳定性</p>
-<h3 id="实验设置">实验设置</h3>
-<p>作者对图像生成进行实验。要学习的目标分布是LSUN-Bedrooms数据集[24]
---一个室内卧室自然图像的集合。baseline比较是DCGAN[18]，这是一个卷积结构的GAN，使用标准的GAN程序使用<span class="math inline">\(-log
-D\)</span>技巧[4]进行训练。生成的样本为3通道，大小为64×64像素的图像。我们在所有的实验中都使用了算法1中规定的超参数。</p>
-<h3 id="有意义的损失度量">有意义的损失度量</h3>
-<p>由于WGAN算法试图在每个生成器更新(算法1中的第10行)之前相对较好地训练critic
-<span class="math inline">\(f\)</span>(算法1中第2-8行)，此时的损失函数是EM距离的估计，直到与我们约束f的Lipschitz常数的方式相关的常数。</p>
-<p>我们的第一个实验说明了这种估计如何与生成样本的质量很好地相关。除了卷积DCGAN架构，我们还进行了实验，使用512个隐藏单元的4层ReLU-MLP替换生成器或同时替换生成器和critic。</p>
-<p>图3为3种架构的WGAN训练过程中EM距离的WGAN估计(3)的演化情况。从图中可以清楚地看出，这些曲线与生成样本的视觉质量有很好的相关性。
-<img src="/2025/03/10/WGAN/WGAN\5.png" alt="image"></p>
-<p>据我们所知，这是GAN文献中第一次显示这样的属性，GAN的损失显示了收敛的属性。在对抗网络中进行研究时，此属性非常有用，因为人们不需要盯着生成的样本来找出故障模式，也不需要获得哪些模型比其他模型做得更好的信息。</p>
-<p>然而，我们并不认为这是一种定量评估生成模型的新方法。依赖于critic架构的恒定比例因子意味着很难比较不同critic的模型。更重要的是，在实践中critic没有无限能力的事实使得我们很难知道我们估计的EM距离究竟有多接近。也就是说，我们成功地使用了损失度量来反复验证我们的实验，并且没有失败，我们认为这是对以前没有这种设施的训练GAN的一个巨大的改进。</p>
-<p>相反，图4描绘了GAN训练过程中JS距离的GAN估计的演变。更准确地说，在GAN训练过程中，对判别器进行训练最大化
-<span class="math display">\[
-\left.\left.L\left(D, g_\theta\right)=\mathbb{E}_{x \sim \mathbb{P}_r}
-\log D(x)\right]+\mathbb{E}_{x \sim \mathbb{P}_\theta} \log
-(1-D(x))\right]
-\]</span></p>
-<p>这是<span class="math inline">\(2 J S\left(\mathbb{P}_r,
-\mathbb{P}_\theta\right)-2 \log
-2\)</span>的下界。在图中，我们画出了量<span class="math inline">\(\frac{1}{2} L\left(D, g_\theta\right)+\log
-2\)</span>，这是JS距离的一个下界 <img src="/2025/03/10/WGAN/WGAN\6.png" alt="image"></p>
-<p>这个数量显然与样品质量相关性很差。还要注意，JS估计值通常保持不变，或者上升而不是下降。事实上，它通常非常接近<span class="math inline">\(log
-2≈0.69\)</span>，这是JS距离的最高值。换句话说，JS距离饱和，鉴别器无损耗，生成的样本在某些情况下是有意义的（DCGAN生成器，右上图），在其他情况下会折叠成一个无意义的图像[4]。最后一个现象在[1]中得到了理论解释，并在[11]中得到了强调。</p>
-<p>当使用<span class="math inline">\(- log
-D\)</span>技巧[4]时，判别器损失和生成器损失是不同的。附录E中的图8报告了同样的图用于GAN训练，但是使用生成器损失代替判别器损失。这并不改变结论。</p>
-<p>最后，作为一个负面的结果，当一个人使用基于动量的优化器(如Adam [8] (
-<span class="math inline">\(\beta_1&gt;0\)</span> )
-)时，或者当一个人使用高学习率时，WGAN训练变得不稳定。由于critic的损失是非平稳的，基于动量的方法似乎表现得更差。我们认为动量是一个潜在的原因，因为随着损失的增加和样本的恶化，Adam步和梯度之间的余弦通常会变成负值。这个余弦为负的唯一地方是在这些不稳定的情况下。因此，我们切换到RMSprop算法[21]，即使在非平稳问题RMSprop算法也表现良好[13]。</p>
-<h3 id="提高了稳定性">提高了稳定性</h3>
-<p>WGAN的一个好处是它允许我们训练critic直到最优性。当critic训练完毕时，它只是给生成器提供了一个损失，我们可以像任何其他神经网络一样进行训练。这告诉我们，我们不再需要适当地平衡生成器和判别器的容量。critic越好，我们用来训练生成器的梯度质量越高。</p>
-<p>我们观察到，当生成器的结构选择发生变化时，WGANs比GANs更加稳定。我们通过在三个生成器架构上运行实验来说明这一点：(1)一个卷积DCGAN生成器，(2)一个没有批量归一化和具有固定数量过滤器的卷积DCGAN生成器，(3)一个具有512个隐藏单元的4层ReLU-MLP。最后两个已知在GANs中表现很差。我们为WGAN
-critic或GAN判别器保留了卷积DCGAN架构</p>
-<p>图5、图6和图7显示了同时使用WGAN和GAN算法为这三种架构生成的样本。我们将生成的样本的完整片参考附录F。样品未经过Cherry-Picked处理。</p>
-<p>在没任何实验中我们都未看到WGAN算法发生模式崩溃的证据 <img src="/2025/03/10/WGAN/WGAN\7.png" alt="image">
-图5：使用DCGAN生成器训练的算法。左：Wgan算法。右：标准GAN配方。两种算法都产生了高质量的样本
-<img src="/2025/03/10/WGAN/WGAN\8.png" alt="image">
-图6：算法用一个没有批归一化的生成器和每层固定数量的过滤器进行训练。除了去掉批量归一化，参数的数量也因此减少了一个数量级以上。左：Wgan算法。右：标准GAN配方。正如我们可以看到标准的GAN没有学习到，而WGAN仍然能够产生样本。
-<img src="/2025/03/10/WGAN/WGAN\9.png" alt="image">
-图7：用4层512单元ReLU非线性的MLP生成器训练的算法。参数数量与DCGAN类似，但对图像生成缺乏较强的诱导偏差。左：Wgan算法。右：标准GAN配方。WGAN方法仍然能够产生样品，质量低于DCGAN，质量高于标准GAN的MLP。注意到GAN
-MLP中模式崩溃的显著程度 ## 结论</p>
-<p>引入了WGAN算法，它是传统GAN训练的一种替代。在这个新的模型中，表明可以提高学习的稳定性，摆脱模式崩溃等问题，并提供有意义的学习曲线，用于调试和超参数搜索。此外，文章表明，相应的优化问题是健全的，并提供了广泛的理论工作，突出了与其他距离分布之间的深层联系。</p>
-]]></content>
-      <categories>
-        <category>论文精读</category>
-      </categories>
-      <tags>
-        <tag>GAN</tag>
       </tags>
   </entry>
   <entry>
@@ -2934,6 +2610,330 @@ Hausdorff距离的概念。</p>
       </categories>
       <tags>
         <tag>各种距离</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>WGAN</title>
+    <url>/2025/03/10/WGAN/</url>
+    <content><![CDATA[<h1 id="wasserstein-gan">Wasserstein GAN</h1>
+<span id="more"></span>
+<h2 id="介绍">介绍</h2>
+<p>本文关心的问题是无监督学习问题。主要是，学习一个概率分布意味着什么？对此，经典的答案是学习一个概率密度。这通常是通过定义一个参数密度族<span class="math inline">\(\left(P_\theta\right)_{\theta \in
+\mathbb{R}^d}\)</span>，并在数据上找到使似然函数最大化的密度族：如果有真实的数据样本<span class="math inline">\(\left\{x^{(i)}\right\}_{i-1}^m\)</span>，我们就可以解决这个问题。</p>
+<p><span class="math display">\[
+\max _{\theta \in \mathbb{R}^d} \frac{1}{m} \sum_{i=1}^m \log
+P_\theta\left(x^{(i)}\right)
+\]</span></p>
+<p>如果真实数据分布<span class="math inline">\(\mathbb{P}_r\)</span>具有密度，<span class="math inline">\(\mathbb{P}_\theta\)</span>是参数化密度<span class="math inline">\(P_\theta\)</span>的分布，那么渐近地，这相当于最小化Kullback-Leibler散度<span class="math inline">\(KL\left(\mathbb{P}_r \|
+\mathbb{P}_\theta\right)\)</span></p>
+<p>为此，需要模型密度<span class="math inline">\(P_\theta\)</span>存在。在我们处理由低维流形支撑的分布时，这种情况并不常见。那么模型流形和真实分布的支撑集不太可能有不可忽略（测度大于0）的交集[1]，这意味着KL距离没有定义(或者简单地无限)。</p>
+<p>典型的补救方法是在模型分布中加入噪声项。这就是为什么在经典的机器学习文献中描述的几乎所有的生成模型都包含了噪声成分。在最简单的情况下，为了覆盖所有的例子，假设高斯噪声具有相对较大的带宽。然而，在图像生成模型中，这种噪声会降低样本的质量，使其变得模糊。例如，在文献[23]中，我们可以看到当生成图像的像素已经归一化到<span class="math inline">\([0,1]\)</span>范围内时，当做最大似然估计时，添加到模型中的噪声的最佳标准偏差是0.1。
+这是一个非常高的噪声量，以至于当论文报告他们的模型的样本时，他们没有添加他们报告似然数的噪声项。换句话说，添加的噪声项对于问题显然是不正确的，但需要使最大似然方法发挥作用。</p>
+<p>我们可以定义一个固定分布<span class="math inline">\(p(z)\)</span>的随机变量<span class="math inline">\(Z\)</span>，并通过一个参数函数<span class="math inline">\(g_\theta: \mathcal{Z} \rightarrow
+\mathcal{X}\)</span>
+(通常是某种类型的神经网络)，直接生成服从某一分布<span class="math inline">\(\mathbb{P}_\theta\)</span>的样本，而不是估计可能不存在的<span class="math inline">\(\mathbb{P}_r\)</span>的密度。通过改变<span class="math inline">\(\theta\)</span>，可以改变这种分布，使其接近真实的数据分布<span class="math inline">\(\mathbb{P}_r\)</span>。这在两个方面是有用的。首先，与密度不同，这种方法可以表示限制在低维流形上的分布。其次，容易生成样本的能力往往比知道密度的数值更有用。
+一般而言，给定任意高维密度生成样本在计算上是困难的[16]。</p>
+<p>变分自编码器(Variational Auto-Encoders，VAEs)
+[9]和生成式对抗网络(Generative Adversarial Networks，GANs)
+[4]就是这种方法的典型代表。由于VAEs关注的是样本的近似似然，因此它们具有标准模型的局限性，需要处理额外的噪声项。GANs在目标函数的定义上提供了更多的灵活性，包括Jensen-Shannon
+[4]，所有的f-散度[17]以及一些奇异组合[6]。另一方面，训练GANs是众所周知的微妙和不稳定的，原因在理论上研究[1]。</p>
+<p>在这篇文章中，我们将注意力集中在用不同的方法来度量模型分布和真实分布的接近程度，或者等价地，用不同的方法来定义一个距离或散度<span class="math inline">\(\rho\left(\mathbb{P}_\theta,
+\mathbb{P}_r\right)\)</span>。这种距离之间最根本的区别在于它们对概率分布序列收敛性的影响。一个分布列<span class="math inline">\(\left(\mathbb{P}_t\right)_{t \in
+\mathbb{N}}\)</span>收敛当且仅当存在一个分布<span class="math inline">\(\mathbb{P}_{\infty}\)</span>，使得<span class="math inline">\(\rho\left(\mathbb{P}_t,
+\mathbb{P}_{\infty}\right)\)</span>趋向于零，这取决于距离<span class="math inline">\(\rho\)</span>定义的精确程度。不严格的说，当距离<span class="math inline">\(\rho\)</span>使得一个分布序列更容易收敛时，就会产生一个较弱的拓扑结构。（当<span class="math inline">\(\rho&#39;\)</span>下的收敛序列集是<span class="math inline">\(\rho\)</span>下收敛序列集的子集时，<span class="math inline">\(\rho\)</span>诱导的拓扑比<span class="math inline">\(\rho&#39;\)</span>诱导的拓扑弱）第2节阐明了常用概率距离在这方面的差异。</p>
+<p>为了优化参数<span class="math inline">\(\theta\)</span>，需要使映射<span class="math inline">\(\theta \mapsto
+\mathbb{P}_\theta\)</span>以连续的方式定义我们的模型分布<span class="math inline">\(\mathbb{P}_\theta\)</span>。连续性是指当参数序列<span class="math inline">\(\theta_t\)</span>收敛于<span class="math inline">\(\theta\)</span>时，分布<span class="math inline">\(\mathbb{P}_{\theta_t}\)</span>也收敛于<span class="math inline">\(\mathbb{P}_\theta\)</span>。然而，需要注意的是，分布<span class="math inline">\(\mathbb{P}_{\theta_t}\)</span>收敛的概念取决于我们计算分布之间距离的方式。这个距离越弱，就越容易定义一个从<span class="math inline">\(\theta\)</span>空间到<span class="math inline">\(\mathbb{P}_\theta\)</span>空间的连续映射，因为它的分布就越容易收敛。我们关心映射<span class="math inline">\(\theta \mapsto
+\mathbb{P}_\theta\)</span>连续的主要原因如下. 如果<span class="math inline">\(\rho\)</span>是我们关于两个分布之间的距离的概念，我们希望有一个连续的损失函数<span class="math inline">\(\theta \mapsto \rho\left(\mathbb{P}_\theta,
+\mathbb{P}_r\right)\)</span>，这相当于在使用分布之间的距离<span class="math inline">\(\rho\)</span>时，映射<span class="math inline">\(\theta \mapsto
+\mathbb{P}_\theta\)</span>是连续的。</p>
+<p>本文的贡献在于：
+1.我们提供了一个全面的理论分析，与学习分布中使用的流行概率距离和散度相比，Earth
+Mover（EM）距离是如何表现的</p>
+<p>2.在第3节中，我们定义了一种称为Wasserstein
+GAN的GAN形式，该GAN使EM距离的合理有效近似最小化，我们从理论上证明了相应的优化问题是合理的</p>
+<p>3.在第4节中，我们实证表明，WGAN解决了GAN的主要训练问题。特别是，训练WGAN不需要在训练鉴别器和生成器时保持谨慎的平衡，也不需要仔细设计网络架构。GAN中典型的模式下降现象也大大减少。WGAN最引人注目的实际好处之一是能够通过将鉴别器训练到最优性来连续估计EM距离。绘制这些学习曲线不仅有助于调试和超参数搜索，而且与观察到的样本质量有很好的相关性。</p>
+<h3 id="towards-principled-methods-for-training-generative-adversarial-networks">[1]《Towards
+principled methods for training generative adversarial networks》</h3>
+<h4 id="介绍-1">介绍</h4>
+<p>传统的生成式建模方法依赖于最大化似然，或者等价地最小化未知数据分布<span class="math inline">\(\mathbb{P}_r\)</span>和生成器分布<span class="math inline">\(\mathbb{P}_g\)</span>之间的KL散度。如果假设两个分布都是密度为<span class="math inline">\(P_r\)</span>和<span class="math inline">\(P_g\)</span>的连续分布，那么这些方法都试图最小化
+<span class="math display">\[
+K L\left(\mathbb{P}_r \| \mathbb{P}_g\right)=\int_{\mathcal{X}} P_r(x)
+\log \frac{P_r(x)}{P_g(x)} \mathrm{d} x
+\]</span></p>
+<p>该代价函数具有在<span class="math inline">\(\mathbb{P}_g=\mathbb{P}_r\)</span>处有唯一最小值的良好性质，并且不需要知道未知的<span class="math inline">\(P_r(x)\)</span>来优化它(仅需要样本)。然而，它的发散在<span class="math inline">\(\mathbb{P}_r\)</span>r和<span class="math inline">\(\mathbb{P}_g\)</span>之间不对称（<span class="math inline">\(K L\left(\mathbb{P}_r \| \mathbb{P}_g\right) \not
+= K L\left(\mathbb{P}_g \| \mathbb{P}_r\right)\)</span>）：</p>
+<p>1.若<span class="math inline">\(P_r(x)&gt;P_g(x)\)</span>，则<span class="math inline">\(x\)</span>是来自数据的概率高于生成样本的点。这就是通常所说的'mode
+dropping'现象的核心：存在大片区域满足<span class="math inline">\(P_r\)</span>值较大的，而<span class="math inline">\(P_g\)</span>值较小或为零。需要注意的是，当<span class="math inline">\(P_r(x)&gt;0\)</span>但<span class="math inline">\(P_g(x) \rightarrow
+0\)</span>时，KL内的被积函数迅速增长到无穷大，这意味着该成本函数为没有覆盖部分数据的生成器分布分配了极高的成本（如果生成器不能完全生成全部真实样本数据，那么cost将很高）</p>
+<p>2.如果<span class="math inline">\(P_r(x)&lt;P_g(x)\)</span>，则<span class="math inline">\(x\)</span>作为数据点的概率较低，但由我们的模型生成的概率很高。当我们看到生成器输出的图像看起来不真实时，就是这种情况。在这种情况下，当<span class="math inline">\(P_r(x) \rightarrow 0\)</span>并且<span class="math inline">\(P_g(x)&gt;0\)</span>时，看到KL内的值变为0，这意味着这个成本函数将为生成看起来很假的样本支付极低的成本。</p>
+<p>相反，如果我们将<span class="math inline">\(K L\left(\mathbb{P}_g \|
+\mathbb{P}_r\right)\)</span>最小化，这些误差的权重将被逆转，这意味着这个代价函数将付出很高的成本来生成看上去不真实的图片。生成对抗网络已经被证明可以优化这两个代价函数的对称中间点，即Jensen-shannon散度
+<span class="math display">\[
+J S D\left(\mathbb{P}_r \| \mathbb{P}_g\right)=\frac{1}{2} K
+L\left(\mathbb{P}_r \| \mathbb{P}_A\right)+\frac{1}{2} K
+L\left(\mathbb{P}_g \| \mathbb{P}_A\right)
+\]</span></p>
+<p>其中，<span class="math inline">\(\mathbb{P}_A\)</span>为"平均"分布，密度为<span class="math inline">\(\frac{P_r+P_g}{2}\)</span>
+。可以推测，GANs成功地生成真实图像的原因是由于从传统的最大似然方法转换而来的。然而，还有问题</p>
+<p>生成对抗网络的构建分为两个步骤。我们首先训练一个判别器<span class="math inline">\(D\)</span>使其最大化 <span class="math display">\[
+L\left(D, g_\theta\right)=\mathbb{E}_{x \sim \mathbf{P}_r}[\log
+D(x)]+\mathbb{E}_{x \sim \mathbf{P}_g}[\log (1-D(x))] \qquad(1)
+\]</span></p>
+<p>很容易地证明最优判别器具有形状（L对D（x）求导等于0） <span class="math display">\[
+D^*(x)=\frac{P_r(x)}{P_r(x)+P_g(x)}
+\]</span></p>
+<p>且 <span class="math inline">\(L\left(D^*, g_\theta\right)=2 J S
+D\left(\mathbb{P}_r \| \mathbb{P}_g\right)-2 \log 2\)</span>,
+因此，当判别器是最优的时，最小化作为<span class="math inline">\(\theta\)</span>的函数的方程(1)等价于最小化Jensen-Shannon散度。因此，在理论上，人们期望我们首先训练尽可能接近最优的判别器(因此,
+<span class="math inline">\(\theta\)</span>上的代价函数更好地逼近JSD
+)，然后在<span class="math inline">\(\theta\)</span>上做梯度步骤，交替这两种情况
+，然而，这并不奏效。在实际应用中，随着判别器的变好，生成器的更新也不断变差。</p>
+<h4 id="不稳定的来源">不稳定的来源</h4>
+<p>该理论告诉我们，训练好的判别器最好也就是<span class="math inline">\(2
+\log 2-2 J S D\left(\mathbb{P}_r \|
+\mathbb{P}_g\right)\)</span>。然而，在实际中，如果我们仅训练<span class="math inline">\(D\)</span>直到收敛，它的误差将趋于0，但是如图一所示，这表明它们之间的JSD是最大的。唯一可能的情况是，两个分布不是连续的，或者它们有不相交的支撑。
+<img src="/2025/03/10/WGAN/WGAN\1.png" alt="image"></p>
+<p>原因总结：真实数据分布的支撑集往往形成流形，而生成器的输出分布也往往是流形，而两个流形相交部分测度为0。</p>
+<p>定理2.3 设<span class="math inline">\(\mathbb{P}_r\)</span>和<span class="math inline">\(\mathbb{P}_g\)</span>是两个分布，其支撑点位于两个流形<span class="math inline">\(\mathcal{M}\)</span>和<span class="math inline">\(\mathcal{P}\)</span>中，这两个流形不具有全维且不完全对齐。我们进一步假设<span class="math inline">\(\mathbb{P}_r\)</span>和<span class="math inline">\(\mathbb{P}_g\)</span>在各自的流形上是连续的，则有
+<span class="math display">\[
+\begin{aligned}
+J S D\left(\mathbb{P}_r \| \mathbb{P}_g\right) &amp; =\log 2 \\
+K L\left(\mathbb{P}_r \| \mathbb{P}_g\right) &amp; =+\infty \\
+K L\left(\mathbb{P}_g \| \mathbb{P}_r\right) &amp; =+\infty
+\end{aligned}
+\]</span></p>
+<p>值得注意的是，即使两个流形任意靠近，这些分歧也会被放大。我们的生成器的样本可能看起来很好，但两个KL散度都是无穷大，JSD为常数log2，这在训练的时候会发生梯度消失。</p>
+<p>为什么log2？ <img src="/2025/03/10/WGAN/WGAN\2.png" alt="image"></p>
+<p>回到WGAN</p>
+<h2 id="不同距离">不同距离</h2>
+<p>设<span class="math inline">\(\mathcal{X}\)</span>是紧致度量集(如图像的空间<span class="math inline">\([0,1]^d\)</span>)，<span class="math inline">\(\Sigma\)</span>表示<span class="math inline">\(\mathcal{X}\)</span>的所有Borel子集构成的集合，<span class="math inline">\(\operatorname{Prob}(\mathcal{X})\)</span>表示定义在<span class="math inline">\(\mathcal{X}\)</span>上的概率测度空间。定义两个分布<span class="math inline">\(\mathbb{P}_r, \mathbb{P}_g \in
+\operatorname{Prob}(\mathcal{X})\)</span>之间的距离： - 全变分 (TV)
+距离</p>
+<p><span class="math display">\[
+\delta\left(\mathbb{P}_r, \mathbb{P}_g\right)=\sup _{A \in
+\Sigma}\left|\mathbb{P}_r(A)-\mathbb{P}_g(A)\right|
+\]</span></p>
+<ul>
+<li><p>The Kullback-Leibler (KL) 散度 <span class="math display">\[
+K L\left(\mathbb{P}_r \| \mathbb{P}_g\right)=\int \log
+\left(\frac{P_r(x)}{P_g(x)}\right) P_r(x) d \mu(x)
+\]</span></p></li>
+<li><p>The Jensen-Shannon (JS) 散度 <span class="math display">\[
+J S\left(\mathbb{P}_r, \mathbb{P}_g\right)=K L\left(\mathbb{P}_r \|
+\mathbb{P}_m\right)+K L\left(\mathbb{P}_g \| \mathbb{P}_m\right)
+\]</span></p></li>
+</ul>
+<p>其中 <span class="math inline">\(\mathbb{P}_m\)</span>是<span class="math inline">\(\left(\mathbb{P}_r+\mathbb{P}_g\right) /
+2\)</span>的混合</p>
+<ul>
+<li>The Earth-Mover (EM) 距离 （Wasserstein-1 距离） <span class="math display">\[
+W\left(\mathbb{P}_r, \mathbb{P}_g\right)=\inf _{\gamma \in
+\Pi\left(\mathbb{P}_r, \mathbb{P}_g\right)} \mathbb{E}_{(x, y) \sim
+\gamma}[\|x-y\|] \qquad(1)
+\]</span></li>
+</ul>
+<p>其中，<span class="math inline">\(\Pi\left(\mathbb{P}_r,
+\mathbb{P}_g\right)\)</span>表示所有边际分布分别为<span class="math inline">\(\mathbb{P}_r\)</span>和<span class="math inline">\(\mathbb{P}_g\)</span>的联合分布<span class="math inline">\(\gamma(x, y)\)</span>的集合。直观上，<span class="math inline">\(\gamma(x, y)\)</span>表示为了将分布<span class="math inline">\(\mathbb{P}_r\)</span>转化为分布<span class="math inline">\(\mathbb{P}_g\)</span>需要从<span class="math inline">\(x\)</span>输送到<span class="math inline">\(y\)</span>的"质量"。那么EM距离就是最优运输方案的"成本"。</p>
+<p>下面的例子说明了简单的概率分布序列在EM距离下是收敛的，而在上面定义的其他距离和散度下是不收敛的。</p>
+<p>例1 令<span class="math inline">\(Z \sim
+U[0,1]\)</span>为单位区间上的均匀分布。设<span class="math inline">\(\mathbb{P}_0\)</span>为<span class="math inline">\((0, Z) \in
+\mathbb{R}^2\)</span>上的分布(0在x轴上,随机变量<span class="math inline">\(Z\)</span>在y轴上)，在过原点的竖直线上均匀分布。现令<span class="math inline">\(g_\theta(z)=(\theta, z)\)</span>，<span class="math inline">\(\theta\)</span>为单一实参数。不难看出，在这种情况下
+- <span class="math inline">\(W\left(\mathbb{P}_0,
+\mathbb{P}_\theta\right)=|\theta|\)</span>, - <span class="math inline">\(J S\left(\mathbb{P}_0, \mathbb{P}_\theta\right)=
+\begin{cases}\log 2 &amp; \text { if } \theta \neq 0, \\ 0 &amp; \text {
+if } \theta=0,\end{cases}\)</span> - <span class="math inline">\(K
+L\left(\mathbb{P}_\theta \| \mathbb{P}_0\right)=K L\left(\mathbb{P}_0 \|
+\mathbb{P}_\theta\right)= \begin{cases}+\infty &amp; \text { if } \theta
+\neq 0, \\ 0 &amp; \text { if } \theta=0,\end{cases}\)</span> - and
+<span class="math inline">\(\delta\left(\mathbb{P}_0,
+\mathbb{P}_\theta\right)= \begin{cases}1 &amp; \text { if } \theta \neq
+0, \\ 0 &amp; \text { if } \theta=0 .\end{cases}\)</span></p>
+<p>当<span class="math inline">\(\theta_t \rightarrow
+0\)</span>时，序列<span class="math inline">\(\left(\mathbb{P}_{\theta_t}\right)_{t \in
+\mathbb{N}}\)</span>在EM距离下收敛于<span class="math inline">\(\mathbb{P}_0\)</span>，但在JS、KL、反向KL或TV散度下均不收敛。图1说明了EM和JS距离的情况。
+<img src="/2025/03/10/WGAN/WGAN\3.png" alt="image"></p>
+<p>示例1提供了一个案例，可以通过在EM距离上进行梯度下降来学习低维流形上的概率分布。这无法通过其他距离和散度来实现，因为由此产生的损失函数甚至不是连续的。尽管这个简单的例子以具有不相交支撑的分布为特征，但当支撑在一组零测集中包含非空交集时，同样的结论成立。</p>
+<p>由于Wasserstein距离比JS距离更弱，我们现在可以问，在适当的假设下，<span class="math inline">\(W\left(\mathbb{P}_r,
+\mathbb{P}_\theta\right)\)</span>是否是<span class="math inline">\(\theta\)</span>上的连续损失函数</p>
+<p><strong>定理1</strong> 设<span class="math inline">\(\mathbb{P}_r\)</span>是<span class="math inline">\(\mathcal{X}\)</span>上的一个固定分布，<span class="math inline">\(Z\)</span>是另一空间<span class="math inline">\(\mathcal{Z}\)</span>上的随机变量(例如 Gaussian)
+。设<span class="math inline">\(g: \mathcal{Z} \times \mathbb{R}^d
+\rightarrow \mathcal{X}\)</span>是一个函数，记为<span class="math inline">\(g_\theta(z)\)</span>，其中<span class="math inline">\(z\)</span>是第一坐标，<span class="math inline">\(\theta\)</span>是第二坐标。令<span class="math inline">\(\mathbb{P}_\theta\)</span>表示<span class="math inline">\(g_\theta(Z)\)</span>的分布。那么</p>
+<ol type="1">
+<li><p>如果<span class="math inline">\(g\)</span>在关于<span class="math inline">\(\theta\)</span>是连续的，则<span class="math inline">\(W\left(\mathbb{P}_r,
+\mathbb{P}_\theta\right)\)</span>也是连续的</p></li>
+<li><p>如果<span class="math inline">\(g\)</span>是局部Lipschitz并满足假设1，那么<span class="math inline">\(W\left(\mathbb{P}_r,
+\mathbb{P}_\theta\right)\)</span>处处连续，并且几乎处处可微</p></li>
+<li><p>1-2对于Jensen-Shannon散度<span class="math inline">\(J
+S\left(\mathbb{P}_r,
+\mathbb{P}_\theta\right)\)</span>和所有KL都不成立</p></li>
+</ol>
+<p>以下推论告诉我们，通过最小化
+EM距离进行学习对于神经网络来说是有意义的（至少在理论上是这样）</p>
+<p><strong>推论1</strong> 设<span class="math inline">\(g_\theta\)</span>为由<span class="math inline">\(\theta\)</span>参数化的任何前馈神经网络，<span class="math inline">\(p(z)\)</span>为<span class="math inline">\(z\)</span>上的先验分布，使得 <span class="math inline">\(\mathbb{E}_{z \sim
+p(z)}[\|z\|]&lt;\infty\)</span>（例如高斯、均匀等）。然后假设 1
+得到满足，因此<span class="math inline">\(W\left(\mathbb{P}_r,
+\mathbb{P}_\theta\right)\)</span>处处连续，几乎处处可微</p>
+<p>所有这些都表明，对于研究的问题来说，EM是一个至少比
+Jensen-Shannon散度更合理的成本函数。以下定理描述了由这些距离和散度诱导的拓扑的相对强度，其中KL最强，其次是JS和TV，EM最弱</p>
+<p><strong>定理2</strong> 设<span class="math inline">\(\mathbb{P}\)</span>是紧空间<span class="math inline">\(\mathcal{X}\)</span>上的分布，<span class="math inline">\(\left(\mathbb{P}_n\right)_{n \in
+\mathbb{N}}\)</span>是<span class="math inline">\(\mathcal{X}\)</span>上的分布序列。然后，<span class="math inline">\(n \rightarrow \infty\)</span>，</p>
+<ol type="1">
+<li>以下语句是等价的</li>
+</ol>
+<ul>
+<li><span class="math inline">\(\delta\left(\mathbb{P}_n,
+\mathbb{P}\right) \rightarrow 0\)</span></li>
+<li>JS <span class="math inline">\(\left(\mathbb{P}_n, \mathbb{P}\right)
+\rightarrow 0\)</span></li>
+</ul>
+<ol start="2" type="1">
+<li>以下语句是等价的</li>
+</ol>
+<ul>
+<li><span class="math inline">\(W\left(\mathbb{P}_n, \mathbb{P}\right)
+\rightarrow 0\)</span></li>
+<li><span class="math inline">\(\mathbb{P}_n \xrightarrow{\mathcal{D}}
+\mathbb{P}\)</span> 其中 <span class="math inline">\(\xrightarrow{\mathcal{D}}\)</span>
+表示随机变量的分布收敛</li>
+</ul>
+<ol start="3" type="1">
+<li><p><span class="math inline">\(K L\left(\mathbb{P}_n \|
+\mathbb{P}\right) \rightarrow 0\)</span> 或 <span class="math inline">\(K L\left(\mathbb{P} \| \mathbb{P}_n\right)
+\rightarrow 0\)</span>能推出（1）</p></li>
+<li><p>（1）能推出（2）</p></li>
+</ol>
+<p>这突出了这样一个事实，即在学习低维流形支持的分布时，KL、JS 和 TV
+距离不是合理的代价函数。但是，EM
+距离是合理的。下面将介绍优化EM距离的实际近似值</p>
+<h2 id="wasserstein-gan-1">Wasserstein GAN</h2>
+<p>定理2指出<span class="math inline">\(W\left(\mathbb{P}_r,
+\mathbb{P}_\theta\right)\)</span>在优化时可能比<span class="math inline">\(J S\left(\mathbb{P}_r,
+\mathbb{P}_\theta\right)\)</span>具有更好的性质。然而，(1)中的下确界是非常难解的。另一方面，由Kantorovich-Rubinstein对偶[22]</p>
+<p><span class="math display">\[
+W\left(\mathbb{P}_r, \mathbb{P}_\theta\right)=\sup _{\|f\|_L \leq 1}
+\mathbb{E}_{x \sim \mathbb{P}_r}[f(x)]-\mathbb{E}_{x \sim
+\mathbb{P}_\theta}[f(x)] \qquad(2)
+\]</span></p>
+<p>其中，上确界在所有1-Lipschitz函数<span class="math inline">\(f:
+\mathcal{X} \rightarrow \mathbb{R}\)</span>中寻找。请注意，如果我们将
+<span class="math inline">\(\|f\|_L \leq 1\)</span>替换为<span class="math inline">\(\|f\|_L \leq
+K\)</span>（某个常数K的K-Lipschitz），那么我们最终得到<span class="math inline">\(K \cdot W\left(\mathbb{P}_r,
+\mathbb{P}_g\right)\)</span>。因此，如果有一个参数化的函数族<span class="math inline">\(\left\{f_w\right\}_{w \in
+\mathcal{W}}\)</span>都是K-Lipschitz，那么可以考虑解决这个问题</p>
+<p><span class="math display">\[
+\max _{w \in \mathcal{W}} \mathbb{E}_{x \sim
+\mathbb{P}_r}\left[f_w(x)\right]-\mathbb{E}_{z \sim
+p(z)}\left[f_w\left(g_\theta(z)\right]\right.  \qquad(3)
+\]</span></p>
+<p>如果（2）中的上确界是由某个 <span class="math inline">\(w \in
+\mathcal{W}\)</span>（这是一个非常强的假设，类似于证明估计器一致性时的假设）而得到的，那么这个过程将会使<span class="math inline">\(W\left(\mathbb{P}_r,
+\mathbb{P}_\theta\right)\)</span>的计算到达一个常数。此外，我们可以考虑通过估计<span class="math inline">\(\mathbb{E}_{z \sim p(z)}\left[\nabla_\theta
+f_w\left(g_\theta(z)\right)\right]\)</span>通过方程（2）进行反推来对<span class="math inline">\(W\left(\mathbb{P}_r,
+\mathbb{P}_\theta\right)\)</span>求导数（同样，直到一个常数）。虽然这都是直觉，但现在证明，在最优性假设下，这个过程是有原则的。</p>
+<p><strong>定理3</strong> 设<span class="math inline">\(\mathbb{P}_r\)</span>为任意分布。设<span class="math inline">\(\mathbb{P}_\theta\)</span>为<span class="math inline">\(g_\theta(Z)\)</span>的分布，<span class="math inline">\(Z\)</span>为密度为<span class="math inline">\(p\)</span>的随机变量，<span class="math inline">\(g_\theta\)</span>为满足假设1的函数。那么，下面问题有一个解<span class="math inline">\(f: \mathcal{X} \rightarrow \mathbb{R}\)</span></p>
+<p><span class="math display">\[
+\max _{\|f\|_L \leq 1} \mathbb{E}_{x \sim
+\mathbb{P}_r}[f(x)]-\mathbb{E}_{x \sim \mathbb{P}_\theta}[f(x)]
+\]</span> 并且有 <span class="math display">\[
+\nabla_\theta W\left(\mathbb{P}_r,
+\mathbb{P}_\theta\right)=-\mathbb{E}_{z \sim p(z)}\left[\nabla_\theta
+f\left(g_\theta(z)\right)\right]
+\]</span></p>
+<p>现在的问题是找到解决方程（2）中最大化问题的函数<span class="math inline">\(f\)</span>。为了大致近似这一点，我们可以做的是训练一个参数化的神经网络，其中权重<span class="math inline">\(w\)</span>位于紧空间<span class="math inline">\(\mathcal{W}\)</span>中，然后通过<span class="math inline">\(\mathbb{E}_{z \sim p(z)}\left[\nabla_\theta
+f_w\left(g_\theta(z)\right)\right]\)</span>进行反向传播，就像我们使用典型的GAN一样。注意，<span class="math inline">\(\mathcal{W}\)</span>是紧的这一事实意味着所有函数<span class="math inline">\(f_w\)</span>都是K-Lipschitz，它只取决于<span class="math inline">\(\mathcal{W}\)</span>，而不取决于单个权重，因此近似（2）到一个不相关的比例因子和“critic”<span class="math inline">\(f_w\)</span>的容量。为了使参数<span class="math inline">\(w\)</span>位于紧空间中，我们可以做的一件简单的事情是在每次梯度更新后将权重clamp到一个固定的范围中（比如<span class="math inline">\(\mathcal{W}=[-0.01,0.01]^l\)</span>）。Wasserstein生成对抗网络（WGAN）过程在算法1中进行了描述</p>
+<p><span class="math display">\[
+    \begin{array}{l}
+   \hline \
+   \textbf{算法1} \quad \text{WGAN} \\
+   \hline
+   \textbf{给定：}\alpha:学习率。c:裁剪参数。m:批量大小。 \\
+   \qquad n_\text{critic}:每次生成器迭代，迭代\text{critic}的次数\\
+   \textbf{给定：}w_0：初始 critic 参数。\theta_0：初始生成器的参数。
+   \\1:
+   \quad \textbf{while} \,\theta 尚未收敛 \, \textbf{do} \\2:
+   \qquad \textbf{for} \, t=0,...,n_\text{critic} \, \textbf{do} \\3:
+   \qquad \quad
+从真实数据的批次采样一个批次\left\{x^{(i)}\right\}_{i=1}^m \sim
+\mathbb{P}_r \\4:
+   \qquad \quad 采样一批先验样本 \left\{z^{(i)}\right\}_{i=1}^m \sim
+p(z) \\5:
+   \qquad \quad g_w \leftarrow \nabla_w\left[\frac{1}{m} \sum_{i=1}^m
+f_w\left(x^{(i)}\right)-\frac{1}{m} \sum_{i=1}^m
+f_w\left(g_\theta\left(z^{(i)}\right)\right)\right]\\6:
+   \qquad \quad w \leftarrow w+\alpha \cdot
+\operatorname{RMSProp}\left(w, g_w\right)\\7:
+   \qquad \quad w \leftarrow \operatorname{clip}(w,-c, c) \\8:
+   \qquad \textbf{end for}\\9:
+   \qquad 采样一批先验样本 \left\{z^{(i)}\right\}_{i=1}^m \sim p(z)
+\\10:
+   \qquad g_\theta \leftarrow-\nabla_\theta \frac{1}{m} \sum_{i=1}^m
+f_w\left(g_\theta\left(z^{(i)}\right)\right) \\11:
+   \qquad \theta \leftarrow \theta-\alpha \cdot
+\operatorname{RMSProp}\left(\theta, g_\theta\right) \\12:
+   \quad \textbf{end while} \\
+   \hline
+\end{array}
+\]</span></p>
+<p>权重裁剪显然是强制实施Lipschitz约束的一种糟糕的方法。如果裁剪参数很大，则任何权重可能需要很长时间才能达到其极限，从而使critic更难训练直到最优。如果裁剪很小，则当层数较大或未使用批量归一化（例如在RNN中）时，这很容易导致渐变消失。尝试了简单的变体（例如将权重投影到球体），几乎没有区别，并且由于它的简单性和已经很好的性能，作者坚持使用权重裁剪。作者将在神经网络设置中强制执行Lipschitz约束的主题留给进一步研究，并且积极鼓励感兴趣的研究人员改进这种方法。</p>
+<p>EM距离是连续且可微的事实意味着可以（并且应该）训练critic直到最优。论点很简单，训练critic的次数越多，得到的Wasserstein梯度就越可靠，这实际上很有用，因为Wasserstein几乎在所有地方都是可导的对于JS，随着判别器变得更好，梯度变得更可靠，但真正的梯度为0，因为JS是局部饱和的，得到的梯度消失。图2展示了一个概念验证，训练一个GAN判别器和一个WGAN
+critic，直到最优。判别器学习非常快，可以很好地区分假和真，并且正如预期的那样，没有提供可靠的梯度信息。然而，critic无法饱和，并收敛到一个线性函数，该函数在任何地方都给出了非常干净的渐变。我们约束权重的事实限制了函数在空间的不同部分最多是线性的，迫使最优critic具有这种行为。
+<img src="/2025/03/10/WGAN/WGAN\4.png" alt="image"></p>
+<p>也许更重要的是，可以训练critic直到最优，这使得这样做时不会发生collapse
+modes。这是因为collapse
+modes来自这样一个事实，即固定判别器的最佳生成器是判别器分配最高值的点的增量之和，如[4]所观察到并在[11]中突出显示的那样。</p>
+<h2 id="实验结果">实验结果</h2>
+<p>使用Wasserstein-GAN算法运行图像生成实验，并表明使用它比标准GAN中使用的公式有很大的实际好处</p>
+<p>声明主要有两个好处 1.
+一个与生成器的收敛性和样本质量相关的有意义的损失度量 2.
+提高了优化过程的稳定性</p>
+<h3 id="实验设置">实验设置</h3>
+<p>作者对图像生成进行实验。要学习的目标分布是LSUN-Bedrooms数据集[24]
+--一个室内卧室自然图像的集合。baseline比较是DCGAN[18]，这是一个卷积结构的GAN，使用标准的GAN程序使用<span class="math inline">\(-log
+D\)</span>技巧[4]进行训练。生成的样本为3通道，大小为64×64像素的图像。我们在所有的实验中都使用了算法1中规定的超参数。</p>
+<h3 id="有意义的损失度量">有意义的损失度量</h3>
+<p>由于WGAN算法试图在每个生成器更新(算法1中的第10行)之前相对较好地训练critic
+<span class="math inline">\(f\)</span>(算法1中第2-8行)，此时的损失函数是EM距离的估计，直到与我们约束f的Lipschitz常数的方式相关的常数。</p>
+<p>我们的第一个实验说明了这种估计如何与生成样本的质量很好地相关。除了卷积DCGAN架构，我们还进行了实验，使用512个隐藏单元的4层ReLU-MLP替换生成器或同时替换生成器和critic。</p>
+<p>图3为3种架构的WGAN训练过程中EM距离的WGAN估计(3)的演化情况。从图中可以清楚地看出，这些曲线与生成样本的视觉质量有很好的相关性。
+<img src="/2025/03/10/WGAN/WGAN\5.png" alt="image"></p>
+<p>据我们所知，这是GAN文献中第一次显示这样的属性，GAN的损失显示了收敛的属性。在对抗网络中进行研究时，此属性非常有用，因为人们不需要盯着生成的样本来找出故障模式，也不需要获得哪些模型比其他模型做得更好的信息。</p>
+<p>然而，我们并不认为这是一种定量评估生成模型的新方法。依赖于critic架构的恒定比例因子意味着很难比较不同critic的模型。更重要的是，在实践中critic没有无限能力的事实使得我们很难知道我们估计的EM距离究竟有多接近。也就是说，我们成功地使用了损失度量来反复验证我们的实验，并且没有失败，我们认为这是对以前没有这种设施的训练GAN的一个巨大的改进。</p>
+<p>相反，图4描绘了GAN训练过程中JS距离的GAN估计的演变。更准确地说，在GAN训练过程中，对判别器进行训练最大化
+<span class="math display">\[
+\left.\left.L\left(D, g_\theta\right)=\mathbb{E}_{x \sim \mathbb{P}_r}
+\log D(x)\right]+\mathbb{E}_{x \sim \mathbb{P}_\theta} \log
+(1-D(x))\right]
+\]</span></p>
+<p>这是<span class="math inline">\(2 J S\left(\mathbb{P}_r,
+\mathbb{P}_\theta\right)-2 \log
+2\)</span>的下界。在图中，我们画出了量<span class="math inline">\(\frac{1}{2} L\left(D, g_\theta\right)+\log
+2\)</span>，这是JS距离的一个下界 <img src="/2025/03/10/WGAN/WGAN\6.png" alt="image"></p>
+<p>这个数量显然与样品质量相关性很差。还要注意，JS估计值通常保持不变，或者上升而不是下降。事实上，它通常非常接近<span class="math inline">\(log
+2≈0.69\)</span>，这是JS距离的最高值。换句话说，JS距离饱和，鉴别器无损耗，生成的样本在某些情况下是有意义的（DCGAN生成器，右上图），在其他情况下会折叠成一个无意义的图像[4]。最后一个现象在[1]中得到了理论解释，并在[11]中得到了强调。</p>
+<p>当使用<span class="math inline">\(- log
+D\)</span>技巧[4]时，判别器损失和生成器损失是不同的。附录E中的图8报告了同样的图用于GAN训练，但是使用生成器损失代替判别器损失。这并不改变结论。</p>
+<p>最后，作为一个负面的结果，当一个人使用基于动量的优化器(如Adam [8] (
+<span class="math inline">\(\beta_1&gt;0\)</span> )
+)时，或者当一个人使用高学习率时，WGAN训练变得不稳定。由于critic的损失是非平稳的，基于动量的方法似乎表现得更差。我们认为动量是一个潜在的原因，因为随着损失的增加和样本的恶化，Adam步和梯度之间的余弦通常会变成负值。这个余弦为负的唯一地方是在这些不稳定的情况下。因此，我们切换到RMSprop算法[21]，即使在非平稳问题RMSprop算法也表现良好[13]。</p>
+<h3 id="提高了稳定性">提高了稳定性</h3>
+<p>WGAN的一个好处是它允许我们训练critic直到最优性。当critic训练完毕时，它只是给生成器提供了一个损失，我们可以像任何其他神经网络一样进行训练。这告诉我们，我们不再需要适当地平衡生成器和判别器的容量。critic越好，我们用来训练生成器的梯度质量越高。</p>
+<p>我们观察到，当生成器的结构选择发生变化时，WGANs比GANs更加稳定。我们通过在三个生成器架构上运行实验来说明这一点：(1)一个卷积DCGAN生成器，(2)一个没有批量归一化和具有固定数量过滤器的卷积DCGAN生成器，(3)一个具有512个隐藏单元的4层ReLU-MLP。最后两个已知在GANs中表现很差。我们为WGAN
+critic或GAN判别器保留了卷积DCGAN架构</p>
+<p>图5、图6和图7显示了同时使用WGAN和GAN算法为这三种架构生成的样本。我们将生成的样本的完整片参考附录F。样品未经过Cherry-Picked处理。</p>
+<p>在没任何实验中我们都未看到WGAN算法发生模式崩溃的证据 <img src="/2025/03/10/WGAN/WGAN\7.png" alt="image">
+图5：使用DCGAN生成器训练的算法。左：Wgan算法。右：标准GAN配方。两种算法都产生了高质量的样本
+<img src="/2025/03/10/WGAN/WGAN\8.png" alt="image">
+图6：算法用一个没有批归一化的生成器和每层固定数量的过滤器进行训练。除了去掉批量归一化，参数的数量也因此减少了一个数量级以上。左：Wgan算法。右：标准GAN配方。正如我们可以看到标准的GAN没有学习到，而WGAN仍然能够产生样本。
+<img src="/2025/03/10/WGAN/WGAN\9.png" alt="image">
+图7：用4层512单元ReLU非线性的MLP生成器训练的算法。参数数量与DCGAN类似，但对图像生成缺乏较强的诱导偏差。左：Wgan算法。右：标准GAN配方。WGAN方法仍然能够产生样品，质量低于DCGAN，质量高于标准GAN的MLP。注意到GAN
+MLP中模式崩溃的显著程度 ## 结论</p>
+<p>引入了WGAN算法，它是传统GAN训练的一种替代。在这个新的模型中，表明可以提高学习的稳定性，摆脱模式崩溃等问题，并提供有意义的学习曲线，用于调试和超参数搜索。此外，文章表明，相应的优化问题是健全的，并提供了广泛的理论工作，突出了与其他距离分布之间的深层联系。</p>
+]]></content>
+      <categories>
+        <category>论文精读</category>
+      </categories>
+      <tags>
+        <tag>GAN</tag>
       </tags>
   </entry>
   <entry>
