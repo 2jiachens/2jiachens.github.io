@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="From Learning Models of Natural Image Patches to Whole Image Restoration 摘要 学习好的图像先验对于视觉、计算机视觉和图像处理应用的研究至关重要。学习先验和对整幅图像进行优化会带来巨大的计算挑战。相比之下，当我们处理较小的图像块时，有可能学习到先验信息，从而非常高效地进行图像块恢复。这就提出了三个问题-赋予数据高可能性的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我的博客">
+<meta property="og:url" content="http://example.com/2025/04/02/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration/index.html">
+<meta property="og:site_name" content="我的博客">
+<meta property="og:description" content="From Learning Models of Natural Image Patches to Whole Image Restoration 摘要 学习好的图像先验对于视觉、计算机视觉和图像处理应用的研究至关重要。学习先验和对整幅图像进行优化会带来巨大的计算挑战。相比之下，当我们处理较小的图像块时，有可能学习到先验信息，从而非常高效地进行图像块恢复。这就提出了三个问题-赋予数据高可能性的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2025/04/02/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration/1.png">
+<meta property="og:image" content="http://example.com/2025/04/02/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration/2.png">
+<meta property="og:image" content="http://example.com/2025/04/02/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration/3.png">
+<meta property="og:image" content="http://example.com/2025/04/02/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration/4.png">
+<meta property="og:image" content="http://example.com/2025/04/02/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration/5.png">
+<meta property="og:image" content="http://example.com/2025/04/02/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration/6.png">
+<meta property="og:image" content="http://example.com/2025/04/02/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration/7.png">
+<meta property="og:image" content="http://example.com/2025/04/02/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration/8.png">
+<meta property="og:image" content="http://example.com/2025/04/02/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration/9.png">
+<meta property="article:published_time" content="2025-04-02T01:48:23.103Z">
+<meta property="article:modified_time" content="2025-04-02T06:17:16.781Z">
+<meta property="article:author" content="宋嘉晨">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2025/04/02/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration/1.png">
+
+<link rel="canonical" href="http://example.com/2025/04/02/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title> | 我的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">我的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-guestbook">
+
+    <a href="/guestbook/" rel="section"><i class="fa fa-book fa-fw"></i>留言板</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/04/02/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="宋嘉晨">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-04-02 09:48:23 / 修改时间：14:17:16" itemprop="dateCreated datePublished" datetime="2025-04-02T09:48:23+08:00">2025-04-02</time>
+            </span>
+
+          
+            <span id="/2025/04/02/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration/" class="post-meta-item leancloud_visitors" data-flag-title="" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2025/04/02/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2025/04/02/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>9.4k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="from-learning-models-of-natural-image-patches-to-whole-image-restoration">From
+Learning Models of Natural Image Patches to Whole Image Restoration</h1>
+<h2 id="摘要">摘要</h2>
+<p>学习好的图像先验对于视觉、计算机视觉和图像处理应用的研究至关重要。<strong>学习先验和对整幅图像进行优化会带来巨大的计算挑战</strong>。相比之下，<strong>当我们处理较小的图像块时，有可能学习到先验信息，从而非常高效地进行图像块恢复</strong>。这就提出了三个问题-赋予数据高可能性的先验是否也能带来良好的恢复性能？我们能否使用这样的基于块的先验来恢复一幅完整的图像？能否学习到更好的块先验？在这项工作中，我们回答了这些问题。</p>
+<p><strong>我们比较了几种块模型的似然性，并表明赋予数据高似然性的先验在块恢复中表现得更好</strong>。受这一结果的启发，<strong>我们提出了一个通用的框架，该框架允许使用任何基于块的先验来进行整个图像的恢复，其中可以计算MAP
+(或近似MAP)估计</strong>。<strong>我们展示了如何得到一个合适的代价函数，如何优化它，以及如何使用它来恢复整个图像</strong>。最后，<strong>我们提出了一个通用的，令人惊讶的简单的高斯混合先验，从一组自然图像中学习</strong>。当使用所提出的框架时，该高斯混合模型优于所有其他通用的图像去噪、去模糊和修复的先验方法。
+<span id="more"></span></p>
+<h2 id="介绍">介绍</h2>
+<p>图像先验已经成为图像复原任务的流行工具。好的先验已经被应用到不同的任务中，例如图像去噪[1,2,3,4,5,6]，图像修复[6]和[7]，取得了优异的结果。然而，<strong>从自然图像中学习好的先验是一项艰巨的任务-
+-图像的高维性使得利用这些先验进行学习、推理和优化变得异常困难</strong>。<strong>因此，在许多工作中[4,5,8]先验是在小图像块上学习的。这样做的好处是使得学习、推理和似然估计等计算任务比直接处理整幅图像要容易得多</strong>。在本文中，我们提出了三个问题：
+1. 提供高似然度的块先验是否会产生更好的块恢复性能？ 2.
+提供高似然度的块先验是否可以获得更好的图像复原性能？ 3.
+能否学习到更好的块先验？</p>
+<h2 id="从块似然到块恢复">从块似然到块恢复</h2>
+<p>对于许多先验为对数似然的闭合形式，贝叶斯最小二乘(BLS)和最大后验概率(MAP)估计可以很容易地计算。考虑到这一点，我们从一个简单的问题开始：对自然图像块提供高似然的先验是否也能在恢复任务(如去噪)中产生良好的结果。值得注意的是，对于整幅图像的先验来说，回答这个问题是非常困难的-
+-对于许多流行的MRF(马尔科夫随机场)先验，无论是对数似然还是MAP估计都无法精确计算[9]。为了提供这个问题的答案，我们比较了几个流行的先验，从[10]的训练集中随机抽取了50,000个8×8块进行训练，并去除DC。
+我们比较了每个模型在一组未见过的自然图像块(从文献的测试集中采样)上给出的对数似然以及使用MAP估计的每个模型在块去噪中的性能。我们在这里使用的模型是：具有学习边缘的独立像素(Ind
+.
+Pixel)、学习协方差的多变量高斯像素(MVG)、学习(非高斯)边缘的独立主成分分析(Independent
+PCA)和学习边缘的独立成分分析(ICA)。对于这些模型的详细描述见补充材料。每个模型的结果可以在图1中看到。可以看出，模型对一组块给出的可能性越高，当它们被损坏时，它在去噪方面就越好。
+<img src="/2025/04/02/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration\1.png" alt="image"></p>
+<h2 id="从块似然法到整幅图像复原">从块似然法到整幅图像复原</h2>
+<p>受第2节结果的启发，我们现在想回答本文的第二个问题——在整个图像恢复中，具有高可能性的补丁先验是否表现更好？为了回答这个问题，我们首先需要考虑如何使用块先验进行整个图像恢复的问题。</p>
+<p>为了说明使用块先验的优势和困难，考虑图2。假设我们从给定的图像中学习一个简单的块先验(图2a)。为了学习这个先验，我们从图像中取出所有重叠的块，去除它们的DC分量，并建立图像中所有块的直方图，统计它们在图像中出现的次数。在此先验下，例如，最可能的面片是平坦的(因为原始影像中的图斑大部分为平坦图斑)，第二个最可能的面片是对角边缘的尖端，等等(该直方图的一个子集见图2b)。这种先验既容易学习，又容易通过给定一个损坏的块来找到MAP估计来进行去噪。现在，假设我们给出了一个新的，我们希望去噪的带噪图像(图2c)
+- -我们应该如何使用我们的块先验去噪？</p>
+<p>解决这个问题的第一种方法，也是最简单的方法是<strong>将噪声图像分解成一组互不重叠的图像块，通过从我们的先验中找到MAP估计来独立地去噪每个图像块，并通过将每个清洗的图像块放置到它的原始位置来恢复图像</strong>。这个简单的解决方案在块边界(示例见图2d)处产生了臭名昭著的伪影-
+-<strong>如果我们现在从新构建的图像中随机选取一个块（图2d中的红色块），在我们的先验下，这是极不可能的（因为重建图像中的大多数块甚至不存在于我们的先验中，所以它们的可能性为0）</strong>。更复杂的解决方案可能是将图像分解成所有重叠的块，每个块独立地去噪，然后将每个像素在不同块中出现的情况进行平均，以获得重建图像。这产生了更好的结果(见图2f)，但仍然存在问题-
+-虽然我们将像素平均在一起，但我们在重建图像中创建了新的块，这些块不可能在我们之前的先验下(图2f中红色补丁)。我们也可以从每个重叠的图斑中提取中心像素，但这也存在同样的问题(图2e)。</p>
+<p>回到第2节的动机，我们的方法的直觉是简单的--<strong>假设我们从我们的重建图像中取一个随机的块，我们希望这个块在我们的先验下是可能的</strong>。<strong>如果我们从重建图像中取另一个随机块，我们希望它也有可能在我们的先验下。换句话说，我们希望找到一个重建图像，其中每个块都可能在我们的先验下，同时保持重建图像仍然接近损坏的图像--最大化重建图像的期望块对数似然(Expected
+Patch Log
+Likelihood，EPLL)，并限制它接近损坏的图像</strong>。图2g显示了EPLL对相同噪声图像的处理结果--尽管EPLL使用了与以前方法完全相同的先验，但它产生了更好的结果。
+<img src="/2025/04/02/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration\2.png" alt="image"></p>
+<h3 id="框架与优化">框架与优化</h3>
+<h4 id="期望块对数似然值--epll">期望块对数似然值- Epll</h4>
+<p>我们的方法的基本思想是试图最大化期望块对数似然值(Expected Patch Log
+Likelihood，EPLL)，同时仍然以依赖于损坏模型的方式接近损坏的图像。给定一幅图像<span class="math inline">\(x\)</span> (以向量化的形式出现)，我们定义先验<span class="math inline">\(p\)</span>下的EPLL为：</p>
+<p><span class="math display">\[
+E P L L_p(\mathbf{x})=\sum_i \log p\left(\mathbf{P}_i \mathbf{x}\right)
+\qquad(1)
+\]</span></p>
+<p>其中<span class="math inline">\(\mathbf{P}_i\)</span>是一个矩阵，它从图像(以向量化的形式出现)中提取出所有重叠块中的第<span class="math inline">\(i\)</span>个块，而<span class="math inline">\(\log
+p\left(\mathbf{P}_i \mathbf{x}\right)\)</span>是第<span class="math inline">\(i\)</span>个块在先验<span class="math inline">\(p\)</span>下的似然概率。假设块在图像中的位置是随机均匀选择的，EPLL是图像中块的对数似然期望值(至多乘以<span class="math inline">\(1 / N\)</span>)。</p>
+<p>现在，假设我们给定一幅损坏的图像<span class="math inline">\(y\)</span>，以及一个形式为<span class="math inline">\(\|A
+x-y\|^2\)</span>的图像损坏模型-我们注意到，这里我们提出的损坏模型是相当普遍的，如去噪，图像修复和去模糊[7]，等等，都是它的特殊情况。我们将在第3.1.3节对此进行更详细的讨论。为了找到使用块先验<span class="math inline">\(p\)</span>的重建图像，我们提出的代价最小化为：</p>
+<p><span class="math display">\[
+f_p(\mathrm{x} \mid \mathrm{y})=\frac{\lambda}{2}\|\mathbf{A}
+\mathbf{x}-\mathbf{y}\|^2-E P L L_p(\mathrm{x}) \qquad(2)
+\]</span></p>
+<p>式(2)具有似然项和先验项的熟悉形式，但注意<span class="math inline">\(E P L
+L_p(\mathrm{x})\)</span>并不是全图像的对数概率。由于它对所有重叠块的对数概率求和，所以它对对数概率进行"双重计数"。相反，它是图像中随机选择的块的期望对数似然。</p>
+<h4 id="优化">优化</h4>
+<p>根据先前使用的方法，直接优化方程2中的成本函数可能非常困难。我们在这里提出了一种称为“半二次分裂”的替代优化方法，该方法最近在几个相关背景下提出[11,7]。这种方法可以有效地优化成本。在“半二次分裂”中，我们引入了一组块
+<span class="math inline">\(\left\{z^i\right\}_1^N\)</span>，图像中每个重叠的块<span class="math inline">\(\mathbf{P}_i
+\mathbf{x}\)</span>对应一个，得到以下成本函数：</p>
+<p><span class="math display">\[
+\begin{aligned}
+c_{p, \beta}\left(\mathbf{x},\left\{\mathbf{z}^{\mathbf{i}}\right\} \mid
+\mathbf{y}\right) &amp; =\frac{\lambda}{2}\|\mathbf{A}
+\mathbf{x}-\mathbf{y}\|^2 \\
+&amp; +\sum_i \frac{\beta}{2}\left(\left\|\mathbf{P}_i
+\mathbf{x}-\mathbf{z}^i\right\|^2\right)-\log p\left(\mathbf{z}^i\right)
+\end{aligned} \qquad(3)
+\]</span></p>
+<p>注意到，当<span class="math inline">\(\beta \rightarrow
+\infty\)</span>时，我们限制块<span class="math inline">\(\mathbf{P}_i
+\mathbf{x}\)</span>等于辅助变量<span class="math inline">\(\left\{z^i\right\}\)</span>，方程3和方程2的解收敛。对于一个固定的<span class="math inline">\(\beta\)</span>值，优化方程3可以以迭代的方式进行，首先求解<span class="math inline">\(x\)</span>，同时保持<span class="math inline">\(\left\{z^i\right\}\)</span>不变，然后给定新发现的<span class="math inline">\(x\)</span>，求解<span class="math inline">\(\left\{z^i\right\}\)</span>，并保持其不变</p>
+<p>对于固定的<span class="math inline">\(\beta\)</span>值，优化方程3需要两个步骤：</p>
+<ul>
+<li>求解给定<span class="math inline">\(\left\{\mathbf{z}^{\mathbf{i}}\right\}\)</span>的<span class="math inline">\(\mathbf{x}\)</span>——这可以以封闭形式求解。取3式关于向量<span class="math inline">\(x\)</span>的导数，设为0，求解所得方程，得到</li>
+</ul>
+<p><span class="math display">\[
+\begin{aligned}
+\hat{\mathbf{x}}= &amp; \left(\lambda \mathbf{A}^T \mathbf{A}+\beta
+\sum_j \mathbf{P}_j^T \mathbf{P}_j\right)^{-1} \\
+&amp; \left(\lambda \mathbf{A}^T \mathbf{y}+\beta \sum_j \mathbf{P}_j^T
+\mathbf{z}^j\right)
+\end{aligned} \qquad(4)
+\]</span></p>
+<p>式中：关于<span class="math inline">\(j\)</span>的求和为图像中所有重叠的块和对应的所有辅助变量
+<span class="math inline">\(\left\{z^i\right\}\)</span></p>
+<ul>
+<li>对于给定<span class="math inline">\(x\)</span>的<span class="math inline">\(\left\{z^i\right\}\)</span>的求解-
+-这个问题的精确解依赖于使用中的先验<span class="math inline">\(p\)</span> -
+-但对于任何先验，它意味着在给定损坏的测量<span class="math inline">\(\mathbf{P}_i \mathrm{x}\)</span>和参数<span class="math inline">\(\beta\)</span>的情况下，求解在该先验下估计最可能块的MAP问题</li>
+</ul>
+<p>我们重复这个过程几次迭代，通常是4或5次——在每次迭代中，在给定<span class="math inline">\(x\)</span>的情况下求解<span class="math inline">\(\mathbf{Z}\)</span>，在给定新<span class="math inline">\(\mathbf{Z}\)</span>的情况下解<span class="math inline">\(x\)</span>，两者都给定当前的<span class="math inline">\(\beta\)</span>值。然后，增加<span class="math inline">\(\beta\)</span>并继续进行下一次迭代。这两个步骤改进了方程3中的成本<span class="math inline">\(c_{p, \beta}\)</span>，对于较大的<span class="math inline">\(\beta\)</span>，我们还改进了方程2中的原始成本函数<span class="math inline">\(f_p\)</span>。我们注意到，没有必要找到上述每个步骤的最优值，任何仍然提高每个子问题成本的近似方法（如近似MAP估计过程）仍然会优化原始成本函数（尽管根据确切设置，速率不同）。</p>
+<p><span class="math inline">\(\beta\)</span>值的选择是一个开放的问题。我们采用了两种方法-
+-第一种是在一组训练图像(通过手工,或通过暴力)上优化值。与去噪相关的第二个选项是尝试在每一步从当前图像估计中估计<span class="math inline">\(\beta\)</span> - -通过估计图像<span class="math inline">\(\hat{\mathbf{x}}\)</span>中存在的噪声量<span class="math inline">\(\sigma\)</span>，并设置<span class="math inline">\(\beta=\frac{1}{\sigma^2}\)</span>来完成。我们采用[12]的噪声估计方法。</p>
+<p>图3展示了一个小实验，在这个实验中，我们验证了方程2中的原始成本函数确实随着迭代次数<span class="math inline">\(\beta\)</span>的增加而减少。在第一个实验中，<span class="math inline">\(\beta\)</span>由当前图像估计得到，在第二个实验中，我们使用固定的<span class="math inline">\(\beta\)</span>时间表。使用的先验为ICA先验，其似然容易计算。尽管半二次分裂仅能保证对无穷大的<span class="math inline">\(\beta\)</span>值单调地降低成本，但我们通过实验证明了成本随<span class="math inline">\(\beta\)</span>的不同时间表而降低，其中时间表主要影响收敛速度。此外，即使使用BLS(而不是MAP)，成本仍然下降-
+-这说明我们不需要在每一步都找到最优解，只是为了提高每个子问题的成本。</p>
+<p>总之，我们注意到我们的一般算法的三个吸引人的性质。首先，它可以使用基于先验和次先验的任何补丁，其运行时间仅为简单补丁平均(视迭代次数而定)恢复的运行时间的4-5倍。最后，也许最重要的一点是，这个框架不需要学习一个模型<span class="math inline">\(P(\mathrm{x})\)</span>，其中<span class="math inline">\(x\)</span>是一幅自然图像，学习只需要专注于建模图像块的概率。</p>
+<h4 id="去噪去模糊和修复">去噪、去模糊和修复</h4>
+<p>在去噪中，我们有加性高斯白噪声对图像造成污染，因此我们将方程4中的矩阵<span class="math inline">\(\mathbf{A}\)</span>设为单位矩阵，并将<span class="math inline">\(\lambda\)</span>设为与噪声的标准差(<span class="math inline">\(\left(\approx
+\frac{1}{\sigma^2}\right)\)</span>)有关。这意味着在每个优化步骤中，<span class="math inline">\(x\)</span>的解仅仅是噪声图像<span class="math inline">\(y\)</span>和出现在辅助重叠块中的像素平均值之间的加权平均。<span class="math inline">\(\mathbf{Z}\)</span>的解仅仅是先验<span class="math inline">\(p\)</span>和噪声水平<span class="math inline">\(\sqrt{\frac{1}{\beta}}\)</span>的MAP估计。如果我们用噪声图像<span class="math inline">\(y\)</span>初始化<span class="math inline">\(x\)</span>，设置<span class="math inline">\(\lambda=0\)</span>和<span class="math inline">\(\beta=\frac{1}{\sigma^2}\)</span>，在迭代一个步骤时可以得到简单的块平均。
+然而，最大的不同是，在我们的方法中，因为我们迭代解和<span class="math inline">\(\lambda \neq
+0\)</span>，在每次迭代中，我们使用当前估计图像，将其与噪声图像平均，并获得一组新的<span class="math inline">\(Z\)</span>块，对它们进行求解，然后获得<span class="math inline">\(\mathbf{x}\)</span>的新估计，重复这个过程，同时增加<span class="math inline">\(\beta\)</span>。对于图像去模糊(非盲)，<span class="math inline">\(\mathbf{A}\)</span>是一个具有已知核的卷积矩阵。</p>
+<p>图像修复也是类似的，<span class="math inline">\(\mathbf{A}\)</span>是一个对角矩阵，对所有缺失的像素都有零点。基本上，这可以被认为是"去噪"，每个像素的噪声水平-
+-缺失像素的无限噪声和所有其他像素的零噪声。一些修复的例子参见补充材料。
+<img src="/2025/04/02/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration\3.png" alt="image"></p>
+<h3 id="patch-likelihoods和epll框架">Patch Likelihoods和Epll框架</h3>
+<p>我们已经看到，EPLL成本函数(式(2))取决于块的可能性。回到第2节中的先验，我们现在问--做更好的先验(在似然意义下)也会导致更好的整体图像去噪，并提出EPLL框架。图4显示了从Berkeley训练集获得的5幅不同图像的平均PSNR，在<span class="math inline">\(\sigma =
+25\)</span>处被高斯噪声污染，并使用第2节中的每个先验进行去噪。我们比较了使用简单块平均(PA)和我们提出的EPLL框架得到的结果。可以看出，在块上的确-更好的似然性导致在独立的块(图1)和整个图像(图4)上更好的去噪。
+此外，可以看出，与简单的块平均相比，EPLL显著改善了去噪结果(图4)。</p>
+<p>这些结果激发了这样一个问题：能否为图像块找到一个更好的先验？ <img src="/2025/04/02/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration\4.png" alt="image"></p>
+<h2 id="能否学习到更好的块先验">能否学习到更好的块先验？</h2>
+<p>除了第二节中讨论的先验外，我们还引入了一个新的，简单但又令人惊讶的丰富的先验。</p>
+<h3 id="高斯混合先验的学习和推断">高斯混合先验的学习和推断</h3>
+<p>我们在自然图像块的像素上学习一个有限的高斯混合模型。许多流行的图像先验可以看作是GMM
+(e.
+g.[9,1,14])的特例，但它们通常在学习过程中对均值和协方差矩阵进行约束。相反，我们没有以任何方式来约束模型-
+-我们学习所有像素的均值，全协方差矩阵和混合权重。使用期望最大化算法(Expectation
+Maximization，EM)很容易进行学习。在该模型下，计算给定块的对数似然值是平凡的：</p>
+<p><span class="math display">\[
+\log p(\mathrm{x})=\log \left(\sum_{k=1}^K \pi_k N\left(\mathrm{x} \mid
+\mu_k, \Sigma_k\right)\right)
+\]</span></p>
+<p>其中<span class="math inline">\(\pi_k\)</span>是每个混合分量的混合权重，<span class="math inline">\(\mu_k\)</span>和<span class="math inline">\(\Sigma_k\)</span>是相应的均值和协方差矩阵。</p>
+<p>给定一个噪声块<span class="math inline">\(y\)</span>，BLS估计可以用闭合形式(因为后验只是另一种高斯混合)计算[1]。然而，MAP估计不能以闭合形式计算。为了解决这个问题，我们使用以下近似的MAP估计过程：</p>
+<ol type="1">
+<li><p>给定噪声块<span class="math inline">\(y\)</span>，计算条件混合权重<span class="math inline">\(\pi_k^{\prime}=P(k \mid
+\mathbf{y})\)</span></p></li>
+<li><p>我们选择具有最高条件混合权重<span class="math inline">\(k_{\text
+{max }}=\max _k \pi_k^{\prime}\)</span>的分量。</p></li>
+<li><p>MAP估计 <span class="math inline">\(\hat{\mathbf{x}}\)</span>是<span class="math inline">\(k_{m a x}\)</span>分量的Wiener滤波器解： <span class="math display">\[
+\hat{\mathbf{x}}=\left(\boldsymbol{\Sigma}_{k_{\max }}+\sigma^2
+\mathbf{I}\right)^{-1}\left(\boldsymbol{\Sigma}_{k_{\max }}
+\mathbf{y}+\sigma^2 \mathbf{I} \mu_{k_{\max }}\right)
+\]</span>
+这实际上是EM算法的"硬版本"的一次迭代，用于寻找高斯混合的模式[15]</p></li>
+</ol>
+<h3 id="比较">比较</h3>
+<p>我们从[10]中采样的<span class="math inline">\(2 ×
+10^6\)</span>块集合中学习所提出的GMM模型，并移除它们的DC。该模型由学习到的200个具有零均值和全协方差矩阵的混合分量组成。我们还用无约束的均值训练了GMM，发现所有的均值都非常接近于零。如前所述，利用EM进行学习。使用未经优化的MATLAB
+code对上述训练集进行训练，训练时间约为30h。利用该模型对图斑进行去噪，采用如4.1所示的近似MAP过程。</p>
+<p>在学习了该GMM先验后，我们现在可以将其在似然和去噪方面的性能与我们在第1节中讨论的在相同的未见面片数据集上的先验进行比较。表1显示了使用GMM先验得到的结果--可以看出，该先验在似然、块去噪和整幅图像去噪方面优于我们迄今讨论的所有其他先验。</p>
+<p>在图5a中，我们展示了在Berkeley测试集的68幅图像上，使用ICA和使用EPLL的GMM模型在噪声水平<span class="math inline">\(\sigma =
+25\)</span>时获得的PSNR值的散点图。值得注意的是，在所有测试图像上，高似然GMM模型在去噪方面都优于ICA。图5b显示了测试集中图像的细节，与ICA结果相比，注意到GMM模型的高视觉质量。</p>
+<p>为什么这个模型能很好地发挥作用?理解它的一个方法是回想一下，在零均值高斯混合模型中，每个样本<span class="math inline">\(x\)</span>都被它所属的混合成分的协方差矩阵的前<span class="math inline">\(m\)</span>个特征向量很好地逼近。如果我们把所有混合物的所有<span class="math inline">\(m\)</span>个特征向量的集合看作一个"字典"，那么每一个样本通过这些字典元素的稀疏组合来近似表示。由于有200个混合成分，对于每个<span class="math inline">\(x\)</span>，只有(1/200)个字典元素是"活动"的，因此这是一个非常稀疏的表示。但与其他假设稀疏度(e.g.
+ICA和稀疏编码)的模型不同，活跃集受到极大的限制--只有对应于相同分量的字典元素才允许共同活跃。我们最近了解到，GMM的这种"对偶"解释是由[16]针对图像特定的GMM的情况独立给出的。</p>
+<p>这些词典元素模型是什么？图6描绘了从学习到的模型中随机选择的5个混合物成分的特征向量。值得注意的是，这些具有丰富的结构-
+-虽然有些类似于PCA特征向量，但有些描述遮挡的形式，建模纹理边界和边缘。这些与通常通过稀疏编码和类似模型学习到的Gabor滤波器有很大的不同。似乎这些结构对模型的表达能力有很大的贡献。
+<img src="/2025/04/02/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration\5.png" alt="image"> <img src="/2025/04/02/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration\6.png" alt="image"> <img src="/2025/04/02/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration\7.png" alt="image"></p>
+<h3 id="与现有方法的比较">与现有方法的比较</h3>
+<p>我们将EPLL与所提出的GMM先验以及领先的图像复原方法--通用的和基于图像的性能进行了比较。所有的实验都是在Berkeley分割数据库[10]的测试集的68张图像上进行的。所有的实验都是使用相同的含噪图像实现的。在所有的实验中，我们设定<span class="math inline">\(\lambda=\frac{N}{\sigma^2}\)</span>，其中<span class="math inline">\(N\)</span>是每个块中的像素个数。在所有实验中，我们使用了<span class="math inline">\(8 \times
+8\)</span>的补丁大小。对于GMM先验，我们在Berkeley训练集中的5幅图像上手工优化了<span class="math inline">\(\beta\)</span>的值- -这些图像被设置为<span class="math inline">\(\beta=\frac{1}{\sigma^2}
+\cdot[1,4,8,16,32,64]\)</span>。在Quad Core
+Q6600处理器上运行未经优化的MATLAB代码，每幅图像的运行时间约为300s。</p>
+<h4 id="通用先验">通用先验</h4>
+<p>我们将EPLL和GMM先验在图像去噪中的性能与领先的通用方法- - Fields of
+Experts [6]和KSVD
+[3]在自然图像块（KSVDG）进行比较。结果的总结可以在表2a中看到--很明显，我们的方法优于当前最先进的通用方法。</p>
+<h4 id="基于图像的先验">基于图像的先验</h4>
+<p>我们现在将我们的方法(EPLL +
+GMM)的性能与图像特定的方法--从噪声图像本身学习--进行比较。我们与目前最先进的图像去噪算法KSVD，BM3D
+[5]和LLSC
+[8]进行了比较。结果汇总见表2b。可以看出，我们的方法与这些最先进的方法相比具有很强的竞争力，尽管它是通用的。一些结果的例子可以在图7中看到。</p>
+<h4 id="图像去模糊">图像去模糊</h4>
+<p>虽然图像特定的先验在去噪中表现出优异的性能，但由于同一图像中不同块的退化可以"平均"出来，这当然不是所有图像复原任务的情况，对于这样的任务需要一个通用的先验。这类任务的一个例子是图像去模糊。我们将Berkeley数据库(同上)中的68幅图像与文献[7]提供的模糊核进行卷积。然后，我们在图像中添加了1
+%的高斯白噪声，并尝试使用[7]中的编码和我们的基于GMM先验的EPLL框架进行重建。结果在PSNR和输出的质量上都是优越的，如图8所示。</p>
+<p><img src="/2025/04/02/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration\8.png" alt="image"> <img src="/2025/04/02/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration\9.png" alt="image"></p>
+<h2 id="讨论">讨论</h2>
+<p>基于块的模型比全图模型更容易学习和使用。我们已经证明，对于从自然图像中采样得到的图像块赋予高似然值的块模型在块和图像复原任务中表现更好。鉴于这些结果，我们提出了一个允许使用块模型进行整幅图像复原的框架，其动机是恢复图像中的块应该在先验下是可能的。我们已经证明，与目前大多数方法使用的简单块平均相比，该框架显著地改善了整个图像恢复的结果。最后，我们提出了一种新的，简单但丰富的高斯混合先验，它在图像去噪，去模糊和修复上表现出惊人的好处。</p>
+<p>虽然我们只使用了几个先验来证明我们的框架，但它更大的优势之一是它可以作为一个"插件"系统-
+-它可以与任何现有的补丁恢复方法一起工作。考虑到BM3D和LLSC都是基于块的方法，使用简单的块平均，因此有趣的是，这些方法将如何从所提出的框架中受益。</p>
+<p>最后，也许这项工作最令人惊讶的结果，以及还有许多有待探索的方向，是GMM模型的出色性能。这里使用的GMM模型是极其幼稚的--一个简单的具有完全协方差矩阵的高斯混合。考虑到高斯混合模型是一个非常重要的研究领域，将更复杂的机器纳入到学习中，并且该模型的表示具有很大的前景--这也是我们目前的研究方向。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/03/17/Solving-electrical-impedance-tomography-with-deep-learning/" rel="prev" title="Solving electrical impedance tomography with deep learning  Networks">
+      <i class="fa fa-chevron-left"></i> Solving electrical impedance tomography with deep learning  Networks
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#from-learning-models-of-natural-image-patches-to-whole-image-restoration"><span class="nav-text">From
+Learning Models of Natural Image Patches to Whole Image Restoration</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%91%98%E8%A6%81"><span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8E%E5%9D%97%E4%BC%BC%E7%84%B6%E5%88%B0%E5%9D%97%E6%81%A2%E5%A4%8D"><span class="nav-text">从块似然到块恢复</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8E%E5%9D%97%E4%BC%BC%E7%84%B6%E6%B3%95%E5%88%B0%E6%95%B4%E5%B9%85%E5%9B%BE%E5%83%8F%E5%A4%8D%E5%8E%9F"><span class="nav-text">从块似然法到整幅图像复原</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%BC%98%E5%8C%96"><span class="nav-text">框架与优化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%9F%E6%9C%9B%E5%9D%97%E5%AF%B9%E6%95%B0%E4%BC%BC%E7%84%B6%E5%80%BC--epll"><span class="nav-text">期望块对数似然值- Epll</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%98%E5%8C%96"><span class="nav-text">优化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8E%BB%E5%99%AA%E5%8E%BB%E6%A8%A1%E7%B3%8A%E5%92%8C%E4%BF%AE%E5%A4%8D"><span class="nav-text">去噪、去模糊和修复</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#patch-likelihoods%E5%92%8Cepll%E6%A1%86%E6%9E%B6"><span class="nav-text">Patch Likelihoods和Epll框架</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%83%BD%E5%90%A6%E5%AD%A6%E4%B9%A0%E5%88%B0%E6%9B%B4%E5%A5%BD%E7%9A%84%E5%9D%97%E5%85%88%E9%AA%8C"><span class="nav-text">能否学习到更好的块先验？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AB%98%E6%96%AF%E6%B7%B7%E5%90%88%E5%85%88%E9%AA%8C%E7%9A%84%E5%AD%A6%E4%B9%A0%E5%92%8C%E6%8E%A8%E6%96%AD"><span class="nav-text">高斯混合先验的学习和推断</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AF%94%E8%BE%83"><span class="nav-text">比较</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8E%E7%8E%B0%E6%9C%89%E6%96%B9%E6%B3%95%E7%9A%84%E6%AF%94%E8%BE%83"><span class="nav-text">与现有方法的比较</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%9A%E7%94%A8%E5%85%88%E9%AA%8C"><span class="nav-text">通用先验</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E5%9B%BE%E5%83%8F%E7%9A%84%E5%85%88%E9%AA%8C"><span class="nav-text">基于图像的先验</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9B%BE%E5%83%8F%E5%8E%BB%E6%A8%A1%E7%B3%8A"><span class="nav-text">图像去模糊</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%A8%E8%AE%BA"><span class="nav-text">讨论</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="宋嘉晨"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">宋嘉晨</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">宋嘉晨</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">153k</span>
+</div>
+
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共153k字</span>
+  <span class="post-meta-divider">|</span>
+  本站总访问量<span id="busuanzi_value_site_pv"></span>次
+  <span class="post-meta-divider">|</span>
+  本站访客数<span id="busuanzi_value_site_uv"></span>人次
+  <span class="post-meta-divider">|</span>
+  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+</div>
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共153k字</span>
+</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'x2HNNt4kVm1AzbK4G5OMYocX-gzGzoHsz',
+      appKey     : 'UZukMakW4tBBED8F52h1Hgn4',
+      placeholder: "输入你的评论\n不输入昵称则为匿名",
+      avatar     : '',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : true,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/clicklove.js"></script>

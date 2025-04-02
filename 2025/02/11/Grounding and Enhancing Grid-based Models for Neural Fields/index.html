@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Grounding and Enhancing Grid-based Models for Neural Fields 2024 CVPR 摘要 许多当代研究使用基于网格的模型来表示神经场，但是对基于网格的模型的系统分析仍然缺失，阻碍了这些模型的改进。因此，本文介绍了一种基于网格模型的理论框架。该框架指出，这些模型的逼近和泛化行为是由网格切核(GTK)决定的，而GTK是网格模型的内在属性。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Grounding and Enhancing Grid-based Models for Neural Fields">
+<meta property="og:url" content="http://example.com/2025/02/11/Grounding%20and%20Enhancing%20Grid-based%20Models%20for%20Neural%20Fields/index.html">
+<meta property="og:site_name" content="我的博客">
+<meta property="og:description" content="Grounding and Enhancing Grid-based Models for Neural Fields 2024 CVPR 摘要 许多当代研究使用基于网格的模型来表示神经场，但是对基于网格的模型的系统分析仍然缺失，阻碍了这些模型的改进。因此，本文介绍了一种基于网格模型的理论框架。该框架指出，这些模型的逼近和泛化行为是由网格切核(GTK)决定的，而GTK是网格模型的内在属性。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2025/02/11/Grounding%20and%20Enhancing%20Grid-based%20Models%20for%20Neural%20Fields/1.png">
+<meta property="og:image" content="http://example.com/2025/02/11/Grounding%20and%20Enhancing%20Grid-based%20Models%20for%20Neural%20Fields/2.png">
+<meta property="article:published_time" content="2025-02-11T01:43:32.000Z">
+<meta property="article:modified_time" content="2025-03-25T13:42:21.219Z">
+<meta property="article:author" content="宋嘉晨">
+<meta property="article:tag" content="神经网络架构">
+<meta property="article:tag" content="神经场网络">
+<meta property="article:tag" content="NTK">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2025/02/11/Grounding%20and%20Enhancing%20Grid-based%20Models%20for%20Neural%20Fields/1.png">
+
+<link rel="canonical" href="http://example.com/2025/02/11/Grounding%20and%20Enhancing%20Grid-based%20Models%20for%20Neural%20Fields/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Grounding and Enhancing Grid-based Models for Neural Fields | 我的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">我的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-guestbook">
+
+    <a href="/guestbook/" rel="section"><i class="fa fa-book fa-fw"></i>留言板</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/02/11/Grounding%20and%20Enhancing%20Grid-based%20Models%20for%20Neural%20Fields/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="宋嘉晨">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Grounding and Enhancing Grid-based Models for Neural Fields
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-02-11 09:43:32" itemprop="dateCreated datePublished" datetime="2025-02-11T09:43:32+08:00">2025-02-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-25 21:42:21" itemprop="dateModified" datetime="2025-03-25T21:42:21+08:00">2025-03-25</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%BA%E6%96%87%E6%B3%9B%E8%AF%BB/" itemprop="url" rel="index"><span itemprop="name">论文泛读</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2025/02/11/Grounding%20and%20Enhancing%20Grid-based%20Models%20for%20Neural%20Fields/" class="post-meta-item leancloud_visitors" data-flag-title="Grounding and Enhancing Grid-based Models for Neural Fields" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2025/02/11/Grounding%20and%20Enhancing%20Grid-based%20Models%20for%20Neural%20Fields/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2025/02/11/Grounding%20and%20Enhancing%20Grid-based%20Models%20for%20Neural%20Fields/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>6.9k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="grounding-and-enhancing-grid-based-models-for-neural-fields">Grounding
+and Enhancing Grid-based Models for Neural Fields</h1>
+<p>2024 CVPR</p>
+<h2 id="摘要">摘要</h2>
+<p>许多当代研究使用基于网格的模型来表示神经场，但是对基于网格的模型的系统分析仍然缺失，阻碍了这些模型的改进。因此，本文介绍了一种基于网格模型的理论框架。该框架指出，这些模型的逼近和泛化行为是由网格切核(GTK)决定的，而GTK是网格模型的内在属性。所提出的框架有助于对基于网格的各种模型进行一致和系统的分析。此外，引入的框架促进了一种新的基于网格的模型的发展，称为乘法傅里叶自适应网格(Multiplicative
+Fourier Adaptive Grid，MulFAGrid)。
+数值分析表明，MulFAGrid的泛化性能优于前人的结果，说明其泛化性能稳健。实证研究表明，MulFAGrid在2D图像拟合、3D符号距离场（SDF）重建、新颖视图合成等任务中表现优异，具有较好的表征能力
+<span id="more"></span></p>
+<h2 id="介绍">介绍</h2>
+<p>神经场[29、56]是基于坐标的网络，代表一个场，一个连续的参数化，代表一个物体或场景的物理量。这些领域在图像回归[46]、视图合成[29]、三维模型重建[51]等方面取得了显著的成功。最近的研究发现，神经场技术可以应用于视觉计算问题和其他领域[56]。因此，该领域将对计算机视觉和机器学习产生深远影响。</p>
+<p>最近的实证研究[9、18、43、54、58]证明，基于网格的模型，通过网格特征张量参数化并在网格上操作，与基于MLP的神经场[
+29、31、43]相比，可以实现最大二阶级联数量级的加速，同时保持高保真的表示质量。基于网格的模型可以是规则的(基于规则网格[
+43 , 44 , 58 ])，也可以是不规则的(基于点云或网格[ 33 , 51
+])。然而，据我们所知，目前还没有一个已知的理论来系统地分析基于网格的模型的学习行为。因此，格网模型的经验成功不仅缺乏理论基础，而且也揭示了设计增强的格网模型的有效原则的不足。</p>
+<p>为了对基于网格的模型进行基础和增强，我们提出了一个受神经切核[6、17、53]启发的理论。我们的理论旨在捕获基于网格模型的优化特性和泛化性能。不同于神经切核(NTKs)
+[17]研究多层感知器的行为，我们针对基于网格的模型提出切核，并将其命名为网格切核(GTKs)。GTKs定义为在两个不同的输入数据下，模型梯度关于其参数之间的协方差。它们精确地描述了在训练过程中，基于网格的模型参数的变化如何影响它们的预测。我们表明，网格模型的GTK在训练过程中保持不变，因此当GTK中使用的核保持不变时，网格模型行为可以理解为一个线性的核化模型。因此，GTK对于理解基于网格的模型结构与其训练动态之间的联系特别有用。进一步地，我们基于Rademacher复杂度[3]推导了一个泛化界，该界衡量了一个训练好的基于网格的模型在看不见的数据上的表现。这一性质有助于对神经领域感兴趣的研究人员理解基于网格的模型中影响泛化的因素。
+我们的数值研究表明，通过向合适的GTK谱和更好的泛化边界设计更好的结构，可以进一步提升以前基于网格的模型的性能。</p>
+<p>在GTK理论的指导下，我们提出了一种新的基于网格的模型，称为乘性傅里叶自适应网格(Multiplicative
+Fourier Adaptive
+Grid，MulFAGrid)，它利用乘性滤波器[11]构造傅里叶特征对节点函数进行建模，然后通过节点归一化函数对提取的节点特征进行归一化形成核函数。最后，通过节点特征和提取的核特征之间的逐元的乘法进行特征聚合。采用自适应学习技术对MulFAGrid的核特征和网格特征进行联合优化。我们的模型支持规则网格和不规则网格，这取决于索引函数的选择。我们的模型与相关方法的技术比较在表1中给出，其中我们强调我们的方法是一个通用的基于网格的模型，支持广泛的应用，如2D图像拟合[46]，3D
+SDF重建[42]和视图合成[29]。</p>
+<p>我们通过所提出的GTK从方法论上分析了目前最先进的网格模型[9、31、54]和我们的模型的特点，我们的数学结果表明MulFAGrid的GTK在高频域的频谱更宽，从而在学习高频成分时具有更好的学习效率。此外，我们在二维玩具实例中的数值研究表明，MulFAGrid在二维数据平面的大部分区域具有比InstantNGP[31]、NFFB[54]和NeuRBF[9]更紧的泛化边界。最后，图像回归实验的可视化验证了GTK分析与预测性能之间的联系。</p>
+<p>然后，我们利用神经场对3个基本任务进行了系统的实验：2D图像拟合、带符号距离场(SDF)的3D重建和基于神经辐射场的新视点合成(NeRF)。在2D图像拟合和3D
+SDF重建方面，Mul
+FAGrid取得了与其他基于网格模型InstantNGP[31]、NFFB[54]和NeuRBF[9]相媲美的性能。在神经辐射场中，我们在有界场景和无界场景的5个基准测试集上进行了实验，发现MulFAGrid比之前的基于网格的模型有显著的优势。此外，除了上述基于规则格网的实验外，我们还对非规则格网(点云)进行了实验，观察到MulFAGrid与强基线3DGS相比具有竞争力[18]。然而，我们的渲染速度远低于3DGS[18]。我们的贡献是：</p>
+<ol type="1">
+<li><p>我们提出了一种基于切核的网格模型理论。该理论强调了网格模型的网格切线核(GTK)在训练过程中保持不变，并且GTK可以表征网格模型的泛化边界。</p></li>
+<li><p>我们提出了一种基于乘性滤波器和傅里叶特征的网格模型，并提出了一种自适应学习方法来联合优化核特征和网格特征。</p></li>
+<li><p>我们对几个最先进的基于网格的模型进行了GTK分析，数值研究表明MulFAGrid比其他基于网格的模型具有更好的泛化界。</p></li>
+<li><p>实验结果表明，与基于网格的模型和其他方法相比，MulFAGrid在2D图像拟合、3DSDF重建和NeRF重建方面取得了最先进的性能。</p></li>
+</ol>
+<p><img src="/2025/02/11/Grounding%20and%20Enhancing%20Grid-based%20Models%20for%20Neural%20Fields/1.png"></p>
+<h2 id="相关工作">相关工作</h2>
+<h3 id="神经辐射场nerf">神经辐射场(Nerf)</h3>
+<p>神经辐射场(NeRF)
+[29]提出通过MLPs表示颜色和密度，并通过可微的体绘制学习隐式3D表示。此后，基于NeRF的方法主导了新视角合成[4、5、8、26、60]。NeRF已经被应用到广泛的话题中，例如生成[32]，表面重建[51]和SLAM
+[39]。之前的工作从各个方面提高了NeRFs的效率[16、31、35、36]。FastNeRF
+[16]和Instant-NGP
+[31]使用了先进的缓存技术来加速NeRF的训练。KiloNeRF[35]提出将大容量的MLP分解为成千上万个小的MLP。基于网格的方法[43、44、58]吸引了许多研究人员[7、24、47、50]，因为它们简单而快速。</p>
+<h3 id="无边界场景重建">无边界场景重建</h3>
+<p>当有深度相机或多视点立体像对时，可以利用运动恢复结构(structure from
+motion，SfM)重建三维场景[1、1315、49]。最近的研究人员对学习无界或大尺度辐射场[5,26,26,27,37,47,48,52,55,59]很感兴趣。Mip-NeRF-360[5]改进了Mip-NeRF
+[4]的参数化和效率。3DGS[18]提出用3D高斯来表示场景，在自由视点合成中取得了很好的效果。</p>
+<h3 id="神经切核ntks">神经切核(Ntks)</h3>
+<p>我们的分析与NTK理论[3、6、10、17、22]密切相关。神经切核[17、22]发现任意深度的宽网络在梯度下降下演化为线性模型。Arora等人[3]通过核的特征值来描述泛化能力。与我们最接近的工作是Matthew等[46]，这表明傅里叶特征映射有助于学习低层表示的高频成分。</p>
+<h3 id="傅里叶特征">傅里叶特征</h3>
+<p>随机傅里叶特征(RFF)
+[34]可以加速核机器的训练，有利于大规模的分类和回归任务。傅里叶神经算子(FNO[21,46])在偏导数方程(PDE)域表现出较强的性能。傅里叶特征映射在NeRF的原文中至关重要[29]。傅里叶PlenOctrees[50]证明了傅里叶特征学习在动态场景中的有效性。NeuRBF[9]提出了一种正弦合成技术来融合不同频率的特征。</p>
+<h2 id="方法论">方法论</h2>
+<h3 id="理解基于网格的模型">理解基于网格的模型</h3>
+<h4 id="公式描述">公式描述</h4>
+<p>基于网格的模型由于其高效性和可扩展的表示能力[9、18、31、43、54、58]，在当前最先进的神经场方法中发挥着重要作用。如图1所示，定义一个基于网格的模型<span class="math inline">\(g(\boldsymbol{x},
+\boldsymbol{w})\)</span>为加权平均形式的机器学习模型：</p>
+<p><img src="/2025/02/11/Grounding%20and%20Enhancing%20Grid-based%20Models%20for%20Neural%20Fields/2.png"></p>
+<p><strong>定义1.</strong> 给定输入查询坐标<span class="math inline">\(\boldsymbol{x}\)</span>，和<span class="math inline">\(\varphi\)</span>作为网格模型被<span class="math inline">\(\Theta\)</span>参数化的核函数。(<span class="math inline">\(\Theta\)</span>为空集,如果<span class="math inline">\(\varphi\)</span>没有参数)，<span class="math inline">\(\boldsymbol{w}_i\)</span>是与节点<span class="math inline">\(i\)</span>相关联的权重向量，<span class="math inline">\(U(\boldsymbol{x})\)</span>是给定位置<span class="math inline">\(\boldsymbol{x}\)</span>返回一组索引的索引函数，网格模型被定义为四元元组<span class="math inline">\(&lt;\varphi, \Theta, U,
+\boldsymbol{w}&gt;\)</span>，其计算如下：</p>
+<p><span class="math display">\[
+g(\boldsymbol{x}, \boldsymbol{w})=\sum_{i \in U(\boldsymbol{x})}
+\varphi\left(\boldsymbol{x}, \Theta_i\right) \boldsymbol{w}_i \qquad(1)
+\]</span></p>
+<p>例如，在规则网格最简单的情况下，<span class="math inline">\(U(\boldsymbol{x})\)</span>返回<span class="math inline">\(\boldsymbol{x},
+\varphi\)</span>周围最近的8个网格点，是插值权重为<span class="math inline">\(\Theta\)</span>的双线性插值，<span class="math inline">\(\boldsymbol{w}\)</span>表示存储在网格点中的特征。如图1(B)所示，方程(1)中的公式既支持基于规则网格的模型，也支持基于不规则网格的模型，它们之间的主要区别是索引函数<span class="math inline">\(U\)</span>。基于规则网格的模型以等间隔均匀离散坐标域，这使得索引函数快速。另一方面，基于不规则网格的模型利用了点云[18]或网格[51]的几何先验，并且没有规则地离散坐标域。</p>
+<h4 id="网格切线核gtk理论">网格切线核(GTK)理论</h4>
+<p>为了分析现有的基于网格的神经场模型[9、43、54、56、58]，受神经切核(NTK)
+[17]的启发，我们提出了一种基于网格的模型理论。基于网格模型的提法，我们引入了一个新的术语称为网格切核(GTK)来表示网格模型的切核，这对于理解网格模型的训练和泛化性能至关重要。</p>
+<p><strong>定义2</strong> 设<span class="math inline">\(\boldsymbol{X}\)</span>是一个输入数据的集合，其中<span class="math inline">\(\boldsymbol{X}_i\)</span>是第<span class="math inline">\(i\)</span>个数据，<span class="math inline">\(\boldsymbol{w}(t)\)</span>是训练时刻<span class="math inline">\(t\)</span>的权重。基于网格模型<span class="math inline">\(g\)</span>的网格切核(GTK)定义为一个<span class="math inline">\(n \times n\)</span>半正定矩阵<span class="math inline">\(\boldsymbol{G}_g(t)\)</span>，其(<span class="math inline">\(i, j\)</span>)-阶元素为：</p>
+<p><span class="math display">\[
+\left[\boldsymbol{G}_g(t)\right]_{i, j}=\left\langle\frac{\partial
+g\left(\boldsymbol{X}_i, \boldsymbol{w}(t)\right)}{\partial
+\boldsymbol{w}}, \frac{\partial g\left(\boldsymbol{X}_j,
+\boldsymbol{w}(t)\right)}{\partial
+\boldsymbol{w}}\right\rangle   \qquad(2)
+\]</span></p>
+<p>在GTK的基础上，我们进一步介绍了一些基于GTK的理论结果，由于篇幅限制，我们在第七节中给出了这些结果的证明。我们的分析遵循一个有监督的回归设置[17、46]，其中的任务是在给定输入数据<span class="math inline">\(\boldsymbol{X}\)</span>的情况下回归目标标签<span class="math inline">\(\boldsymbol{Y}\)</span>。首先，我们介绍了以下描述训练动态的定理：</p>
+<p><strong>定理1</strong> 令<span class="math inline">\(\boldsymbol{O}(t)=\left(g\left(\boldsymbol{X}_i,
+\boldsymbol{w}(t)\right)\right)_{1 \leq i \leq
+n}\)</span>为基于网格的模型<span class="math inline">\(g\)</span>的输出，其中<span class="math inline">\(\boldsymbol{X}=\left(\boldsymbol{X}_i\right)_{1
+\leq i \leq n}\)</span>为<span class="math inline">\(t\)</span>时刻的输入数据，<span class="math inline">\(\boldsymbol{Y}=\left(\boldsymbol{Y}_i\right)_{1
+\leq i \leq n}\)</span>为对应的标签。那么<span class="math inline">\(\boldsymbol{O}(t)\)</span>遵循这样的演化：</p>
+<p><span class="math display">\[
+\frac{d \boldsymbol{O}(t)}{d t}=-\boldsymbol{G}_g(t)
+\cdot(\boldsymbol{O}(t)-\boldsymbol{Y})   \qquad(3)
+\]</span></p>
+<p>根据上述定理，GTK反映了模型训练的动态性。因此，分析GTK对于理解网格模型的训练行为至关重要。除此之外，我们进一步揭示了基于网格模型的GTK的一个守恒性质：</p>
+<p><strong>定理2.</strong> 网格模型<span class="math inline">\(g\)</span>的GTK在训练过程中保持不变，记为<span class="math inline">\(\boldsymbol{G}_g\)</span>。形式上，该性质可以写为：</p>
+<p><span class="math display">\[
+\boldsymbol{G}_g(t)=\boldsymbol{G}_g(0)  \qquad(4)
+\]</span></p>
+<p>其中<span class="math inline">\(G_g(0)\)</span>是网格模型的初始GTK。这个性质对基于网格的模型的任何大小都适用。</p>
+<p>上述定理表明，GTK是网格模型的一个基本性质，它不随时间演化。这意味着输出<span class="math inline">\(\boldsymbol{O}(t)\)</span>的演化可以用方程(3)来描述，方程(3)是一个常微分方程(ODE)。因此，基于网格的模型可以理解为简单的线性模型[3]。除了训练性能之外，机器学习模型的另一个重要性质是泛化能力差距。基于Rademacher复杂度[3]，我们进一步得到如下推广界：</p>
+<p><strong>定理3.</strong> 给定概率<span class="math inline">\(\delta_p
+\in(0,1)\)</span>，假设数据集<span class="math inline">\(S=(\boldsymbol{X},
+\boldsymbol{Y})\)</span>包含<span class="math inline">\(n\)</span>个i.i.d.样本，来自一个分布，其中<span class="math inline">\(n \gg \log
+\frac{2}{\delta_p}\)</span>，GTK的最小特征值<span class="math inline">\(G\)</span>至少为常数<span class="math inline">\(\lambda_0: \lambda_{\text {min }}(\boldsymbol{G})
+\geq \lambda_0\)</span>。对于任何基于网格的模型<span class="math inline">\(g\)</span>，通过梯度下降法以<span class="math inline">\(\eta_l\)</span>的学习率进行优化，对于任何损失函数<span class="math inline">\(\mathcal{L}: \mathbb{R} \times \mathbb{R}
+\rightarrow[0,1]\)</span>，即第一个参数中的1-Lipschitz，我们定义种群损失为<span class="math inline">\(\mathcal{L}_{\mathcal{D}}(t)=\mathbb{E}_{\left(\boldsymbol{X}_i,
+\boldsymbol{Y}_i\right) \sim
+\mathcal{D}}\left[\mathcal{L}\left(g\left(\boldsymbol{X}_i,
+\boldsymbol{w}(t)\right),
+\boldsymbol{Y}_i\right)\right]\)</span>。那么，在概率至少为<span class="math inline">\(1-\delta_p\)</span>的情况下，对<span class="math inline">\(t \geq \Omega\left(\frac{1}{\eta_l \lambda_0} \log
+\frac{n}{\delta_p}\right)\)</span>次迭代进行梯度下降训练的随机初始化网格模型具有泛化界：</p>
+<p><span class="math display">\[
+L_{\mathcal{D}}(t) \leq \sqrt{\frac{2 \boldsymbol{Y}^{\top}
+\boldsymbol{G}^{-1} \boldsymbol{Y}}{n}}+O\left(\sqrt{\frac{\log
+\frac{2}{\delta_p}}{n}}\right) \qquad(5)
+\]</span></p>
+<p>从这个定理可以看出，对于给定的<span class="math inline">\(n\)</span>个数据的数据集，影响泛化能力的控制项是
+<span class="math inline">\(\Delta=\boldsymbol{Y}^{\top}
+\boldsymbol{G}^{-1} \boldsymbol{Y}\)</span>。如果<span class="math inline">\(\Delta\)</span>越紧，则训练和测试数据之间的泛化差距越小。这个定理为评估基于网格的模型提供了另一个有用的工具。</p>
+<p>3.2. MuIFAGrid</p>
+<p>We propose a new grid-based model called multiplicative Fourier
+adaptive grid (MulFAGrid), where our numerical study in Section 4.1
+suggests that it has a faster convergence</p>
+<h3 id="mulfagrid">MulFAGrid</h3>
+<p>我们提出了一种新的基于网格的模型，称为乘法傅里叶自适应网格（MulFAGrid），我们在第4.1节中的数值研究表明，与最先进的基于网格模型相比，它具有更快的收敛速度和更严格的基于GTK的泛化界限。我们的模型被称为自适应网格模型，因为核函数是通过数据学习的。我们在图2中说明了MulFAGrid的设计。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%9E%B6%E6%9E%84/" rel="tag"># 神经网络架构</a>
+              <a href="/tags/%E7%A5%9E%E7%BB%8F%E5%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag"># 神经场网络</a>
+              <a href="/tags/NTK/" rel="tag"># NTK</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/02/10/Lagrange%E5%AF%B9%E5%81%B6/" rel="prev" title="Lagrange对偶（Lagrange duality）">
+      <i class="fa fa-chevron-left"></i> Lagrange对偶（Lagrange duality）
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/02/11/NAS-PINN/" rel="next" title="NAS-PINN">
+      NAS-PINN <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#grounding-and-enhancing-grid-based-models-for-neural-fields"><span class="nav-text">Grounding
+and Enhancing Grid-based Models for Neural Fields</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%91%98%E8%A6%81"><span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E5%B7%A5%E4%BD%9C"><span class="nav-text">相关工作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A5%9E%E7%BB%8F%E8%BE%90%E5%B0%84%E5%9C%BAnerf"><span class="nav-text">神经辐射场(Nerf)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A0%E8%BE%B9%E7%95%8C%E5%9C%BA%E6%99%AF%E9%87%8D%E5%BB%BA"><span class="nav-text">无边界场景重建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A5%9E%E7%BB%8F%E5%88%87%E6%A0%B8ntks"><span class="nav-text">神经切核(Ntks)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%82%85%E9%87%8C%E5%8F%B6%E7%89%B9%E5%BE%81"><span class="nav-text">傅里叶特征</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E8%AE%BA"><span class="nav-text">方法论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%90%86%E8%A7%A3%E5%9F%BA%E4%BA%8E%E7%BD%91%E6%A0%BC%E7%9A%84%E6%A8%A1%E5%9E%8B"><span class="nav-text">理解基于网格的模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%AC%E5%BC%8F%E6%8F%8F%E8%BF%B0"><span class="nav-text">公式描述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BD%91%E6%A0%BC%E5%88%87%E7%BA%BF%E6%A0%B8gtk%E7%90%86%E8%AE%BA"><span class="nav-text">网格切线核(GTK)理论</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mulfagrid"><span class="nav-text">MulFAGrid</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="宋嘉晨"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">宋嘉晨</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">宋嘉晨</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">153k</span>
+</div>
+
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共153k字</span>
+  <span class="post-meta-divider">|</span>
+  本站总访问量<span id="busuanzi_value_site_pv"></span>次
+  <span class="post-meta-divider">|</span>
+  本站访客数<span id="busuanzi_value_site_uv"></span>人次
+  <span class="post-meta-divider">|</span>
+  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+</div>
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共153k字</span>
+</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'x2HNNt4kVm1AzbK4G5OMYocX-gzGzoHsz',
+      appKey     : 'UZukMakW4tBBED8F52h1Hgn4',
+      placeholder: "输入你的评论\n不输入昵称则为匿名",
+      avatar     : '',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : true,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/clicklove.js"></script>

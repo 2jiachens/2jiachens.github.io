@@ -3254,4 +3254,302 @@ Hausdorff距离的概念。</p>
         <tag>各种距离</tag>
       </tags>
   </entry>
+  <entry>
+    <title></title>
+    <url>/2025/04/02/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration/</url>
+    <content><![CDATA[<h1 id="from-learning-models-of-natural-image-patches-to-whole-image-restoration">From
+Learning Models of Natural Image Patches to Whole Image Restoration</h1>
+<h2 id="摘要">摘要</h2>
+<p>学习好的图像先验对于视觉、计算机视觉和图像处理应用的研究至关重要。<strong>学习先验和对整幅图像进行优化会带来巨大的计算挑战</strong>。相比之下，<strong>当我们处理较小的图像块时，有可能学习到先验信息，从而非常高效地进行图像块恢复</strong>。这就提出了三个问题-赋予数据高可能性的先验是否也能带来良好的恢复性能？我们能否使用这样的基于块的先验来恢复一幅完整的图像？能否学习到更好的块先验？在这项工作中，我们回答了这些问题。</p>
+<p><strong>我们比较了几种块模型的似然性，并表明赋予数据高似然性的先验在块恢复中表现得更好</strong>。受这一结果的启发，<strong>我们提出了一个通用的框架，该框架允许使用任何基于块的先验来进行整个图像的恢复，其中可以计算MAP
+(或近似MAP)估计</strong>。<strong>我们展示了如何得到一个合适的代价函数，如何优化它，以及如何使用它来恢复整个图像</strong>。最后，<strong>我们提出了一个通用的，令人惊讶的简单的高斯混合先验，从一组自然图像中学习</strong>。当使用所提出的框架时，该高斯混合模型优于所有其他通用的图像去噪、去模糊和修复的先验方法。
+<span id="more"></span></p>
+<h2 id="介绍">介绍</h2>
+<p>图像先验已经成为图像复原任务的流行工具。好的先验已经被应用到不同的任务中，例如图像去噪[1,2,3,4,5,6]，图像修复[6]和[7]，取得了优异的结果。然而，<strong>从自然图像中学习好的先验是一项艰巨的任务-
+-图像的高维性使得利用这些先验进行学习、推理和优化变得异常困难</strong>。<strong>因此，在许多工作中[4,5,8]先验是在小图像块上学习的。这样做的好处是使得学习、推理和似然估计等计算任务比直接处理整幅图像要容易得多</strong>。在本文中，我们提出了三个问题：
+1. 提供高似然度的块先验是否会产生更好的块恢复性能？ 2.
+提供高似然度的块先验是否可以获得更好的图像复原性能？ 3.
+能否学习到更好的块先验？</p>
+<h2 id="从块似然到块恢复">从块似然到块恢复</h2>
+<p>对于许多先验为对数似然的闭合形式，贝叶斯最小二乘(BLS)和最大后验概率(MAP)估计可以很容易地计算。考虑到这一点，我们从一个简单的问题开始：对自然图像块提供高似然的先验是否也能在恢复任务(如去噪)中产生良好的结果。值得注意的是，对于整幅图像的先验来说，回答这个问题是非常困难的-
+-对于许多流行的MRF(马尔科夫随机场)先验，无论是对数似然还是MAP估计都无法精确计算[9]。为了提供这个问题的答案，我们比较了几个流行的先验，从[10]的训练集中随机抽取了50,000个8×8块进行训练，并去除DC。
+我们比较了每个模型在一组未见过的自然图像块(从文献的测试集中采样)上给出的对数似然以及使用MAP估计的每个模型在块去噪中的性能。我们在这里使用的模型是：具有学习边缘的独立像素(Ind
+.
+Pixel)、学习协方差的多变量高斯像素(MVG)、学习(非高斯)边缘的独立主成分分析(Independent
+PCA)和学习边缘的独立成分分析(ICA)。对于这些模型的详细描述见补充材料。每个模型的结果可以在图1中看到。可以看出，模型对一组块给出的可能性越高，当它们被损坏时，它在去噪方面就越好。
+<img src="/2025/04/02/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration\1.png" alt="image"></p>
+<h2 id="从块似然法到整幅图像复原">从块似然法到整幅图像复原</h2>
+<p>受第2节结果的启发，我们现在想回答本文的第二个问题——在整个图像恢复中，具有高可能性的补丁先验是否表现更好？为了回答这个问题，我们首先需要考虑如何使用块先验进行整个图像恢复的问题。</p>
+<p>为了说明使用块先验的优势和困难，考虑图2。假设我们从给定的图像中学习一个简单的块先验(图2a)。为了学习这个先验，我们从图像中取出所有重叠的块，去除它们的DC分量，并建立图像中所有块的直方图，统计它们在图像中出现的次数。在此先验下，例如，最可能的面片是平坦的(因为原始影像中的图斑大部分为平坦图斑)，第二个最可能的面片是对角边缘的尖端，等等(该直方图的一个子集见图2b)。这种先验既容易学习，又容易通过给定一个损坏的块来找到MAP估计来进行去噪。现在，假设我们给出了一个新的，我们希望去噪的带噪图像(图2c)
+- -我们应该如何使用我们的块先验去噪？</p>
+<p>解决这个问题的第一种方法，也是最简单的方法是<strong>将噪声图像分解成一组互不重叠的图像块，通过从我们的先验中找到MAP估计来独立地去噪每个图像块，并通过将每个清洗的图像块放置到它的原始位置来恢复图像</strong>。这个简单的解决方案在块边界(示例见图2d)处产生了臭名昭著的伪影-
+-<strong>如果我们现在从新构建的图像中随机选取一个块（图2d中的红色块），在我们的先验下，这是极不可能的（因为重建图像中的大多数块甚至不存在于我们的先验中，所以它们的可能性为0）</strong>。更复杂的解决方案可能是将图像分解成所有重叠的块，每个块独立地去噪，然后将每个像素在不同块中出现的情况进行平均，以获得重建图像。这产生了更好的结果(见图2f)，但仍然存在问题-
+-虽然我们将像素平均在一起，但我们在重建图像中创建了新的块，这些块不可能在我们之前的先验下(图2f中红色补丁)。我们也可以从每个重叠的图斑中提取中心像素，但这也存在同样的问题(图2e)。</p>
+<p>回到第2节的动机，我们的方法的直觉是简单的--<strong>假设我们从我们的重建图像中取一个随机的块，我们希望这个块在我们的先验下是可能的</strong>。<strong>如果我们从重建图像中取另一个随机块，我们希望它也有可能在我们的先验下。换句话说，我们希望找到一个重建图像，其中每个块都可能在我们的先验下，同时保持重建图像仍然接近损坏的图像--最大化重建图像的期望块对数似然(Expected
+Patch Log
+Likelihood，EPLL)，并限制它接近损坏的图像</strong>。图2g显示了EPLL对相同噪声图像的处理结果--尽管EPLL使用了与以前方法完全相同的先验，但它产生了更好的结果。
+<img src="/2025/04/02/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration\2.png" alt="image"></p>
+<h3 id="框架与优化">框架与优化</h3>
+<h4 id="期望块对数似然值--epll">期望块对数似然值- Epll</h4>
+<p>我们的方法的基本思想是试图最大化期望块对数似然值(Expected Patch Log
+Likelihood，EPLL)，同时仍然以依赖于损坏模型的方式接近损坏的图像。给定一幅图像<span class="math inline">\(x\)</span> (以向量化的形式出现)，我们定义先验<span class="math inline">\(p\)</span>下的EPLL为：</p>
+<p><span class="math display">\[
+E P L L_p(\mathbf{x})=\sum_i \log p\left(\mathbf{P}_i \mathbf{x}\right)
+\qquad(1)
+\]</span></p>
+<p>其中<span class="math inline">\(\mathbf{P}_i\)</span>是一个矩阵，它从图像(以向量化的形式出现)中提取出所有重叠块中的第<span class="math inline">\(i\)</span>个块，而<span class="math inline">\(\log
+p\left(\mathbf{P}_i \mathbf{x}\right)\)</span>是第<span class="math inline">\(i\)</span>个块在先验<span class="math inline">\(p\)</span>下的似然概率。假设块在图像中的位置是随机均匀选择的，EPLL是图像中块的对数似然期望值(至多乘以<span class="math inline">\(1 / N\)</span>)。</p>
+<p>现在，假设我们给定一幅损坏的图像<span class="math inline">\(y\)</span>，以及一个形式为<span class="math inline">\(\|A
+x-y\|^2\)</span>的图像损坏模型-我们注意到，这里我们提出的损坏模型是相当普遍的，如去噪，图像修复和去模糊[7]，等等，都是它的特殊情况。我们将在第3.1.3节对此进行更详细的讨论。为了找到使用块先验<span class="math inline">\(p\)</span>的重建图像，我们提出的代价最小化为：</p>
+<p><span class="math display">\[
+f_p(\mathrm{x} \mid \mathrm{y})=\frac{\lambda}{2}\|\mathbf{A}
+\mathbf{x}-\mathbf{y}\|^2-E P L L_p(\mathrm{x}) \qquad(2)
+\]</span></p>
+<p>式(2)具有似然项和先验项的熟悉形式，但注意<span class="math inline">\(E P L
+L_p(\mathrm{x})\)</span>并不是全图像的对数概率。由于它对所有重叠块的对数概率求和，所以它对对数概率进行"双重计数"。相反，它是图像中随机选择的块的期望对数似然。</p>
+<h4 id="优化">优化</h4>
+<p>根据先前使用的方法，直接优化方程2中的成本函数可能非常困难。我们在这里提出了一种称为“半二次分裂”的替代优化方法，该方法最近在几个相关背景下提出[11,7]。这种方法可以有效地优化成本。在“半二次分裂”中，我们引入了一组块
+<span class="math inline">\(\left\{z^i\right\}_1^N\)</span>，图像中每个重叠的块<span class="math inline">\(\mathbf{P}_i
+\mathbf{x}\)</span>对应一个，得到以下成本函数：</p>
+<p><span class="math display">\[
+\begin{aligned}
+c_{p, \beta}\left(\mathbf{x},\left\{\mathbf{z}^{\mathbf{i}}\right\} \mid
+\mathbf{y}\right) &amp; =\frac{\lambda}{2}\|\mathbf{A}
+\mathbf{x}-\mathbf{y}\|^2 \\
+&amp; +\sum_i \frac{\beta}{2}\left(\left\|\mathbf{P}_i
+\mathbf{x}-\mathbf{z}^i\right\|^2\right)-\log p\left(\mathbf{z}^i\right)
+\end{aligned} \qquad(3)
+\]</span></p>
+<p>注意到，当<span class="math inline">\(\beta \rightarrow
+\infty\)</span>时，我们限制块<span class="math inline">\(\mathbf{P}_i
+\mathbf{x}\)</span>等于辅助变量<span class="math inline">\(\left\{z^i\right\}\)</span>，方程3和方程2的解收敛。对于一个固定的<span class="math inline">\(\beta\)</span>值，优化方程3可以以迭代的方式进行，首先求解<span class="math inline">\(x\)</span>，同时保持<span class="math inline">\(\left\{z^i\right\}\)</span>不变，然后给定新发现的<span class="math inline">\(x\)</span>，求解<span class="math inline">\(\left\{z^i\right\}\)</span>，并保持其不变</p>
+<p>对于固定的<span class="math inline">\(\beta\)</span>值，优化方程3需要两个步骤：</p>
+<ul>
+<li>求解给定<span class="math inline">\(\left\{\mathbf{z}^{\mathbf{i}}\right\}\)</span>的<span class="math inline">\(\mathbf{x}\)</span>——这可以以封闭形式求解。取3式关于向量<span class="math inline">\(x\)</span>的导数，设为0，求解所得方程，得到</li>
+</ul>
+<p><span class="math display">\[
+\begin{aligned}
+\hat{\mathbf{x}}= &amp; \left(\lambda \mathbf{A}^T \mathbf{A}+\beta
+\sum_j \mathbf{P}_j^T \mathbf{P}_j\right)^{-1} \\
+&amp; \left(\lambda \mathbf{A}^T \mathbf{y}+\beta \sum_j \mathbf{P}_j^T
+\mathbf{z}^j\right)
+\end{aligned} \qquad(4)
+\]</span></p>
+<p>式中：关于<span class="math inline">\(j\)</span>的求和为图像中所有重叠的块和对应的所有辅助变量
+<span class="math inline">\(\left\{z^i\right\}\)</span></p>
+<ul>
+<li>对于给定<span class="math inline">\(x\)</span>的<span class="math inline">\(\left\{z^i\right\}\)</span>的求解-
+-这个问题的精确解依赖于使用中的先验<span class="math inline">\(p\)</span> -
+-但对于任何先验，它意味着在给定损坏的测量<span class="math inline">\(\mathbf{P}_i \mathrm{x}\)</span>和参数<span class="math inline">\(\beta\)</span>的情况下，求解在该先验下估计最可能块的MAP问题</li>
+</ul>
+<p>我们重复这个过程几次迭代，通常是4或5次——在每次迭代中，在给定<span class="math inline">\(x\)</span>的情况下求解<span class="math inline">\(\mathbf{Z}\)</span>，在给定新<span class="math inline">\(\mathbf{Z}\)</span>的情况下解<span class="math inline">\(x\)</span>，两者都给定当前的<span class="math inline">\(\beta\)</span>值。然后，增加<span class="math inline">\(\beta\)</span>并继续进行下一次迭代。这两个步骤改进了方程3中的成本<span class="math inline">\(c_{p, \beta}\)</span>，对于较大的<span class="math inline">\(\beta\)</span>，我们还改进了方程2中的原始成本函数<span class="math inline">\(f_p\)</span>。我们注意到，没有必要找到上述每个步骤的最优值，任何仍然提高每个子问题成本的近似方法（如近似MAP估计过程）仍然会优化原始成本函数（尽管根据确切设置，速率不同）。</p>
+<p><span class="math inline">\(\beta\)</span>值的选择是一个开放的问题。我们采用了两种方法-
+-第一种是在一组训练图像(通过手工,或通过暴力)上优化值。与去噪相关的第二个选项是尝试在每一步从当前图像估计中估计<span class="math inline">\(\beta\)</span> - -通过估计图像<span class="math inline">\(\hat{\mathbf{x}}\)</span>中存在的噪声量<span class="math inline">\(\sigma\)</span>，并设置<span class="math inline">\(\beta=\frac{1}{\sigma^2}\)</span>来完成。我们采用[12]的噪声估计方法。</p>
+<p>图3展示了一个小实验，在这个实验中，我们验证了方程2中的原始成本函数确实随着迭代次数<span class="math inline">\(\beta\)</span>的增加而减少。在第一个实验中，<span class="math inline">\(\beta\)</span>由当前图像估计得到，在第二个实验中，我们使用固定的<span class="math inline">\(\beta\)</span>时间表。使用的先验为ICA先验，其似然容易计算。尽管半二次分裂仅能保证对无穷大的<span class="math inline">\(\beta\)</span>值单调地降低成本，但我们通过实验证明了成本随<span class="math inline">\(\beta\)</span>的不同时间表而降低，其中时间表主要影响收敛速度。此外，即使使用BLS(而不是MAP)，成本仍然下降-
+-这说明我们不需要在每一步都找到最优解，只是为了提高每个子问题的成本。</p>
+<p>总之，我们注意到我们的一般算法的三个吸引人的性质。首先，它可以使用基于先验和次先验的任何补丁，其运行时间仅为简单补丁平均(视迭代次数而定)恢复的运行时间的4-5倍。最后，也许最重要的一点是，这个框架不需要学习一个模型<span class="math inline">\(P(\mathrm{x})\)</span>，其中<span class="math inline">\(x\)</span>是一幅自然图像，学习只需要专注于建模图像块的概率。</p>
+<h4 id="去噪去模糊和修复">去噪、去模糊和修复</h4>
+<p>在去噪中，我们有加性高斯白噪声对图像造成污染，因此我们将方程4中的矩阵<span class="math inline">\(\mathbf{A}\)</span>设为单位矩阵，并将<span class="math inline">\(\lambda\)</span>设为与噪声的标准差(<span class="math inline">\(\left(\approx
+\frac{1}{\sigma^2}\right)\)</span>)有关。这意味着在每个优化步骤中，<span class="math inline">\(x\)</span>的解仅仅是噪声图像<span class="math inline">\(y\)</span>和出现在辅助重叠块中的像素平均值之间的加权平均。<span class="math inline">\(\mathbf{Z}\)</span>的解仅仅是先验<span class="math inline">\(p\)</span>和噪声水平<span class="math inline">\(\sqrt{\frac{1}{\beta}}\)</span>的MAP估计。如果我们用噪声图像<span class="math inline">\(y\)</span>初始化<span class="math inline">\(x\)</span>，设置<span class="math inline">\(\lambda=0\)</span>和<span class="math inline">\(\beta=\frac{1}{\sigma^2}\)</span>，在迭代一个步骤时可以得到简单的块平均。
+然而，最大的不同是，在我们的方法中，因为我们迭代解和<span class="math inline">\(\lambda \neq
+0\)</span>，在每次迭代中，我们使用当前估计图像，将其与噪声图像平均，并获得一组新的<span class="math inline">\(Z\)</span>块，对它们进行求解，然后获得<span class="math inline">\(\mathbf{x}\)</span>的新估计，重复这个过程，同时增加<span class="math inline">\(\beta\)</span>。对于图像去模糊(非盲)，<span class="math inline">\(\mathbf{A}\)</span>是一个具有已知核的卷积矩阵。</p>
+<p>图像修复也是类似的，<span class="math inline">\(\mathbf{A}\)</span>是一个对角矩阵，对所有缺失的像素都有零点。基本上，这可以被认为是"去噪"，每个像素的噪声水平-
+-缺失像素的无限噪声和所有其他像素的零噪声。一些修复的例子参见补充材料。
+<img src="/2025/04/02/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration\3.png" alt="image"></p>
+<h3 id="patch-likelihoods和epll框架">Patch Likelihoods和Epll框架</h3>
+<p>我们已经看到，EPLL成本函数(式(2))取决于块的可能性。回到第2节中的先验，我们现在问--做更好的先验(在似然意义下)也会导致更好的整体图像去噪，并提出EPLL框架。图4显示了从Berkeley训练集获得的5幅不同图像的平均PSNR，在<span class="math inline">\(\sigma =
+25\)</span>处被高斯噪声污染，并使用第2节中的每个先验进行去噪。我们比较了使用简单块平均(PA)和我们提出的EPLL框架得到的结果。可以看出，在块上的确-更好的似然性导致在独立的块(图1)和整个图像(图4)上更好的去噪。
+此外，可以看出，与简单的块平均相比，EPLL显著改善了去噪结果(图4)。</p>
+<p>这些结果激发了这样一个问题：能否为图像块找到一个更好的先验？ <img src="/2025/04/02/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration\4.png" alt="image"></p>
+<h2 id="能否学习到更好的块先验">能否学习到更好的块先验？</h2>
+<p>除了第二节中讨论的先验外，我们还引入了一个新的，简单但又令人惊讶的丰富的先验。</p>
+<h3 id="高斯混合先验的学习和推断">高斯混合先验的学习和推断</h3>
+<p>我们在自然图像块的像素上学习一个有限的高斯混合模型。许多流行的图像先验可以看作是GMM
+(e.
+g.[9,1,14])的特例，但它们通常在学习过程中对均值和协方差矩阵进行约束。相反，我们没有以任何方式来约束模型-
+-我们学习所有像素的均值，全协方差矩阵和混合权重。使用期望最大化算法(Expectation
+Maximization，EM)很容易进行学习。在该模型下，计算给定块的对数似然值是平凡的：</p>
+<p><span class="math display">\[
+\log p(\mathrm{x})=\log \left(\sum_{k=1}^K \pi_k N\left(\mathrm{x} \mid
+\mu_k, \Sigma_k\right)\right)
+\]</span></p>
+<p>其中<span class="math inline">\(\pi_k\)</span>是每个混合分量的混合权重，<span class="math inline">\(\mu_k\)</span>和<span class="math inline">\(\Sigma_k\)</span>是相应的均值和协方差矩阵。</p>
+<p>给定一个噪声块<span class="math inline">\(y\)</span>，BLS估计可以用闭合形式(因为后验只是另一种高斯混合)计算[1]。然而，MAP估计不能以闭合形式计算。为了解决这个问题，我们使用以下近似的MAP估计过程：</p>
+<ol type="1">
+<li><p>给定噪声块<span class="math inline">\(y\)</span>，计算条件混合权重<span class="math inline">\(\pi_k^{\prime}=P(k \mid
+\mathbf{y})\)</span></p></li>
+<li><p>我们选择具有最高条件混合权重<span class="math inline">\(k_{\text
+{max }}=\max _k \pi_k^{\prime}\)</span>的分量。</p></li>
+<li><p>MAP估计 <span class="math inline">\(\hat{\mathbf{x}}\)</span>是<span class="math inline">\(k_{m a x}\)</span>分量的Wiener滤波器解： <span class="math display">\[
+\hat{\mathbf{x}}=\left(\boldsymbol{\Sigma}_{k_{\max }}+\sigma^2
+\mathbf{I}\right)^{-1}\left(\boldsymbol{\Sigma}_{k_{\max }}
+\mathbf{y}+\sigma^2 \mathbf{I} \mu_{k_{\max }}\right)
+\]</span>
+这实际上是EM算法的"硬版本"的一次迭代，用于寻找高斯混合的模式[15]</p></li>
+</ol>
+<h3 id="比较">比较</h3>
+<p>我们从[10]中采样的<span class="math inline">\(2 ×
+10^6\)</span>块集合中学习所提出的GMM模型，并移除它们的DC。该模型由学习到的200个具有零均值和全协方差矩阵的混合分量组成。我们还用无约束的均值训练了GMM，发现所有的均值都非常接近于零。如前所述，利用EM进行学习。使用未经优化的MATLAB
+code对上述训练集进行训练，训练时间约为30h。利用该模型对图斑进行去噪，采用如4.1所示的近似MAP过程。</p>
+<p>在学习了该GMM先验后，我们现在可以将其在似然和去噪方面的性能与我们在第1节中讨论的在相同的未见面片数据集上的先验进行比较。表1显示了使用GMM先验得到的结果--可以看出，该先验在似然、块去噪和整幅图像去噪方面优于我们迄今讨论的所有其他先验。</p>
+<p>在图5a中，我们展示了在Berkeley测试集的68幅图像上，使用ICA和使用EPLL的GMM模型在噪声水平<span class="math inline">\(\sigma =
+25\)</span>时获得的PSNR值的散点图。值得注意的是，在所有测试图像上，高似然GMM模型在去噪方面都优于ICA。图5b显示了测试集中图像的细节，与ICA结果相比，注意到GMM模型的高视觉质量。</p>
+<p>为什么这个模型能很好地发挥作用?理解它的一个方法是回想一下，在零均值高斯混合模型中，每个样本<span class="math inline">\(x\)</span>都被它所属的混合成分的协方差矩阵的前<span class="math inline">\(m\)</span>个特征向量很好地逼近。如果我们把所有混合物的所有<span class="math inline">\(m\)</span>个特征向量的集合看作一个"字典"，那么每一个样本通过这些字典元素的稀疏组合来近似表示。由于有200个混合成分，对于每个<span class="math inline">\(x\)</span>，只有(1/200)个字典元素是"活动"的，因此这是一个非常稀疏的表示。但与其他假设稀疏度(e.g.
+ICA和稀疏编码)的模型不同，活跃集受到极大的限制--只有对应于相同分量的字典元素才允许共同活跃。我们最近了解到，GMM的这种"对偶"解释是由[16]针对图像特定的GMM的情况独立给出的。</p>
+<p>这些词典元素模型是什么？图6描绘了从学习到的模型中随机选择的5个混合物成分的特征向量。值得注意的是，这些具有丰富的结构-
+-虽然有些类似于PCA特征向量，但有些描述遮挡的形式，建模纹理边界和边缘。这些与通常通过稀疏编码和类似模型学习到的Gabor滤波器有很大的不同。似乎这些结构对模型的表达能力有很大的贡献。
+<img src="/2025/04/02/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration\5.png" alt="image"> <img src="/2025/04/02/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration\6.png" alt="image"> <img src="/2025/04/02/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration\7.png" alt="image"></p>
+<h3 id="与现有方法的比较">与现有方法的比较</h3>
+<p>我们将EPLL与所提出的GMM先验以及领先的图像复原方法--通用的和基于图像的性能进行了比较。所有的实验都是在Berkeley分割数据库[10]的测试集的68张图像上进行的。所有的实验都是使用相同的含噪图像实现的。在所有的实验中，我们设定<span class="math inline">\(\lambda=\frac{N}{\sigma^2}\)</span>，其中<span class="math inline">\(N\)</span>是每个块中的像素个数。在所有实验中，我们使用了<span class="math inline">\(8 \times
+8\)</span>的补丁大小。对于GMM先验，我们在Berkeley训练集中的5幅图像上手工优化了<span class="math inline">\(\beta\)</span>的值- -这些图像被设置为<span class="math inline">\(\beta=\frac{1}{\sigma^2}
+\cdot[1,4,8,16,32,64]\)</span>。在Quad Core
+Q6600处理器上运行未经优化的MATLAB代码，每幅图像的运行时间约为300s。</p>
+<h4 id="通用先验">通用先验</h4>
+<p>我们将EPLL和GMM先验在图像去噪中的性能与领先的通用方法- - Fields of
+Experts [6]和KSVD
+[3]在自然图像块（KSVDG）进行比较。结果的总结可以在表2a中看到--很明显，我们的方法优于当前最先进的通用方法。</p>
+<h4 id="基于图像的先验">基于图像的先验</h4>
+<p>我们现在将我们的方法(EPLL +
+GMM)的性能与图像特定的方法--从噪声图像本身学习--进行比较。我们与目前最先进的图像去噪算法KSVD，BM3D
+[5]和LLSC
+[8]进行了比较。结果汇总见表2b。可以看出，我们的方法与这些最先进的方法相比具有很强的竞争力，尽管它是通用的。一些结果的例子可以在图7中看到。</p>
+<h4 id="图像去模糊">图像去模糊</h4>
+<p>虽然图像特定的先验在去噪中表现出优异的性能，但由于同一图像中不同块的退化可以"平均"出来，这当然不是所有图像复原任务的情况，对于这样的任务需要一个通用的先验。这类任务的一个例子是图像去模糊。我们将Berkeley数据库(同上)中的68幅图像与文献[7]提供的模糊核进行卷积。然后，我们在图像中添加了1
+%的高斯白噪声，并尝试使用[7]中的编码和我们的基于GMM先验的EPLL框架进行重建。结果在PSNR和输出的质量上都是优越的，如图8所示。</p>
+<p><img src="/2025/04/02/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration\8.png" alt="image"> <img src="/2025/04/02/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration/From-Learning-Models-of-Natural-Image-Patches-to-Whole-Image-Restoration\9.png" alt="image"></p>
+<h2 id="讨论">讨论</h2>
+<p>基于块的模型比全图模型更容易学习和使用。我们已经证明，对于从自然图像中采样得到的图像块赋予高似然值的块模型在块和图像复原任务中表现更好。鉴于这些结果，我们提出了一个允许使用块模型进行整幅图像复原的框架，其动机是恢复图像中的块应该在先验下是可能的。我们已经证明，与目前大多数方法使用的简单块平均相比，该框架显著地改善了整个图像恢复的结果。最后，我们提出了一种新的，简单但丰富的高斯混合先验，它在图像去噪，去模糊和修复上表现出惊人的好处。</p>
+<p>虽然我们只使用了几个先验来证明我们的框架，但它更大的优势之一是它可以作为一个"插件"系统-
+-它可以与任何现有的补丁恢复方法一起工作。考虑到BM3D和LLSC都是基于块的方法，使用简单的块平均，因此有趣的是，这些方法将如何从所提出的框架中受益。</p>
+<p>最后，也许这项工作最令人惊讶的结果，以及还有许多有待探索的方向，是GMM模型的出色性能。这里使用的GMM模型是极其幼稚的--一个简单的具有完全协方差矩阵的高斯混合。考虑到高斯混合模型是一个非常重要的研究领域，将更复杂的机器纳入到学习中，并且该模型的表示具有很大的前景--这也是我们目前的研究方向。</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>Grounding and Enhancing Grid-based Models for Neural Fields</title>
+    <url>/2025/02/11/Grounding%20and%20Enhancing%20Grid-based%20Models%20for%20Neural%20Fields/</url>
+    <content><![CDATA[<h1 id="grounding-and-enhancing-grid-based-models-for-neural-fields">Grounding
+and Enhancing Grid-based Models for Neural Fields</h1>
+<p>2024 CVPR</p>
+<h2 id="摘要">摘要</h2>
+<p>许多当代研究使用基于网格的模型来表示神经场，但是对基于网格的模型的系统分析仍然缺失，阻碍了这些模型的改进。因此，本文介绍了一种基于网格模型的理论框架。该框架指出，这些模型的逼近和泛化行为是由网格切核(GTK)决定的，而GTK是网格模型的内在属性。所提出的框架有助于对基于网格的各种模型进行一致和系统的分析。此外，引入的框架促进了一种新的基于网格的模型的发展，称为乘法傅里叶自适应网格(Multiplicative
+Fourier Adaptive Grid，MulFAGrid)。
+数值分析表明，MulFAGrid的泛化性能优于前人的结果，说明其泛化性能稳健。实证研究表明，MulFAGrid在2D图像拟合、3D符号距离场（SDF）重建、新颖视图合成等任务中表现优异，具有较好的表征能力
+<span id="more"></span></p>
+<h2 id="介绍">介绍</h2>
+<p>神经场[29、56]是基于坐标的网络，代表一个场，一个连续的参数化，代表一个物体或场景的物理量。这些领域在图像回归[46]、视图合成[29]、三维模型重建[51]等方面取得了显著的成功。最近的研究发现，神经场技术可以应用于视觉计算问题和其他领域[56]。因此，该领域将对计算机视觉和机器学习产生深远影响。</p>
+<p>最近的实证研究[9、18、43、54、58]证明，基于网格的模型，通过网格特征张量参数化并在网格上操作，与基于MLP的神经场[
+29、31、43]相比，可以实现最大二阶级联数量级的加速，同时保持高保真的表示质量。基于网格的模型可以是规则的(基于规则网格[
+43 , 44 , 58 ])，也可以是不规则的(基于点云或网格[ 33 , 51
+])。然而，据我们所知，目前还没有一个已知的理论来系统地分析基于网格的模型的学习行为。因此，格网模型的经验成功不仅缺乏理论基础，而且也揭示了设计增强的格网模型的有效原则的不足。</p>
+<p>为了对基于网格的模型进行基础和增强，我们提出了一个受神经切核[6、17、53]启发的理论。我们的理论旨在捕获基于网格模型的优化特性和泛化性能。不同于神经切核(NTKs)
+[17]研究多层感知器的行为，我们针对基于网格的模型提出切核，并将其命名为网格切核(GTKs)。GTKs定义为在两个不同的输入数据下，模型梯度关于其参数之间的协方差。它们精确地描述了在训练过程中，基于网格的模型参数的变化如何影响它们的预测。我们表明，网格模型的GTK在训练过程中保持不变，因此当GTK中使用的核保持不变时，网格模型行为可以理解为一个线性的核化模型。因此，GTK对于理解基于网格的模型结构与其训练动态之间的联系特别有用。进一步地，我们基于Rademacher复杂度[3]推导了一个泛化界，该界衡量了一个训练好的基于网格的模型在看不见的数据上的表现。这一性质有助于对神经领域感兴趣的研究人员理解基于网格的模型中影响泛化的因素。
+我们的数值研究表明，通过向合适的GTK谱和更好的泛化边界设计更好的结构，可以进一步提升以前基于网格的模型的性能。</p>
+<p>在GTK理论的指导下，我们提出了一种新的基于网格的模型，称为乘性傅里叶自适应网格(Multiplicative
+Fourier Adaptive
+Grid，MulFAGrid)，它利用乘性滤波器[11]构造傅里叶特征对节点函数进行建模，然后通过节点归一化函数对提取的节点特征进行归一化形成核函数。最后，通过节点特征和提取的核特征之间的逐元的乘法进行特征聚合。采用自适应学习技术对MulFAGrid的核特征和网格特征进行联合优化。我们的模型支持规则网格和不规则网格，这取决于索引函数的选择。我们的模型与相关方法的技术比较在表1中给出，其中我们强调我们的方法是一个通用的基于网格的模型，支持广泛的应用，如2D图像拟合[46]，3D
+SDF重建[42]和视图合成[29]。</p>
+<p>我们通过所提出的GTK从方法论上分析了目前最先进的网格模型[9、31、54]和我们的模型的特点，我们的数学结果表明MulFAGrid的GTK在高频域的频谱更宽，从而在学习高频成分时具有更好的学习效率。此外，我们在二维玩具实例中的数值研究表明，MulFAGrid在二维数据平面的大部分区域具有比InstantNGP[31]、NFFB[54]和NeuRBF[9]更紧的泛化边界。最后，图像回归实验的可视化验证了GTK分析与预测性能之间的联系。</p>
+<p>然后，我们利用神经场对3个基本任务进行了系统的实验：2D图像拟合、带符号距离场(SDF)的3D重建和基于神经辐射场的新视点合成(NeRF)。在2D图像拟合和3D
+SDF重建方面，Mul
+FAGrid取得了与其他基于网格模型InstantNGP[31]、NFFB[54]和NeuRBF[9]相媲美的性能。在神经辐射场中，我们在有界场景和无界场景的5个基准测试集上进行了实验，发现MulFAGrid比之前的基于网格的模型有显著的优势。此外，除了上述基于规则格网的实验外，我们还对非规则格网(点云)进行了实验，观察到MulFAGrid与强基线3DGS相比具有竞争力[18]。然而，我们的渲染速度远低于3DGS[18]。我们的贡献是：</p>
+<ol type="1">
+<li><p>我们提出了一种基于切核的网格模型理论。该理论强调了网格模型的网格切线核(GTK)在训练过程中保持不变，并且GTK可以表征网格模型的泛化边界。</p></li>
+<li><p>我们提出了一种基于乘性滤波器和傅里叶特征的网格模型，并提出了一种自适应学习方法来联合优化核特征和网格特征。</p></li>
+<li><p>我们对几个最先进的基于网格的模型进行了GTK分析，数值研究表明MulFAGrid比其他基于网格的模型具有更好的泛化界。</p></li>
+<li><p>实验结果表明，与基于网格的模型和其他方法相比，MulFAGrid在2D图像拟合、3DSDF重建和NeRF重建方面取得了最先进的性能。</p></li>
+</ol>
+<p><img src="/2025/02/11/Grounding%20and%20Enhancing%20Grid-based%20Models%20for%20Neural%20Fields/1.png"></p>
+<h2 id="相关工作">相关工作</h2>
+<h3 id="神经辐射场nerf">神经辐射场(Nerf)</h3>
+<p>神经辐射场(NeRF)
+[29]提出通过MLPs表示颜色和密度，并通过可微的体绘制学习隐式3D表示。此后，基于NeRF的方法主导了新视角合成[4、5、8、26、60]。NeRF已经被应用到广泛的话题中，例如生成[32]，表面重建[51]和SLAM
+[39]。之前的工作从各个方面提高了NeRFs的效率[16、31、35、36]。FastNeRF
+[16]和Instant-NGP
+[31]使用了先进的缓存技术来加速NeRF的训练。KiloNeRF[35]提出将大容量的MLP分解为成千上万个小的MLP。基于网格的方法[43、44、58]吸引了许多研究人员[7、24、47、50]，因为它们简单而快速。</p>
+<h3 id="无边界场景重建">无边界场景重建</h3>
+<p>当有深度相机或多视点立体像对时，可以利用运动恢复结构(structure from
+motion，SfM)重建三维场景[1、1315、49]。最近的研究人员对学习无界或大尺度辐射场[5,26,26,27,37,47,48,52,55,59]很感兴趣。Mip-NeRF-360[5]改进了Mip-NeRF
+[4]的参数化和效率。3DGS[18]提出用3D高斯来表示场景，在自由视点合成中取得了很好的效果。</p>
+<h3 id="神经切核ntks">神经切核(Ntks)</h3>
+<p>我们的分析与NTK理论[3、6、10、17、22]密切相关。神经切核[17、22]发现任意深度的宽网络在梯度下降下演化为线性模型。Arora等人[3]通过核的特征值来描述泛化能力。与我们最接近的工作是Matthew等[46]，这表明傅里叶特征映射有助于学习低层表示的高频成分。</p>
+<h3 id="傅里叶特征">傅里叶特征</h3>
+<p>随机傅里叶特征(RFF)
+[34]可以加速核机器的训练，有利于大规模的分类和回归任务。傅里叶神经算子(FNO[21,46])在偏导数方程(PDE)域表现出较强的性能。傅里叶特征映射在NeRF的原文中至关重要[29]。傅里叶PlenOctrees[50]证明了傅里叶特征学习在动态场景中的有效性。NeuRBF[9]提出了一种正弦合成技术来融合不同频率的特征。</p>
+<h2 id="方法论">方法论</h2>
+<h3 id="理解基于网格的模型">理解基于网格的模型</h3>
+<h4 id="公式描述">公式描述</h4>
+<p>基于网格的模型由于其高效性和可扩展的表示能力[9、18、31、43、54、58]，在当前最先进的神经场方法中发挥着重要作用。如图1所示，定义一个基于网格的模型<span class="math inline">\(g(\boldsymbol{x},
+\boldsymbol{w})\)</span>为加权平均形式的机器学习模型：</p>
+<p><img src="/2025/02/11/Grounding%20and%20Enhancing%20Grid-based%20Models%20for%20Neural%20Fields/2.png"></p>
+<p><strong>定义1.</strong> 给定输入查询坐标<span class="math inline">\(\boldsymbol{x}\)</span>，和<span class="math inline">\(\varphi\)</span>作为网格模型被<span class="math inline">\(\Theta\)</span>参数化的核函数。(<span class="math inline">\(\Theta\)</span>为空集,如果<span class="math inline">\(\varphi\)</span>没有参数)，<span class="math inline">\(\boldsymbol{w}_i\)</span>是与节点<span class="math inline">\(i\)</span>相关联的权重向量，<span class="math inline">\(U(\boldsymbol{x})\)</span>是给定位置<span class="math inline">\(\boldsymbol{x}\)</span>返回一组索引的索引函数，网格模型被定义为四元元组<span class="math inline">\(&lt;\varphi, \Theta, U,
+\boldsymbol{w}&gt;\)</span>，其计算如下：</p>
+<p><span class="math display">\[
+g(\boldsymbol{x}, \boldsymbol{w})=\sum_{i \in U(\boldsymbol{x})}
+\varphi\left(\boldsymbol{x}, \Theta_i\right) \boldsymbol{w}_i \qquad(1)
+\]</span></p>
+<p>例如，在规则网格最简单的情况下，<span class="math inline">\(U(\boldsymbol{x})\)</span>返回<span class="math inline">\(\boldsymbol{x},
+\varphi\)</span>周围最近的8个网格点，是插值权重为<span class="math inline">\(\Theta\)</span>的双线性插值，<span class="math inline">\(\boldsymbol{w}\)</span>表示存储在网格点中的特征。如图1(B)所示，方程(1)中的公式既支持基于规则网格的模型，也支持基于不规则网格的模型，它们之间的主要区别是索引函数<span class="math inline">\(U\)</span>。基于规则网格的模型以等间隔均匀离散坐标域，这使得索引函数快速。另一方面，基于不规则网格的模型利用了点云[18]或网格[51]的几何先验，并且没有规则地离散坐标域。</p>
+<h4 id="网格切线核gtk理论">网格切线核(GTK)理论</h4>
+<p>为了分析现有的基于网格的神经场模型[9、43、54、56、58]，受神经切核(NTK)
+[17]的启发，我们提出了一种基于网格的模型理论。基于网格模型的提法，我们引入了一个新的术语称为网格切核(GTK)来表示网格模型的切核，这对于理解网格模型的训练和泛化性能至关重要。</p>
+<p><strong>定义2</strong> 设<span class="math inline">\(\boldsymbol{X}\)</span>是一个输入数据的集合，其中<span class="math inline">\(\boldsymbol{X}_i\)</span>是第<span class="math inline">\(i\)</span>个数据，<span class="math inline">\(\boldsymbol{w}(t)\)</span>是训练时刻<span class="math inline">\(t\)</span>的权重。基于网格模型<span class="math inline">\(g\)</span>的网格切核(GTK)定义为一个<span class="math inline">\(n \times n\)</span>半正定矩阵<span class="math inline">\(\boldsymbol{G}_g(t)\)</span>，其(<span class="math inline">\(i, j\)</span>)-阶元素为：</p>
+<p><span class="math display">\[
+\left[\boldsymbol{G}_g(t)\right]_{i, j}=\left\langle\frac{\partial
+g\left(\boldsymbol{X}_i, \boldsymbol{w}(t)\right)}{\partial
+\boldsymbol{w}}, \frac{\partial g\left(\boldsymbol{X}_j,
+\boldsymbol{w}(t)\right)}{\partial
+\boldsymbol{w}}\right\rangle   \qquad(2)
+\]</span></p>
+<p>在GTK的基础上，我们进一步介绍了一些基于GTK的理论结果，由于篇幅限制，我们在第七节中给出了这些结果的证明。我们的分析遵循一个有监督的回归设置[17、46]，其中的任务是在给定输入数据<span class="math inline">\(\boldsymbol{X}\)</span>的情况下回归目标标签<span class="math inline">\(\boldsymbol{Y}\)</span>。首先，我们介绍了以下描述训练动态的定理：</p>
+<p><strong>定理1</strong> 令<span class="math inline">\(\boldsymbol{O}(t)=\left(g\left(\boldsymbol{X}_i,
+\boldsymbol{w}(t)\right)\right)_{1 \leq i \leq
+n}\)</span>为基于网格的模型<span class="math inline">\(g\)</span>的输出，其中<span class="math inline">\(\boldsymbol{X}=\left(\boldsymbol{X}_i\right)_{1
+\leq i \leq n}\)</span>为<span class="math inline">\(t\)</span>时刻的输入数据，<span class="math inline">\(\boldsymbol{Y}=\left(\boldsymbol{Y}_i\right)_{1
+\leq i \leq n}\)</span>为对应的标签。那么<span class="math inline">\(\boldsymbol{O}(t)\)</span>遵循这样的演化：</p>
+<p><span class="math display">\[
+\frac{d \boldsymbol{O}(t)}{d t}=-\boldsymbol{G}_g(t)
+\cdot(\boldsymbol{O}(t)-\boldsymbol{Y})   \qquad(3)
+\]</span></p>
+<p>根据上述定理，GTK反映了模型训练的动态性。因此，分析GTK对于理解网格模型的训练行为至关重要。除此之外，我们进一步揭示了基于网格模型的GTK的一个守恒性质：</p>
+<p><strong>定理2.</strong> 网格模型<span class="math inline">\(g\)</span>的GTK在训练过程中保持不变，记为<span class="math inline">\(\boldsymbol{G}_g\)</span>。形式上，该性质可以写为：</p>
+<p><span class="math display">\[
+\boldsymbol{G}_g(t)=\boldsymbol{G}_g(0)  \qquad(4)
+\]</span></p>
+<p>其中<span class="math inline">\(G_g(0)\)</span>是网格模型的初始GTK。这个性质对基于网格的模型的任何大小都适用。</p>
+<p>上述定理表明，GTK是网格模型的一个基本性质，它不随时间演化。这意味着输出<span class="math inline">\(\boldsymbol{O}(t)\)</span>的演化可以用方程(3)来描述，方程(3)是一个常微分方程(ODE)。因此，基于网格的模型可以理解为简单的线性模型[3]。除了训练性能之外，机器学习模型的另一个重要性质是泛化能力差距。基于Rademacher复杂度[3]，我们进一步得到如下推广界：</p>
+<p><strong>定理3.</strong> 给定概率<span class="math inline">\(\delta_p
+\in(0,1)\)</span>，假设数据集<span class="math inline">\(S=(\boldsymbol{X},
+\boldsymbol{Y})\)</span>包含<span class="math inline">\(n\)</span>个i.i.d.样本，来自一个分布，其中<span class="math inline">\(n \gg \log
+\frac{2}{\delta_p}\)</span>，GTK的最小特征值<span class="math inline">\(G\)</span>至少为常数<span class="math inline">\(\lambda_0: \lambda_{\text {min }}(\boldsymbol{G})
+\geq \lambda_0\)</span>。对于任何基于网格的模型<span class="math inline">\(g\)</span>，通过梯度下降法以<span class="math inline">\(\eta_l\)</span>的学习率进行优化，对于任何损失函数<span class="math inline">\(\mathcal{L}: \mathbb{R} \times \mathbb{R}
+\rightarrow[0,1]\)</span>，即第一个参数中的1-Lipschitz，我们定义种群损失为<span class="math inline">\(\mathcal{L}_{\mathcal{D}}(t)=\mathbb{E}_{\left(\boldsymbol{X}_i,
+\boldsymbol{Y}_i\right) \sim
+\mathcal{D}}\left[\mathcal{L}\left(g\left(\boldsymbol{X}_i,
+\boldsymbol{w}(t)\right),
+\boldsymbol{Y}_i\right)\right]\)</span>。那么，在概率至少为<span class="math inline">\(1-\delta_p\)</span>的情况下，对<span class="math inline">\(t \geq \Omega\left(\frac{1}{\eta_l \lambda_0} \log
+\frac{n}{\delta_p}\right)\)</span>次迭代进行梯度下降训练的随机初始化网格模型具有泛化界：</p>
+<p><span class="math display">\[
+L_{\mathcal{D}}(t) \leq \sqrt{\frac{2 \boldsymbol{Y}^{\top}
+\boldsymbol{G}^{-1} \boldsymbol{Y}}{n}}+O\left(\sqrt{\frac{\log
+\frac{2}{\delta_p}}{n}}\right) \qquad(5)
+\]</span></p>
+<p>从这个定理可以看出，对于给定的<span class="math inline">\(n\)</span>个数据的数据集，影响泛化能力的控制项是
+<span class="math inline">\(\Delta=\boldsymbol{Y}^{\top}
+\boldsymbol{G}^{-1} \boldsymbol{Y}\)</span>。如果<span class="math inline">\(\Delta\)</span>越紧，则训练和测试数据之间的泛化差距越小。这个定理为评估基于网格的模型提供了另一个有用的工具。</p>
+<p>3.2. MuIFAGrid</p>
+<p>We propose a new grid-based model called multiplicative Fourier
+adaptive grid (MulFAGrid), where our numerical study in Section 4.1
+suggests that it has a faster convergence</p>
+<h3 id="mulfagrid">MulFAGrid</h3>
+<p>我们提出了一种新的基于网格的模型，称为乘法傅里叶自适应网格（MulFAGrid），我们在第4.1节中的数值研究表明，与最先进的基于网格模型相比，它具有更快的收敛速度和更严格的基于GTK的泛化界限。我们的模型被称为自适应网格模型，因为核函数是通过数据学习的。我们在图2中说明了MulFAGrid的设计。</p>
+]]></content>
+      <categories>
+        <category>论文泛读</category>
+      </categories>
+      <tags>
+        <tag>神经网络架构</tag>
+        <tag>神经场网络</tag>
+        <tag>NTK</tag>
+      </tags>
+  </entry>
 </search>
